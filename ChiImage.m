@@ -5,26 +5,28 @@ classdef ChiImage
     %% Properties
         properties  
             %% Basic properties
-            xvals;
-            yvals;  % stored as 2D array
-            reversex = false;
-            xlabel = '';
-            ylabel = '';
+            xvals;  % abscissa as a row vector
+            yvals;  % ordinate as a 2D array (matrix)
+            reversex = false; % should abscissa be plotted increasing (false = default) or decreasing (true)
+            xlabel = ''; % text for abscissa label on plots (default = empty)
+            ylabel = ''; % text for ordinate label on plots (default = empty)
             xpixels;
             ypixels;
         end
 
         properties (Dependent = true, SetAccess = private)
         %% Calculated properties
-            channels;
-            totalspectrum;
-            totalimage;
+            channels;       % number of data points
+            totalspectrum;  % sum of columns of data
+            totalimage;     % sum of layers of data
         end
     
     %% Methods
     methods
         %% Constructor
         function this = ChiImage(xvals,yvals,reversex,xlabel,ylabel,xpixels,ypixels)
+            % Create an instance of ChiImage with given parameters
+            
             if (nargin > 0) % Support calling with 0 arguments
                 this.xvals = xvals;
                 this.yvals = yvals;
@@ -63,22 +65,30 @@ classdef ChiImage
         
         %% channels : Calculate number of channels
         function channels = get.channels(this)
+            % Calculate number of channels
+
             channels = length(this.xvals);
         end
         
         %% totalspectrum : Calculate total signal spectrum
         function totalspectrum = get.totalspectrum(this)
+            % Calculate total signal spectrum
+            
             totalspectrum = ChiSpectrum(this.xvals,sum(this.yvals),this.reversex,this.xlabel,this.ylabel);
         end        
         
         %% totalimage : Calculate total signal image
         function totalimage = get.totalimage(this)
+            % Calculate total signal image
+            
             totvals = squeeze(sum(reshape(this.yvals,this.ypixels,this.xpixels,[]),3));
             totalimage = ChiPicture(totvals,this.xpixels,this.ypixels);
         end        
         
         %% summedrangeimagefromindexvals : Calculate image over a given summed range
         function rangeimage = summedrangeimagefromindexvals(this,fromidx,toidx)
+            % Calculate image over a given summed range
+            
             % Check for out of range values
             if (fromidx > channels) || (toidx > channels)
                 err = MException('CHI:ChiImage:OutOfRange', ...
@@ -105,6 +115,8 @@ classdef ChiImage
         
         %% summedrangeimagefromxvalues : Calculate image over a given summed range
         function rangeimage = summedrangeimagefromxvalues(this,fromxval,toxval)
+            % Calculate image over a given summed range
+            
             % Determine the index values of the xvalue limits
             [fromvalue,fromidx] = min(abs(this.xvals-fromxval));
             [tovalue,toidx] = min(abs(this.xvals-toxval));
@@ -113,6 +125,8 @@ classdef ChiImage
         
         %% spectrumat : Get spectrum at a given location in the image
         function spectrum = spectrumat(this,xpos,ypos)
+            % Get spectrum at a given location in the image
+            
             % Handle error where xpos and/or ypos are outside image
             if (xpos > this.xpixels) || (ypos > this.ypixels)
                 err = MException('CHI:ChiImage:OutOfRange', ...

@@ -30,6 +30,10 @@ classdef ChiImage < handle
             if (nargin > 0) % Support calling with 0 arguments
                 this.xvals = xvals;
                 this.yvals = yvals;
+                
+                % Force to row vector
+                this.xvals = ChiForceToRow(this.xvals);
+                
                 if (nargin > 2)
                     this.reversex = reversex;
                     if (nargin > 3)
@@ -91,7 +95,7 @@ classdef ChiImage < handle
             % Calculate image over a given summed range
             
             % Check for out of range values
-            if (fromidx > channels) || (toidx > channels)
+            if (fromidx > this.channels) || (toidx > this.channels)
                 err = MException('CHI:ChiImage:OutOfRange', ...
                     'Requested range is too high');
                 throw(err);
@@ -104,11 +108,7 @@ classdef ChiImage < handle
             end            
 
             % Swap if 'from' is higher than 'to'
-            if (fromidx > toidx)
-                temp = fromidx;
-                fromidx = toidx;
-                toidx = temp;
-            end
+            [fromidx,toidx] = ChiForceIncreasing(fromidx,toidx);
             
             rangeimage = squeeze(sum(reshape(this.yvals(:,fromidx:toidx),this.ypixels,this.xpixels,[]),3));
             rangeimage = ChiPicture(rangeimage,this.xpixels,this.ypixels);
@@ -121,7 +121,7 @@ classdef ChiImage < handle
             % Determine the index values of the xvalue limits
             [fromvalue,fromidx] = min(abs(this.xvals-fromxval));
             [tovalue,toidx] = min(abs(this.xvals-toxval));
-            rangeimage = sumrangeindex(this,fromidx,toidx);
+            rangeimage = summedrangeimagefromindexvals(this,fromidx,toidx);
         end        
         
         %% spectrumat : Get spectrum at a given location in the image
@@ -145,6 +145,7 @@ classdef ChiImage < handle
             % If so use the commented out version for large data. This
             % gives a warning, about handles, but since we're reshaping and
             % then reshaping back to the original there is no problem. 
+            % UPDATE 27/10/2104: Now a handle class so may not matter. 
             
             y = reshape(this.yvals,this.ypixels,this.xpixels,[]);
             spectrum = squeeze(y(xpos,ypos,:));
@@ -157,24 +158,28 @@ classdef ChiImage < handle
         end
         
         %% removerangefromindexvals : Remove a spectral range using index values
-        function removerangefromindexvals(this,fromidx,toidx)
+        function output = removerangefromindexvals(this,fromidx,toidx)
             % Remove a spectral range using index values
             
+            % Swap if 'from' is higher than 'to'
+            [fromidx,toidx] = ChiForceIncreasing(fromidx,toidx);
+
             fromidx = fromidx-1;
             toidx = toidx+1;
             
-            this.yvals = [this.yvals(:,1:fromidx),this.yvals(:,toidx:end)];
-            this.xvals = [this.xvals(1:fromidx),this.xvals(toidx:end)];
+            tempyvals = [this.yvals(:,1:fromidx),this.yvals(:,toidx:end)];
+            tempxvals = [this.xvals(1:fromidx),this.xvals(toidx:end)];
+            output = ChiImage(tempxvals,tempyvals,this.reversex,this.xlabel,this.ylabel,this.xpixels,this.ypixels);
         end
         
         %% removerangefromxvalues : Remove a spectral range using x values
-        function removerangefromxvalues(this,fromxval,toxval)
+        function output = removerangefromxvalues(this,fromxval,toxval)
             % Remove a spectral range using x values
             
             % Determine the index values of the xvalue limits
             [fromvalue,fromidx] = min(abs(this.xvals-fromxval));
             [tovalue,toidx] = min(abs(this.xvals-toxval));
-            removerangefromindexvals(this,fromidx,toidx);
+            output = removerangefromindexvals(this,fromidx,toidx);
         end        
                 
     end % methods

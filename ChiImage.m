@@ -1,4 +1,4 @@
-classdef ChiImage
+classdef ChiImage < handle
     %CHIIMAGE Storage class for hyperspectral images
     %   Detailed explanation goes here
     
@@ -42,25 +42,26 @@ classdef ChiImage
                     end
                 end
                 % Reshape yvals into a 2D array
-                this.yvals = reshape(this.yvals,ypixels*xpixels,[]);
+                
+                [dims] = size(this.yvals);
+                switch (length(dims))
+                    case 1
+                        % vector of intensities 
+                        this.yvals = reshape(this.yvals,ypixels*xpixels,[]);
+                    case 2
+                        % 2D so probably don't need to reshape
+                        this.yvals = reshape(this.yvals,ypixels*xpixels,[]);
+                        % TODO: Check xpixels and ypixels are valid
+                    case 3
+                        % 3D data so unfold array
+                        this.yvals = reshape(this.yvals,ypixels*xpixels,[]);
+                    otherwise
+                        % Too many or too few dimensions. 
+                        err = MException('CHI:ChiImage:DimensionalityError', ...
+                            'Data is not 1D, 2D or 3D');
+                        throw(err);
+                end
             end 
-            
-%             % Manage the dimensionality
-%             % Could determine the xpixels and ypixels values from the yvals,
-%             % but leave that until later
-%             [dims] = size(yvals);
-%             if (length(dims) > 3)
-%                 error('too many dimensions');
-%             end
-%             switch (length(dims))
-%                 case 1  % vector of values
-%                     if (this.xpixels 
-%                     this.yvals = reshape(this.yvals,ypixels*xpixels,[]);
-%                 case 2  % 2D array
-%                     this.yvals = reshape(this.yvals,ypixels*xpixels,[]);
-%                 case 3  % hypercube
-%                     this.yvals = reshape(this.yvals,ypixels*xpixels,[]);
-%             end
         end
         
         %% channels : Calculate number of channels
@@ -155,7 +156,27 @@ classdef ChiImage
 %             this.yvals=reshape(this.yvals,this.ypixels*this.xpixels,[]);
         end
         
+        %% removerangefromindexvals : Remove a spectral range using index values
+        function removerangefromindexvals(this,fromidx,toidx)
+            % Remove a spectral range using index values
+            
+            fromidx = fromidx-1;
+            toidx = toidx+1;
+            
+            this.yvals = [this.yvals(:,1:fromidx),this.yvals(:,toidx:end)];
+            this.xvals = [this.xvals(1:fromidx),this.xvals(toidx:end)];
+        end
         
-    end
-end
+        %% removerangefromxvalues : Remove a spectral range using x values
+        function removerangefromxvalues(this,fromxval,toxval)
+            % Remove a spectral range using x values
+            
+            % Determine the index values of the xvalue limits
+            [fromvalue,fromidx] = min(abs(this.xvals-fromxval));
+            [tovalue,toidx] = min(abs(this.xvals-toxval));
+            removerangefromindexvals(this,fromidx,toidx);
+        end        
+                
+    end % methods
+end % class ChiImage 
 

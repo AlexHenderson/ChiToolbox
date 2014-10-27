@@ -1,4 +1,4 @@
-classdef ChiSpectrum
+classdef ChiSpectrum < handle
     %CHISPECTRUM Storage class for a single spectrum
     %   Detailed explanation goes here
     
@@ -50,6 +50,13 @@ classdef ChiSpectrum
                     this.reversex = true;
                 end
             end 
+        end
+        
+        %% delete : Destructor
+        function delete(this)
+            % Destructor
+            
+            % Nothing to do
         end
         
         %% channels : Calculate number of channels

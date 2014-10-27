@@ -1,4 +1,4 @@
-classdef ChiPicture
+classdef ChiPicture < handle
     %CHIPICTURE Storage class for 2D images (not hyperspectral images)
     %   Detailed explanation goes here
     

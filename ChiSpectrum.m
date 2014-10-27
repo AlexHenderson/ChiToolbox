@@ -23,6 +23,13 @@ classdef ChiSpectrum < handle
             % Create an instance of ChiSpectrum with given parameters
             
             if (nargin > 0) % Support calling with 0 arguments
+                
+                if (length(xvals) ~= length(yvals))
+                    err = MException('CHI:ChiPicture:DimensionalityError', ...
+                        'x and y data are different lengths');
+                    throw(err);
+                end                    
+                
                 this.xvals = xvals;
                 this.yvals = yvals;
                 
@@ -115,6 +122,31 @@ classdef ChiSpectrum < handle
             subspectrumxvals = subspectrumindex(this,fromidx,toidx);
         end
         
+        %% removerangefromindexvals : Remove a spectral range using index values
+        function output = removerangefromindexvals(this,fromidx,toidx)
+            % Remove a spectral range using index values
+            
+            % Swap if 'from' is higher than 'to'
+            [fromidx,toidx] = ChiForceIncreasing(fromidx,toidx);
+
+            fromidx = fromidx-1;
+            toidx = toidx+1;
+            
+            tempyvals = [this.yvals(1:fromidx),this.yvals(toidx:end)];
+            tempxvals = [this.xvals(1:fromidx),this.xvals(toidx:end)];
+            output = ChiSpectrum(tempxvals,tempyvals,this.reversex,this.xlabel,this.ylabel);        
+        end
+        
+        %% removerangefromxvalues : Remove a spectral range using x values
+        function output = removerangefromxvalues(this,fromxval,toxval)
+            % Remove a spectral range using x values
+            
+            % Determine the index values of the xvalue limits
+            [fromvalue,fromidx] = min(abs(this.xvals-fromxval));
+            [tovalue,toidx] = min(abs(this.xvals-toxval));
+            output = removerangefromindexvals(this,fromidx,toidx);
+        end        
+        
         %% plot : Basic plot function
         function plot(this,varargin)
             % Basic plot function
@@ -131,7 +163,7 @@ classdef ChiSpectrum < handle
                 set(get(gca,'YLabel'),'String',this.ylabel);
             end
         end
-        
+
     end % methods
     
 end

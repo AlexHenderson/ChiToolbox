@@ -5,7 +5,7 @@ classdef ChiPicture < handle
     %% Properties
         %% Basic properties
         properties
-            data;       % Contents of object
+            data;       % Contents of object as a 2D matrix
             xpixels;    % Number of pixels in the x-direction (width)
             ypixels;    % Number of pixels in the y-direction (height)
         end
@@ -30,9 +30,9 @@ classdef ChiPicture < handle
                         switch (dims)
                             case 2
                                 % A 2D matrix so determine the dimensionality directly from the data
-                                this.data = data;
                                 this.xpixels = dims(2);
                                 this.ypixels = dims(1);
+                                this.data = reshape(data,this.ypixels,this.xpixels);
                             otherwise
                                 % Too many or too few dimensions. 
                                 err = MException('CHI:ChiPicture:DimensionalityError', ...
@@ -55,13 +55,13 @@ classdef ChiPicture < handle
                                 else
                                     this.xpixels = xpixels;
                                     this.ypixels = length(data) / ypixels;
-                                    this.data = reshape(data,xpixels,ypixels);
+                                    this.data = reshape(data,this.ypixels,this.xpixels);
                                 end
                             case 2
                                 % A 2D matrix so determine the dimensionality directly from the data
-                                this.data = data;
                                 this.xpixels = dims(2);
                                 this.ypixels = dims(1);
+                                this.data = reshape(data,this.ypixels,this.xpixels);
                             otherwise
                                 % Too many dimensions
                                 err = MException('CHI:ChiPicture:DimensionalityError', ...
@@ -81,9 +81,9 @@ classdef ChiPicture < handle
                                 warning('CHI:ChiPicture:DimensionalityIssue',...
                                     'xpixels and ypixels do not describe the data correctly. Determining dimensions automatically');
                                 dims = size(data);
-                                this.data = data;
                                 this.xpixels = dims(2);
                                 this.ypixels = dims(1);
+                                this.data = reshape(data,this.ypixels,this.xpixels);
                             else
                                 % Can't rely on the information so throw an
                                 % error
@@ -92,9 +92,9 @@ classdef ChiPicture < handle
                                 throw(err);
                             end
                         else
-                            this.data = data;
                             this.xpixels = xpixels;
                             this.ypixels = ypixels;
+                            this.data = reshape(data,this.ypixels,this.xpixels);
                         end
                     otherwise
                         err = MException('CHI:ChiPicture:UsageError', ...

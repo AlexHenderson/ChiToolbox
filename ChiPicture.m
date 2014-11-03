@@ -1,6 +1,9 @@
-classdef ChiPicture < handle
+classdef ChiPicture < handle & ChiCloneable 
     %CHIPICTURE Storage class for 2D images (not hyperspectral images)
-    %   Detailed explanation goes here
+%   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
+    
+    % matlab.mixin.Copyable only for >R2011a
+    % Want compatibility with R2009a
     
     %% Properties
         %% Basic properties
@@ -27,7 +30,7 @@ classdef ChiPicture < handle
                     case 1
                         % Only have the data
                         [dims]=size(data);
-                        switch (dims)
+                        switch (length(dims))
                             case 2
                                 % A 2D matrix so determine the dimensionality directly from the data
                                 this.xpixels = dims(2);
@@ -132,6 +135,21 @@ classdef ChiPicture < handle
             axis off;
         end        
         
-    end    
-end
+        %% medianfilter : Median filter
+        function output = medianfilter(this,degree)
+            % Median filter
+
+            % Set a suitable default
+            if (~exist('degree','var'))
+                degree = 3;
+            end
+            
+            % Clone this object
+            output = clone(this);
+            
+            output.data = medfilt2(output.data, [degree,degree]);
+        end
+        
+    end % methods 
+end % class 
 

@@ -1,6 +1,7 @@
 function [ output ] = ChiVectorNormalise( spectrum )
 %CHIVECTORNORMALISE Vector normalisation (CytoSpec version)
 %   See: http://www.cytospec.com/specpreproc.php#PreprocNorm
+%   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
 if(~isa(spectrum,'ChiSpectrum'))
     err = MException('CHI:ChiSumNormalise:WrongDataType', ...

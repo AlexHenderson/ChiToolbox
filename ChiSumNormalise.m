@@ -1,6 +1,6 @@
 function [ output ] = ChiSumNormalise( spectrum )
 %CHISUMNORMALISE Normalise data to unity
-%   Detailed explanation goes here
+%   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
 if(~isa(spectrum,'ChiSpectrum'))
     err = MException('CHI:ChiSumNormalise:WrongDataType', ...

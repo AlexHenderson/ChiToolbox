@@ -1,6 +1,6 @@
 function [vec] = ChiForceToColumn(vec)
 %CHIFORCETOCOLUMN Ensures a vector is a column
-%   Detailed explanation goes here
+%   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
 if(~isvector(vec))
     % input is not a vector

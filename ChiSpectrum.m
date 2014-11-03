@@ -1,6 +1,9 @@
-classdef ChiSpectrum < handle
+classdef ChiSpectrum < handle & ChiCloneable
     %CHISPECTRUM Storage class for a single spectrum
-    %   Detailed explanation goes here
+%   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
+    
+    % matlab.mixin.Copyable only for >R2011a
+    % Want compatibility with R2009a
     
     %% Basic properties
     properties

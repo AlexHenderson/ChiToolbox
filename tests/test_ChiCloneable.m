@@ -14,6 +14,6 @@ assertEqual(obj, cloned);
 function test_clone_different(obj)
 
 cloned = clone(obj);
-changed = obj.subspectrumxvals(6,3);
+changed = obj.subspectrum(6,3);
 assertFalse(cloned == changed);
 

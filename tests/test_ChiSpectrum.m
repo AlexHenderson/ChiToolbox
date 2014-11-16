@@ -12,25 +12,33 @@ assertEqual(cs.channels(), 10);
 function test_sum(cs)
 assertEqual(cs.sum(), 155);
 
-function test_sumrangeindex(cs)
-assertEqual(cs.sumrangeindex(3,6), 58);
+function test_sumrangeidx(cs)
+assertEqual(cs.sumrangeidx(3,6), 58);
 
-function test_sumrangex(cs)
-assertEqual(cs.sumrangex(6,3), 58);
+function test_sumrange(cs)
+assertEqual(cs.sumrange(6,3), 58);
 
-function test_subspectrumindex(cs)
+function test_subspectrumidx(cs)
 expected = ChiSpectrum([3,4,5,6],[13,14,15,16]);
-assertEqual(cs.subspectrumindex(3,6), expected);
+sub = cs.subspectrumidx(3,6);
+expected.log = sub.log;
+assertEqual(sub, expected);
 
-function test_subspectrumxvals(cs)
+function test_subspectrum(cs)
 expected = ChiSpectrum([3,4,5,6],[13,14,15,16]);
-assertEqual(cs.subspectrumxvals(6,3), expected);
+sub = cs.subspectrum(3,6);
+expected.log = sub.log;
+assertEqual(sub, expected);
 
-function test_removerangefromindexvals(cs)
+function test_removerangeidx(cs)
 expected = ChiSpectrum([1,2,7,8,9,10],[11,12,17,18,19,20]);
-assertEqual(cs.removerangefromindexvals(3,6), expected);
+remo = cs.removerangeidx(3,6);
+expected.log = remo.log;
+assertEqual(remo, expected);
 
-function test_removerangefromxvalues(cs)
+function test_removerange(cs)
 expected = ChiSpectrum([1,2,7,8,9,10],[11,12,17,18,19,20]);
-assertEqual(cs.removerangefromxvalues(6,3), expected);
+remo = cs.removerange(3,6);
+expected.log = remo.log;
+assertEqual(remo, expected);
 

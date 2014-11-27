@@ -1,5 +1,5 @@
-function output = ratioindex(this,numerator,denominator)
-% Generate ChiPicture of a ratio of spectral ranges using index values
+function output = proportionidx(this,numerator,denominator)
+% Generate ChiPicture of a proportion of spectral ranges using index values
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
     if (isscalar(numerator))
@@ -32,7 +32,7 @@ function output = ratioindex(this,numerator,denominator)
         end
     end
 
-    the_ratio = numerator_data ./ denominator_data;
+    the_proportion = numerator_data ./ (numerator_data + denominator_data);
 
     if (this.masked)
         unmasked = zeros(this.ypixels,this.xpixels);
@@ -41,14 +41,14 @@ function output = ratioindex(this,numerator,denominator)
             if (this.mask(i))
                 % Insert the non-zero values back into the required
                 % locations. 
-                unmasked(i) = the_ratio(totindex);
+                unmasked(i) = the_proportion(totindex);
                 totindex = totindex + 1;
             end
         end
-        the_ratio = unmasked;
+        the_proportion = unmasked;
     end
 
-    output = ChiPicture(the_ratio,this.xpixels,this.ypixels);
-    output.log = vertcat(output.log,['ratioindex, ', num2str(numerator), ' / ', num2str(denominator)]);
+    output = ChiPicture(the_proportion,this.xpixels,this.ypixels);
+    output.log = vertcat(output.log,['proportionindex, ', num2str(numerator), ' / ', num2str(denominator)]);
 
-end % ratioindex        
+end % proportionindex        

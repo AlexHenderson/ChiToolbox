@@ -27,6 +27,8 @@ classdef ChiImage < handle & ChiCloneable
         properties (Dependent = true)
         %% Calculated properties
             channels;       % number of data points
+            width;          % Number of pixels in the x-direction
+            height;         % Number of pixels in the y-direction
             totalspectrum;  % sum of columns of data
             totalimage;     % sum of layers of data
         end
@@ -94,6 +96,20 @@ classdef ChiImage < handle & ChiCloneable
             % Calculate number of channels
 
             channels = length(this.xvals);
+        end
+        
+        %% width : Calculate number of pixels across the image (x-direction)
+        function width = get.width(this)
+            % Calculate number of pixels across the image (x-direction)
+
+            width = this.xpixels;
+        end
+        
+        %% height : Calculate number of pixels down the image (y-direction)
+        function height = get.height(this)
+            % Calculate number of pixels down the image (y-direction)
+
+            height = this.ypixels;
         end
         
         %% totalspectrum : Calculate total signal spectrum

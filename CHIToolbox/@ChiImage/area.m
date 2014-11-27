@@ -1,4 +1,4 @@
-function output = areax(this,lowx,highx)
+function output = area(this,lowx,highx)
 % Generate ChiPicture of a proportion of spectral ranges using x values
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
@@ -6,5 +6,5 @@ function output = areax(this,lowx,highx)
     highidx = indexat(this, highx);
 
     this.log = vertcat(this.log,['measurearea from ', num2str(lowx), ' to ', num2str(highx)]);
-    output = this.areaindex(lowidx,highidx);
+    output = this.areaidx(lowidx,highidx);
 end

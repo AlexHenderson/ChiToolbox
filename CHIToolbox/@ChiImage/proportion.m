@@ -1,10 +1,10 @@
-function output = ratioxvals(this,numerator,denominator)
-% Generate ChiPicture of a ratio of spectral ranges using xvalues
+function output = proportion(this,numerator,denominator)
+% Generate ChiPicture of a proportion of spectral ranges using xvalues
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
     if (isscalar(numerator))
         % Single x value
-        numeratoridx = indexat(this, numerator);
+        numeratoridx = this.data(:,numerator);
     else
         if (isvector(numerator) && (length(numerator) == 2))
             % Range of x values to sum over
@@ -36,6 +36,6 @@ function output = ratioxvals(this,numerator,denominator)
         end
     end
 
-    this.log = vertcat(this.log,['ratioxvals, ', num2str(numerator), ' / ', num2str(denominator)]);
-    output = ratioindex(this,numeratoridx,denominatoridx);
-end % ratioxvals
+    this.log = vertcat(this.log,['proportionxvals, ', num2str(numerator), ' / ', num2str(denominator)]);
+    output = proportionidx(this,numeratoridx,denominatoridx);
+end % proportionxvals

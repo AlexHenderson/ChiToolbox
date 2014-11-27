@@ -1,4 +1,4 @@
-function output = areaindex(this,lowidx,highidx)
+function output = areaidx(this,lowidx,highidx)
 % Generate ChiPicture of a proportion of spectral ranges using index values
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 

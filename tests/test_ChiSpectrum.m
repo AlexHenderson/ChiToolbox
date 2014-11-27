@@ -21,24 +21,24 @@ assertEqual(cs.sumrange(6,3), 58);
 function test_subspectrumidx(cs)
 expected = ChiSpectrum([3,4,5,6],[13,14,15,16]);
 sub = cs.subspectrumidx(3,6);
-expected.log = sub.log;
+expected.history = sub.history;
 assertEqual(sub, expected);
 
 function test_subspectrum(cs)
 expected = ChiSpectrum([3,4,5,6],[13,14,15,16]);
 sub = cs.subspectrum(3,6);
-expected.log = sub.log;
+expected.history = sub.history;
 assertEqual(sub, expected);
 
 function test_removerangeidx(cs)
 expected = ChiSpectrum([1,2,7,8,9,10],[11,12,17,18,19,20]);
 remo = cs.removerangeidx(3,6);
-expected.log = remo.log;
+expected.history = remo.history;
 assertEqual(remo, expected);
 
 function test_removerange(cs)
 expected = ChiSpectrum([1,2,7,8,9,10],[11,12,17,18,19,20]);
 remo = cs.removerange(3,6);
-expected.log = remo.log;
+expected.history = remo.history;
 assertEqual(remo, expected);
 

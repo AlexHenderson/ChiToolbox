@@ -1,4 +1,5 @@
-classdef ChiSpectrum < handle & ChiCloneable
+classdef ChiSpectrum < handle & ChiCloneable & ChiSpectralCharacter
+%classdef ChiSpectrum < handle & ChiCloneable
 % CHISPECTRUM Storage class for a single spectrum
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
     
@@ -9,16 +10,16 @@ classdef ChiSpectrum < handle & ChiCloneable
     properties
         xvals;  % abscissa as a row vector
         data;  % ordinate as a row vector
-        reversex = false; % should abscissa be plotted increasing (false = default) or decreasing (true)
-        xlabel = ''; % text for abscissa label on plots (default = empty)
-        ylabel = ''; % text for ordinate label on plots (default = empty)
-        log;
+        reversex@logical = false; % should abscissa be plotted increasing (false = default) or decreasing (true)
+        xlabel@char = ''; % text for abscissa label on plots (default = empty)
+        ylabel@char = ''; % text for ordinate label on plots (default = empty)
+        history@ChiLogger;
     end
     
     %% Calculated properties
-    properties (Dependent = true, SetAccess = private)
-        channels; % number of data points
-    end
+%     properties (Dependent = true, SetAccess = protected)
+%         channels; % number of data points
+%     end
     
     %% Methods
     methods
@@ -36,7 +37,7 @@ classdef ChiSpectrum < handle & ChiCloneable
                 
                 this.xvals = xvals;
                 this.data = data;
-                this.log = cell(1);
+                this.history = ChiLogger();
                 
                 % Force to row vectors
                 this.xvals = ChiForceToRow(this.xvals);
@@ -72,11 +73,11 @@ classdef ChiSpectrum < handle & ChiCloneable
 %         end
         
         %% channels : Calculate number of channels
-        function channels = get.channels(this)
-            % Calculate number of channels
-            
-            channels = length(this.xvals);
-        end
+%         function channels = get.channels(this)
+%             % Calculate number of channels
+%             
+%             channels = length(this.xvals);
+%         end
 
     end % methods
     

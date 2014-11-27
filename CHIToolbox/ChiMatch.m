@@ -50,4 +50,4 @@ else
 end
     
 output = ChiPicture(result,image.xpixels,image.ypixels);
-output.log = vertcat(output.log,['Generated a ', comparison, ' match']');
+output.history.add(['Generated a ', comparison, ' match']');

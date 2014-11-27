@@ -28,4 +28,4 @@ else
 end
     
 output = ChiPicture(data,input1.xpixels,input1.ypixels);
-output.log = vertcat(output.log,['Generated a ', comparison]');
+output.history.add(['Generated a ', comparison]');

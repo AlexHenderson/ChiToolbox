@@ -46,7 +46,8 @@ if (isa(input,'ChiSpectrum') || isa(input,'ChiImage'))
         output.data = output.data ./ norm(output.data);
     end
     
-    output.log = vertcat(output.log,'vector normalised');
+    output.history.add('vector normalised');
+    input.history.add('vector normalised');
     
 else
     err = MException('CHI:ChiVectorNormalise:WrongDataType', ...

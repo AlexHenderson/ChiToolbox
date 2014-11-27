@@ -16,11 +16,6 @@ classdef ChiSpectrum < handle & ChiCloneable & ChiSpectralCharacter
         history@ChiLogger;
     end
     
-    %% Calculated properties
-%     properties (Dependent = true, SetAccess = protected)
-%         channels; % number of data points
-%     end
-    
     %% Methods
     methods
         %% Constructor
@@ -65,20 +60,6 @@ classdef ChiSpectrum < handle & ChiCloneable & ChiSpectralCharacter
             end 
         end
         
-        %% delete : Destructor
-%         function delete(this)
-%             % Destructor
-%             
-%             % Nothing to do
-%         end
-        
-        %% channels : Calculate number of channels
-%         function channels = get.channels(this)
-%             % Calculate number of channels
-%             
-%             channels = length(this.xvals);
-%         end
-
     end % methods
     
 end

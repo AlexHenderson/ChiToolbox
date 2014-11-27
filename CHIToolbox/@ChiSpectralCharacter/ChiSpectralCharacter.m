@@ -17,10 +17,8 @@ classdef ChiSpectralCharacter < handle
     methods
         function channels = get.channels(this)
             % Calculate number of channels
-            
             channels = length(this.xvals);
         end
-        
     end
     
 end

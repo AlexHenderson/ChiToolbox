@@ -1,4 +1,4 @@
-classdef ChiImage < handle & ChiCloneable
+classdef ChiImage < handle & ChiCloneable & ChiSpectralCharacter & ChiSpatialCharacter
 % CHIIMAGE Storage class for hyperspectral images
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
     
@@ -9,7 +9,7 @@ classdef ChiImage < handle & ChiCloneable
         properties  
             %% Basic properties
             xvals;  % abscissa as a row vector
-            data;  % ordinate as a 2D array (matrix)
+            data;  % ordinate as a 2D array (unfolded matrix)
             reversex@logical = false; % should abscissa be plotted increasing (false = default) or decreasing (true)
             xlabel@char = ''; % text for abscissa label on plots (default = empty)
             ylabel@char = ''; % text for ordinate label on plots (default = empty)
@@ -26,9 +26,6 @@ classdef ChiImage < handle & ChiCloneable
         
         properties (Dependent = true)
         %% Calculated properties
-            channels;       % number of data points
-            width;          % Number of pixels in the x-direction
-            height;         % Number of pixels in the y-direction
             totalspectrum;  % sum of columns of data
             totalimage;     % sum of layers of data
         end
@@ -89,27 +86,6 @@ classdef ChiImage < handle & ChiCloneable
                         throw(err);
                 end
             end 
-        end
-        
-        %% channels : Calculate number of channels
-        function channels = get.channels(this)
-            % Calculate number of channels
-
-            channels = length(this.xvals);
-        end
-        
-        %% width : Calculate number of pixels across the image (x-direction)
-        function width = get.width(this)
-            % Calculate number of pixels across the image (x-direction)
-
-            width = this.xpixels;
-        end
-        
-        %% height : Calculate number of pixels down the image (y-direction)
-        function height = get.height(this)
-            % Calculate number of pixels down the image (y-direction)
-
-            height = this.ypixels;
         end
         
         %% totalspectrum : Calculate total signal spectrum

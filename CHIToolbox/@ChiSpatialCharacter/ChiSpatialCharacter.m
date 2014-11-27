@@ -21,14 +21,12 @@ classdef ChiSpatialCharacter < handle
         %% width : Calculate number of pixels across the image (x-direction)
         function width = get.width(this)
             % Calculate number of pixels across the image (x-direction)
-
             width = this.xpixels;
         end
         
         %% height : Calculate number of pixels down the image (y-direction)
         function height = get.height(this)
             % Calculate number of pixels down the image (y-direction)
-
             height = this.ypixels;
         end
     end

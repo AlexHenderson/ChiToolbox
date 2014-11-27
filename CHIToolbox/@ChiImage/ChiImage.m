@@ -88,7 +88,7 @@ classdef ChiImage < handle & ChiSpectralCharacter & ChiSpatialCharacter
             end 
         end
         
-        %% clone
+        %% clone : Make a copy of this image
         function output = clone(this)
             % Make a copy of this image
             output = ChiImage(this.xvals,this.data,this.reversex,this.xlabel,this.ylabel,this.xpixels,this.ypixels,this.masked,this.mask,this.info);

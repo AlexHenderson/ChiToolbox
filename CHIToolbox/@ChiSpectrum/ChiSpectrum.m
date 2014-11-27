@@ -59,7 +59,7 @@ classdef ChiSpectrum < handle & ChiSpectralCharacter
             end 
         end
         
-        %% clone
+        %% clone : Make a copy of this spectrum
         function output = clone(this)
             % Make a copy of this spectrum
             output = ChiSpectrum(this.xvals,this.data,this.reversex,this.xlabel,this.ylabel);

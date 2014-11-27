@@ -112,7 +112,7 @@ classdef ChiPicture < handle & ChiSpatialCharacter
             end
         end
         
-        %% clone
+        %% clone : Make a copy of this picture
         function output = clone(this)
             % Make a copy of this picture
             output = ChiPicture(this.data,this.xpixels,this.ypixels);

@@ -12,5 +12,6 @@ function output = removerangeidx(this,from,to)
     tempxvals = [this.xvals(1:from),this.xvals(to:end)];
     % TODO: copy/clone?
     output = ChiImage(tempxvals,tempdata,this.reversex,this.xlabel,this.ylabel,this.xpixels,this.ypixels,this.masked,this.mask);
-    output.log = vertcat(this.log,['removerangefromindexvals, from ', num2str(from), ' to ', num2str(to)]);
+    output.history.add(['removerangefromindexvals, from ', num2str(from), ' to ', num2str(to)]);
+    this.history.add(['removerangefromindexvals, from ', num2str(from), ' to ', num2str(to)]);
 end

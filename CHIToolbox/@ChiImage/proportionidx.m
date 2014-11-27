@@ -49,6 +49,7 @@ function output = proportionidx(this,numerator,denominator)
     end
 
     output = ChiPicture(the_proportion,this.xpixels,this.ypixels);
-    output.log = vertcat(output.log,['proportionindex, ', num2str(numerator), ' / ', num2str(denominator)]);
+    output.history.add(['proportionindex, ', num2str(numerator), ' / ', num2str(denominator)]);
+    this.history.add(['proportionindex, ', num2str(numerator), ' / ', num2str(denominator)]);
 
 end % proportionindex        

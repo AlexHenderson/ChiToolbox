@@ -49,6 +49,7 @@ function output = ratioidx(this,numerator,denominator)
     end
 
     output = ChiPicture(the_ratio,this.xpixels,this.ypixels);
-    output.log = vertcat(output.log,['ratioindex, ', num2str(numerator), ' / ', num2str(denominator)]);
+    output.history.add(['ratioindex, ', num2str(numerator), ' / ', num2str(denominator)]);
+    this.history.add(['ratioindex, ', num2str(numerator), ' / ', num2str(denominator)]);
 
 end % ratioindex        

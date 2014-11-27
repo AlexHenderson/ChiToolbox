@@ -10,6 +10,6 @@ function rangeimage = sumrange(this,fromxval,toxval)
     % Determine the index values of the xvalue limits
     fromidx = indexat(this, fromxval);
     toidx = indexat(this, toxval);
-    this.log = vertcat(this.log,['sumrange, from ', num2str(fromxval), ' to ', num2str(toxval)]);
+    this.history.add(['sumrange, from ', num2str(fromxval), ' to ', num2str(toxval)]);
     rangeimage = sumrangeidx(this,fromidx,toidx);
 end        

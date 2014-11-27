@@ -26,4 +26,4 @@ end
             
 obj = ChiImage(wavenumbers,data,true,'wavenumber (cm^-1)','absorbance',width,height);
 obj.info = filename;
-obj.log{1,1} = ['filename: ', filename];
+obj.history.add(['filename: ', filename]);

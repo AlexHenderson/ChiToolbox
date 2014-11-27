@@ -38,7 +38,8 @@ if (isa(input,'ChiSpectrum') || isa(input,'ChiImage'))
         output.data = output.data / output.sum();
     end
     
-    output.log = vertcat(output.log,['SumNormalise, ', numpcs, ' PCs']);
+    output.history.add(['SumNormalise, ', numpcs, ' PCs']);
+    input.history.add(['SumNormalise, ', numpcs, ' PCs']);
 
 else
     err = MException('CHI:ChiSumNormalise:WrongDataType', ...

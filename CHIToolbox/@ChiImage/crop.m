@@ -76,5 +76,6 @@ function output = crop(this, lowx,highx, lowy,highy)
             end
         end
     end 
-    output.log = vertcat(output.log,['crop: x(',num2str(lowx),':',num2str(highx),') y:(' num2str(lowy),':',num2str(highy),')']);
+    output.history.add(['crop: x(',num2str(lowx),':',num2str(highx),') y:(' num2str(lowy),':',num2str(highy),')']);
+    this.history.add(['crop: x(',num2str(lowx),':',num2str(highx),') y:(' num2str(lowy),':',num2str(highy),')']);
 end

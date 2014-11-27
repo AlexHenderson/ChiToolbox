@@ -11,5 +11,5 @@ function out = removerangeidx(this,from,to)
     tempdata = [this.data(1:from),this.data(to:end)];
     tempxvals = [this.xvals(1:from),this.xvals(to:end)];
     out = ChiSpectrum(tempxvals,tempdata,this.reversex,this.xlabel,this.ylabel);        
-    out.log = vertcat(this.log,['removerangeidx, from:', num2str(from), ' to:', num2str(to)]);            
+    this.history.add(['removerangeidx, from:', num2str(from), ' to:', num2str(to)]);            
 end

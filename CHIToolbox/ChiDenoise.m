@@ -22,6 +22,7 @@ denoised = scores(:,1:numpcs)*loadings(:,1:numpcs)';
 denoised = denoised + repmat(mean(hyperspectralimage.data),size(denoised,1),1);
 
 output.data = denoised;
-output.log = vertcat(output.log,['Denoised, ', num2str(numpcs), ' PCs']);
+output.history.add(['Denoised, ', num2str(numpcs), ' PCs']);
+hyperspectralimage.history.add(['Denoised, ', num2str(numpcs), ' PCs']);
 
 end

@@ -33,6 +33,7 @@ function spectrum = spectrumat(this,xpos,ypos)
     end
 
     spectrum = ChiSpectrum(this.xvals,spectrumdata,this.reversex,this.xlabel,this.ylabel);
-    spectrum.log = vertcat(this.log,['spectrumat, x ', num2str(xpos), ' y ', num2str(ypos)]);
+    spectrum.history.add(['spectrumat, x ', num2str(xpos), ' y ', num2str(ypos)]);
+    this.history.add(['spectrumat, x ', num2str(xpos), ' y ', num2str(ypos)]);
 
 end

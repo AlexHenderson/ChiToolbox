@@ -1,4 +1,4 @@
-classdef ChiPicture < handle & ChiCloneable 
+classdef ChiPicture < handle & ChiSpatialCharacter
 % CHIPICTURE Storage class for 2D images (not hyperspectral images)
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
     
@@ -9,19 +9,13 @@ classdef ChiPicture < handle & ChiCloneable
         %% Basic properties
         properties
             data;       % Contents of object as a 2D matrix
-            log;
+            history@ChiLogger;
         end
     
         properties (SetAccess = protected)
             xpixels;    % Number of pixels in the x-direction (width)
             ypixels;    % Number of pixels in the y-direction (height)
         end          
-        
-        properties (Dependent = true)
-        %% Calculated properties
-            width;          % Number of pixels in the x-direction
-            height;         % Number of pixels in the y-direction
-        end
         
     %% Methods
     methods        
@@ -36,7 +30,7 @@ classdef ChiPicture < handle & ChiCloneable
             % have here isn't too bad, but needs refactored. 
 
             if (nargin > 0) % Support calling with 0 arguments
-                this.log = cell(1);
+                this.history = ChiLogger();
                 switch (nargin)
                     case 1
                         % Only have the data
@@ -118,6 +112,13 @@ classdef ChiPicture < handle & ChiCloneable
             end
         end
         
+        %% clone
+        function output = clone(this)
+            % Make a copy of this picture
+            output = ChiPicture(this.data,this.xpixels,this.ypixels);
+            output.history = this.history;
+        end
+        
         %% xpixels : Width of image
         function xpixels = get.xpixels(this)
             % xpixels : Width of image
@@ -130,20 +131,6 @@ classdef ChiPicture < handle & ChiCloneable
             % ypixels : Height of image
             
             ypixels = this.ypixels;
-        end
-        
-        %% width : Calculate number of pixels across the image (x-direction)
-        function width = get.width(this)
-            % Calculate number of pixels across the image (x-direction)
-
-            width = this.xpixels;
-        end
-        
-        %% height : Calculate number of pixels down the image (y-direction)
-        function height = get.height(this)
-            % Calculate number of pixels down the image (y-direction)
-
-            height = this.ypixels;
         end
         
     end % methods 

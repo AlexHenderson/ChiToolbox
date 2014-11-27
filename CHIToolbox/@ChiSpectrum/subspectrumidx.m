@@ -5,5 +5,5 @@ function out = subspectrumidx(this,from,to)
     % Swap if 'from' is higher than 'to'
     [from,to] = ChiForceIncreasing(from,to);
     out = ChiSpectrum(this.xvals(from:to),this.data(from:to),this.reversex,this.xlabel,this.ylabel);
-    out.log = vertcat(this.log,['subspectrumidx, from:', num2str(from), ' to:', num2str(to)]);            
+    this.history.add(['subspectrumidx, from:', num2str(from), ' to:', num2str(to)]);
 end

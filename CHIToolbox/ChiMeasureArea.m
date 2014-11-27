@@ -19,7 +19,7 @@ if (isa(input,'ChiSpectrum') || isa(input,'ChiImage'))
         triangle = (abs(shifteddata(:,highidx) - shifteddata(:,lowidx)) * (highidx-lowidx + 1)) ./ 2;
         area = area - triangle;
         output = ChiPicture(area,input.xpixels,input.ypixels);
-        output.log = vertcat(input.log,['MeasureArea from ', num2str(lowx), ' to ', num2str(highx)]);
+        output.history.add(['MeasureArea from ', num2str(lowx), ' to ', num2str(highx)]);
     end
     
     if (isa(input,'ChiSpectrum'))

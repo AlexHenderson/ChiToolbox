@@ -31,5 +31,9 @@ classdef ChiSpatialCharacter < handle
         end
     end
     
+    methods (Abstract)
+        clone(this);
+    end
+    
 end
 

@@ -1,4 +1,4 @@
-classdef ChiPicture < handle & ChiCloneable & ChiSpatialCharacter
+classdef ChiPicture < handle & ChiSpatialCharacter
 % CHIPICTURE Storage class for 2D images (not hyperspectral images)
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
     
@@ -110,6 +110,13 @@ classdef ChiPicture < handle & ChiCloneable & ChiSpatialCharacter
                         throw(err);
                 end
             end
+        end
+        
+        %% clone
+        function output = clone(this)
+            % Make a copy of this picture
+            output = ChiPicture(this.data,this.xpixels,this.ypixels);
+            output.history = this.history;
         end
         
         %% xpixels : Width of image

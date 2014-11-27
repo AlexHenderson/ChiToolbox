@@ -1,4 +1,4 @@
-classdef ChiImage < handle & ChiCloneable & ChiSpectralCharacter & ChiSpatialCharacter
+classdef ChiImage < handle & ChiSpectralCharacter & ChiSpatialCharacter
 % CHIIMAGE Storage class for hyperspectral images
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
     
@@ -86,6 +86,13 @@ classdef ChiImage < handle & ChiCloneable & ChiSpectralCharacter & ChiSpatialCha
                         throw(err);
                 end
             end 
+        end
+        
+        %% clone
+        function output = clone(this)
+            % Make a copy of this image
+            output = ChiImage(this.xvals,this.data,this.reversex,this.xlabel,this.ylabel,this.xpixels,this.ypixels,this.masked,this.mask,this.info);
+            output.history = this.history;
         end
         
         %% totalspectrum : Calculate total signal spectrum

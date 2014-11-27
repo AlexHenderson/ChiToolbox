@@ -1,5 +1,4 @@
-classdef ChiSpectrum < handle & ChiCloneable & ChiSpectralCharacter
-%classdef ChiSpectrum < handle & ChiCloneable
+classdef ChiSpectrum < handle & ChiSpectralCharacter
 % CHISPECTRUM Storage class for a single spectrum
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
     
@@ -25,7 +24,7 @@ classdef ChiSpectrum < handle & ChiCloneable & ChiSpectralCharacter
             if (nargin > 0) % Support calling with 0 arguments
                 
                 if (length(xvals) ~= length(data))
-                    err = MException('CHI:ChiPicture:DimensionalityError', ...
+                    err = MException('CHI:ChiSpectrum:DimensionalityError', ...
                         'x and y data are different lengths');
                     throw(err);
                 end                    
@@ -60,6 +59,12 @@ classdef ChiSpectrum < handle & ChiCloneable & ChiSpectralCharacter
             end 
         end
         
+        %% clone
+        function output = clone(this)
+            % Make a copy of this spectrum
+            output = ChiSpectrum(this.xvals,this.data,this.reversex,this.xlabel,this.ylabel);
+            output.history = this.history;
+        end
     end % methods
     
 end

@@ -20,6 +20,9 @@ classdef ChiSpectralCharacter < handle
             channels = length(this.xvals);
         end
     end
-    
+
+    methods (Abstract)
+        clone(this);
+    end
 end
 

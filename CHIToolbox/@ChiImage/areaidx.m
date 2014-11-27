@@ -11,5 +11,6 @@ function output = areaidx(this,lowidx,highidx)
     triangle = (abs(shifteddata(:,highidx) - shifteddata(:,lowidx)) * (highidx-lowidx + 1)) ./ 2;
     area = area - triangle;
     output = ChiPicture(area,this.xpixels,this.ypixels);
-    output.log = vertcat(this.log,['areaindex: from ', num2str(lowidx), ' to ', num2str(highidx)]);
+    output.history.add(['areaindex: from ', num2str(lowidx), ' to ', num2str(highidx)]);
+    this.history.add(['areaindex: from ', num2str(lowidx), ' to ', num2str(highidx)]);
 end

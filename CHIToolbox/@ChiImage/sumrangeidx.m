@@ -40,5 +40,6 @@ function rangeimage = sumrangeidx(this,fromidx,toidx)
     end
 
     rangeimage = ChiPicture(totrows,this.xpixels,this.ypixels);
-    rangeimage.log = vertcat(this.log,['summedrangeimagefromindexvals, from ', num2str(fromidx), ' to ', num2str(toidx)]);
+    rangeimage.history.add(['summedrangeimagefromindexvals, from ', num2str(fromidx), ' to ', num2str(toidx)]);
+    this.history.add(['summedrangeimagefromindexvals, from ', num2str(fromidx), ' to ', num2str(toidx)]);
 end        

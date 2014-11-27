@@ -36,6 +36,6 @@ function output = ratio(this,numerator,denominator)
         end
     end
 
-    this.log = vertcat(this.log,['ratioxvals, ', num2str(numerator), ' / ', num2str(denominator)]);
+    this.history.add(['ratioxvals, ', num2str(numerator), ' / ', num2str(denominator)]);
     output = ratioidx(this,numeratoridx,denominatoridx);
 end % ratioxvals

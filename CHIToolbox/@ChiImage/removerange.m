@@ -5,6 +5,6 @@ function output = removerange(this,from,to)
     % Determine the index values of the xvalue limits
     fromidx = indexat(this, from);
     toidx = indexat(this, to);
-    this.log = vertcat(this.log,['removerange, from ', num2str(from), ' to ', num2str(to)]);
+    this.history.add(['removerange, from ', num2str(from), ' to ', num2str(to)]);
     output = removerangeidx(this,fromidx,toidx);
 end

@@ -16,7 +16,7 @@ classdef ChiImage < handle & ChiCloneable
             mask@logical;
             masked@logical = false;
             info;
-            log;
+            history@ChiLogger;
         end
 
         properties (SetAccess = protected)
@@ -42,7 +42,7 @@ classdef ChiImage < handle & ChiCloneable
             if (nargin > 0) % Support calling with 0 arguments
                 this.xvals = xvals;
                 this.data = data;
-                this.log = cell(1);
+                this.history = ChiLogger();
                 
                 % Force to row vector
                 this.xvals = ChiForceToRow(this.xvals);
@@ -117,7 +117,8 @@ classdef ChiImage < handle & ChiCloneable
             % Calculate total signal spectrum
             
             totalspectrum = ChiSpectrum(this.xvals,sum(this.data),this.reversex,this.xlabel,this.ylabel);
-            totalspectrum.log = vertcat(this.log,'Generate totalspectrum');
+            totalspectrum.history.add('Generate totalspectrum');
+            this.history.add('Generate totalspectrum');
         end        
         
         %% totalimage : Calculate total signal image
@@ -141,7 +142,8 @@ classdef ChiImage < handle & ChiCloneable
             end
             
             totalimage = ChiPicture(totrows,this.xpixels,this.ypixels);
-            totalimage.log = vertcat(this.log,'Generate totalimage');
+            totalimage.history.add('Generate totalimage');
+            this.history.add('Generate totalimage');
         end        
         
         %% xpixels : Width of image

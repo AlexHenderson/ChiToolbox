@@ -36,6 +36,6 @@ function output = proportion(this,numerator,denominator)
         end
     end
 
-    this.log = vertcat(this.log,['proportionxvals, ', num2str(numerator), ' / ', num2str(denominator)]);
+    this.history.add(['proportionxvals, ', num2str(numerator), ' / ', num2str(denominator)]);
     output = proportionidx(this,numeratoridx,denominatoridx);
 end % proportionxvals

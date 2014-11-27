@@ -5,6 +5,6 @@ function output = area(this,lowx,highx)
     lowidx = indexat(this, lowx);
     highidx = indexat(this, highx);
 
-    this.log = vertcat(this.log,['measurearea from ', num2str(lowx), ' to ', num2str(highx)]);
+    this.history.add(['measurearea from ', num2str(lowx), ' to ', num2str(highx)]);
     output = this.areaidx(lowidx,highidx);
 end

@@ -10,5 +10,6 @@ function output = medianfilter(this,degree)
     output = clone(this);
 
     output.data = medfilt2(output.data, [degree,degree]);
-    output.log = vertcat(this.log,['medianfilter: degree(', num2str(degree), ')']);
+    output.history.add(['medianfilter: degree(', num2str(degree), ')']);
+    this.history.add(['medianfilter: degree(', num2str(degree), ')']);
 end

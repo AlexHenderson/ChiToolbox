@@ -9,7 +9,7 @@ classdef ChiPicture < handle & ChiCloneable
         %% Basic properties
         properties
             data;       % Contents of object as a 2D matrix
-            log;
+            history@ChiLogger;
         end
     
         properties (SetAccess = protected)
@@ -36,7 +36,7 @@ classdef ChiPicture < handle & ChiCloneable
             % have here isn't too bad, but needs refactored. 
 
             if (nargin > 0) % Support calling with 0 arguments
-                this.log = cell(1);
+                this.history = ChiLogger();
                 switch (nargin)
                     case 1
                         % Only have the data

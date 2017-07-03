@@ -1,0 +1,14 @@
+BTree v0.3
+Binary tree data structure for matlab
+
+History:
+
+v0.1:
+- first implementation of the binary tree
+- supports both numerical and stringlists as well as a mix of numbers and strings as input.
+
+v0.2:
+- adaptation in tree building: small change to prevent building a fully imbalanced tree, Currently a fully balanced tree cannot be garanteed (BTree still behaves best when using random lists as input).
+
+v0.3:
+- adaptations and speed optimisation to rebuild tree if it becomes to imbalanced

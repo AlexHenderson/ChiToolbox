@@ -1,14 +1,14 @@
-function [ output ] = ChiDenoise( hyperspectralimage, numpcs )
-%CHIDENOISE Denoise using PCA
+function output = ChiDenoise(hyperspectralimage,numpcs)
+% ChiDenoise Denoise using PCA
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
-if(~isa(hyperspectralimage,'ChiImage'))
+if ~isa(hyperspectralimage,'ChiImage')
     err = MException('CHI:ChiDenoise:WrongDataType', ...
         'Input is not a ChiImage');
     throw(err);
 end
 
-if (~exist('numpcs','var'))
+if ~exist('numpcs','var')
     numpcs= 30;
 end
 

@@ -1,14 +1,14 @@
-function rangeimage = sumrangeidx(this,fromidx,toidx)
+function output = sumrangeidx(this,fromidx,toidx)
 % Calculate image over a given summed range
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
-    if (~exist('toidx','var'))
+    if ~exist('toidx','var')
         % only have a single index value so only use that position
         toidx = fromidx;
     end
 
-    % Check for out of range values
-    if (fromidx > this.channels) || (toidx > this.channels)
+    % Check for out-of-range values
+    if (fromidx > this.numChannels) || (toidx > this.numChannels)
         err = MException('CHI:ChiImage:OutOfRange', ...
             'Requested range is too high');
         throw(err);
@@ -23,23 +23,25 @@ function rangeimage = sumrangeidx(this,fromidx,toidx)
     % Swap if 'from' is higher than 'to'
     [fromidx,toidx] = ChiForceIncreasing(fromidx,toidx);
 
-    totrows = sum(this.data(:,fromidx:toidx),2);
+    rowsums = sum(this.data(:,fromidx:toidx),2);
 
-    if (this.masked)
-        unmasked = zeros(size(totrows));
+    if this.masked
+        unmasked = zeros(size(rowsums));
         totindex = 1;
         for i = 1:length(this.mask)
-            if (this.mask(i))
+            if this.mask(i)
+                % ToDo: This is really inefficient, look at insertdummyrows
+                % code
                 % Insert the non-zero values back into the required
                 % locations. 
-                unmasked(i) = totrows(totindex);
+                unmasked(i) = rowsums(totindex);
                 totindex = totindex + 1;
             end
         end
-        totrows = unmasked;
+        rowsums = unmasked;
     end
 
-    rangeimage = ChiPicture(totrows,this.xpixels,this.ypixels);
-    rangeimage.history.add(['summedrangeimagefromindexvals, from ', num2str(fromidx), ' to ', num2str(toidx)]);
+    output = ChiPicture(rowsums,this.xpixels,this.ypixels);
+    output.history.add(['summedrangeimagefromindexvals, from ', num2str(fromidx), ' to ', num2str(toidx)]);
     this.history.add(['summedrangeimagefromindexvals, from ', num2str(fromidx), ' to ', num2str(toidx)]);
 end        

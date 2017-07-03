@@ -2,7 +2,7 @@ function output = proportionidx(this,numerator,denominator)
 % Generate ChiPicture of a proportion of spectral ranges using index values
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
-    if (isscalar(numerator))
+    if isscalar(numerator)
         % Single x value
         numerator_data = this.data(:,numerator);
     else
@@ -17,7 +17,7 @@ function output = proportionidx(this,numerator,denominator)
         end
     end
 
-    if (isscalar(denominator))
+    if isscalar(denominator)
         % Single x value
         denominator_data = this.data(:,denominator);
     else
@@ -34,7 +34,7 @@ function output = proportionidx(this,numerator,denominator)
 
     the_proportion = numerator_data ./ (numerator_data + denominator_data);
 
-    if (this.masked)
+    if this.masked
         unmasked = zeros(this.ypixels,this.xpixels);
         totindex = 1;
         for i = 1:length(this.mask)

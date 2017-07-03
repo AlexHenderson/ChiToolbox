@@ -30,7 +30,7 @@ function output = crop(this, lowx,highx, lowy,highy)
     output = clone(this);
 
     % Remove the pixels
-    if (~this.masked)
+    if ~this.masked
         output.data = reshape(output.data, this.xpixels, this.ypixels, []);
         output.data = output.data(lowy:highy, lowx:highx, :);
         [dims] = size(output.data);
@@ -40,7 +40,7 @@ function output = crop(this, lowx,highx, lowy,highy)
     else
         output.mask = reshape(this.mask, this.xpixels, this.ypixels, []);
         output.mask = output.mask(lowy:highy, lowx:highx);
-        if (all(all(output.mask)))
+        if all(all(output.mask))
             % All pixels in this cropped region are unmasked in the
             % original. Therefore the output doesn't require a
             % mask. 
@@ -61,7 +61,7 @@ function output = crop(this, lowx,highx, lowy,highy)
                 'This code has yet to be written.');
             throw(err);
         else
-            if (all(all(~output.mask)))
+            if all(all(~output.mask))
                 % All pixels in this cropped region are masked in
                 % the original. Therefore the output is empty. 
                 err = MException('CHI:ChiImage:DimensionalityError', ...

@@ -5,33 +5,33 @@ function ChiPointAndClick(input, favwave)
 % highmass=100;
 % [imagedata, mass, totalionimage] = xyt(filename, lowmass, highmass);
 
-if (~isa(input,'ChiImage'))
+if ~isa(input,'ChiImage')
     err = MException('CHI:ChiPointAndClick:WrongDataType', ...
         'Input is not a ChiImage');
     throw(err);
 end    
 
-figurehandle=figure;
+figurehandle = figure;
 
-    spectrumhandle=subplot(2,1,2);
+    spectrumhandle = subplot(2,1,2);
     input.totalspectrum.plot();
 
-    imagehandle=subplot(2,1,1);
-    if (~exist('favwave','var'))
+    imagehandle = subplot(2,1,1);
+    if ~exist('favwave','var')
         input.totalimage.imagesc();colormap('hot');
     else
         input.sumrange(favwave).imagesc();colormap('hot');
     end
 
-mousebutton=1;    
-while(mousebutton == 1)
+mousebutton = 1;    
+while (mousebutton == 1)
     [xlocation,ylocation,mousebutton] = ginput(1);
 
-    switch(gca)
+    switch gca
         case imagehandle
 %            disp('imagehandle');
-            xlocation=floor(xlocation);
-            ylocation=floor(ylocation);
+            xlocation = floor(xlocation);
+            ylocation = floor(ylocation);
             if ((xlocation > 0) && (xlocation < input.xpixels)...
                     &&(ylocation > 0) && (ylocation < input.ypixels))
                 subplot(2,1,2)

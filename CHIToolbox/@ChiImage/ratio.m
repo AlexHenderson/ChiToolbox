@@ -2,7 +2,7 @@ function output = ratio(this,numerator,denominator)
 % Generate ChiPicture of a ratio of spectral ranges using xvalues
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
-    if (isscalar(numerator))
+    if isscalar(numerator)
         % Single x value
         numeratoridx = indexat(this, numerator);
     else
@@ -19,7 +19,7 @@ function output = ratio(this,numerator,denominator)
         end
     end
 
-    if (isscalar(denominator))
+    if isscalar(denominator)
         % Single x value
         denominatoridx = indexat(this, denominator);
     else

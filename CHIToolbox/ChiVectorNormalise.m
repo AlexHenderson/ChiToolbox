@@ -1,12 +1,13 @@
-function [ output ] = ChiVectorNormalise( input )
+function output = ChiVectorNormalise(input)
+
 %CHIVECTORNORMALISE Vector normalisation
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
-if (isa(input,'ChiSpectrum') || isa(input,'ChiImage'))
+if (isa(input,'ChiSpectrum') || isa(input,'ChiImage') || isa(input,'ChiSpectralCollection'))
 
     output = input.clone();
 
-    if (isa(input,'ChiImage'))
+    if (isa(input,'ChiImage') || isa(input,'ChiSpectralCollection'))
         % subtract the mean intensity % wrong to do this here
 %        output.data = output.data - repmat(mean(output.data),size(output.data,1),1);
 
@@ -41,7 +42,7 @@ if (isa(input,'ChiSpectrum') || isa(input,'ChiImage'))
         
     end
     
-    if (isa(input,'ChiSpectrum'))
+    if isa(input,'ChiSpectrum')
         % http://www.mathworks.co.uk/help/matlab/ref/norm.html
         output.data = output.data ./ norm(output.data);
     end

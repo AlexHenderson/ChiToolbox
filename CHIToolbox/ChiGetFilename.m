@@ -34,17 +34,17 @@ if (isfloat(filenames) && (filenames==0))
     return;
 end
 
-if(iscell(filenames))
+if iscell(filenames)
     % change from a row of filenames to a column of filenames
     % if only one file is selected we have a single string (not a cell
     % array)
     filenames = filenames';
 else
     % convert the filename to a cell array (with one entry)
-    filenames=cellstr(filenames);
+    filenames = cellstr(filenames);
 end
 
-for i=1:size(filenames,1)
-    filenames{i,1}=[pathname,filenames{i,1}];
+for i = 1:size(filenames,1)
+    filenames{i,1} = [pathname,filenames{i,1}];
 end
-filename=filenames;
+filename = filenames;

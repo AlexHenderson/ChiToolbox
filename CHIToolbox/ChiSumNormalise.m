@@ -1,4 +1,4 @@
-function [ output ] = ChiSumNormalise( input )
+function output = ChiSumNormalise(input)
 %CHISUMNORMALISE Normalise data to unity
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
@@ -6,7 +6,7 @@ if (isa(input,'ChiSpectrum') || isa(input,'ChiImage'))
 
     output = input.clone();
 
-    if (isa(input,'ChiImage'))
+    if isa(input,'ChiImage')
         
         % Calculate sums of spectra
         sums = sum(output.data,2);
@@ -34,7 +34,7 @@ if (isa(input,'ChiSpectrum') || isa(input,'ChiImage'))
         
     end
     
-    if(isa(input,'ChiSpectrum'))
+    if isa(input,'ChiSpectrum')
         output.data = output.data / output.sum();
     end
     

@@ -4,8 +4,8 @@ function [a,b] = ChiForceIncreasing(a,b)
 %   the first
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
-if(a > b)
-    [a,b]=ChiSwap(a,b);
+if (a > b)
+    [a,b] = ChiSwap(a,b);
 end
 
 end

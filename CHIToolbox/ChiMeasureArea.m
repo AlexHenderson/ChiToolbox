@@ -1,5 +1,6 @@
-function [ output ] = ChiMeasureArea( input, lowx, highx )
-%ChiMeasureArea Measure area above a linear baseline using x values
+function output = ChiMeasureArea(input,lowx,highx)
+
+% ChiMeasureArea Measure area above a linear baseline using x values
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
 % See notes below
@@ -12,7 +13,7 @@ if (isa(input,'ChiSpectrum') || isa(input,'ChiImage'))
     lowidx = input.indexat(lowx);
     highidx = input.indexat(highx);
     
-    if (isa(input,'ChiImage'))
+    if isa(input,'ChiImage')
         minvalue = min(input.data(:,lowidx:highidx),[],2);
         shifteddata = input.data - repmat(minvalue,1,size(input.data, 2));
         area = sum(shifteddata(:,lowidx:highidx),2);
@@ -22,7 +23,7 @@ if (isa(input,'ChiSpectrum') || isa(input,'ChiImage'))
         output.history.add(['MeasureArea from ', num2str(lowx), ' to ', num2str(highx)]);
     end
     
-    if (isa(input,'ChiSpectrum'))
+    if isa(input,'ChiSpectrum')
         minvalue = min(input.data(lowidx:highidx));
         shifteddata = input.data - minvalue;
         area = sum(shifteddata(lowidx:highidx));

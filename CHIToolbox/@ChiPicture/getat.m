@@ -1,4 +1,4 @@
-function value = getat(this,xpos,ypos)
+function output = getat(this,xpos,ypos)
 % getat Get value at a location in the image
 
     if (xpos > this.xpixels) || (ypos > this.ypixels)
@@ -13,6 +13,6 @@ function value = getat(this,xpos,ypos)
         throw(err);
     end            
 
-    value = this.data(xpos,ypos);
+    output = this.data(xpos,ypos);
 end
         

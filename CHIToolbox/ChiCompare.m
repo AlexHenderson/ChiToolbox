@@ -1,5 +1,5 @@
-function [ output ] = ChiCompare( input1, input2, comparison )
-%ChiCompare Comparison of inputs
+function output = ChiCompare(input1,input2,comparison)
+% ChiCompare Comparison of inputs
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
 if (~(isa(input1,'ChiPicture') && isa(input2,'ChiPicture')) )

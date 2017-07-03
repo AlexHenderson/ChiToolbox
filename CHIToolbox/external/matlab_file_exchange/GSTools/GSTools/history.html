@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>
+History of GSTools
+</title>
+<style>
+<!--
+body{
+	background-color: #99CCFF;
+	font-family: Times New Roman, Times, Century Gothic, Arial, Verdana, Helvetica, sans-serif;
+	font-weight: normal;
+	color: Black;
+	font-size: 14;
+}
+
+-->
+</style>
+</head>
+<body>
+<h1>History of GSTools</h1>
+
+<p>
+<dl>
+	<dt>Version 0.1</dt>
+	<dd>Initial release</dd>
+	
+	<dt>Version 0.2</dt>
+	<dd>Correction of bugs in GSSpcRead and GSSpcWrite:
+		<ul>
+		<li>GSSpcRead and GSSpcWrite now correctly interprete flags in SPC-header
+		of SPC-spectrum, and hence should work on most (if not all)
+		single-spectrum SPC-files</li>
+		</ul>
+	</dd>
+	<dd>Correction of bug in GSSpcWrite:
+		<ul>
+		<li>GSSpcWrite now correctly determines whether data are evenly spaced
+		(due to CPU-precision, 0 is not 0 but a small value less than
+		1&nbsp;.&nbsp;10<sup>-8</sup>; this didn't have a serious impact on the net result)</li>
+		</ul>
+	</dd>
+	<dt>Version 0.3</dt>
+	<dd>GSSpcRead:
+		<ul>
+		<li>Support for old SPC-file format</li>
+		<li>Fixed small bugs in the reading process of the headers</li>
+		<li>fixed bug in the Y-value scaling</li>
+		</ul>
+	</dd>
+	<dd>GSSpcWrite:
+		<ul>
+		<li>support for saving custom information (comment, instrument, ...) on the spectra</li>
+		<li>logtxt parameter now supports a cellstring array</li>
+		<li>small bug fixes</li>
+		</ul>
+	</dd>
+	<dd>@BTree:
+		<ul>
+		<li>Fixed bug which could, in some occasions, lead to the presence of two times the same item in the binary tree.</li>
+		<li>Addition of rudimentary plot function for viewing the content of the binary tree</li>
+		</ul>
+	</dd>
+	<dd>Code optimisation: faster operation by preallocation of some arrays
+	</dd>
+	<dt>Version 0.3.1</dt>
+	<dd>It is now possible to change the the type of axis' units in GSSpcWrite
+	</dd>
+	<dt>Version 0.3.2</dt>
+	<dd>Small bug in BTree fixed when using usigned data types
+	</dd>
+	<dt>Version 0.3.3</dt>
+	<dd>Code cleaning: several small updates
+	</dd>
+	<dt>Version 0.4</dt>
+	<dd>GSSpcRead an GSSpcWrite:
+		<ul>
+		<li>Support for multi-dimensional spectra</li>
+		</ul>
+	</dd>
+	<dt>Version 0.4.1</dt>
+	<dd>GSSpcRead an GSSpcWrite:
+		<ul>
+		<li>some bugfixes</li>
+		<li>GSSpcWrite: spectra are now stored in float32 format. Added option to store spectra in int32 format.</li>
+		</ul>
+	</dd>
+	<dt>Version 0.4.2</dt>
+		<ul>
+		<li>some minor improvements to the code</li>
+		</ul>
+	<dt>Version 0.4.3</dt>
+		<ul>
+		<li>fixed compatibility issue with the old SPC file format, all fields in the spc-header are now initialised as blank</li>
+		</ul>
+</dl>
+</p>
+
+<p>
+&nbsp;
+</p>
+<p>
+&nbsp;
+</p>
+
+<p>
+GSTools by Kris De Gussem<br>
+Research assistant of the <a href="http://www.fwo.be">Research Foundation Flanders</a><br>
+<a href="http://www.UGent.be">Ghent University</a><br>
+<a href="http://www.AnalChem.UGent.be">Department of analytical chemistry</a><br>
+Proeftuinstraat 86<br>
+B-9000 Ghent<br>
+<br>
+web: <a href="http://www.AnalChem.UGent.be/Raman/">http://www.AnalChem.UGent.be/Raman/</a><br>
+e-mail:	Kris.DeGussem @ UGent.be<br>
+<br>
+<br>
+Matlab® is a registered trademark of the <a href="http://www.mathworks.com">MathWorks Inc</a>.
+</p>
+</body>

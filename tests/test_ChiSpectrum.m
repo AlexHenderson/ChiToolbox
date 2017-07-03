@@ -6,8 +6,8 @@ xvals = [1:10];
 yvals = [11:20];
 cs = ChiSpectrum(xvals,yvals);
 
-function test_channels(cs)
-assertEqual(cs.channels(), 10);
+function test_numChannels(cs)
+assertEqual(cs.numChannels(), 10);
 
 function test_sum(cs)
 assertEqual(cs.sum(), 155);

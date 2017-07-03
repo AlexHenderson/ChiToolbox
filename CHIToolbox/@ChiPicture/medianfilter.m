@@ -1,8 +1,9 @@
 function output = medianfilter(this,degree)
+
 % medianfilter Median filter
 
     % Set a suitable default
-    if (~exist('degree','var'))
+    if ~exist('degree','var')
         degree = 3;
     end
 

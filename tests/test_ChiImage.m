@@ -89,7 +89,7 @@ expected_totalimage = ChiPicture(expected_totalimage);
 expected_totalimage.log = obj.log;
 assertEqual(totalimage, expected_totalimage);
 
-function test_sumrangeidx.m(obj) % x index range
+function test_sumrangeidx(obj) % x index range
 % rangeimage = sumrangeidx.m(this,fromidx,toidx);
 
 expected = ChiPicture([288,309,15,36,57,213,234,165,186,132;306,252,33,54,60,231,177,183,204,135;24,255,276,72,78,174,180,201,222,153;267,273,69,75,21,192,198,219,225,96;270,291,87,18,39,195,216,237,168,114;63,84,240,261,282,138,159,90,111,207;81,27,258,279,285,156,102,108,129,210;249,30,51,297,303,99,105,126,147,228;42,48,294,300,246,117,123,144,150,171;45,66,312,243,264,120,141,162,93,189]);

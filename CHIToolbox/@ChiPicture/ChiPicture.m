@@ -1,5 +1,5 @@
-classdef ChiPicture < handle & ChiSpatialCharacter
-% CHIPICTURE Storage class for 2D images (not hyperspectral images)
+classdef ChiPicture
+% ChiPicture Storage class for 2D images (not hyperspectral images)
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
     
     % matlab.mixin.Copyable only for >R2011a
@@ -9,7 +9,7 @@ classdef ChiPicture < handle & ChiSpatialCharacter
         %% Basic properties
         properties
             data;       % Contents of object as a 2D matrix
-            history@ChiLogger;
+            history;
         end
     
         properties (SetAccess = protected)
@@ -116,7 +116,7 @@ classdef ChiPicture < handle & ChiSpatialCharacter
         function output = clone(this)
             % Make a copy of this picture
             output = ChiPicture(this.data,this.xpixels,this.ypixels);
-            output.history = this.history;
+            output.history = this.history.clone();
         end
         
         %% xpixels : Width of image

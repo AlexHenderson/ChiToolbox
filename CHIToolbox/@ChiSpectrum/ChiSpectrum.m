@@ -1,5 +1,5 @@
-classdef ChiSpectrum < handle & ChiSpectralCharacter
-% CHISPECTRUM Storage class for a single spectrum
+classdef ChiSpectrum < ChiAbstractSpectrum
+% ChiSpectrum Storage class for a single spectrum
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
     
     % matlab.mixin.Copyable only for >R2011a
@@ -9,16 +9,18 @@ classdef ChiSpectrum < handle & ChiSpectralCharacter
     properties
         xvals;  % abscissa as a row vector
         data;  % ordinate as a row vector
-        reversex@logical = false; % should abscissa be plotted increasing (false = default) or decreasing (true)
-        xlabel@char = ''; % text for abscissa label on plots (default = empty)
-        ylabel@char = ''; % text for ordinate label on plots (default = empty)
-        history@ChiLogger;
+        reversex = false; % should abscissa be plotted increasing (false = default) or decreasing (true)
+%         reversex@logical = false; % should abscissa be plotted increasing (false = default) or decreasing (true)
+        xlabel = ''; % text for abscissa label on plots (default = empty)
+        ylabel = ''; % text for ordinate label on plots (default = empty)
+        filename = ''; % name of the file opened (default = empty)
+        history;
     end
     
     %% Methods
     methods
         %% Constructor
-        function this = ChiSpectrum(xvals,data,reversex,xlabel,ylabel)
+        function this = ChiSpectrum(xvals,data,reversex,xlabel,ylabel,filename)
             % Create an instance of ChiSpectrum with given parameters
             
             if (nargin > 0) % Support calling with 0 arguments
@@ -31,6 +33,7 @@ classdef ChiSpectrum < handle & ChiSpectralCharacter
                 
                 this.xvals = xvals;
                 this.data = data;
+%                 this.data = ChiData1D(data);
                 this.history = ChiLogger();
                 
                 % Force to row vectors
@@ -42,6 +45,9 @@ classdef ChiSpectrum < handle & ChiSpectralCharacter
                     if (nargin > 3)
                         this.xlabel = xlabel;
                         this.ylabel = ylabel;
+                        if (nargin > 5)
+                            this.filename = filename;
+                        end
                     end
                 end
                 
@@ -62,9 +68,11 @@ classdef ChiSpectrum < handle & ChiSpectralCharacter
         %% clone : Make a copy of this spectrum
         function output = clone(this)
             % Make a copy of this spectrum
-            output = ChiSpectrum(this.xvals,this.data,this.reversex,this.xlabel,this.ylabel);
-            output.history = this.history;
+            output = ChiSpectrum(this.xvals,this.data,this.reversex,this.xlabel,this.ylabel,this.filename);
+            output.history = this.history.clone();
         end
+        
+        
     end % methods
     
 end

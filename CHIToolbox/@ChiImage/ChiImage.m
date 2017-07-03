@@ -1,5 +1,6 @@
-classdef ChiImage < handle & ChiSpectralCharacter & ChiSpatialCharacter
-% CHIIMAGE Storage class for hyperspectral images
+classdef ChiImage < ChiAbstractImage
+% classdef ChiImage < handle & ChiSpectralCharacter & ChiSpatialCharacter
+% ChiImage Storage class for hyperspectral images
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
     
     % matlab.mixin.Copyable only for >R2011a
@@ -10,16 +11,17 @@ classdef ChiImage < handle & ChiSpectralCharacter & ChiSpatialCharacter
             %% Basic properties
             xvals;  % abscissa as a row vector
             data;  % ordinate as a 2D array (unfolded matrix)
-            reversex@logical = false; % should abscissa be plotted increasing (false = default) or decreasing (true)
-            xlabel@char = ''; % text for abscissa label on plots (default = empty)
-            ylabel@char = ''; % text for ordinate label on plots (default = empty)
-            mask@logical;
-            masked@logical = false;
-            info;
-            history@ChiLogger;
+%             reversex@logical = false; % should abscissa be plotted increasing (false = default) or decreasing (true)
+            reversex = false; % should abscissa be plotted increasing (false = default) or decreasing (true)
+            xlabel = ''; % text for abscissa label on plots (default = empty)
+            ylabel = ''; % text for ordinate label on plots (default = empty)
+            mask;
+            masked = false;
+            filename = '';
+            history;
         end
 
-        properties (SetAccess = protected)
+        properties %(SetAccess = protected)
             xpixels;    % Number of pixels in the x-direction (width)
             ypixels;    % Number of pixels in the y-direction (height)
         end          
@@ -33,7 +35,7 @@ classdef ChiImage < handle & ChiSpectralCharacter & ChiSpatialCharacter
     %% Methods
     methods
         %% Constructor
-        function this = ChiImage(xvals,data,reversex,xlabel,ylabel,xpixels,ypixels,masked,mask,info)
+        function this = ChiImage(xvals,data,reversex,xlabel,ylabel,xpixels,ypixels,masked,mask,filename)
             % Create an instance of ChiImage with given parameters
             
             if (nargin > 0) % Support calling with 0 arguments
@@ -56,7 +58,7 @@ classdef ChiImage < handle & ChiSpectralCharacter & ChiSpatialCharacter
                                 this.masked = masked;
                                 this.mask = mask;
                                 if (nargin > 9)
-                                    this.info = info;
+                                    this.filename = filename;
                                 end
                             end
                         end
@@ -91,8 +93,8 @@ classdef ChiImage < handle & ChiSpectralCharacter & ChiSpatialCharacter
         %% clone : Make a copy of this image
         function output = clone(this)
             % Make a copy of this image
-            output = ChiImage(this.xvals,this.data,this.reversex,this.xlabel,this.ylabel,this.xpixels,this.ypixels,this.masked,this.mask,this.info);
-            output.history = this.history;
+            output = ChiImage(this.xvals,this.data,this.reversex,this.xlabel,this.ylabel,this.xpixels,this.ypixels,this.masked,this.mask,this.filename);
+            output.history = this.history.clone();
         end
         
         %% totalspectrum : Calculate total signal spectrum
@@ -100,19 +102,17 @@ classdef ChiImage < handle & ChiSpectralCharacter & ChiSpatialCharacter
             % Calculate total signal spectrum
             
             totalspectrum = ChiSpectrum(this.xvals,sum(this.data),this.reversex,this.xlabel,this.ylabel);
-            totalspectrum.history.add('Generate totalspectrum');
-            this.history.add('Generate totalspectrum');
         end        
         
         %% totalimage : Calculate total signal image
         function totalimage = get.totalimage(this)
             % Calculate total signal image
                         
-            if (this.masked)
-                unmasked = zeros(this.xpixels*this.ypixels,this.channels);
+            if this.masked
+                unmasked = zeros(this.xpixels*this.ypixels, this.channels);
                 totindex = 1;
                 for i = 1:length(this.mask)
-                    if (this.mask(i))
+                    if this.mask(i)
                         % Insert the non-zero values back into the required
                         % locations. 
                         unmasked(i,:) = this.data(totindex,:);
@@ -125,8 +125,6 @@ classdef ChiImage < handle & ChiSpectralCharacter & ChiSpatialCharacter
             end
             
             totalimage = ChiPicture(totrows,this.xpixels,this.ypixels);
-            totalimage.history.add('Generate totalimage');
-            this.history.add('Generate totalimage');
         end        
         
         %% xpixels : Width of image

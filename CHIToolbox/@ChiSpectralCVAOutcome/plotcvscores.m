@@ -1,15 +1,15 @@
-function plotscores(this,pc_x,pc_y,fontsize,fontweight)
+function plotcvscores(this,cv_x,cv_y,fontsize,fontweight)
 
-% PLOT_PCSCORES Plots principal component scores of your choice
+% PLOTCVCSCORES Plots canonical variate scores of your choice
 % usage:
-%     plotscores(this,pc_x,pc_y);
-%     plotscores(this,pc_x,pc_y);
-%     plotscores(this,pc_x,pc_y,fontsize);
-%     plotscores(this,pc_x,pc_y,fontsize,fontweight);
+%     plotcvscores(this,cv_x,cv_y);
+%     plotcvscores(this,cv_x,cv_y);
+%     plotcvscores(this,cv_x,cv_y,fontsize);
+%     plotcvscores(this,cv_x,cv_y,fontsize,fontweight);
 %
 % where:
-%   pc_x - the number of the principal component to plot on the x axis
-%   pc_y - the number of the principal component to plot on the y axis
+%   cv_x - the number of the canonical variate component to plot on the x axis
+%   cv_y - the number of the canonical variate component to plot on the y axis
 %   fontsize - (optional) set to change the font size
 %   fontweight - (optional) set to change the font weight ('normal'
 %   (default) | 'bold')
@@ -43,11 +43,7 @@ decplaces = 3;
 % window_title = ['Scores on principal components ', num2str(pc_x), ' and ', num2str(pc_y)];
 % figure_handle = figure('Name',window_title,'NumberTitle','off');
 
-if ~isempty(this.classmembership)
-    gscatter(this.scores(:,pc_x), this.scores(:,pc_y), this.classmembership.labels, colours, '.');
-else
-    scatter(this.scores(:,pc_x), this.scores(:,pc_y), '.');
-end    
+gscatter(this.cvscores(:,cv_x), this.cvscores(:,cv_y), this.PCAOutcome.classmembership.labels, colours, '.');
 
 if (exist('fontsize','var') && ~isempty(fontsize))
     if (ismatlab())
@@ -67,18 +63,15 @@ if (exist('fontweight','var') && ~isempty(fontweight))
     end      
 end    
 
+xlabel(['score on CV ', num2str(cv_x), ' (', num2str(this.cvexplained(cv_x),decplaces), '%)']);
+ylabel(['score on CV ', num2str(cv_y), ' (', num2str(this.cvexplained(cv_y),decplaces), '%)']);
+title(['Scores on canonical variates ', num2str(cv_x), ' and ', num2str(cv_y), ' (',num2str(this.pcs), ' pcs)']);
 
-xlabel(['score on PC ', num2str(pc_x), ' (', num2str(this.explained(pc_x),decplaces), '%)']);
-ylabel(['score on PC ', num2str(pc_y), ' (', num2str(this.explained(pc_y),decplaces), '%)']);
-title(['Scores on principal components ', num2str(pc_x), ' and ', num2str(pc_y)]);
-
-% if ~isempty(this.classmembership)
-%     if ismatlab()
-%       legend('Location','Best');
-%     else
-%       legend();
-%     end      
-% end    
+if ismatlab()
+  legend('Location','Best');
+else
+  legend();
+end      
 
 % Draw lines indicating zero x and y
 hold on;
@@ -98,7 +91,6 @@ h = plot([0,xmin], [0,0], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
 axis tight
 hold off;
-
 
 end
 

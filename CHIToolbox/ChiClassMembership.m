@@ -101,7 +101,7 @@ classdef ChiClassMembership < handle
         
         %% Determine some properties
         function output = get.uniquelabels(this)
-            [output] = unique(this.labels,'rows','stable');
+            [output] = unique(this.labels,'stable');
         end
         
         function output = get.numuniquelabels(this)
@@ -109,7 +109,7 @@ classdef ChiClassMembership < handle
         end
         
         function output = get.labelids(this)
-            [dummy,dummy,output] = unique(this.labels,'rows','stable'); %#ok<ASGLU>
+            [dummy,dummy,output] = unique(this.labels,'stable'); %#ok<ASGLU>
         end
         
         function output = get.labelcounts(this)

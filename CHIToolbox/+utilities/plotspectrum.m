@@ -31,7 +31,7 @@ function plotspectrum(this,varargin)
 
 % Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/agilent-file-formats
+% https://bitbucket.org/AlexHenderson/chitoolbox
 
 % varargin management borrowed from here:
 % https://uk.mathworks.com/matlabcentral/answers/127878-interpreting-varargin-name-value-pairs

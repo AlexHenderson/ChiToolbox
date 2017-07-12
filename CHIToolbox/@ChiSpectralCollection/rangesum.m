@@ -1,12 +1,12 @@
-function summed = rangesum(this,from,to)
+function thesum = rangesum(this,from,to)
 
 % rangesum  Calculates the sum of the spectral region. 
 %
 % Syntax
-%   summed = rangesum(from,to);
+%   thesum = rangesum(from,to);
 %
 % Description
-%   summed = rangesum(from,to) calculates the sum of the spectra between
+%   thesum = rangesum(from,to) calculates the sum of the spectra between
 %   from and to inclusive. The parameters from and to are in xaxis units.
 %   It returns a column vector of summed intensities.
 %
@@ -14,7 +14,7 @@ function summed = rangesum(this,from,to)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   rangesumidx ChiSpectralCollection.
+%   rangesumidx measurearea measureareaidx ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -37,5 +37,5 @@ function summed = rangesum(this,from,to)
     fromidx = indexat(this, from);
     toidx = indexat(this, to);
 %     this.history.add(['rangesum: from ', num2str(from), ' to ', num2str(to)]);
-    summed = rangesumidx(this,fromidx,toidx);
+    thesum = rangesumidx(this,fromidx,toidx);
 end        

@@ -31,7 +31,7 @@ function varargout = removerangeidx(this,fromidx,toidx)
 
 % Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/agilent-file-formats
+% https://bitbucket.org/AlexHenderson/chitoolbox
 
 
 % Swap if 'from' is higher than 'to'

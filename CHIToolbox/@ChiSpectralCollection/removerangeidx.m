@@ -8,9 +8,9 @@ function varargout = removerangeidx(this,fromidx,toidx)
 %
 % Description
 %   removerangeidx(fromidx,toidx) removes the region of the spectrum
-%   delimited by the values from and to (inclusive). The parameters fromidx
-%   and toidx are index values (not in xaxis units). This version modifies the
-%   original object.
+%   delimited by the values fromidx and toidx (inclusive). The parameters
+%   fromidx and toidx are index values (not in xaxis units). This version
+%   modifies the original object.
 %
 %   CSC = removerangeidx(fromidx,toidx) first creates a clone of the
 %   object, then removes the relevant portion of the spectrum from the

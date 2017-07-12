@@ -3,18 +3,18 @@ function varargout = removerangeidx(this,fromidx,toidx)
 % removerangeidx  Removes a section of the spectrum (or spectra). 
 %
 % Syntax
-%   removerangeidx(from,to);
-%   CSC = removerangeidx(from,to);
+%   removerangeidx(fromidx,toidx);
+%   CSC = removerangeidx(fromidx,toidx);
 %
 % Description
-%   removerangeidx(from,to) removes the region of the spectrum delimited by
-%   the values from and to (inclusive). The parameters from and to are
-%   index values (not in xaxis units). This version modifies the original
-%   object.
+%   removerangeidx(fromidx,toidx) removes the region of the spectrum
+%   delimited by the values from and to (inclusive). The parameters fromidx
+%   and toidx are index values (not in xaxis units). This version modifies the
+%   original object.
 %
-%   CSC = removerangeidx(from,to) first creates a clone of the object, then
-%   removes the relevant portion of the spectrum from the clone. The
-%   original object is not modified.
+%   CSC = removerangeidx(fromidx,toidx) first creates a clone of the
+%   object, then removes the relevant portion of the spectrum from the
+%   clone. The original object is not modified.
 %
 % Copyright (c) 2017, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.

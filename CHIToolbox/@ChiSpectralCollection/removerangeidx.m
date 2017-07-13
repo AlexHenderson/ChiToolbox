@@ -47,12 +47,12 @@ if (nargout > 0)
     varargout{1} = clone(this);
     varargout{1}.xvals = [varargout{1}.xvals(1:fromidx),varargout{1}.xvals(toidx:end)];
     varargout{1}.data = [varargout{1}.data(:,1:fromidx),varargout{1}.data(:,toidx:end)];
-    varargout{1}.history.add(['removerangefromindexvals: from ', num2str(fromidx), ' to ', num2str(toidx)]);    
+    varargout{1}.history.add(['removerangeidx: from ', num2str(fromidx), ' to ', num2str(toidx)]);    
 else
     % We are expecting to modified this object in situ
     this.xvals = [this.xvals(1:fromidx),this.xvals(toidx:end)];
     this.data = [this.data(:,1:fromidx),this.data(:,toidx:end)];
-    this.history.add(['removerangefromindexvals: from ', num2str(fromidx), ' to ', num2str(toidx)]);
+    this.history.add(['removerangeidx: from ', num2str(fromidx), ' to ', num2str(toidx)]);
 end
 
 end

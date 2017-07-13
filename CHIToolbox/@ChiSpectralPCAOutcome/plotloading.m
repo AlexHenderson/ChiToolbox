@@ -41,7 +41,7 @@ function plotloading(this,pc,varargin)
 
     if ~isempty(this.loadings)
         if ((pc > this.pcs) || (pc < 1))
-            err = MException(errorcode, ...
+            err = MException([errorcode,':OutOfRange'], ...
                 [errormessagestub, num2str(this.numpcs), '.']);
             throw(err);
         end

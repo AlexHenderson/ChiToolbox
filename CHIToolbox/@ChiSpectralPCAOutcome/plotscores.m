@@ -51,12 +51,12 @@ axiscolour = 'k';
 decplaces = 3;
 
 if ((pcx > this.numpcs) || (pcx < 1))
-    err = MException(errorcode, ...
+    err = MException([errorcode,':OutOfRange'], ...
         [errormessagestub, num2str(this.numpcs), '.']);
     throw(err);
 end
 if ((pcy > this.numpcs) || (pcy < 1))
-    err = MException(errorcode, ...
+    err = MException([errorcode,':OutOfRange'], ...
         [errormessagestub, num2str(this.numpcs), '.']);
     throw(err);
 end

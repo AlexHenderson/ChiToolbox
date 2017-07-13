@@ -40,6 +40,16 @@ function plotcumexplainedvariance(this,limitpcs,varargin)
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
+errorcode = 'CHI:ChiSpectralPCAOutcome';
+errormessagestub = 'Requested principal component is out of range. Max PCs = ';
+
+if exist('limitpcs','var')
+    if ((limitpcs > this.pcs) || (limitpcs < 1))
+        err = MException([errorcode,':OutOfRange'], ...
+            [errormessagestub, num2str(this.numpcs), '.']);
+        throw(err);
+    end
+end
 
 argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));
 if argposition

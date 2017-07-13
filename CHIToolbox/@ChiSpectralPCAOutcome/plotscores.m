@@ -1,76 +1,85 @@
-function plotscores(this,pc_x,pc_y,fontsize,fontweight)
+function plotscores(this,pc_x,pc_y,varargin)
 
-% PLOT_PCSCORES Plots principal component scores of your choice
-% usage:
-%     plotscores(this,pc_x,pc_y);
-%     plotscores(this,pc_x,pc_y);
-%     plotscores(this,pc_x,pc_y,fontsize);
-%     plotscores(this,pc_x,pc_y,fontsize,fontweight);
+% plotscores  Plots principal component scores of your choice. 
 %
-% where:
-%   pc_x - the number of the principal component to plot on the x axis
-%   pc_y - the number of the principal component to plot on the y axis
-%   fontsize - (optional) set to change the font size
-%   fontweight - (optional) set to change the font weight ('normal'
-%   (default) | 'bold')
+% Syntax
+%   plotscores(pc_x,pc_y);
+%   plotscores(pc_x,pc_y,'nofig');
 %
-%   If classmembership is available, the scores will be plotted in colours
-%   relating to their group
+% Description
+%   plotscores(pc_x,pc_y) creates a 2-D scatter plot of principal component
+%   scores. pc_x is the principal component number to plot on the x-axis,
+%   while pc_y is the principal component number to plot on the y-axis. A
+%   new figure window is created.
 %
-%   Copyright (c) 2015-2017, Alex Henderson 
-%   Contact email: alex.henderson@manchester.ac.uk
-%   Licenced under the GNU General Public License (GPL) version 3
-%   http://www.gnu.org/copyleft/gpl.html
-%   Other licensing options are available, please contact Alex for details
-%   If you use this file in your work, please acknowledge the author(s) in
-%   your publications. 
+%   plotscores(pc_x,pc_y,'nofig') plots the scores in the currently active
+%   figure window, or creates a new figure if none is available.
 %
-%   version 2.0 July 2017
+%   Other parameters can be applied to customise the plot. See the MATLAB
+%   scatter, or gscatter, functions for more details. 
+%
+% Notes
+%   If the object has classmembership available, the scores will be plotted
+%   in colours relating to their class using the gscatter function.
+%
+% Copyright (c) 2017, Alex Henderson.
+% Licenced under the GNU General Public License (GPL) version 3.
+%
+% See also 
+%   scatter gscatter plotloadings plotexplainedvariance
+%   plotcumexplainedvariance CHiSpectralPCAOutcome ChiSpectralCollection.
 
-%   version 2.0 July 2017 Alex Henderson
-%   Converted to a class function
-%   version 1.2 August 2016 Alex Henderson
-%   Added 'axis tight' to force the axis bars to touch the window frame
-%   version 1.1 April 2016
-%   Added fontsize and fontweight options
-%   version 1.0 June 2015 Alex Henderson
-%   initial release
+
+% Contact email: alex.henderson@manchester.ac.uk
+% Licenced under the GNU General Public License (GPL) version 3
+% http://www.gnu.org/copyleft/gpl.html
+% Other licensing options are available, please contact Alex for details
+% If you use this file in your work, please acknowledge the author(s) in
+% your publications. 
+
+% Version 1.0, July 2017
+% The latest version of this file is available on Bitbucket
+% https://bitbucket.org/AlexHenderson/chitoolbox
+
+titlestub = 'Scores on principal components ';
+axislabelstub = 'score on PC ';
+errorcode = 'CHI:ChiSpectralPCAOutcome';
+errormessagestub = 'Requested principal component is out of range. Max PCs = ';
 
 colours = 'bgrcmky';
 axiscolour = 'k';
 decplaces = 3;
 
-% window_title = ['Scores on principal components ', num2str(pc_x), ' and ', num2str(pc_y)];
-% figure_handle = figure('Name',window_title,'NumberTitle','off');
+if ((pc_x > this.numpcs) || (pc_x < 1))
+    err = MException(errorcode, ...
+        [errormessagestub, num2str(this.numpcs), '.']);
+    throw(err);
+end
+if ((pc_y > this.numpcs) || (pc_y < 1))
+    err = MException(errorcode, ...
+        [errormessagestub, num2str(this.numpcs), '.']);
+    throw(err);
+end
+
+argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));
+if argposition
+    % Remove the parameter from the argument list
+    varargin(argposition) = [];
+else
+    % No 'nofig' found so create a new figure
+    windowtitle = [windowtitlestub, num2str(pc_y), ' and ' num2str(pc_x)];
+    figure('Name',windowtitle,'NumberTitle','off');
+end    
 
 if ~isempty(this.classmembership)
-    gscatter(this.scores(:,pc_x), this.scores(:,pc_y), this.classmembership.labels, colours, '.');
+    gscatter(this.scores(:,pc_x), this.scores(:,pc_y), this.classmembership.labels, colours, '.',varargin{:});
 else
-    scatter(this.scores(:,pc_x), this.scores(:,pc_y), '.');
+    scatter(this.scores(:,pc_x), this.scores(:,pc_y), '.',varargin{:});
 end    
 
-if (exist('fontsize','var') && ~isempty(fontsize))
-    if (ismatlab())
-      set(gca,'FontSize',fontsize)
-    else
-        % Not sure if Octave does this, so assume 'yes'
-      set(gca,'FontSize',fontsize)
-    end      
-end    
-
-if (exist('fontweight','var') && ~isempty(fontweight))
-    if (ismatlab())
-      set(gca,'FontWeight',fontweight)
-    else
-        % Not sure if Octave does this, so assume 'yes'
-      set(gca,'FontWeight',fontweight)
-    end      
-end    
-
-
-xlabel(['score on PC ', num2str(pc_x), ' (', num2str(this.explained(pc_x),decplaces), '%)']);
-ylabel(['score on PC ', num2str(pc_y), ' (', num2str(this.explained(pc_y),decplaces), '%)']);
-title(['Scores on principal components ', num2str(pc_x), ' and ', num2str(pc_y)]);
+xlabel([axislabelstub, num2str(pc_x), ' (', num2str(this.explained(pc_x),decplaces), '%)']);
+ylabel([axislabelstub, num2str(pc_y), ' (', num2str(this.explained(pc_y),decplaces), '%)']);
+title([titlestub, num2str(pc_x), ' and ', num2str(pc_y)]);
 
 % if ~isempty(this.classmembership)
 %     if ismatlab()

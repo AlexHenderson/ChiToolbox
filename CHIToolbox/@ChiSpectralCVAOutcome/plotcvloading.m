@@ -1,27 +1,38 @@
 function plotcvloading(this,cv,varargin)
-% plotloading
+% plotcvloading
+
+    titlestub = 'Loading on canonical variate ';
+%     windowtitlestub = titlestub;
+    ylabelstub = 'loading on CV ';
+    errorcode = 'CHI:ChiSpectralCVAOutcome';
+    errormessagestub = 'Requested canonical variate is out of range. Max CVs = ';
 
     if ~isempty(this.cvloadings)
-        if (cv > this.cvs)
-            err = MException('CHI:ChiSpectralCVAOutcome:OutOfRange', ...
-                ['Requested canonical variate out of range. Max CVs = ', num2str(this.numcvs), '.']);
+        if ((cv > this.cvs) || (cv < 1))
+            err = MException(errorcode, ...
+                [errormessagestub, num2str(this.numcvs), '.']);
             throw(err);
         end
-        window_title = ['Loading on CV ', num2str(cv)];
-%         figure_handle = figure('Name',window_title,'NumberTitle','off');
 
+        argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));
+        if argposition
+            % Remove the parameter from the argument list
+            varargin(argposition) = [];
+        else
+            % No 'nofig' found so create a new figure
+            windowtitle = [windowtitlestub, num2str(selected)];
+            figure('Name',windowtitle,'NumberTitle','off');
+        end
+        
         datatoplot = this.cvloadings(:,cv);
-
-        bar(this.PCAOutcome.xvals, datatoplot);
-        if this.PCAOutcome.reversex
+        bar(this.xvals, datatoplot, varargin{:});
+        if this.reversex
             set(gca,'XDir','reverse');
         end
-
-        hold on
-        xlabel(this.PCAOutcome.xlabel);
-        ylabel(['loading on CV ', num2str(cv), ' (', num2str(this.cvexplained(cv),3), '%)']);
-        title(['Loading on canonical variate ', num2str(cv)]);
         axis tight;
-        hold off
+        xlabel(this.xlabel);        
+        ylabel([ylabelstub, num2str(cv), ' (', num2str(this.explained(cv),3), '%)']);
+        title([titlestub, num2str(cv)]);
+        
     end
 end

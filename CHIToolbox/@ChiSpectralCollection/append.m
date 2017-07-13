@@ -1,5 +1,43 @@
 function append(this,varargin)
-% append Appends a spectrum or a spectral collection to this collection
+
+% append  Appends data to this ChiSpectralCollection. 
+%
+% Syntax
+%   append(newaddition);
+%   newcollection = append(newaddition);
+%
+% Description
+%   append(newaddition) appends the newaddition to the
+%   ChiSpectralCollection
+%
+%   newobject = append(newaddition) first create a clone of the collection
+%   and appends the newaddition to that. The original collection is
+%   untouched.
+%
+%   newaddition can be either a ChiSpectrum, or a ChiSpectralCollection.
+%
+% Notes
+%   If the newaddition has different spectral limits, then the entire
+%   collection is modified to truncate the limits to the maximal overlapped
+%   spectral range. If the new addition has a different number of data
+%   points, then it is linearly interpolated to match the original object.
+%
+% Copyright (c) 2017, Alex Henderson.
+% Licenced under the GNU General Public License (GPL) version 3.
+%
+% See also 
+%   ChiSpectrum ChiSpectralCollection.
+
+% Contact email: alex.henderson@manchester.ac.uk
+% Licenced under the GNU General Public License (GPL) version 3
+% http://www.gnu.org/copyleft/gpl.html
+% Other licensing options are available, please contact Alex for details
+% If you use this file in your work, please acknowledge the author(s) in
+% your publications. 
+
+% Version 1.0, July 2017
+% The latest version of this file is available on Bitbucket
+% https://bitbucket.org/AlexHenderson/chitoolbox
 
 if (nargin == 2)
     % We only have a single entry, so check if it is a spectrum or a
@@ -17,25 +55,8 @@ if (nargin == 2)
 
 else
     % We must have a raw data set, so convert to a ChiSpectrum and re-run
-    
     newspectrum = ChiSpectrum(varargin{:});
-    
-%     narg = length(varargin);
-%     switch narg
-%         case 2
-%             newspectrum = ChiSpectrum(varargin{:});
-%         case 3
-%             newspectrum = ChiSpectrum(varargin{1},varargin{1},varargin{1});
-%         case 5
-%             newspectrum = ChiSpectrum(varargin{1},varargin{1},varargin{1},varargin{1},varargin{1});
-%         case 6
-%             newspectrum = ChiSpectrum(xvals,data,reversex,xlabel,ylabel,filename);
-%         otherwise
-%             err = MException('CHI:ChiSpectralCollection:IOError', ...
-%             'Not enough information to append these data');
-%             throw(err);           
-%    end
-   this.append(newspectrum);
+    this.append(newspectrum);
 end
 
 end
@@ -72,7 +93,7 @@ else
     if needtointerpolate
         % First determine the range over which the mismatched spectra
         % overlap. Then truncate both the x-vector and data matrix for
-        % the data already processed as well as the new data.
+        % the data already processed in addition to the new data.
 
         lowx = max(this.xvals(1), newspectrum.xvals(1));
         highx = min(this.xvals(end), newspectrum.xvals(end));
@@ -107,7 +128,7 @@ else
         this.data = this.data(:,1:end-1);
     end
 
-    % ToDo: If classmemberhsip exists, it it now invalid as it isn't
+    % ToDo: If classmemberhsip exists, it is now invalid as it isn't
     % the same length as the data
 
 end
@@ -142,7 +163,7 @@ else
     if needtointerpolate
         % First determine the range over which the mismatched spectra
         % overlap. Then truncate both the x-vector and data matrix for
-        % the data already processed as well as the new data.
+        % the data already processed in addition to the new data.
 
         lowx = max(this.xvals(1), newcoll.xvals(1));
         highx = min(this.xvals(end), newcoll.xvals(end));
@@ -160,7 +181,7 @@ else
         % Now interpolate the new spectrum vector to match the existing
         % data.
 
-        % ToDO: cehck we can interpolate a matrix
+        % ToDO: check we can interpolate a matrix
         newcoll.data = interp1(newcoll.xvals,newcoll.data,this.xvals,'linear');
     end
 

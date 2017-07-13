@@ -20,7 +20,8 @@ function plotloadings(this,pc,varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   bar plotscores ChiSpectralCollection.
+%   bar plotscores plotexplainedvariance plotcumexplainedvariance
+%   CHiSpectralPCAOutcome ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

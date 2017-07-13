@@ -1,18 +1,18 @@
-function plotscores(this,pc_x,pc_y,varargin)
+function plotscores(this,pcx,pcy,varargin)
 
 % plotscores  Plots principal component scores of your choice. 
 %
 % Syntax
-%   plotscores(pc_x,pc_y);
-%   plotscores(pc_x,pc_y,'nofig');
+%   plotscores(pcx,pcy);
+%   plotscores(pcx,pcy,'nofig');
 %
 % Description
-%   plotscores(pc_x,pc_y) creates a 2-D scatter plot of principal component
-%   scores. pc_x is the principal component number to plot on the x-axis,
-%   while pc_y is the principal component number to plot on the y-axis. A
+%   plotscores(pcx,pcy) creates a 2-D scatter plot of principal component
+%   scores. pcx is the principal component number to plot on the x-axis,
+%   while pcy is the principal component number to plot on the y-axis. A
 %   new figure window is created.
 %
-%   plotscores(pc_x,pc_y,'nofig') plots the scores in the currently active
+%   plotscores(pcx,pcy,'nofig') plots the scores in the currently active
 %   figure window, or creates a new figure if none is available.
 %
 %   Other parameters can be applied to customise the plot. See the MATLAB
@@ -50,12 +50,12 @@ colours = 'bgrcmky';
 axiscolour = 'k';
 decplaces = 3;
 
-if ((pc_x > this.numpcs) || (pc_x < 1))
+if ((pcx > this.numpcs) || (pcx < 1))
     err = MException(errorcode, ...
         [errormessagestub, num2str(this.numpcs), '.']);
     throw(err);
 end
-if ((pc_y > this.numpcs) || (pc_y < 1))
+if ((pcy > this.numpcs) || (pcy < 1))
     err = MException(errorcode, ...
         [errormessagestub, num2str(this.numpcs), '.']);
     throw(err);
@@ -67,19 +67,19 @@ if argposition
     varargin(argposition) = [];
 else
     % No 'nofig' found so create a new figure
-    windowtitle = [windowtitlestub, num2str(pc_y), ' and ' num2str(pc_x)];
+    windowtitle = [windowtitlestub, num2str(pcy), ' and ' num2str(pcx)];
     figure('Name',windowtitle,'NumberTitle','off');
 end    
 
 if ~isempty(this.classmembership)
-    gscatter(this.scores(:,pc_x), this.scores(:,pc_y), this.classmembership.labels, colours, '.',varargin{:});
+    gscatter(this.scores(:,pcx), this.scores(:,pcy), this.classmembership.labels, colours, '.',varargin{:});
 else
-    scatter(this.scores(:,pc_x), this.scores(:,pc_y), '.',varargin{:});
+    scatter(this.scores(:,pcx), this.scores(:,pcy), '.',varargin{:});
 end    
 
-xlabel([axislabelstub, num2str(pc_x), ' (', num2str(this.explained(pc_x),decplaces), '%)']);
-ylabel([axislabelstub, num2str(pc_y), ' (', num2str(this.explained(pc_y),decplaces), '%)']);
-title([titlestub, num2str(pc_x), ' and ', num2str(pc_y)]);
+xlabel([axislabelstub, num2str(pcx), ' (', num2str(this.explained(pcx),decplaces), '%)']);
+ylabel([axislabelstub, num2str(pcy), ' (', num2str(this.explained(pcy),decplaces), '%)']);
+title([titlestub, num2str(pcx), ' and ', num2str(pcy)]);
 
 % if ~isempty(this.classmembership)
 %     if ismatlab()

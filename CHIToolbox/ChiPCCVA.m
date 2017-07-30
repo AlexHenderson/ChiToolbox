@@ -64,10 +64,10 @@ PCAOutcome.scores = PCAOutcome.scores(:,1:pcs);
 %% Determine number of valid canonical variates
 % Number of cvs is number-of-groups - 1
 
-cvs = this.classmembership.numuniquelabels - 1;
+numcvs = this.classmembership.numuniquelabels - 1;
 
-if (pcs < cvs)
-    error(['Not enough valid principal components (' ,num2str(pcs), ') to discriminate between the groups (', num2str(cvs+1), ')']);
+if (pcs < numcvs)
+    error(['Not enough valid principal components (' ,num2str(pcs), ') to discriminate between the groups (', num2str(numcvs+1), ')']);
 end
 
 %% Perform canonical variates analysis
@@ -79,6 +79,6 @@ cvscores = PCAOutcome.scores * (cveigenvectors * diag(cveigenvalues));
 cvexplained = cvpercent_explained_variation;
 
 %% Create a class to hold the output
-output = ChiSpectralCVAOutcome(cvscores,cvloadings,cvexplained,cvs,...
+output = ChiSpectralCVAOutcome(cvscores,cvloadings,cvexplained,numcvs,...
                                cveigenvectors,cveigenvalues,pcs,PCAOutcome);
 

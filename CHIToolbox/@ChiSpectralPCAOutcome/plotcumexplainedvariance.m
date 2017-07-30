@@ -67,7 +67,7 @@ if exist('limitpcs','var')
     plot(cumexplained(1:limitpcs),'o-',varargin{:});
 else
     maxpcs = min(20,length(cumexplained));
-    plot(maxpcs(1:20),'o-',varargin{:});
+    plot(cumexplained(1:maxpcs),'o-',varargin{:});
 end
 
 % Draw line indicating 95% cumulative explained variance

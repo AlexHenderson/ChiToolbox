@@ -35,12 +35,13 @@ function plotloading(this,pc,varargin)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
     titlestub = 'Loading on principal component ';
+    windowtitlestub = titlestub;
     ylabelstub = 'loading on PC ';
     errorcode = 'CHI:ChiSpectralPCAOutcome';
     errormessagestub = 'Requested principal component is out of range. Max PCs = ';
 
     if ~isempty(this.loadings)
-        if ((pc > this.pcs) || (pc < 1))
+        if ((pc > this.numpcs) || (pc < 1))
             err = MException([errorcode,':OutOfRange'], ...
                 [errormessagestub, num2str(this.numpcs), '.']);
             throw(err);

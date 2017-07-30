@@ -1,7 +1,7 @@
-function plotloadings(this,pc,varargin)
-% plotloadings Just a wrapper around plotloading.m
+function plotcvloadings(cv,varargin)
+% plotcvloadings Just a wrapper around plotcvloading.m
 
-plotloading(this,pc,varargin{:})
+plotcvloading(cv,varargin{:})
 
 end
 

@@ -1,6 +1,7 @@
 classdef ChiClassMembership < handle
 
 % ChiClassMembership Creates a class membership list for categorical variables
+%
 % Usage:
 %   classes = ChiClassMembership(title,listofclassmemberships);
 %   classes = ChiClassMembership(title,label1,count1,label2,count2,...);

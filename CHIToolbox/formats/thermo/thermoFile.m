@@ -1,4 +1,4 @@
-function [xvals,data,height,width,filename,acqdate,x_label,y_label] = thermoFile(filename)
+function obj = thermoFile(filenames)
 
 %   Function: thermoFile
 %   Usage: [xvals,data,height,width,filename,acqdate,x_label,y_label] = thermoFile();
@@ -32,88 +32,67 @@ function [xvals,data,height,width,filename,acqdate,x_label,y_label] = thermoFile
 
 %       version 1.0, June 2017 Alex Henderson. 
 
-if (~exist('filename', 'var'))
-    filename = getfilename(vertcat(...
+
+%% Get filename(s) if not provided
+if (~exist('filenames', 'var'))
+    filenames = utilities.getfilenames(vertcat(...
             {'*.spc',  'Thermo Scientific GRAMS Files (*.spc)'}));
 
-    if (isfloat(filename) && (filename == 0))
+    if (isfloat(filenames) && (filenames == 0))
         return;
     end
+end
+
+%% Process files
+if (length(filenames) == 1)
+    % Only a single file selected 
+    [pathstr,name,ext] = fileparts(filenames{1}); %#ok<ASGLU>
+
+    switch(lower(ext))
+        case {'.spc'}
+            [xvals,data,height,width,filename,acqdate,x_label,y_label] = thermoSpc(filenames{1}, false); %#ok<ASGLU>
+        otherwise
+            error(['problem reading Thermo file: ', filenames{1}]);
+    end
     
-    filename = filename{1};
-end
-
-[pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
-
-switch(lower(ext))
-    case {'.spc'}
-        [xvals,data,height,width,filename,acqdate,x_label,y_label] = thermoSpc(filename, false);
-    otherwise
-        error(['problem reading Thermo file: ', filename]);
-end
-
-end % function agilentFile
-
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function filename = getfilename(filter, filtername)
-
-%   Function: getfilename
-%   Usage: [filename] = getfilename(filter, filtername);
-%
-%   Collects a single filename from the user.
-%   For multiple filenames use getfilenames.m
-%
-%   'filter' and 'filtername' are strings of the form...
-%       filter = '*.mat'
-%       filtername = 'MAT Files (*.mat)'
-%   'filename' is a char array containing the name of the file including
-%   the path
-%
-%   version 2 (c) June 2017, Alex Henderson
-
-%   version 2 (c) June 2017, Alex Henderson
-%    Added multiple filter handling
-%   version 1 (c) May 2011, Alex Henderson
-%
-
-% Mostly based on getfilenames and tweaked to only accept a single filename
-
-if iscell(filter)
-    filetypes = vertcat(filter, ...
-                {'*.*',  'All Files (*.*)'});
-else
-    filetypes = {filter, filtername; ...
-                 '*.*',  'All Files (*.*)'};
-end
+    if ((height == 1) && (width == 1))
+        % We have one or more spectra rather than an image
+        % Check to see if we have a single spectrum or a profile
+        if (numel(data) == numel(xvals))
+            obj = ChiSpectrum(xvals,data,true,x_label,y_label,filename);
+        else
+            obj = ChiSpectralCollection(xvals,data,true,x_label,y_label);
+        end               
+    else
+        obj = ChiImage(xvals,data,true,x_label,y_label,width,height);
+    end
     
-% example...            
-%filetypes = {   '*.mat',  'MAT Files (*.mat)'; ...
-%                '*.*',    'All Files (*.*)'};
+    obj.history.add(['filename: ', filename]);
 
-setappdata(0,'UseNativeSystemDialogs',false);
-
-[filenames, pathname] = uigetfile(filetypes, 'Select file...', 'MultiSelect', 'off');
-
-if (isfloat(filenames) && (filenames == 0))
-    disp('Error: No filename selected');
-    filename = 0;
-    return;
-end
-
-if iscell(filenames)
-    % Change from a row of filenames to a column of filenames. 
-    % If only one file is selected we have a single string (not a cell
-    % array)
-    filenames = filenames';
 else
-    % Convert the filename to a cell array (with one entry)
-    filenames = cellstr(filenames);
+    % Multiple files
+    obj = ChiSpectralCollection();
+    for i = 1:length(filenames)
+        [pathstr,name,ext] = fileparts(filenames{i}); %#ok<ASGLU>
+        switch lower(ext)
+            case {'.spc'}
+                [xvals,data,height,width,filename,acqdate,x_label,y_label] = thermoSpc(filenames{i}, false); %#ok<ASGLU>
+            otherwise
+                error(['problem reading Thermo file: ', filenames{i}]);
+        end
+        
+        % Even if we have an image, we need to treat it as a spectral
+        % collection. We have no mechanism for describing concatenated
+        % images
+        if (numel(data) == numel(xvals))
+            object = ChiSpectrum(xvals,data,true,x_label,y_label,filename);
+        else
+            object = ChiSpectralCollection(xvals,data,true,x_label,y_label);
+        end               
+        obj.append(object);
+        obj.history.add(['filename: ', filename]);
+    end
 end
 
-for i = 1:size(filenames,1)
-    filenames{i,1} = [pathname, filenames{i,1}];
-end
-filename = filenames;
+end % function thermoFile
 
-end % function getfilename
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

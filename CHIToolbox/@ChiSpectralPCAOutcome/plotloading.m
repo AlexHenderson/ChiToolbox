@@ -21,7 +21,7 @@ function plotloading(this,pc,varargin)
 %
 % See also 
 %   bar plotscores plotexplainedvariance plotcumexplainedvariance
-%   CHiSpectralPCAOutcome ChiSpectralCollection.
+%   ChiSpectralPCAOutcome ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

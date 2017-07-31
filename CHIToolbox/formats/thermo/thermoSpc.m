@@ -70,10 +70,26 @@ if ~exist('filename', 'var')
 end
 
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-% Determine which SPC readers are avilable 
+% Determine which SPC readers are available 
 
 if exist('tgspcread.m','file')
-    [xvals,data,height,width,filename,acqdate,x_label,y_label] = tgspcreadWrapper(filename,plotContents);
+    try 
+        [xvals,data,height,width,filename,acqdate,x_label,y_label] = tgspcreadWrapper(filename,plotContents);
+    catch exception
+        switch exception.identifier
+            case 'MATLAB:license:checkouterror'
+                % Try the GSSpcRead function
+                if exist('GSSpcRead.m','file')
+                    [xvals,data,height,width,filename,acqdate,x_label,y_label] = GSSpcReadWrapper(filename,plotContents);
+                else
+                    err = MException('CHI:thermoSpc:IOError', ...
+                        'No code to read SPC files available');
+                    throw(err);
+                end
+            otherwise
+                rethrow(exception)
+        end
+    end
 else
     if exist('GSSpcRead.m','file')
         [xvals,data,height,width,filename,acqdate,x_label,y_label] = GSSpcReadWrapper(filename,plotContents);

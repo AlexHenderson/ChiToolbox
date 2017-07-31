@@ -1,20 +1,20 @@
-function brukerFile = ChiBrukerFile(varargin)
+function brukerData = ChiBrukerFile(varargin)
 
 % ChiBrukerFile File format handler for Bruker Opus files
 % 
 % Imports MAT files exported from Bruker Opus at Diamond Light Source
 %
 % Syntax
-%   brukerFile = ChiBrukerFile();
-%   brukerFile = ChiBrukerFile(filename);
-%   brukerFile = ChiBrukerFile(____,'map',height,width);
+%   brukerData = ChiBrukerFile();
+%   brukerData = ChiBrukerFile(filename);
+%   brukerData = ChiBrukerFile(____,'map',height,width);
 %
 % Description
-%   brukerFile = ChiBrukerFile() prompts the user for a Bruker Opus MATLAB file (*.mat).
+%   brukerData = ChiBrukerFile() prompts the user for a Bruker Opus MATLAB file (*.mat).
 % 
-%   brukerFile = ChiBrukerFile(filename) opens the file named filename.
+%   brukerData = ChiBrukerFile(filename) opens the file named filename.
 %
-%   brukerFile = ChiBrukerFile(____,'map',height,width) opens a Bruker Opus
+%   brukerData = ChiBrukerFile(____,'map',height,width) opens a Bruker Opus
 %   MATLAB file collected in mapping format. height and width are the rows
 %   and columns of the map. If filename is not provised, the user is
 %   prompted for a location. 
@@ -86,19 +86,19 @@ if isMap
     data = flip(data,1);
     data = reshape(data,height*width,[]);
     
-    brukerFile = ChiImage(wavenumbers,data,true,x_label,y_label,width,height);
-    brukerFile.filename = filename;    
+    brukerData = ChiImage(wavenumbers,data,true,x_label,y_label,width,height);
+    brukerData.filename = filename;    
 else
     if (size(data,1) == 1)
         % We only have a single spectrum
-        brukerFile = ChiSpectrum(wavenumbers,data,true,x_label,y_label,filename);
+        brukerData = ChiSpectrum(wavenumbers,data,true,x_label,y_label,filename);
     else
         % We have a number of spectra, but these are not part of a mapping
         % experiment
-        brukerFile = ChiSpectralCollection(wavenumbers,data,true,x_label,y_label);
+        brukerData = ChiSpectralCollection(wavenumbers,data,true,x_label,y_label);
     end
 end
 
-brukerFile.history.add(['filename: ', filename]);
+brukerData.history.add(['filename: ', filename]);
 
 end % function ChiBrukerFile

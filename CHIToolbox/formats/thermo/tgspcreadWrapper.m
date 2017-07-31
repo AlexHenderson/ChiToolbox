@@ -85,11 +85,14 @@ try
         y_label = SPCStruct.Header.YLabel;
 
         if strcmp(x_label, 'Wavenumber (cm-1)')
-            x_label = 'Wavenumber (cm^{-1})';
+            x_label = 'wavenumber (cm^{-1})';
         end
 
         if strcmp(y_label, 'Transmission (ALL HIGHER MUST HAVE VALLEYS!)')
-            y_label = 'Transmittance (%)';
+            y_label = 'transmittance (%)';
+        end
+        if strcmp(y_label, 'Absorbance)')
+            y_label = 'absorbance';
         end
     end
             
@@ -115,7 +118,12 @@ try
     end
     
 catch exception
-    error(exception.message);
+    switch exception.identifier
+        case 'MATLAB:license:checkouterror'
+            rethrow(exception)
+        otherwise
+            error(exception.message);
+    end
 end
 
 end

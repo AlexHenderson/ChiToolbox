@@ -89,8 +89,8 @@ try
     %       .date (4) = Hour
     %       .date (5) = Minute
 
-    x_label = specdata.xtype;
-    y_label = specdata.ytype;
+    x_label = lower(specdata.xtype);
+    y_label = lower(specdata.ytype);
     
     if ((height == 1) && (width == 1))
         % We have one or more spectra rather than an image

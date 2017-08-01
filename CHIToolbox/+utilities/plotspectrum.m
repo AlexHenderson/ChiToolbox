@@ -100,6 +100,7 @@ if argposition
 end
 
 %% Do the plotting
+
 if ~grouped
     % Not grouped
     switch plottype
@@ -122,9 +123,13 @@ if ~grouped
             % Plot all the spectra
             plot(this.xvals,this.data,varargin{:});
     end
+    if ~strcmp(plottype,'normal')
+        legend(plottype);
+    end
 else
     % grouped
     if isempty(this.classmembership)
+        % grouped, but nothing to group by
         warning('backtrace','off');
         warning('Plot ''grouped'' requested, but classmembership is missing. Applying function to entire data set.');
         warning('backtrace','on');
@@ -149,8 +154,12 @@ else
                 % Plot all the spectra
                 plot(this.xvals,this.data,varargin{:});
         end
+        if ~strcmp(plottype,'normal')
+            legend(plottype);
+        end
     else
         % Grouping selected and classmembership available
+        legendHandles = zeros(this.classmembership.numuniquelabels,1);
         switch plottype
             case 'mean'
                 % Each class is averaged and plotted with a different
@@ -158,7 +167,8 @@ else
                 hold on;
                 for i = 1:this.classmembership.numuniquelabels
                     toplot = this.data(this.classmembership.labelids == i,:);
-                    plot(this.xvals,mean(toplot),varargin{:});
+                    h = plot(this.xvals,mean(toplot),varargin{:});
+                    legendHandles(i) = h(1);
                 end
                 hold off;
             case 'sum'
@@ -166,7 +176,8 @@ else
                 hold on;
                 for i = 1:this.classmembership.numuniquelabels
                     toplot = this.data(this.classmembership.labelids == i,:);
-                    plot(this.xvals,sum(toplot),varargin{:});
+                    h = plot(this.xvals,sum(toplot),varargin{:});
+                    legendHandles(i) = h(1);
                 end
                 hold off;
             case 'median'
@@ -174,7 +185,8 @@ else
                 hold on;
                 for i = 1:this.classmembership.numuniquelabels
                     toplot = this.data(this.classmembership.labelids == i,:);
-                    plot(this.xvals,median(toplot),varargin{:});
+                    h = plot(this.xvals,median(toplot),varargin{:});
+                    legendHandles(i) = h(1);
                 end
                 hold off;
             case 'std'
@@ -193,7 +205,8 @@ else
                     else
                         c = c + 1;
                     end
-                    shadedErrorBar(this.xvals,mean(toplot),std(toplot),{'Color',colour},1);
+                    h = shadedErrorBar(this.xvals,mean(toplot),std(toplot),{'Color',colour},1);
+                    legendHandles(i) = h.mainLine;
                 end
                 hold off;
             otherwise
@@ -210,23 +223,39 @@ else
                     else
                         c = c + 1;
                     end
-                    plot(this.xvals,toplot,'Color',colour,varargin{:});
+                    h = plot(this.xvals,toplot,'Color',colour,varargin{:});
+                    legendHandles(i) = h(1);
                 end
                 hold off;
         end
+        legend(legendHandles,this.classmembership.uniquelabels);
     end
             
 end
     
-axis tight;
+utilities.tightxaxis();
+
 if this.reversex
     set(gca,'XDir','reverse');
 end
 if ~isempty(this.xlabel)
     set(get(gca,'XLabel'),'String',this.xlabel);
 end
+
+%% We wish to modify the y label for functions
 if ~isempty(this.ylabel)
-    set(get(gca,'YLabel'),'String',this.ylabel);
+    % The y axis has a label
+    if strcmpi(plottype,'normal')
+        set(get(gca,'YLabel'),'String',this.ylabel);
+    else
+        set(get(gca,'YLabel'),'String',[plottype, ' of ', this.ylabel]);
+    end
+else
+    if strcmpi(plottype,'normal')
+        set(get(gca,'YLabel'),'String','arbitrary units');
+    else
+        set(get(gca,'YLabel'),'String',[plottype, ' of arbitrary units']);
+    end
 end
 
 end

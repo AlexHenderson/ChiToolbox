@@ -70,7 +70,7 @@ if (nargout > 0)
     % Re-order the ranges into ascending order
     rangesidx = reshape(rangesidx',1,[]);
     % Hand off the actual range removal to removerangeidx
-    removerangeidx2(varargout{1},rangesidx);
+    removerangeidx(varargout{1},rangesidx);
 else
     % We are expecting to modified this object in situ
     % Record what we have done (are about to do)
@@ -80,7 +80,7 @@ else
     % Re-order the ranges into ascending order
     rangesidx = reshape(rangesidx',1,[]);
     % Hand off the actual range removal to removerangeidx
-    removerangeidx2(this,rangesidx);
+    removerangeidx(this,rangesidx);
 end
 
 end % function removerange

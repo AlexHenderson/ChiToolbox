@@ -144,7 +144,7 @@ function plotSpectralData(xvals,data,x_label,y_label,filename)
     window_title = filename;
     figure('Name',window_title,'NumberTitle','off');
     plot(xvals,data);
-    axis tight;
+    utilities.tightxaxis;
     xlabel(x_label);
     ylabel(y_label);
     [pathstr, name, ext] = fileparts(filename);  %#ok<ASGLU>

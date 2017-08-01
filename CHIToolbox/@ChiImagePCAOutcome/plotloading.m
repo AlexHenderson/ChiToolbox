@@ -62,7 +62,7 @@ function plotloading(this,pc,varargin)
         if this.reversex
             set(gca,'XDir','reverse');
         end
-        axis tight;
+        utilities.tightxaxis;
         xlabel(this.xlabel);        
         ylabel([ylabelstub, num2str(pc), ' (', num2str(this.explained(pc),3), '%)']);
         title([titlestub, num2str(pc)]);

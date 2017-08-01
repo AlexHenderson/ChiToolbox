@@ -57,8 +57,8 @@ numRanges = size(ranges,1);
 
 % Convert x-axis units to index values making sure the range limits are
 % within the values of the range
-rangesidx(:,1) = this.indexat(ranges(:,1),'higherthan');
-rangesidx(:,2) = this.indexat(ranges(:,2),'lowerthan');
+rangesidx(:,1) = this.indexat(ranges(:,1),'lowerthan');
+rangesidx(:,2) = this.indexat(ranges(:,2),'higherthan');
 
 if (nargout > 0)
     % We are expecting to generate a modified clone of this object

@@ -1,6 +1,6 @@
 function plot(this,varargin)
 
-% plot  Plots one, or more, spectra. Multiple spectra are overlaid. 
+% plot  Plots the spectrum. 
 %
 % Syntax
 %   plot();

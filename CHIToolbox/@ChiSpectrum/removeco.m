@@ -32,6 +32,10 @@ function varargout = removeco(this,varargin)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-varargout{:} = removerange(this,2250,2450);
+if nargout
+    varargout{:} = removerange(this,2250,2450);
+else
+    removerange(this,2250,2450);
+end
 
 end % function removeco

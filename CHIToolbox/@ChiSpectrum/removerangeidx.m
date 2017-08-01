@@ -1,10 +1,11 @@
-function varargout = removerangeidx(this,fromidx,toidx)
+function varargout = removerangeidx(this,varargin)
 
-% removerangeidx  Removes a section of the spectrum. 
+% removerangeidx  Removes one or more sections of the spectrum. 
 %
 % Syntax
 %   removerangeidx(fromidx,toidx);
-%   CS = removerangeidx(fromidx,toidx);
+%   removerangeidx(fromidx1,toidx1,fromidx2,toidx2,...);
+%   modified = removerangeidx(____);
 %
 % Description
 %   removerangeidx(fromidx,toidx) removes the region of the spectrum
@@ -12,9 +13,13 @@ function varargout = removerangeidx(this,fromidx,toidx)
 %   fromidx and toidx are index values (not in xaxis units). This version
 %   modifies the original object.
 %
-%   CS = removerangeidx(fromidx,toidx) first creates a clone of the
-%   object, then removes the relevant portion of the spectrum from the
-%   clone. The original object is not modified.
+%   removerangeidx(fromidx1,toidx1,fromidx2,toidx2,...) removes the
+%   multiple regions. Regions are in pairs: fromidx -> toidx. This version
+%   modifies the original object.
+%
+%   modified = removerangeidx(____) first creates a clone of the object,
+%   then removes the relevant portion of the spectrum from the clone. The
+%   original object is not modified.
 %
 % Copyright (c) 2017, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -33,26 +38,51 @@ function varargout = removerangeidx(this,fromidx,toidx)
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
+ranges = cell2mat(varargin);
 
-% Swap if 'from' is higher than 'to'
-[fromidx,toidx] = ChiForceIncreasing(fromidx,toidx);
+if rem(length(ranges),2)
+    err = MException('CHI:ChiSpectrum:IOError', ...
+        'The from/to variables must be pairs of range limits.');
+    throw(err);
+end
 
-% Generating output by saving spectral pieces, rather than deleting the
-% unwanted part, so need to step the limits outwards.
-fromidx = fromidx - 1;
-toidx = toidx + 1;
+ranges = reshape(ranges,2,[]);
+ranges = ranges';
+ranges = sort(ranges,2); %#ok<UDIM>
+numRanges = size(ranges,1);
+
+% We identify regions of the spectrum to remove by marking them on datamask
+datamask = false(size(this.xvals));
+
+for r = 1:numRanges    
+    datamask(ranges(r,1):ranges(r,2)) = true;
+end
 
 if (nargout > 0)
     % We are expecting to generate a modified clone of this object
     varargout{1} = clone(this);
-    varargout{1}.xvals = [varargout{1}.xvals(1:fromidx),varargout{1}.xvals(toidx:end)];
-    varargout{1}.data = [varargout{1}.data(:,1:fromidx),varargout{1}.data(:,toidx:end)];
-    varargout{1}.history.add(['removerangeidx: from ', num2str(fromidx), ' to ', num2str(toidx)]);    
+    varargout{1}.xvals(datamask) = [];
+    if (varargout{1}.numSpectra > 1)
+        varargout{1}.data(:,datamask) = [];
+    else
+        varargout{1}.data(datamask) = [];
+    end
+
+    for r = 1:numRanges    
+        varargout{1}.history.add(['removerangeidx: from ', num2str(ranges(r,1)), ' to ', num2str(ranges(r,2))]);
+    end
 else
     % We are expecting to modified this object in situ
-    this.xvals = [this.xvals(1:fromidx),this.xvals(toidx:end)];
-    this.data = [this.data(:,1:fromidx),this.data(:,toidx:end)];
-    this.history.add(['removerangeidx: from ', num2str(fromidx), ' to ', num2str(toidx)]);
+    this.xvals(datamask) = [];
+    if (this.numSpectra > 1)
+        this.data(:,datamask) = [];
+    else
+        this.data(datamask) = [];
+    end
+
+    for r = 1:numRanges    
+        this.history.add(['removerangeidx: from ', num2str(ranges(r,1)), ' to ', num2str(ranges(r,2))]);
+    end
 end
 
 end

@@ -150,6 +150,9 @@ end % function loadMetadata
 function filter = generateFilter(variable, prefix, filter)
 
     if iscell(variable)
+        % If any of the cells contain numbers, we need to convert them to a
+        % string version of the number
+        variable = cellfun(@num2str,variable,'UniformOutput',false);
         uniq = unique(variable);
     else
         uniq = unique(variable, 'rows');

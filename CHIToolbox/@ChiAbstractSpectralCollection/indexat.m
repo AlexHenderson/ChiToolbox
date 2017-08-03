@@ -23,7 +23,7 @@ function idx = indexat(this, varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   removerange ChiSpectralCollection.
+%   keeprange removerange ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -80,18 +80,3 @@ for i = 1:length(xvalues)
 end
     
 end
-
-% function idx = indexat(this, xvalue)
-% % Index corresponding to the x value
-% % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
-% 
-%     if (numel(xvalue) > 1)
-%         idx = zeros(size(xvalue));
-%         for i = 1:length(xvalue)
-%             [dummy,idx(i)] = min(abs(this.xvals - xvalue(i))); %#ok<ASGLU>
-%         end
-%     else
-%         [dummy,idx] = min(abs(this.xvals - xvalue)); %#ok<ASGLU>
-%     end
-%     
-% end

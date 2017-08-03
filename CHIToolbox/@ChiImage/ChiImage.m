@@ -25,6 +25,7 @@ classdef ChiImage < ChiAbstractImage
             xpixels;    % Number of pixels in the x-direction (width)
             ypixels;    % Number of pixels in the y-direction (height)
             numpixels;  % Number of pixels in the image
+            numspectra; % Number of spectra in the image ( = numpixels)
         end          
         
         properties (Dependent = true)
@@ -142,12 +143,6 @@ classdef ChiImage < ChiAbstractImage
             ypixels = this.ypixels;
         end
         
-        %% numpixels : Number of pixels in the image
-        function numpixels = get.numpixels(this)
-            % numpixels : Number of pixels in the image
-            
-            numpixels = this.ypixels * this.xpixels;
-        end
     end % methods
 end % class ChiImage 
 

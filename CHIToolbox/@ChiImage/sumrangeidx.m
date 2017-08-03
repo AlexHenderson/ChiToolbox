@@ -8,7 +8,7 @@ function output = sumrangeidx(this,fromidx,toidx)
     end
 
     % Check for out-of-range values
-    if (fromidx > this.numChannels) || (toidx > this.numChannels)
+    if (fromidx > this.numchannels) || (toidx > this.numchannels)
         err = MException('CHI:ChiImage:OutOfRange', ...
             'Requested range is too high');
         throw(err);

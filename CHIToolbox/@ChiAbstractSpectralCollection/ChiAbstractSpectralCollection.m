@@ -21,20 +21,20 @@ classdef ChiAbstractSpectralCollection < handle
 
     properties (Dependent = true, SetAccess = protected)
     %% Calculated properties
-        numChannels;    % Number of data points
-        numSpectra;     % Number of spectra
+        numchannels;    % Number of data points
+        numspectra;     % Number of spectra
     end
     
     methods
-        %% numChannels : Calculate number of data points in the spectra
-        function numChannels = get.numChannels(this)
+        %% numchannels : Calculate number of data points in the spectra
+        function numchannels = get.numchannels(this)
             % Calculate number of data points per spectrum
-            numChannels = size(this.data,2);
+            numchannels = size(this.data,2);
         end
-        %% numSpectra : Calculate number of spectra in the collection
-        function numSpectra = get.numSpectra(this)
+        %% numspectra : Calculate number of spectra in the collection
+        function numspectra = get.numspectra(this)
             % Calculate number of spectra in this collection
-            numSpectra = size(this.data,1);
+            numspectra = size(this.data,1);
         end
     end
     

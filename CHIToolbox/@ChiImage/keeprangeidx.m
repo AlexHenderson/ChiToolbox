@@ -62,7 +62,7 @@ if (nargout > 0)
     % We are expecting to generate a modified clone of this object
     varargout{1} = clone(this);
     varargout{1}.xvals(datamask) = [];
-    if (varargout{1}.numSpectra > 1)
+    if (varargout{1}.numspectra > 1)
         varargout{1}.data(:,datamask) = [];
     else
         varargout{1}.data(datamask) = [];
@@ -74,7 +74,7 @@ if (nargout > 0)
 else
     % We are expecting to modified this object in situ
     this.xvals(datamask) = [];
-    if (this.numSpectra > 1)
+    if (this.numspectra > 1)
         this.data(:,datamask) = [];
     else
         this.data(datamask) = [];

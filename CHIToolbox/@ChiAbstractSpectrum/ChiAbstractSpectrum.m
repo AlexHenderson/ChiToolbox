@@ -15,18 +15,18 @@ classdef ChiAbstractSpectrum < handle
     end
     
     properties
-        numSpectra = 1; % number of rows of data
+        numspectra = 1; % number of rows of data
     end
     
     properties (Dependent = true, SetAccess = protected)
-        numChannels;    % number of data points
+        numchannels;    % number of data points
     end
 
     methods % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        % numChannels
-        function numChannels = get.numChannels(this)
+        % numchannels
+        function numchannels = get.numchannels(this)
             % Calculate number of channels
-            numChannels = length(this.data);
+            numchannels = length(this.data);
         end
     end
     

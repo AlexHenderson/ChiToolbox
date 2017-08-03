@@ -25,7 +25,9 @@ classdef ChiAbstractImage < handle
     %% Calculated properties
         width;          % Number of pixels in the x-direction
         height;         % Number of pixels in the y-direction
-        numChannels;    % Number of data points
+        numchannels;    % Number of data points
+        numpixels;      % Number of pixels in the image
+        numspectra;     % Number of spectra in the image
     end
     
     methods
@@ -41,10 +43,22 @@ classdef ChiAbstractImage < handle
             height = this.ypixels;
         end
         
-        %% numChannels : Calculate number of pixels down the image (y-direction)
-        function numChannels = get.numChannels(this)
+        %% numchannels : Calculate number of pixels down the image (y-direction)
+        function numchannels = get.numchannels(this)
             % Calculate number of data points per spectrum
-            numChannels = size(this.data,2);
+            numchannels = size(this.data,2);
+        end
+        %% numpixels : Number of pixels in the image
+        function numpixels = get.numpixels(this)
+            % numpixels : Number of pixels in the image
+            
+            numpixels = this.ypixels * this.xpixels;
+        end
+        %% numspectra : Number of spectra in the image
+        function numspectra = get.numspectra(this)
+            % numspectra : Number of spectra in the image
+            
+            numspectra = this.pixels;
         end
     end
     

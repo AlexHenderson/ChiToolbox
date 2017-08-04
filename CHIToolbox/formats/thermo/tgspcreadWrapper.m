@@ -68,7 +68,7 @@ end
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % Read the file contents
 try
-    SPCStruct = tgspcread(filename);
+    SPCStruct = tgspcread(filename,'VERBOSE',false);
 
     if iscell(SPCStruct.Y)
         % Multiple spectra

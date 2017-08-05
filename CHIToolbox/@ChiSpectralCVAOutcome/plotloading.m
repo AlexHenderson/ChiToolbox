@@ -35,4 +35,10 @@ function plotloading(this,cv,varargin)
         title([titlestub, num2str(cv)]);
         
     end
+    
+%% Manage data cursor information
+figurehandle = gcf;
+cursor = datacursormode(figurehandle);
+set(cursor,'UpdateFcn',{@utilities.datacursor_simple});    
+    
 end

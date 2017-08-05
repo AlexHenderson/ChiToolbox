@@ -49,4 +49,9 @@ xlabel('principal component number');
 ylabel('cumulative percentage explained variance');
 title('Cumulative percentage explained variance');
 
+%% Manage data cursor information
+figurehandle = gcf;
+cursor = datacursormode(figurehandle);
+set(cursor,'UpdateFcn',{@utilities.datacursor_percentageexplainedvariance});    
+
 end

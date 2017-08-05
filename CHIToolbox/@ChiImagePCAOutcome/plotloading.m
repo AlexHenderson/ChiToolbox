@@ -69,4 +69,9 @@ function plotloading(this,pc,varargin)
         
     end
 
+%% Manage data cursor information
+figurehandle = gcf;
+cursor = datacursormode(figurehandle);
+set(cursor,'UpdateFcn',{@utilities.datacursor_simple});    
+
 end

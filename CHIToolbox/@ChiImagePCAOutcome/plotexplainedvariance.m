@@ -38,5 +38,9 @@ xlabel('principal component number');
 ylabel('percentage explained variance');
 title('Percentage explained variance');
 
-end
+%% Manage data cursor information
+figurehandle = gcf;
+cursor = datacursormode(figurehandle);
+set(cursor,'UpdateFcn',{@utilities.datacursor_percentageexplainedvariance});    
 
+end

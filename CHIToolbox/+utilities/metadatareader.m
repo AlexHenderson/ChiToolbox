@@ -132,12 +132,18 @@ function metadata = loadMetadata(filename)
         switch parameterType{i}
             case parameterTypeOptions{1}
                 % Should be True/False
+                % If any of the cells contain numbers, we need to convert them to a
+                % string version of the number
+                rawData(:, i) = cellfun(@num2str,rawData(:, i),'UniformOutput',false);
                 metadata = buildLogicalFilter(parameterName{i}, rawData(:, i), metadata);
             case parameterTypeOptions{2}
                 % Should be Numeric
                 metadata = buildNumericFilter(parameterName{i}, rawData(:, i), metadata);
             case parameterTypeOptions{3}
                 % Should be Category
+                % If any of the cells contain numbers, we need to convert them to a
+                % string version of the number
+                rawData(:, i) = cellfun(@num2str,rawData(:, i),'UniformOutput',false);
                 metadata = buildCategoryFilter(parameterName{i}, rawData(:, i), metadata);
             otherwise
                 error(['Cannot interpret the parameter type: ', parameterType{i}]);

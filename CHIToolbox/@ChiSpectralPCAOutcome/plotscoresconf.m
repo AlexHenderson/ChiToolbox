@@ -89,7 +89,7 @@ gscatter(this.scores(:,pcx), this.scores(:,pcy), this.classmembership.labels, co
 
 %% Draw the confidence ellipses
 if ~exist('error_ellipse', 'file')
-    warning('Function ''error_ellipse'' required to draw confidence ellipses. See https://uk.mathworks.com/matlabcentral/fileexchange/4705-error-ellipse');
+    utilities.warningnobacktrace('Function ''error_ellipse'' required to draw confidence ellipses. See https://uk.mathworks.com/matlabcentral/fileexchange/4705-error-ellipse');
 else
     
     % Draw confidence ellipses at the requested level

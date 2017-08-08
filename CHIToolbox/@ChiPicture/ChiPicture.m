@@ -86,7 +86,7 @@ classdef ChiPicture
                             if (length(size(data)) == 2)
                                 % Just determine the dimensionality from
                                 % the data and send a warning
-                                warning('CHI:ChiPicture:DimensionalityIssue',...
+                                utilities.warningnobacktrace('CHI:ChiPicture:DimensionalityIssue',...
                                     'xpixels and ypixels do not describe the data correctly. Determining dimensions automatically');
                                 dims = size(data);
                                 this.xpixels = dims(2);

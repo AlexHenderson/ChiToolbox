@@ -26,7 +26,7 @@ function plotexplainedvariance(this,limitpcs,varargin)
 %
 % See also 
 %   plot plotscores plotloading plotcumexplainedvariance
-%   CHiSpectralPCAOutcome ChiSpectralCollection.
+%   ChiSpectralPCAOutcome ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -37,7 +37,7 @@ function plotexplainedvariance(this,limitpcs,varargin)
 
 % Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% https://bitbucket.org/AlexHenderson/Chitoolbox
 
 
 argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));

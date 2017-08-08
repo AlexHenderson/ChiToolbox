@@ -27,7 +27,7 @@ function plotscores(this,pcx,pcy,varargin)
 %
 % See also 
 %   scatter gscatter plotloadings plotexplainedvariance
-%   plotcumexplainedvariance CHiSpectralPCAOutcome ChiSpectralCollection.
+%   plotcumexplainedvariance ChiSpectralPCAOutcome ChiSpectralCollection.
 
 
 % Contact email: alex.henderson@manchester.ac.uk
@@ -39,12 +39,12 @@ function plotscores(this,pcx,pcy,varargin)
 
 % Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% https://bitbucket.org/AlexHenderson/Chitoolbox
 
 titlestub = 'Scores on principal components ';
 windowtitlestub = titlestub;
 axislabelstub = 'score on PC ';
-errorcode = 'CHI:ChiSpectralPCAOutcome';
+errorcode = 'Chi:ChiSpectralPCAOutcome';
 errormessagestub = 'Requested principal component is out of range. Max PCs = ';
 
 colours = 'bgrcmky';

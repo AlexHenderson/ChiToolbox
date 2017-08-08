@@ -21,7 +21,7 @@ function plotpcloading(this,varargin)
 %
 % See also 
 %   bar plotloading plotscores plotpcscores plotexplainedvariance
-%   plotpcexplainedvariance CHiSpectralPCAOutcome ChiSpectralCollection.
+%   plotpcexplainedvariance ChiSpectralPCAOutcome ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -32,7 +32,7 @@ function plotpcloading(this,varargin)
 
 % Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% https://bitbucket.org/AlexHenderson/Chitoolbox
 
 this.PCAOutcome.plotloading(varargin{:});
 

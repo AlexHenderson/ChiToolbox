@@ -21,7 +21,7 @@ function plotloading(this,pc,varargin)
 %
 % See also 
 %   bar plotscores plotexplainedvariance plotcumexplainedvariance
-%   CHiImagePCAOutcome ChiImage.
+%   ChiImagePCAOutcome ChiImage.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -32,12 +32,12 @@ function plotloading(this,pc,varargin)
 
 % Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% https://bitbucket.org/AlexHenderson/Chitoolbox
 
 
     titlestub = 'Loading on principal component ';
     ylabelstub = 'loading on PC ';
-    errorcode = 'CHI:ChiImagePCAOutcome';
+    errorcode = 'Chi:ChiImagePCAOutcome';
     errormessagestub = 'Requested principal component is out of range. Max PCs = ';
 
     if ~isempty(this.loadings)

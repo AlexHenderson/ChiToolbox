@@ -28,7 +28,7 @@ function plotpccumexplainedvariance(this,varargin)
 %
 % See also 
 %   plot plotscores plotloading plotexplainedvariance plotpcscores
-%   plotpcloading plotpcexplainedvariance CHiSpectralPCAOutcome
+%   plotpcloading plotpcexplainedvariance ChiSpectralPCAOutcome
 %   ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
@@ -40,7 +40,7 @@ function plotpccumexplainedvariance(this,varargin)
 
 % Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% https://bitbucket.org/AlexHenderson/Chitoolbox
 
 this.PCAOutcome.plotcumexplainedvariance(varargin{:});
 

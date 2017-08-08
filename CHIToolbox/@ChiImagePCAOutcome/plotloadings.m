@@ -21,7 +21,7 @@ function plotloadings(this,pc,varargin)
 %
 % See also 
 %   bar imagepc plotexplainedvariance plotcumexplainedvariance
-%   CHiImagePCAOutcome ChiImage.
+%   ChiImagePCAOutcome ChiImage.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -32,7 +32,7 @@ function plotloadings(this,pc,varargin)
 
 % Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% https://bitbucket.org/AlexHenderson/Chitoolbox
 
 % Simply a wrapper around the plotloading function
 

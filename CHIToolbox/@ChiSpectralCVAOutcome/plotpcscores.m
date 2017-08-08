@@ -28,7 +28,7 @@ function plotpcscores(this,varargin)
 % See also 
 %   scatter gscatter plotloadings plotexplainedvariance plotpcloadings
 %   plotpcexplainedvariance plotpccumexplainedvariance
-%   CHiSpectralPCAOutcome ChiSpectralCollection.
+%   ChiSpectralPCAOutcome ChiSpectralCollection.
 
 
 % Contact email: alex.henderson@manchester.ac.uk
@@ -40,7 +40,7 @@ function plotpcscores(this,varargin)
 
 % Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% https://bitbucket.org/AlexHenderson/Chitoolbox
 
 this.PCAOutcome.plotscores(varargin{:});
 

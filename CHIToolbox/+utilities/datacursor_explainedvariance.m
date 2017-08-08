@@ -1,4 +1,4 @@
-function output_txt = datacursor_percentageexplainedvariance(obj,event_obj) %#ok<INUSL>
+function output_txt = datacursor_explainedvariance(obj,event_obj) %#ok<INUSL>
 % Display the position of the data cursor
 % obj          Currently not used (empty)
 % event_obj    Handle to event object

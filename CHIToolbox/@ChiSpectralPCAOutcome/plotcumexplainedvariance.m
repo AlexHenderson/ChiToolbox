@@ -87,6 +87,6 @@ title('Cumulative percentage explained variance');
 %% Manage data cursor information
 figurehandle = gcf;
 cursor = datacursormode(figurehandle);
-set(cursor,'UpdateFcn',{@utilities.datacursor_percentageexplainedvariance});    
+set(cursor,'UpdateFcn',{@utilities.datacursor_explainedvariance});    
 
 end

@@ -98,7 +98,7 @@ end
 
 if (forced || (this.numpixels < 1001))
     % Not too many spectra, or the user has overridden the warning
-    utilities.plotspectrum(this,varargin{:});
+    utilities.plotspectra(this,varargin{:});
 else
     % If we're asking for the mean, sum, median or std plots then the
     % number of actual plot lines is likely to be quite small, so just go
@@ -108,11 +108,9 @@ else
     % information. Therefore warn the user. 
     
     if strcmpi(plottype,'normal')
-        warning('backtrace','off');
-        warning('This plot will generate %d lines. In order to plot more than 1000 lines, please reissue the command using the ''force'' flag.',this.numpixels);
-        warning('backtrace','on');
+        utilities.warningnobacktrace('This plot will generate %d lines. In order to plot more than 1000 lines, please reissue the command using the ''force'' flag.',this.numpixels);
     else
-        utilities.plotspectrum(this,varargin{:});
+        utilities.plotspectra(this,varargin{:});
     end
     
 end

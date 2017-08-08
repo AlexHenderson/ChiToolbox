@@ -1,4 +1,4 @@
-function output_txt = datacursor(obj,event_obj,chiobj,cursorinfo) %#ok<INUSL>
+function output_txt = datacursor(obj,event_obj,chiobj,plotinfo) %#ok<INUSL>
 
 % datacursor  Determines the text to place on the data cursor of a plot. 
 %
@@ -48,13 +48,14 @@ lineidx = length(event_obj.Target.Parent.Children) - linenumber + 1;
 % Could also look into the possibility of using
 % event_obj.Target.DisplayName, but this pulls the text from the legend, so
 % if the legend doesn't exist, the text isn't available.
-if cursorinfo.grouped
-    if strcmpi(cursorinfo.plotfunction, 'std')
+if plotinfo.byclass
+    if plotinfo.functionplot
+        if strcmpi(plotinfo.appliedfunction, 'std')
         % The std plot has 4 graphics objects per 'line', so bounce to the
         % first one
         lineidx = ceil(lineidx/4);
+        end
     end
-    lineidx = cursorinfo.plottedId(lineidx);
 end
 
 %% Build the data cursor text
@@ -66,21 +67,38 @@ output_txt = {['x: ', num2str(xpos,6)],...
 output_txt{end+1} = '';
 
 % Either we have an observation (spectrum) number or a summary function name          
-if strcmpi(cursorinfo.plotfunction, 'none')
-    output_txt{end+1} = ['Observation: ', num2str(lineidx)];
-else
+if plotinfo.functionplot
     % We have a summary plot, so no observation number
-    output_txt{end+1} = ['Function: ', cursorinfo.plotfunction];
+    output_txt{end+1} = ['Function: ', plotinfo.appliedfunction];
+else
+    if plotinfo.byclass
+        output_txt{end+1} = ['Observation: ', num2str(plotinfo.observationnumbers(lineidx))];
+    else
+        output_txt{end+1} = ['Observation: ', num2str(lineidx)];
+    end
 end
 
-% If we have class info, we should use it
+
 if ~isempty(chiobj.classmembership)
-    % We have class info
-    if strcmpi(cursorinfo.plotfunction, 'none')
-        % No summary, so list all class entries
-        output_txt{end+1} = ['Class: ', chiobj.classmembership.labels{lineidx}];
+    % We have class information
+    if plotinfo.functionplot
+        if plotinfo.byclass
+            % We wish to plot the spectra as a function of the class
+            % structure
+            output_txt{end+1} = ['Class: ', plotinfo.linelabels{lineidx}];
+        end
     else
-        % This is a summary, so only list the unique classes
-        output_txt{end+1} = ['Class: ', chiobj.classmembership.uniquelabels{lineidx}];
+        if plotinfo.byclass
+            % We wish to plot the spectra as a function of the class
+            % structure...
+            output_txt{end+1} = ['Class: ', plotinfo.linelabels{lineidx}];
+        else
+            % ...but we don't have to
+            output_txt{end+1} = ['Class: ', plotinfo.linelabels{lineidx}];
+        end
+        
     end
-end    
+end
+
+
+end % function datacursor

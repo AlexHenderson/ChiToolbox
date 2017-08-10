@@ -60,12 +60,12 @@ function plotloading(this,cv,varargin)
         end
         
         datatoplot = this.loadings(:,cv);
-        bar(this.xvals, datatoplot, varargin{:});
-        if this.reversex
+        bar(this.PCAOutcome.xvals, datatoplot, varargin{:});
+        if this.PCAOutcome.reversex
             set(gca,'XDir','reverse');
         end
         utilities.tightxaxis;
-        xlabel(this.xlabel);        
+        xlabel(this.PCAOutcome.xlabel);        
         ylabel([ylabelstub, num2str(cv), ' (', num2str(this.explained(cv),3), '%)']);
         title([titlestub, num2str(cv)]);
         

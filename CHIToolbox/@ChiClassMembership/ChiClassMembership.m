@@ -97,7 +97,7 @@ classdef ChiClassMembership < handle
         %% clone : Make a copy of this image
         function output = clone(this)
             % Make a copy of this image
-            output = ChiClass(this.title,this.labels);
+            output = ChiClassMembership(this.title,this.labels);
         end
         
         %% Determine some properties

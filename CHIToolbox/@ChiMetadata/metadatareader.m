@@ -1,4 +1,4 @@
-function metadata = metadatareader(filename)
+function metadata = metadatareader(this,filename)
 
 % Function: metadatareader
 % Usage: 
@@ -121,10 +121,15 @@ function metadata = loadMetadata(filename)
     [numFiles, numVarParameters] = size(rawData);
     metadata.numFiles = numFiles;
     metadata.numParameters = numVarParameters;
+    metadata.originalParameterNames = parameterName';
+    metadata.parameterTypes = parameterType';
     metadata.metadataFile = filename;    
     
     %% Get parameter info
     metadata.filter = struct;
+    
+    metadata.safeParameterNames = cell(numVarParameters,1);
+    metadata.parameters = cell(numVarParameters,1);
     
     % Variable fields
     for i = 1:numVarParameters
@@ -135,16 +140,22 @@ function metadata = loadMetadata(filename)
                 % If any of the cells contain numbers, we need to convert them to a
                 % string version of the number
                 rawData(:, i) = cellfun(@num2str,rawData(:, i),'UniformOutput',false);
-                metadata = buildLogicalFilter(parameterName{i}, rawData(:, i), metadata);
+                [metadata,safeParameterName] = buildLogicalFilter(parameterName{i}, rawData(:, i), metadata);
+                metadata.safeParameterNames{i} = safeParameterName;
+                metadata.parameters{i} = rawData(:, i);
             case parameterTypeOptions{2}
                 % Should be Numeric
-                metadata = buildNumericFilter(parameterName{i}, rawData(:, i), metadata);
+                [metadata,safeParameterName] = buildNumericFilter(parameterName{i}, rawData(:, i), metadata);
+                metadata.safeParameterNames{i} = safeParameterName;
+                metadata.parameters{i} = rawData(:, i);
             case parameterTypeOptions{3}
                 % Should be Category
                 % If any of the cells contain numbers, we need to convert them to a
                 % string version of the number
                 rawData(:, i) = cellfun(@num2str,rawData(:, i),'UniformOutput',false);
-                metadata = buildCategoryFilter(parameterName{i}, rawData(:, i), metadata);
+                [metadata,safeParameterName] = buildCategoryFilter(parameterName{i}, rawData(:, i), metadata);
+                metadata.safeParameterNames{i} = safeParameterName;
+                metadata.parameters{i} = rawData(:, i);
             otherwise
                 error(['Cannot interpret the parameter type: ', parameterType{i}]);
         end
@@ -192,20 +203,20 @@ function filter = generateFilter(variable, prefix, filter)
 end % function generateFilter
 
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function [metadata, newParameterName, rawData] = buildLogicalFilter(parameterName, rawData, metadata)
+function [metadata,safeParameterName,filterName,rawData] = buildLogicalFilter(parameterName, rawData, metadata)
 
     % Replace spaces in parameter names and raw data with underscores
-    parameterName = strrep(parameterName, ' ', '_');
+    safeParameterName = strrep(parameterName, ' ', '_');
     % Make the first letter uppercase
-    parameterName(1) = upper(parameterName(1));
+    safeParameterName(1) = upper(safeParameterName(1));
     % Add 'is to the front of the variable
-    newParameterName = ['is', parameterName];
+    filterName = ['is', safeParameterName];
 
     % Create a MATLAB variable from the parameterName string
     if verLessThan('matlab', '8.5.0') % genvarname is deprecated in R2015a
-        filter_variable = genvarname(newParameterName); %#ok<DEPGENAM>
+        filter_variable = genvarname(filterName); %#ok<DEPGENAM>
     else
-        filter_variable = matlab.lang.makeValidName(newParameterName);
+        filter_variable = matlab.lang.makeValidName(filterName);
     end        
 
     rawData = cell2mat(rawData);
@@ -213,37 +224,38 @@ function [metadata, newParameterName, rawData] = buildLogicalFilter(parameterNam
     
     % Build the filter
     eval(['metadata.filter.', filter_variable, ' = rawData;']);
+    eval(['metadata.', safeParameterName, ' = rawData;']);
     
 end % function buildLogicalFilter
 
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function [metadata, newParameterName, rawData] = buildNumericFilter(parameterName, rawData, metadata)
+function [metadata,safeParameterName,filterName,rawData] = buildNumericFilter(parameterName, rawData, metadata)
 
     % Replace spaces in parameter names and raw data with underscores
-    parameterName = strrep(parameterName, ' ', '_');
+    safeParameterName = strrep(parameterName, ' ', '_');
     % Add 'is' to the end of the variable
-    newParameterName = [parameterName, '_is_'];
+    filterName = [safeParameterName, '_is_'];
     
     rawData = cell2mat(rawData);
 
-    metadata.filter = generateFilter(rawData, newParameterName, metadata.filter);
-    eval(['metadata.', parameterName, ' = rawData;']);
+    metadata.filter = generateFilter(rawData, filterName, metadata.filter);
+    eval(['metadata.', safeParameterName, ' = rawData;']);
 
 end % function buildNumericFilter
 
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function [metadata, newParameterName, rawData] = buildCategoryFilter(parameterName, rawData, metadata)
+function [metadata,safeParameterName,filterName,rawData] = buildCategoryFilter(parameterName, rawData, metadata)
 
     % Replace spaces in parameter names and raw data with underscores
-    parameterName = strrep(parameterName, ' ', '_');
+    safeParameterName = strrep(parameterName, ' ', '_');
     for i = 1:length(rawData)
         rawData{i} = strrep(rawData{i}, ' ', '_');
     end
     % Add 'is' to the end of the variable
-    newParameterName = [parameterName, '_is_'];
+    filterName = [safeParameterName, '_is_'];
     
-    metadata.filter = generateFilter(rawData, newParameterName, metadata.filter);
-    eval(['metadata.', parameterName, ' = rawData;']);
+    metadata.filter = generateFilter(rawData, filterName, metadata.filter);
+    eval(['metadata.', safeParameterName, ' = rawData;']);
 
 end % function buildCategoryFilter
 

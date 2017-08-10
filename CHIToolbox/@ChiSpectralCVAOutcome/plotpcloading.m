@@ -1,4 +1,4 @@
-function plotpcloading(this,varargin)
+function plotpcloading(this,pc,varargin)
 
 % plotpcloading  Plots the principal component loading of your choice. 
 %
@@ -34,6 +34,6 @@ function plotpcloading(this,varargin)
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/Chitoolbox
 
-this.PCAOutcome.plotloading(varargin{:});
+this.PCAOutcome.plotloading(pc,varargin{:});
 
 end

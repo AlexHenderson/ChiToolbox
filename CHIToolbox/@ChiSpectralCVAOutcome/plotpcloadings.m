@@ -1,4 +1,4 @@
-function plotpcloadings(this,varargin)
+function plotpcloadings(this,pc,varargin)
 
 % plotpcloadings  Plots the principal component loading of your choice. 
 %
@@ -36,7 +36,7 @@ function plotpcloadings(this,varargin)
 
 % Simply a wrapper around the plotloading function
 
-this.PCAOutcome.plotloading(this,varargin{:})
+this.PCAOutcome.plotloading(pc,varargin{:})
 
 end
 

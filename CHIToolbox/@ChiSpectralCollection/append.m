@@ -50,7 +50,7 @@ if (nargin == 2)
 
     if isa(varargin{1},'ChiSpectralCollection')
         % Append this spectralcollection
-        appendcollection(this,varargin{:});        
+        this = appendcollection(this,varargin{:});        
     end
 
 else
@@ -62,7 +62,7 @@ end
 end
 
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function appendspectrum(this,varargin)
+function this = appendspectrum(this,varargin)
 
 % If we have an empty collection, we simply need to set the values
 if isempty(this.xvals)
@@ -135,10 +135,11 @@ end
 end
 
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function appendcollection(this,varargin)
+function this = appendcollection(this,varargin)
 
 % If we have an empty collection, we simply need to set the values
 if isempty(this.xvals)
+    % ToDo: This is a bug
     this = varargin{1}.clone();
 else
         

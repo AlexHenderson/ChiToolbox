@@ -116,7 +116,15 @@ classdef ChiMetadata
     methods % Dependent
 
         function fullfilenames = get.fullfilenames(this)
-            fullfilenames = fullfile(this.datapath,this.filenames);
+            if ~isempty(this.filenames)
+                if isempty(this.datapath)
+                    fullfilenames = this.filenames;
+                else
+                    fullfilenames = fullfile(this.datapath,this.filenames);
+                end
+            else
+                fullfilenames = [];
+            end
         end
         
         function numfiles = get.numfiles(this)

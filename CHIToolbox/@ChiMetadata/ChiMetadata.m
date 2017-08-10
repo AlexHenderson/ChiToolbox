@@ -88,7 +88,6 @@ classdef ChiMetadata
 %         end            
         
         function m = membership(this,which)
-            
             if isnumeric(which)
                 m = this.classmemberships{which};
             else
@@ -98,6 +97,7 @@ classdef ChiMetadata
                             m = this.classmemberships{i};
                             break
                         end
+                            % https://uk.mathworks.com/matlabcentral/answers/130695-how-can-i-return-a-char-of-object-variable-name-from-a-method
                             name = evalin('caller','inputname(1)');
                             err = MException('CHI:ChiMetadata:UnknownInput', ...
                                 ['Membership name ''', which, ''' not recognised. Use ''', name, '.membershipnames()'' to view options.']);
@@ -110,10 +110,6 @@ classdef ChiMetadata
                 end
             end
         end
-        
-        function [nm] = objectname(~)
-            nm = inputname(1);
-        end        
         
     end
 

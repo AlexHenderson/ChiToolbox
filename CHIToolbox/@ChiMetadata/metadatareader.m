@@ -140,22 +140,22 @@ function metadata = loadMetadata(filename)
                 % If any of the cells contain numbers, we need to convert them to a
                 % string version of the number
                 rawData(:, i) = cellfun(@num2str,rawData(:, i),'UniformOutput',false);
-                [metadata,safeParameterName] = buildLogicalFilter(parameterName{i}, rawData(:, i), metadata);
+                [metadata,safeParameterName,dummy,columnData] = buildLogicalFilter(parameterName{i}, rawData(:, i), metadata);
                 metadata.safeParameterNames{i} = safeParameterName;
-                metadata.parameters{i} = rawData(:, i);
+                metadata.parameters{i} = columnData;
             case parameterTypeOptions{2}
                 % Should be Numeric
-                [metadata,safeParameterName] = buildNumericFilter(parameterName{i}, rawData(:, i), metadata);
+                [metadata,safeParameterName,dummy,columnData] = buildNumericFilter(parameterName{i}, rawData(:, i), metadata);
                 metadata.safeParameterNames{i} = safeParameterName;
-                metadata.parameters{i} = rawData(:, i);
+                metadata.parameters{i} = columnData;
             case parameterTypeOptions{3}
                 % Should be Category
                 % If any of the cells contain numbers, we need to convert them to a
                 % string version of the number
                 rawData(:, i) = cellfun(@num2str,rawData(:, i),'UniformOutput',false);
-                [metadata,safeParameterName] = buildCategoryFilter(parameterName{i}, rawData(:, i), metadata);
+                [metadata,safeParameterName,dummy,columnData] = buildCategoryFilter(parameterName{i}, rawData(:, i), metadata);
                 metadata.safeParameterNames{i} = safeParameterName;
-                metadata.parameters{i} = rawData(:, i);
+                metadata.parameters{i} = columnData;
             otherwise
                 error(['Cannot interpret the parameter type: ', parameterType{i}]);
         end

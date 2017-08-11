@@ -238,7 +238,11 @@ else
     % Each line needs a class label for the datacursor. This is the class each
     % spectrum belongs to. The spectra are plotted in natural order, so this is
     % simply the original label list.
-    plotinfo.linelabels = this.classmembership.labels;
+    labels = this.classmembership.labels;
+    if isnumeric(labels)
+        labels = num2str(labels);
+    end
+    plotinfo.linelabels = cellstr(labels);
 end
     
 end
@@ -312,20 +316,28 @@ legend(legendHandles,this.classmembership.uniquelabels,'Location','best');
 % spectrum belongs to.
 if plotinfo.functionplot
     % ToDo: make sure std plot works correctly
-    plotinfo.linelabels = this.classmembership.uniquelabels;
+    labels = this.classmembership.uniquelabels;
+    if isnumeric(labels)
+        labels = num2str(labels);
+    end
+    plotinfo.linelabels = cellstr(labels);
 else
     % The spectra are plotted in batches which means the order of lines
     % being drawn is not the same as the order of class membership labels.
     % Need to generate the correct order for the data cursor. 
     spectrumid = 1:this.numspectra;
+    labels = this.classmembership.labels;
+    if isnumeric(labels)
+        labels = num2str(labels);
+    end        
     plotinfo.linelabels = cell(size(spectrumid));
     plotinfo.observationnumbers = zeros(size(spectrumid));
     start = 1;
     for i = 1:this.classmembership.numuniquelabels
         plotids = spectrumid(this.classmembership.labelids == i);
         stop = start + length(plotids) - 1;
-        plotinfo.linelabels(start:stop) = this.classmembership.labels(plotids);
-        plotinfo.observationnumbers(start:stop) = plotids;
+        plotinfo.linelabels(start:stop) = labels(plotids);
+        plotinfo.observationnumbers(start:stop) = cellstr(plotids);
         start = stop + 1;
     end
 end    

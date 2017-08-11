@@ -45,20 +45,22 @@ axislabelstub = 'score on CV ';
 errorcode = 'CHI:ChiSpectralCVAOutcome';
 errormessagestub = 'Requested canonical variate is out of range. Max CVs = ';
 
-if ((cvx > this.numcvs) || (cvx < 1))
+% If we have more than 1 canonical variate, check taht the required cvs are
+% in range. 
+if (this.numcvs ~= 1)
+    if ((cvx > this.numcvs) || (cvx < 1))
     err = MException([errorcode,':OutOfRange'], ...
         [errormessagestub, num2str(this.numcvs), '.']);
     throw(err);
-end
+    end
 
-if exist('cvy','var')
     if ((cvy > this.numcvs) || (cvy < 1))
-        err = MException([errorcode,':OutOfRange'], ...
-            [errormessagestub, num2str(this.numcvs), '.']);
-        throw(err);
+    err = MException([errorcode,':OutOfRange'], ...
+        [errormessagestub, num2str(this.numcvs), '.']);
+    throw(err);
     end
 end
-    
+
 argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));
 if argposition
     varargin(argposition) = [];
@@ -94,7 +96,7 @@ else
     % Only a single canonical variate so we can use a box plot
     boxplot(this.scores,this.PCAOutcome.classmembership.labels, 'jitter', 0.2, 'notch','on', 'orientation','vertical',varargin{:});
     xlabel(this.PCAOutcome.classmembership.title);
-    ylabel('score on CV 1');
+    ylabel('score on cv 1');
     title('Score on canonical variate 1');    
 end
 

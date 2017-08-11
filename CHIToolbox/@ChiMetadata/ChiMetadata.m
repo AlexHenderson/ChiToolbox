@@ -88,6 +88,7 @@ classdef ChiMetadata
 %         end            
         
         function m = membership(this,which)
+            m = [];
             if isnumeric(which)
                 m = this.classmemberships{which};
             else
@@ -95,8 +96,10 @@ classdef ChiMetadata
                     for i = 1:this.numparameters
                         if strcmpi(this.membershipnames{i},which)
                             m = this.classmemberships{i};
-                            break
                         end
+                    end
+                    
+                    if isempty(m)
                             % https://uk.mathworks.com/matlabcentral/answers/130695-how-can-i-return-a-char-of-object-variable-name-from-a-method
                             name = evalin('caller','inputname(1)');
                             err = MException('CHI:ChiMetadata:UnknownInput', ...

@@ -337,7 +337,7 @@ else
         plotids = spectrumid(this.classmembership.labelids == i);
         stop = start + length(plotids) - 1;
         plotinfo.linelabels(start:stop) = labels(plotids);
-        plotinfo.observationnumbers(start:stop) = cellstr(plotids);
+        plotinfo.observationnumbers(start:stop) = plotids;
         start = stop + 1;
     end
 end    

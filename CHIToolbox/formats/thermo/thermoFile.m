@@ -43,6 +43,11 @@ if (~exist('filenames', 'var'))
     end
 end
 
+%% Ensure filenames is a cell array
+if ~iscell(filenames)
+    filenames = cellstr(filenames);
+end
+
 %% Process files
 if (length(filenames) == 1)
     % Only a single file selected 

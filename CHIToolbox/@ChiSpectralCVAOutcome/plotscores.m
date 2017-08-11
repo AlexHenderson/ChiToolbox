@@ -50,47 +50,61 @@ if ((cvx > this.numcvs) || (cvx < 1))
         [errormessagestub, num2str(this.numcvs), '.']);
     throw(err);
 end
-if ((cvy > this.numcvs) || (cvy < 1))
-    err = MException([errorcode,':OutOfRange'], ...
-        [errormessagestub, num2str(this.numcvs), '.']);
-    throw(err);
-end
 
+if exist('cvy','var')
+    if ((cvy > this.numcvs) || (cvy < 1))
+        err = MException([errorcode,':OutOfRange'], ...
+            [errormessagestub, num2str(this.numcvs), '.']);
+        throw(err);
+    end
+end
+    
 argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));
 if argposition
-    % Remove the parameter from the argument list
     varargin(argposition) = [];
 else
     % No 'nofig' found so create a new figure
-    windowtitle = [windowtitlestub, num2str(cvy), ' and ' num2str(cvx)];
+    if (this.numcvs == 1)
+        windowtitle = 'Score on canonical variate 1';
+    else
+        windowtitle = [windowtitlestub, num2str(cvy), ' and ' num2str(cvx)];
+    end
     figure('Name',windowtitle,'NumberTitle','off');
 end    
 
-colours = 'bgrcmky';
+% colours = 'bgrcmky';
+colours = get(gca,'colororder');
 axiscolour = 'k';
 decplaces = 3;
 
+if (this.numcvs > 1)
+    % We can use a scatter plot
+    gscatter(this.scores(:,cvx), this.scores(:,cvy), this.PCAOutcome.classmembership.labels, colours, '.',varargin{:});
+    xlabel([axislabelstub, num2str(cvx), ' (', num2str(this.explained(cvx),decplaces), '%)']);
+    ylabel([axislabelstub, num2str(cvy), ' (', num2str(this.explained(cvy),decplaces), '%)']);
+    title([titlestub, num2str(cvx), ' and ', num2str(cvy), ' (',num2str(this.pcs), ' pcs)']);
 
-gscatter(this.scores(:,cvx), this.scores(:,cvy), this.PCAOutcome.classmembership.labels, colours, '.',varargin{:});
-
-xlabel([axislabelstub, num2str(cvx), ' (', num2str(this.explained(cvx),decplaces), '%)']);
-ylabel([axislabelstub, num2str(cvy), ' (', num2str(this.explained(cvy),decplaces), '%)']);
-title([titlestub, num2str(cvx), ' and ', num2str(cvy), ' (',num2str(this.pcs), ' pcs)']);
-
-% if ismatlab()
-%   legend('Location','Best');
-% else
-%   legend();
-% end      
+    % if ismatlab()
+    %   legend('Location','Best');
+    % else
+    %   legend();
+    % end      
+    
+else
+    % Only a single canonical variate so we can use a box plot
+    boxplot(this.scores,this.PCAOutcome.classmembership.labels, 'jitter', 0.2, 'notch','on', 'orientation','vertical',varargin{:});
+    xlabel(this.PCAOutcome.classmembership.title);
+    ylabel('score on CV 1');
+    title('Score on canonical variate 1');    
+end
 
 % Draw lines indicating zero x and y
 hold on;
 limits = axis;
 xmin = limits(1,1);
 xmax = limits(1,2);
-ymin = limits(1,3);
-ymax = limits(1,4);
-
+ymax = limits(1,3);
+ymin = limits(1,4);
 h = plot([0,0], [0,ymax], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
 h = plot([0,0], [0,ymin], axiscolour);
@@ -99,8 +113,4 @@ h = plot([0,xmax], [0,0], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
 h = plot([0,xmin], [0,0], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-axis tight
-hold off;
-
-end
-
+hold off;    

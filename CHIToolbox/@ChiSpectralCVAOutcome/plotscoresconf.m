@@ -43,6 +43,13 @@ function plotscoresconf(this,cvx,cvy,percentconf,varargin)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
+if (this.numcvs == 1)
+    % We can't plot confidence limits on a box plot, so warn the user and
+    % drop back to the standard plotscores function
+    utilities.warningnobacktrace('Confidence limits are not appropriate for a single canonical variate.');
+    this.plotscores(cvx,cvy,varargin{:});
+else
+
 titlestub = 'Scores on canonical variates ';
 windowtitlestub = titlestub;
 axislabelstub = 'score on CV ';
@@ -154,5 +161,6 @@ axis tight
 hold off;
 
 
+end
 end
 

@@ -100,7 +100,22 @@ else
     end
 end
 
+% Force y-values to row vectors
+[rows,cols] = size(data);
+if (rows == cols)
+    utilities.warningnobacktrace('Data matrix is square. Assuming spectra are in rows.');
+else
+    if (rows == length(xvals))
+        data = data';
+    end
+end                      
+
+if (xvals(end) < xvals(1))
+    xvals = flip(xvals);
+    data = fliplr(data);
 end
+
+xvals = ChiForceToRow(xvals);
 
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function filename = getfilename(filter,filtername)

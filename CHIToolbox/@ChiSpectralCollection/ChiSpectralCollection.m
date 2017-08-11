@@ -40,9 +40,19 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                 this.xvals = xvals;
                 this.data = data;
                 
-                % Force to row vector
+                % Force x-values to row vector
                 this.xvals = ChiForceToRow(this.xvals);
-                
+
+                % Force y-values to row vectors
+                [rows,cols] = size(this.data);
+                if (rows == cols)
+                    utilities.warningnobacktrace('Data matrix is square. Assuming spectra are in rows.');
+                else
+                    if (rows == length(this.xvals))
+                        this.data = this.data';
+                    end
+                end                      
+
                 if (nargin > 2)
                     this.reversex = reversex;
                     if (nargin > 3)

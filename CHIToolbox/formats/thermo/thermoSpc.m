@@ -117,6 +117,7 @@ end
 
 xvals = ChiForceToRow(xvals);
 
+end
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function filename = getfilename(filter,filtername)
 

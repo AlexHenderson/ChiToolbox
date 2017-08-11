@@ -54,8 +54,16 @@ numRanges = size(ranges,1);
 % We identify regions of the spectrum to remove by marking them on datamask
 datamask = false(size(this.xvals));
 
-for r = 1:numRanges    
+ranges(ranges < 1) = 1;
+ranges(ranges > length(this.xvals)) = length(this.xvals);
+
+
+for r = 1:numRanges
     datamask(ranges(r,1):ranges(r,2)) = true;
+end
+
+if all(datamask == false)
+    utilities.warningnobacktrace('No ranges are in scope.');
 end
 
 if (nargout > 0)
@@ -73,6 +81,7 @@ if (nargout > 0)
     end
 else
     % We are expecting to modified this object in situ
+    
     this.xvals(datamask) = [];
     if (this.numspectra > 1)
         this.data(:,datamask) = [];

@@ -106,9 +106,7 @@ if argposition
     varargin(argposition) = [];
     if isempty(this.classmembership)
         % Requested 'byclass', but no class information is available
-        warning('Plot ''byclass'' requested, but classmembership is missing.');
-        disp('Warning: Plot ''byclass'' requested, but classmembership is missing.');
-%         utilities.warningnobacktrace('Plot ''byclass'' requested, but classmembership is missing.');
+        utilities.warningnobacktrace('Plot ''byclass'' requested, but classmembership is missing.');
     else
         plotinfo.byclass = true;
     end

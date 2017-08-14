@@ -64,7 +64,8 @@ if (length(filenames) == 1)
         % We have one or more spectra rather than an image
         % Check to see if we have a single spectrum or a profile
         if (numel(data) == numel(xvals))
-            obj = ChiSpectrum(xvals,data,true,x_label,y_label,filename);
+            obj = ChiSpectrum(xvals,data,true,x_label,y_label);
+            obj.filename = filename;
         else
             obj = ChiSpectralCollection(xvals,data,true,x_label,y_label);
         end               

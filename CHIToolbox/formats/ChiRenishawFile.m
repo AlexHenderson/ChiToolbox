@@ -16,6 +16,7 @@ if ((height == 1) && (width == 1))
     % Check to see if we have a single spectrum or a profile
     if (numel(data) == numel(ramanshift))
         obj = ChiSpectrum(ramanshift,data,true,x_label,y_label,width,height);
+        obj.filename = filename;
     else
         obj = ChiSpectralCollection(ramanshift,data,true,x_label,y_label,width,height);
     end               

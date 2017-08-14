@@ -10,39 +10,38 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
     % matlab.mixin.Copyable only for >R2011a
     % Want compatibility with R2009a
     
-    % Properties
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        properties  
-            xvals  % abscissa as a row vector
-            data  % ordinate as a 2D array (unfolded matrix)
-            reversex = false % should abscissa be plotted increasing (false = default) or decreasing (true)
-            xlabel = '' % text for abscissa label on plots (default = empty)
-            ylabel = '' % text for ordinate label on plots (default = empty)
-            classmembership % an instance of ChiClassMembership
-            history
-        end
+    % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    properties  
+        xvals  % abscissa as a row vector
+        data  % ordinate as a 2D array (unfolded matrix)
+        reversex = false % should abscissa be plotted increasing (false = default) or decreasing (true)
+        xlabel = '' % text for abscissa label on plots (default = empty)
+        ylabel = '' % text for ordinate label on plots (default = empty)
+        classmembership % an instance of ChiClassMembership
+        history
+    end
 
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        properties (SetAccess = protected)
-        end          
-        
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        properties (Dependent = true)
-        % Calculated properties
-        end
-    
+    % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    properties (SetAccess = protected)
+    end          
+
+    % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    properties (Dependent = true)
+    % Calculated properties
+    end
+
     methods
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         % Constructor
         function this = ChiSpectralCollection(xvals,data,reversex,xlabel,ylabel,varargin)
             % Create an instance of ChiImage with given parameters
-            
+
             this.history = ChiLogger();
-            
+
             if (nargin > 0) % Support calling with 0 arguments
                 this.xvals = xvals;
                 this.data = data;
-                
+
                 % Force x-values to row vector
                 this.xvals = ChiForceToRow(this.xvals);
 
@@ -66,7 +65,7 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                 end
             end 
         end
-        
+
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         % Make a copy of this image
         function output = clone(this)
@@ -75,7 +74,7 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
             output.classmembership = this.classmembership;
             output.history = this.history.clone();
         end
-        
+
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         % Get/Set class membership
         function mem = membership(this,newmembership)
@@ -85,7 +84,8 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                 this.classmembership = newmembership;
             end
         end          
-        
+
     end % methods
+
 end % class ChiImage 
 

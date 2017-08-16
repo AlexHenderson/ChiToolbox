@@ -57,7 +57,7 @@ if (length(filenames) == 1)
         case {'.spc'}
             [xvals,data,height,width,filename,acqdate,x_label,y_label] = thermoSpc(filenames{1}, false); %#ok<ASGLU>
         otherwise
-            error(['problem reading Thermo file: ', filenames{1}]);
+            error(['problem reading Thermo Fisher file: ', filenames{1}]);
     end
     
     if ((height == 1) && (width == 1))
@@ -84,14 +84,15 @@ else
             case {'.spc'}
                 [xvals,data,height,width,filename,acqdate,x_label,y_label] = thermoSpc(filenames{i}, false); %#ok<ASGLU>
             otherwise
-                error(['problem reading Thermo file: ', filenames{i}]);
+                error(['problem reading Thermo Fisher file: ', filenames{i}]);
         end
         
         % Even if we have an image, we need to treat it as a spectral
         % collection. We have no mechanism for describing concatenated
         % images
         if (numel(data) == numel(xvals))
-            object = ChiSpectrum(xvals,data,true,x_label,y_label,filename);
+            object = ChiSpectrum(xvals,data,true,x_label,y_label);
+            object.filename = filename;
         else
             object = ChiSpectralCollection(xvals,data,true,x_label,y_label);
         end               

@@ -24,8 +24,8 @@ classdef ChiImage < ChiAbstractImage
         properties %(SetAccess = protected)
             xpixels;    % Number of pixels in the x-direction (width)
             ypixels;    % Number of pixels in the y-direction (height)
-            numpixels;  % Number of pixels in the image
-            numspectra; % Number of spectra in the image ( = numpixels)
+%             numpixels;  % Number of pixels in the image
+%             numspectra; % Number of spectra in the image ( = numpixels)
         end          
         
         properties (Dependent = true)

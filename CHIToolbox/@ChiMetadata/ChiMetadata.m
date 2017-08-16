@@ -23,6 +23,7 @@ classdef ChiMetadata
     end
     
     methods
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function this = ChiMetadata(varargin)
             if (nargin > 0) % Support calling with 0 arguments
             
@@ -47,6 +48,7 @@ classdef ChiMetadata
             end
         end
         
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function x = clone(this)
             x = feval(class(this));
  
@@ -70,6 +72,7 @@ classdef ChiMetadata
             
         end            
 
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 %         function duplicate = clone(this)
 %             % from https://uk.mathworks.com/matlabcentral/newsreader/view_thread/257925            
 %             % Instantiate new object of the same class.
@@ -87,6 +90,7 @@ classdef ChiMetadata
 %             end
 %         end            
         
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function m = membership(this,which)
             m = [];
             if isnumeric(which)
@@ -100,11 +104,11 @@ classdef ChiMetadata
                     end
                     
                     if isempty(m)
-                            % https://uk.mathworks.com/matlabcentral/answers/130695-how-can-i-return-a-char-of-object-variable-name-from-a-method
-                            name = evalin('caller','inputname(1)');
-                            err = MException('CHI:ChiMetadata:UnknownInput', ...
-                                ['Membership name ''', which, ''' not recognised. Use ''', name, '.membershipnames()'' to view options.']);
-                            throw(err);
+                        % https://uk.mathworks.com/matlabcentral/answers/130695-how-can-i-return-a-char-of-object-variable-name-from-a-method
+                        name = evalin('caller','inputname(1)');
+                        err = MException('CHI:ChiMetadata:UnknownInput', ...
+                            ['Membership name ''', which, ''' not recognised. Use ''', name, '.membershipnames()'' to view options.']);
+                        throw(err);
                     end
                 else
                     err = MException('CHI:ChiMetadata:UnknownInput', ...
@@ -117,7 +121,7 @@ classdef ChiMetadata
     end
 
     methods % Dependent
-
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function fullfilenames = get.fullfilenames(this)
             if ~isempty(this.filenames)
                 if isempty(this.datapath)
@@ -130,6 +134,7 @@ classdef ChiMetadata
             end
         end
         
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function numfiles = get.numfiles(this)
             numfiles = size(this.filenames,1);
         end        

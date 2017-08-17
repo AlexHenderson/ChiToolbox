@@ -1,6 +1,6 @@
-classdef ChiMetadata
+classdef ChiMetadataSheet < handle
 
-% ChiMetadata Metadata file reader
+% ChiMetadataSheet  Metadata Excel file reader
 
     properties
         title
@@ -24,7 +24,7 @@ classdef ChiMetadata
     
     methods
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function this = ChiMetadata(varargin)
+        function this = ChiMetadataSheet(varargin)
             if (nargin > 0) % Support calling with 0 arguments
             
                 met = this.metadatareader(varargin{:});
@@ -106,14 +106,14 @@ classdef ChiMetadata
                     if isempty(m)
                         % https://uk.mathworks.com/matlabcentral/answers/130695-how-can-i-return-a-char-of-object-variable-name-from-a-method
                         name = evalin('caller','inputname(1)');
-                        err = MException('CHI:ChiMetadata:UnknownInput', ...
+                        err = MException('CHI:ChiMetadataSheet:UnknownInput', ...
                             'Membership name ''%s'' not recognised. Use ''%s.membershipnames()'' to view options.',...
                             which, name);
 %                             ['Membership name ''', which, ''' not recognised. Use ''', name, '.membershipnames()'' to view options.']);
                         throw(err);
                     end
                 else
-                    err = MException('CHI:ChiMetadata:UnknownInput', ...
+                    err = MException('CHI:ChiMetadataSheet:UnknownInput', ...
                         'Enter the name of the membership as a string, or its position number.');
                     throw(err);
                 end

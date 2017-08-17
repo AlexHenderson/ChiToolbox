@@ -107,7 +107,9 @@ classdef ChiMetadata
                         % https://uk.mathworks.com/matlabcentral/answers/130695-how-can-i-return-a-char-of-object-variable-name-from-a-method
                         name = evalin('caller','inputname(1)');
                         err = MException('CHI:ChiMetadata:UnknownInput', ...
-                            ['Membership name ''', which, ''' not recognised. Use ''', name, '.membershipnames()'' to view options.']);
+                            'Membership name ''%s'' not recognised. Use ''%s.membershipnames()'' to view options.',...
+                            which, name);
+%                             ['Membership name ''', which, ''' not recognised. Use ''', name, '.membershipnames()'' to view options.']);
                         throw(err);
                     end
                 else

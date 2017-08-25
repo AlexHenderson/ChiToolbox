@@ -20,7 +20,7 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
     methods
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function this = ChiIRSpectralCollection(varargin)
-
+          
             superClassArgs = varargin;
             
             % Define defaults if not provided in varargin
@@ -35,43 +35,59 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
                         superClassArgs{3} = s.reversex;
                         superClassArgs{4} = s.xlabel;
                         superClassArgs{5} = s.ylabel;
+                        if ~isempty(s.history)
+                            superClassArgs{6}.history = s.history.clone();
+                            superClassArgs{6}.history.add('Created from a ChiSpectrum');
+                        else
+                            superClassArgs{6}.history = ChiLogger();                
+                        end
+                        
                     else
-                        err = MException('CHI:ChiIRSpectralCollection:InputError', ...
-                            'Input not understood.');
-                        throw(err);
+                        if isa(varargin{1},'ChiSpectralCollection')
+                            s = varargin{1};
+                            superClassArgs{1} = s.xvals;
+                            superClassArgs{2} = s.data;
+                            superClassArgs{3} = s.reversex;
+                            superClassArgs{4} = s.xlabel;
+                            superClassArgs{5} = s.ylabel;
+                            if ~isempty(s.classmembership)
+                                superClassArgs{6} = s.classmembership.clone();
+                            end
+
+                            if ~isempty(s.history)
+                                superClassArgs{7} = s.history.clone();
+                                superClassArgs{7}.add('Created from a ChiSpectralCollection');
+                            else
+                                superClassArgs{7} = ChiLogger();                
+                            end
+                        else
+                            err = MException(['CHI:',mfilename,':InputError'], ...
+                                'Input not understood.');
+                            throw(err);
+                        end
                     end
-                case 2
-                    superClassArgs{3} = true;   % reversex
-                    superClassArgs{4} = 'wavenumber (cm^{-1})';   % xlabel
-                    superClassArgs{5} = 'absorbance';   % ylabel
-                case 3
-                    superClassArgs{4} = 'wavenumber (cm^{-1})';   % xlabel
-                    superClassArgs{5} = 'absorbance';   % ylabel
-                case 4
-                    superClassArgs{5} = 'absorbance';   % ylabel
-                case 5
-                    superClassArgs = varargin{:};
                 otherwise
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
             end
             
-            
             this@ChiSpectralCollection(superClassArgs{:});
             this@ChiIRCharacter();
+
+            % We have no way of knowing whether the value for reversex is
+            % correct or not, so assume the user knows what they're doing.
             
-            if (~isempty(varargin) && isa(varargin{1},'ChiSpectrum'))
-                this.history = varargin{1}.history.clone();
-                this.history.add(['Generated from a ', class(varargin{1}), '.']);
-            else
-                this.history = ChiLogger();
-                this.history.add('Generated from MATLAB variables');
+            if isempty(this.xlabel)
+                this.xlabel = 'wavenumber (cm^{-1})';   % xlabel
             end
-            
+            if isempty(this.ylabel)
+                this.ylabel = 'absorbance';   % ylabel
+            end
+                
         end
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function obj = clone(this)
-            obj = ChiIRSpectralCollection();
+            obj = feval(class(this));
             
             obj.xvals = this.xvals;
             obj.data = this.data;
@@ -82,8 +98,13 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
             if ~isempty(this.classmembership)
                 obj.classmembership = this.classmembership.clone();
             end
-            obj.history = this.history.clone();
-            obj.history.add('Cloned');
+            
+            if ~isempty(this.history)
+                obj.history = this.history.clone();
+                obj.history.add('Cloned');
+            else
+                obj.history = ChiLogger();                
+            end
         end
 
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -92,16 +113,16 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
         end
         
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function set.wavenumbers(this,wn)
-            if (length(wn) ~= length(this.data))
-                err = MException('CHI:ChiIRSpectralCollection:OutOfRange', ...
+        function set.wavenumbers(this,x)
+            if (length(x) ~= length(this.data))
+                err = MException(['CHI:',mfilename,':OutOfRange'], ...
                     'Wavenumbers and data are different lengths.');
                 throw(err);
             end
-            if (wn(1) > wn(end))
-                wn = flip(wn);                
+            if (x(1) > x(end))
+                x = flip(x);                
             end
-            this.xvals = wn;
+            this.xvals = x;
         end
         
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

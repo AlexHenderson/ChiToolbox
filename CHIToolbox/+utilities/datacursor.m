@@ -94,7 +94,9 @@ if ~isempty(chiobj.classmembership)
             output_txt{end+1} = ['Class: ', plotinfo.linelabels{lineidx}];
         else
             % ...but we don't have to
-            output_txt{end+1} = ['Class: ', plotinfo.linelabels{lineidx}];
+%             if ~isempty(plotinfo.linelabels{:})
+                output_txt{end+1} = ['Class: ', plotinfo.linelabels{lineidx}];
+%             end
         end
         
     end

@@ -208,6 +208,8 @@ function [metadata,safeParameterName,filterName,rawData] = buildLogicalFilter(pa
     % Replace spaces in parameter names and raw data with underscores
     safeParameterName = strrep(parameterName, ' ', '_');
     safeParameterName = strrep(safeParameterName, '.', '_');
+    safeParameterName = strrep(safeParameterName, '(', '_');
+    safeParameterName = strrep(safeParameterName, ')', '_');
     % Make the first letter uppercase
     safeParameterName(1) = upper(safeParameterName(1));
     % Add 'is to the front of the variable
@@ -235,6 +237,8 @@ function [metadata,safeParameterName,filterName,rawData] = buildNumericFilter(pa
     % Replace spaces in parameter names and raw data with underscores
     safeParameterName = strrep(parameterName, ' ', '_');
     safeParameterName = strrep(safeParameterName, '.', '_');
+    safeParameterName = strrep(safeParameterName, '(', '_');
+    safeParameterName = strrep(safeParameterName, ')', '_');
     % Add 'is' to the end of the variable
     filterName = [safeParameterName, '_is_'];
     
@@ -251,6 +255,8 @@ function [metadata,safeParameterName,filterName,rawData] = buildCategoryFilter(p
     % Replace spaces in parameter names and raw data with underscores
     safeParameterName = strrep(parameterName, ' ', '_');
     safeParameterName = strrep(safeParameterName, '.', '_');
+    safeParameterName = strrep(safeParameterName, '(', '_');
+    safeParameterName = strrep(safeParameterName, ')', '_');
     for i = 1:length(rawData)
         rawData{i} = strrep(rawData{i}, ' ', '_');
     end

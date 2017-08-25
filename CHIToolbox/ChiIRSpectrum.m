@@ -1,22 +1,22 @@
-classdef ChiFTIRSpectrum < ChiSpectrum
+classdef ChiIRSpectrum < ChiSpectrum & ChiIRCharacter
 
-% ChiFTIRSpectrum  A Fourier Transform Infrared spectrum. 
+% ChiIRSpectrum  An infrared spectrum. 
 %
 % Syntax
-%   FTIRSpectrum = ChiFTIRSpectrum(wavenumbers,data);
-%   FTIRSpectrum = ChiFTIRSpectrum(wavenumbers,data,reversex);
-%   FTIRSpectrum = ChiFTIRSpectrum(wavenumbers,data,reversex,xlabel);
-%   FTIRSpectrum = ChiFTIRSpectrum(wavenumbers,data,reversex,xlabel,ylabel);
-%   FTIRSpectrum = ChiFTIRSpectrum(ChiSpectrum);
+%   IRSpectrum = ChiIRSpectrum(wavenumbers,data);
+%   IRSpectrum = ChiIRSpectrum(wavenumbers,data,reversex);
+%   IRSpectrum = ChiIRSpectrum(wavenumbers,data,reversex,xlabel);
+%   IRSpectrum = ChiIRSpectrum(wavenumbers,data,reversex,xlabel,ylabel);
+%   IRSpectrum = ChiIRSpectrum(ChiSpectrum);
 %
 % Description
-%   FTIRSpectrum = ChiFTIRSpectrum(wavenumbers,data) creates a FTIR
-%   spectrum object using default values for reversex, xlabel and ylabel.
+%   IRSpectrum = ChiIRSpectrum(wavenumbers,data) creates an IR spectrum
+%   object using default values for reversex, xlabel and ylabel.
 %
-%   FTIRSpectrum = ChiFTIRSpectrum(ChiSpectrum) creates a FTIR spectrum
-%   object from a ChiSpectrum object using default values for reversex,
-%   xlabel and ylabel. No check is made to determine if the ChiSpectrum
-%   object contains valid FTIR data. 
+%   IRSpectrum = ChiIRSpectrum(ChiSpectrum) creates an IR spectrum object
+%   from a ChiSpectrum object using default values for reversex, xlabel and
+%   ylabel. No check is made to determine if the ChiSpectrum object
+%   contains valid IR data.
 % 
 %   Default values are reversex = true (wavenumbers are plotted in
 %   descending order), xlabel = 'wavenumber (cm^{-1})' and ylabel =
@@ -26,7 +26,7 @@ classdef ChiFTIRSpectrum < ChiSpectrum
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiSpectrum ChiSpectralCollection.
+%   ChiSpectrum ChiIRSpectralCollection ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -41,16 +41,16 @@ classdef ChiFTIRSpectrum < ChiSpectrum
 
 
     properties (Constant)
-        type = 'Fourier transform infrared spectrum';
-        uri = 'http://purl.obolibrary.org/obo/CHMO_0000853'
-    end
-    
+        type = 'infrared spectrum';
+        uri = 'http://purl.obolibrary.org/obo/CHMO_0000818'
+    end    
+   
     properties (Dependent)
         wavenumbers
     end
     
     methods
-        function this = ChiFTIRSpectrum(varargin)
+        function this = ChiIRSpectrum(varargin)
           
             superClassArgs = varargin;
             
@@ -67,7 +67,7 @@ classdef ChiFTIRSpectrum < ChiSpectrum
                         superClassArgs{4} = s.xlabel;
                         superClassArgs{5} = s.ylabel;
                     else
-                        err = MException('CHI:ChiFTIRSpectrum:InputError', ...
+                        err = MException('CHI:ChiIRSpectrum:InputError', ...
                             'Input not understood.');
                         throw(err);
                     end
@@ -87,11 +87,12 @@ classdef ChiFTIRSpectrum < ChiSpectrum
             end
             
             this@ChiSpectrum(superClassArgs{:});
+            this@ChiIRCharacter();
             
-            if isa(varargin{1},'ChiSpectrum')
+            if (~isempty(varargin) && isa(varargin{1},'ChiSpectrum'))
                 this.filename = varargin{1}.filename;
                 this.history = varargin{1}.history.clone();
-                this.history.add('Generated from a ChiSpectrum');
+                this.history.add(['Generated from a ', class(varargin{1}), '.']);
             end
         end
        
@@ -101,7 +102,7 @@ classdef ChiFTIRSpectrum < ChiSpectrum
             % ToDo: There's got to be a better way!!
             % http://undocumentedmatlab.com/blog/general-use-object-copy
             
-            obj = ChiFTIRSpectrum();
+            obj = ChiIRSpectrum();
             
             obj.xvals = this.xvals;
             obj.data = this.data;
@@ -121,8 +122,8 @@ classdef ChiFTIRSpectrum < ChiSpectrum
         
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function set.wavenumbers(this,wn)
-            if (length(wn) ~= length(data))
-                err = MException('CHI:ChiFTIRSpectrum:OutOfRange', ...
+            if (length(wn) ~= length(this.data))
+                err = MException('CHI:ChiIRSpectrum:OutOfRange', ...
                     'Wavenumbers and data are different lengths.');
                 throw(err);
             end

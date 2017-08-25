@@ -33,6 +33,7 @@ classdef ChiClassMembership < handle
     properties
         title@char;
         labels;
+        history
     end
     
     %% Calculated properties
@@ -41,12 +42,16 @@ classdef ChiClassMembership < handle
         numuniquelabels;
         labelids;       % index values of unique labels
         labelcounts;    % how many of each label are there        
+        numentries;
     end
     
     %% Methods
     methods
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         %% Constructor
         function this = ChiClassMembership(title,varargin)
+            
+            this.history = ChiLogger();
             
             if (nargin > 0) % Support calling with 0 arguments
                 this.title = title;
@@ -94,25 +99,33 @@ classdef ChiClassMembership < handle
             end        
         end 
         
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         %% clone : Make a copy of this image
         function output = clone(this)
             % Make a copy of this image
-            output = ChiClassMembership(this.title,this.labels);
+            output = ChiClassMembership();
+            output.title = this.title;
+            output.labels = this.labels;
+            output.history = this.history.clone();
         end
         
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         %% Determine some properties
         function output = get.uniquelabels(this)
             [output] = unique(this.labels,'stable');
         end
         
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function output = get.numuniquelabels(this)
             [output] = length(this.uniquelabels);
         end
         
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function output = get.labelids(this)
             [dummy,dummy,output] = unique(this.labels,'stable'); %#ok<ASGLU>
         end
         
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function output = get.labelcounts(this)
             % Wish to keep the classes in the order they are supplied by
             % the user. However, in order to easily count the classes we
@@ -151,6 +164,77 @@ classdef ChiClassMembership < handle
             end
             
         end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function output = get.numentries(this)
+            [output] = length(this.labels);
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function obj = removeentries(this,varargin)
+            if nargout
+                % New output requested so create a clone and call its version of
+                % this function
+                obj = clone(this);
+                obj.removeids(varargin{:});
+            else
+                % Do we hvae any entries to remove?
+                if ~(this.numentries)
+                    return
+                end
+                
+                % Is any input provided?
+                if isempty(varargin)
+                    err = MException(['CHI:',mfilename,':InputError'], ...
+                        'No list of entries provided. If all ids are to be removed, use myfile = %s(''all'');',functionname);
+                    throw(err);
+                end
+
+                % Did the user specify 'all'?
+                argposition = find(cellfun(@(x) strcmpi(x, 'all') , varargin));
+                if argposition
+                    varargin(argposition) = []; %#ok<NASGU>
+                    list = 1:this.numentries;
+                else
+                    list = varargin{1};
+                end
+
+                % Did the user provide a list of spectra as a vector?
+                if ~isvector(list)
+                    err = MException(['CHI:',mfilename,':InputError'], ...
+                        'List of entries should be a vector of numbers, or ''all''.');
+                    throw(err);
+                end
+
+                % Is the vector a list of numbers?
+                if ~isnumeric(list)
+                    err = MException(['CHI:',mfilename,':InputError'], ...
+                        'List of entries should be a vector of numbers, or ''all''.');
+                    throw(err);
+                end
+
+                % Is the list of numbers simply a list of all numbers?
+                if (length(unique(list)) == this.numentries)
+                    err = MException(['CHI:',mfilename,':InputError'], ...
+                        'If all entries are to be removed, use myfile = %s(''all'');',functionname);
+                    throw(err);
+                end
+
+                % Is the list of numbers simply a list of all numbers?
+                if (length(unique(list)) > this.numentries)
+                    err = MException(['CHI:',mfilename,':InputError'], ...
+                        'If all entries are to be removed, use myfile = %s(''all'');',functionname);
+                    throw(err);
+                end
+                
+                % If we've got to here we can remove the unwanted spectra
+                list = ChiForceToColumn(list);
+                this.labels(list,:) = [];
+                this.history.add(['removed ', num2str(length(list)), ' entries']);
+            end
+            
+        end
+        
         
     end
 end

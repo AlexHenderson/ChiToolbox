@@ -15,9 +15,9 @@ classdef ChiLogger < handle
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function output = clone(this)
-            output = ChiLogger();
-            output.log = this.log;
+        function obj = clone(this)
+            obj = feval(class(this));
+            obj.log = this.log;
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

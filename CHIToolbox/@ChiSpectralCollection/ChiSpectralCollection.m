@@ -1,27 +1,40 @@
 classdef ChiSpectralCollection < ChiAbstractSpectralCollection
     
-% ChiSpectralCollection  Storage class for collections of spectra
+% ChiSpectralCollection  Storage class for a collection of spectra
 %
 % Syntax
 %   collection = ChiSpectralCollection();
-%   collection = ChiSpectralCollection(wavenumbers,data);
-%   collection = ChiSpectralCollection(wavenumbers,data,reversex);
-%   collection = ChiSpectralCollection(wavenumbers,data,reversex,xlabel,ylabel);
+%   collection = ChiSpectralCollection(xvals,data);
+%   collection = ChiSpectralCollection(xvals,data,reversex);
+%   collection = ChiSpectralCollection(xvals,data,reversex,xlabel,ylabel);
 %   collection = ChiSpectralCollection(ChiSpectrum);
+%   collection = ChiSpectralCollection(ChiSpectralCollection);
 % 
 % Description
 %   collection = ChiSpectralCollection() creates an empty spectral
 %   collection.
 %
-%   collection = ChiSpectralCollection(wavenumbers,data) creates a spectral
-%   collection with a spectrum object using default values for reversex,
-%   xlabel and ylabel.
+%   collection = ChiSpectralCollection(xvals,data) creates a spectral
+%   collection with a spectrum object using default values for reversex
+%   (false), xlabel ('') and ylabel ('').
+% 
+%   collection = ChiSpectralCollection(xvals,data,reversex) uses the
+%   provided value for reversex. 
+% 
+%   collection = ChiSpectralCollection(xvals,data,reversex,vlabel,ylabel)
+%   uses the provided values for xlabel and ylabel.
+% 
+%   collection = ChiSpectralCollection(ChiSpectrum) uses the contents of
+%   the ChiSpectrum to populate the collection.
+% 
+%   collection = ChiSpectralCollection(ChiSpectralCollection) uses the
+%   contents of the ChiSpectralCollection to populate the collection.
 %
 % Copyright (c) 2017, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiSpectrum ChiIRSpectralCollection ChiSpectralCollection.
+%   ChiSpectrum ChiIRSpectralCollection ChiToFMassSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -30,7 +43,7 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, August 2017
+% Version 2.0, August 2017
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 

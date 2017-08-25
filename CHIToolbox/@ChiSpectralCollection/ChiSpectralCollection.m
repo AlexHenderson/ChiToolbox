@@ -1,7 +1,6 @@
 classdef ChiSpectralCollection < ChiAbstractSpectralCollection
-
     
-% ChiSpectralCollection  Storage class for spectra
+% ChiSpectralCollection  Storage class for collections of spectra
 %
 % Syntax
 %   collection = ChiSpectralCollection();
@@ -15,22 +14,8 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
 %   collection.
 %
 %   collection = ChiSpectralCollection(wavenumbers,data) creates a spectral
-%   collection with a spectrum 
-
-
-
-
-
-%   object using default values for reversex, xlabel and ylabel.
-%
-%   IRSpectrum = ChiIRSpectrum(ChiSpectrum) creates an IR spectrum object
-%   from a ChiSpectrum object using default values for reversex, xlabel and
-%   ylabel. No check is made to determine if the ChiSpectrum object
-%   contains valid IR data.
-% 
-%   Default values are reversex = true (wavenumbers are plotted in
-%   descending order), xlabel = 'wavenumber (cm^{-1})' and ylabel =
-%   'absorbance'.
+%   collection with a spectrum object using default values for reversex,
+%   xlabel and ylabel.
 %
 % Copyright (c) 2017, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -87,17 +72,40 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                         this.reversex = s.reversex;
                         this.xlabel = s.xlabel;
                         this.ylabel = s.ylabel;
-                        this.classmembership = ChiClassMembership();
-                        this.history = ChiLogger();
-                        this.history.add(['Generated from a ', class(s), '. Filename: ', s.filename]);                        
+                        if ~isempty(s.history)
+                            this.history = s.history.clone();
+                            this.history.add(['Generated from a ', class(s), '. Filename: ', s.filename]);                        
+                        else
+                            this.history = ChiLogger();                
+                        end
                     else
-                        err = MException('CHI:ChiSpectralCollection:InputError', ...
-                            'Input not understood. Try creating a ChiSpectrum and using that as input.');
-                        throw(err);
+                        if isa(varargin{1},'ChiSpectralCollection')
+                            this = varargin{1}.clone();
+                        else
+                            err = MException('CHI:ChiSpectralCollection:InputError', ...
+                                'Input not understood. Try creating a ChiSpectrum, or ChiSpectralCollection, and using that as input.');
+                            throw(err);
+                        end
                     end
+                case 6
+                    this.xvals = varargin{1};
+                    this.data = varargin{2};
+                    this.reversex = varargin{3};
+                    this.xlabel = varargin{4};
+                    this.ylabel = varargin{5};
+                    this.history = varargin{6}.clone();                    
+                case 7
+                    this.xvals = varargin{1};
+                    this.data = varargin{2};
+                    this.reversex = varargin{3};
+                    this.xlabel = varargin{4};
+                    this.ylabel = varargin{5};
+                    this.classmembership = varargin{6}.clone();
+                    this.history = varargin{7}.clone();
                 otherwise
+                    disp(nargin)
                     err = MException('CHI:ChiSpectralCollection:InputError', ...
-                        'Input not understood. Try creating a ChiSpectrum and using that as input.');
+                        'Input not understood. Try creating a ChiSpectrum, or ChiSpectralCollection, and using that as input.');
                     throw(err);
             end
                         
@@ -151,7 +159,7 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
             % ToDo: There's got to be a better way!!
             % http://undocumentedmatlab.com/blog/general-use-object-copy
             
-            obj = ChiSpectralCollection();
+            obj = feval(class(this));
             
             obj.xvals = this.xvals;
             obj.data = this.data;
@@ -161,7 +169,11 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
             if ~isempty(this.classmembership)
                 obj.classmembership = this.classmembership.clone();
             end
-            obj.history = this.history.clone();
+            if ~isempty(this.history)
+                obj.history = this.history.clone();
+            else
+                obj.history = ChiLogger();                
+            end
             obj.history.add('Cloned');
         end
 

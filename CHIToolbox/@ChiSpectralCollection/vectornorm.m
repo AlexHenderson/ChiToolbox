@@ -1,4 +1,4 @@
-function varargout = vectornorm(this)
+function obj = vectornorm(this)
 
 % vectornorm  Vector normalisation of these spectra. 
 %
@@ -32,11 +32,9 @@ function varargout = vectornorm(this)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-if (nargout > 0)
-    % We are expecting to generate a modified clone of this object
-    varargout{1} = clone(this);
-    varargout{1}.data = utilities.vectornorm(varargout{1}.data);
-    varargout{1}.history.add('vector normalised');    
+if nargout
+    obj = this.clone();
+    obj.vectornorm();
 else
     % We are expecting to modified this object in situ
     this.data = utilities.vectornorm(this.data);

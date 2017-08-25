@@ -1,6 +1,6 @@
 classdef ChiRenishawFile < handle
 
-% ChiRenishawFile  File format handler for Renishawh (.wdf) files
+% ChiRenishawFile  File format handler for Renishaw (.wdf) files
 %
 % Syntax
 %   myfile = ChiRenishawFile();
@@ -100,10 +100,10 @@ classdef ChiRenishawFile < handle
                     % We have one or more spectra rather than an image
                     % Check to see if we have a single spectrum or a profile
                     if (numel(data) == numel(ramanshift))
-                        obj = ChiSpectrum(ramanshift,data,true,x_label,y_label,width,height);
+                        obj = ChiSpectrum(ramanshift,data,true,x_label,y_label);
                         obj.filename = filename;
                     else
-                        obj = ChiSpectralCollection(ramanshift,data,true,x_label,y_label,width,height);
+                        obj = ChiSpectralCollection(ramanshift,data,true,x_label,y_label);
                     end               
                 else
                     obj = ChiImage(ramanshift,data,true,x_label,y_label,width,height);

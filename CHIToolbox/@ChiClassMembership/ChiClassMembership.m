@@ -101,12 +101,16 @@ classdef ChiClassMembership < handle
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         %% clone : Make a copy of this image
-        function output = clone(this)
+        function obj = clone(this)
             % Make a copy of this image
-            output = ChiClassMembership();
-            output.title = this.title;
-            output.labels = this.labels;
-            output.history = this.history.clone();
+            obj = ChiClassMembership();
+            obj.title = this.title;
+            obj.labels = this.labels;
+            if ~isempty(this.history)
+                obj.history = this.history.clone();
+            else
+                obj.history = ChiLogger();                
+            end
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

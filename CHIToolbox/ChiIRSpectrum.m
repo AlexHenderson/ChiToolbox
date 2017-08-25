@@ -67,7 +67,7 @@ classdef ChiIRSpectrum < ChiSpectrum & ChiIRCharacter
                         superClassArgs{4} = s.xlabel;
                         superClassArgs{5} = s.ylabel;
                     else
-                        err = MException('CHI:ChiIRSpectrum:InputError', ...
+                        err = MException(['CHI:',mfilename,':InputError'], ...
                             'Input not understood.');
                         throw(err);
                     end
@@ -102,7 +102,7 @@ classdef ChiIRSpectrum < ChiSpectrum & ChiIRCharacter
             % ToDo: There's got to be a better way!!
             % http://undocumentedmatlab.com/blog/general-use-object-copy
             
-            obj = ChiIRSpectrum();
+            obj = feval(class(this));
             
             obj.xvals = this.xvals;
             obj.data = this.data;
@@ -111,8 +111,13 @@ classdef ChiIRSpectrum < ChiSpectrum & ChiIRCharacter
             obj.ylabel = this.ylabel;
             obj.filename = this.filename;
             
-            obj.history = this.history.clone();
-            obj.history.add('Cloned');
+            if ~isempty(this.history)
+                obj.history = this.history.clone();
+                obj.history.add('Cloned');
+            else
+                obj.history = ChiLogger();                
+            end
+            
         end
         
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -121,16 +126,16 @@ classdef ChiIRSpectrum < ChiSpectrum & ChiIRCharacter
         end
         
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function set.wavenumbers(this,wn)
-            if (length(wn) ~= length(this.data))
-                err = MException('CHI:ChiIRSpectrum:OutOfRange', ...
+        function set.wavenumbers(this,x)
+            if (length(x) ~= length(this.data))
+                err = MException(['CHI:',mfilename,':OutOfRange'], ...
                     'Wavenumbers and data are different lengths.');
                 throw(err);
             end
-            if (wn(1) > wn(end))
-                wn = flip(wn);                
+            if (x(1) > x(end))
+                x = flip(x);                
             end
-            this.xvals = wn;
+            this.xvals = x;
         end
         
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

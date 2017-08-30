@@ -81,7 +81,7 @@ classdef ChiIRSpectrum < ChiSpectrum & ChiIRCharacter
                 case 4
                     superClassArgs{5} = 'absorbance';   % ylabel
                 case 5
-                    superClassArgs = varargin{:};
+                    superClassArgs = varargin;
                 otherwise
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
             end

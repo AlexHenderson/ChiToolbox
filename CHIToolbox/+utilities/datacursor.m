@@ -79,7 +79,7 @@ else
 end
 
 
-if ~isempty(chiobj.classmembership)
+if (exist('chiobj.classmembership', 'var') && ~isempty(chiobj.classmembership))
     % We have class information
     if plotinfo.functionplot
         if plotinfo.byclass

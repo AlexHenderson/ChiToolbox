@@ -93,12 +93,12 @@ if isMap
 else
     if (size(data,1) == 1)
         % We only have a single spectrum
-        brukerData = ChiSpectrum(wavenumbers,data,true,x_label,y_label);
+        brukerData = ChiIRSpectrum(wavenumbers,data,true,x_label,y_label);
         brukerData.filename = filename;
     else
         % We have a number of spectra, but these are not part of a mapping
         % experiment
-        brukerData = ChiSpectralCollection(wavenumbers,data,true,x_label,y_label);
+        brukerData = ChiIRSpectralCollection(wavenumbers,data,true,x_label,y_label);
     end
 end
 

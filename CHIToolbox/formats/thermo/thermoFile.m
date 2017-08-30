@@ -64,10 +64,10 @@ if (length(filenames) == 1)
         % We have one or more spectra rather than an image
         % Check to see if we have a single spectrum or a profile
         if (numel(data) == numel(xvals))
-            obj = ChiSpectrum(xvals,data,true,x_label,y_label);
+            obj = ChiIRSpectrum(xvals,data,true,x_label,y_label);
             obj.filename = filename;
         else
-            obj = ChiSpectralCollection(xvals,data,true,x_label,y_label);
+            obj = ChiIRSpectralCollection(xvals,data,true,x_label,y_label);
         end               
     else
         obj = ChiImage(xvals,data,true,x_label,y_label,width,height);
@@ -77,7 +77,7 @@ if (length(filenames) == 1)
 
 else
     % Multiple files
-    obj = ChiSpectralCollection();
+    obj = ChiIRSpectralCollection();
     for i = 1:length(filenames)
         [pathstr,name,ext] = fileparts(filenames{i}); %#ok<ASGLU>
         switch lower(ext)
@@ -91,10 +91,10 @@ else
         % collection. We have no mechanism for describing concatenated
         % images
         if (numel(data) == numel(xvals))
-            object = ChiSpectrum(xvals,data,true,x_label,y_label);
+            object = ChiIRSpectrum(xvals,data,true,x_label,y_label);
             object.filename = filename;
         else
-            object = ChiSpectralCollection(xvals,data,true,x_label,y_label);
+            object = ChiIRSpectralCollection(xvals,data,true,x_label,y_label);
         end               
         obj.append(object);
         obj.history.add(['filename: ', filename]);

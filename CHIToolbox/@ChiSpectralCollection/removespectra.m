@@ -24,36 +24,46 @@ function obj = removespectra(this,varargin)
         else
             list = varargin{1};
         end
-        
-        % Did the user provide a list of spectra as a vector?
-        if ~isvector(list)
-            err = MException(['CHI:',mfilename,':InputError'], ...
-                'List of spectra should be a vector of spectrum numbers, or ''all''.');
-            throw(err);
-        end
 
-        % Is the vector a list of numbers?
-        if ~isnumeric(list)
-            err = MException(['CHI:',mfilename,':InputError'], ...
-                'List of spectra should be a vector of spectrum numbers, or ''all''.');
-            throw(err);
-        end
+        if islogical(list)
+            % If the list is logical, we can assume everything is in order. 
+            list = ChiForceToColumn(list);
+            this.data(list,:) = [];
+            if ~isempty(this.classmembership)
+                this.classmembership.removeentries(list);
+            end
+            this.history.add(['removed ', num2str(length(list)), ' spectra']);
+        else
         
-        % Is the list of numbers simply a list of all numbers?
-        if (length(unique(list)) == this.numspectra)
-            err = MException(['CHI:',mfilename,':InputError'], ...
-                'If all spectra are to be removed, use myfile = %s(''all'');',functionname);
-            throw(err);
-        end
-            
-        % If we've got to here we can remove the unwanted spectra
-        list = ChiForceToColumn(list);
-        this.data(list,:) = [];
-        if ~isempty(this.classmembership)
-            this.classmembership.removeentries(list);
-        end
-        this.history.add(['removed ', num2str(length(list)), ' spectra']);
-        
+            % Did the user provide a list of spectra as a vector?
+            if ~isvector(list)
+                err = MException(['CHI:',mfilename,':InputError'], ...
+                    'List of spectra should be a vector of spectrum numbers, or ''all''.');
+                throw(err);
+            end
+
+            % Is the vector a list of numbers?
+            if ~isnumeric(list)
+                err = MException(['CHI:',mfilename,':InputError'], ...
+                    'List of spectra should be a vector of spectrum numbers, or ''all''.');
+                throw(err);
+            end
+
+            % Is the list of numbers simply a list of all numbers?
+            if (length(unique(list)) == this.numspectra)
+                err = MException(['CHI:',mfilename,':InputError'], ...
+                    'If all spectra are to be removed, use myfile = %s(''all'');',functionname);
+                throw(err);
+            end
+
+            % If we've got to here we can remove the unwanted spectra
+            list = ChiForceToColumn(list);
+            this.data(list,:) = [];
+            if ~isempty(this.classmembership)
+                this.classmembership.removeentries(list);
+            end
+            this.history.add(['removed ', num2str(length(list)), ' spectra']);
+        end        
     end
 
 end

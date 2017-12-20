@@ -100,6 +100,13 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                             throw(err);
                         end
                     end
+                case 5
+                    this.xvals = varargin{1};
+                    this.data = varargin{2};
+                    this.reversex = varargin{3};
+                    this.xlabel = varargin{4};
+                    this.ylabel = varargin{5};
+                    this.history = ChiLogger();                
                 case 6
                     this.xvals = varargin{1};
                     this.data = varargin{2};

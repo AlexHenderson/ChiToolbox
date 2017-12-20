@@ -14,7 +14,8 @@ classdef ChiMetadataSheet < handle
         membershipnames    
         safemembershipnames
         parametertypes    
-        classmemberships        
+        classmemberships
+        history
     end
     
     properties (Dependent = true)
@@ -27,6 +28,8 @@ classdef ChiMetadataSheet < handle
         function this = ChiMetadataSheet(varargin)
             if (nargin > 0) % Support calling with 0 arguments
             
+                this.history = ChiLogger();
+
                 met = this.metadatareader(varargin{:});
 
                 this.title = met.title;
@@ -70,6 +73,12 @@ classdef ChiMetadataSheet < handle
                 x.classmemberships{i} = this.classmemberships{i}.clone();
             end
             
+            if ~isempty(this.history)
+                x.history = this.history.clone();
+            else
+                x.history = ChiLogger();                
+            end
+            
         end            
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -106,14 +115,14 @@ classdef ChiMetadataSheet < handle
                     if isempty(m)
                         % https://uk.mathworks.com/matlabcentral/answers/130695-how-can-i-return-a-char-of-object-variable-name-from-a-method
                         name = evalin('caller','inputname(1)');
-                        err = MException('CHI:ChiMetadataSheet:UnknownInput', ...
+                        err = MException(['CHI:',mfilename,':UnknownInput'], ...
                             'Membership name ''%s'' not recognised. Use ''%s.membershipnames()'' to view options.',...
                             which, name);
 %                             ['Membership name ''', which, ''' not recognised. Use ''', name, '.membershipnames()'' to view options.']);
                         throw(err);
                     end
                 else
-                    err = MException('CHI:ChiMetadataSheet:UnknownInput', ...
+                    err = MException(['CHI:',mfilename,':UnknownInput'], ...
                         'Enter the name of the membership as a string, or its position number.');
                     throw(err);
                 end
@@ -141,6 +150,7 @@ classdef ChiMetadataSheet < handle
             numfiles = size(this.filenames,1);
         end        
         
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     end
     
 end

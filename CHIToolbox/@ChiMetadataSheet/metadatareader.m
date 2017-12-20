@@ -223,6 +223,9 @@ function [metadata,safeParameterName,filterName,rawData] = buildLogicalFilter(pa
     end        
 
     rawData = cell2mat(rawData);
+    if ischar(rawData)
+        rawData = str2num(rawData);
+    end
     rawData = logical(rawData);
     
     % Build the filter
@@ -243,6 +246,9 @@ function [metadata,safeParameterName,filterName,rawData] = buildNumericFilter(pa
     filterName = [safeParameterName, '_is_'];
     
     rawData = cell2mat(rawData);
+    if ischar(rawData)
+        rawData = str2num(rawData);
+    end
 
     metadata.filter = generateFilter(rawData, filterName, metadata.filter);
     eval(['metadata.', safeParameterName, ' = rawData;']);

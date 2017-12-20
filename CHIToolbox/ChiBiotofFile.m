@@ -107,7 +107,7 @@ classdef ChiBiotofFile < handle
                         obj = ChiToFMassSpectrum(mass,data);
                         obj.filename = filenames{1};
                     else
-                        obj = ChiSpectralCollection(mass,data,false,x_label,y_label);
+                        obj = ChiToFMassSpectralCollection(mass,data,false,x_label,y_label);
                     end               
                 else
                     obj = ChiImage(mass,data,false,x_label,y_label,width,height);
@@ -117,7 +117,9 @@ classdef ChiBiotofFile < handle
             else
                 % Need to manage multiple files
                 for i = 1:length(filenames)
-                    [mass,data,parameters] = biotofspectrum(filenames{1}); %#ok<ASGLU>
+                    [mass,data,parameters] = biotofspectrum(filenames{i}); %#ok<ASGLU>
+                    mass = ChiForceToRow(mass);
+                    data = ChiForceToRow(data);
                     height = 1;
                     width = 1;
                     x_label = 'm/z';
@@ -126,7 +128,9 @@ classdef ChiBiotofFile < handle
                     
                     if (i == 1)
                         % Workaround for broken ChiSpectralCollection.append
-                        obj = ChiSpectralCollection(mass,data,false,x_label,y_label);
+                        temp = ChiToFMassSpectrum(mass,data,false,x_label,y_label);
+                        obj = ChiToFMassSpectralCollection(temp);
+%                         obj = ChiToFMassSpectralCollection(mass,data,false,x_label,y_label);
                     else
                         if ((height == 1) && (width == 1))
                             % We have one or more spectra rather than an image
@@ -134,11 +138,11 @@ classdef ChiBiotofFile < handle
                             if (numel(data) == numel(mass))
                                 obj.append(ChiToFMassSpectrum(mass,data));
                             else
-                                obj.append(ChiSpectralCollection(mass,data,false,x_label,y_label));
+                                obj.append(ChiToFMassSpectralCollection(mass,data,false,x_label,y_label));
                             end               
                         else
                             % An image
-                            obj.append(ChiSpectralCollection(mass,data,false,x_label,y_label));
+                            obj.append(ChiToFMassSpectralCollection(mass,data,false,x_label,y_label));
                         end
                     end
                 end

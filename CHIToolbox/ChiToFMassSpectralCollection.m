@@ -28,10 +28,10 @@ classdef ChiToFMassSpectralCollection < ChiSpectralCollection
                         superClassArgs{4} = s.xlabel;
                         superClassArgs{5} = s.ylabel;
                         if ~isempty(s.history)
-                            superClassArgs{6}.history = s.history.clone();
-                            superClassArgs{6}.history.add('Created from a ChiSpectrum');
+                            superClassArgs{6} = s.history.clone();
+                            superClassArgs{6}.add('Created from a ChiSpectrum');
                         else
-                            superClassArgs{6}.history = ChiLogger();                
+                            superClassArgs{6} = ChiLogger();                
                         end
                         
                     else

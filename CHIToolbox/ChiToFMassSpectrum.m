@@ -81,7 +81,7 @@ classdef ChiToFMassSpectrum < ChiSpectrum
                 case 4
                     superClassArgs{5} = 'intensity';   % ylabel
                 case 5
-                    superClassArgs = varargin{:};
+                    superClassArgs = varargin;
                 otherwise
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
             end

@@ -1,5 +1,5 @@
 classdef ChiKFoldOutcome < handle
-    %CHIKFOLDOUTCOME Summary of this class goes here
+    %ChiKFoldOutcome Summary of this class goes here
     %   Detailed explanation goes here
     
     properties

@@ -24,7 +24,7 @@ classdef ChiSpectrum < ChiAbstractSpectrum
             if (nargin > 0) % Support calling with 0 arguments
                 
                 if (length(xvals) ~= length(data))
-                    err = MException('CHI:ChiSpectrum:DimensionalityError', ...
+                    err = MException(['CHI:',mfilename,':DimensionalityError'], ...
                         'x and y data are different lengths');
                     throw(err);
                 end                    

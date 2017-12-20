@@ -66,7 +66,7 @@ classdef ChiClassMembership < handle
                     
                     % Check we have pairs of values
                     if (rem(nargin-1,2) == 1)
-                        err = MException('CHI:ChiClassMembership:IOError', ...
+                        err = MException(['CHI:',mfilename,':IOError'], ...
                             'Class labels and membership counts must be in pairs');
                         throw(err);
                     end
@@ -182,7 +182,7 @@ classdef ChiClassMembership < handle
                 obj = clone(this);
                 obj.removeids(varargin{:});
             else
-                % Do we hvae any entries to remove?
+                % Do we have any entries to remove?
                 if ~(this.numentries)
                     return
                 end

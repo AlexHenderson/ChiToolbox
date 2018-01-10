@@ -41,7 +41,7 @@ function varargout = removerangeidx(this,varargin)
 ranges = cell2mat(varargin);
 
 if rem(length(ranges),2)
-    err = MException('CHI:ChiImage:IOError', ...
+    err = MException(['CHI:',mfilename,':IOError'], ...
         'The from/to variables must be pairs of range limits.');
     throw(err);
 end

@@ -4,7 +4,7 @@ function output = spectrumat(this,spectrumNumber)
 
     % Handle error where xpos and/or ypos are outside image
     if ((spectrumNumber > this.numspectra) || (spectrumNumber < 1))
-        err = MException('CHI:ChiSpectralCollection:OutOfRange', ...
+        err = MException(['CHI:',mfilename,':OutOfRange'], ...
             'Requested spectrum is outside collection');
         throw(err);
     end            

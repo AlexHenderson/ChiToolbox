@@ -24,8 +24,8 @@ classdef ChiImage < ChiAbstractImage
         properties %(SetAccess = protected)
             xpixels;    % Number of pixels in the x-direction (width)
             ypixels;    % Number of pixels in the y-direction (height)
-%             numpixels;  % Number of pixels in the image
-%             numspectra; % Number of spectra in the image ( = numpixels)
+%             numpixels;  % in ChiAbstractImage
+%             numspectra; % in ChiAbstractImage
         end          
         
         properties (Dependent = true)
@@ -85,7 +85,7 @@ classdef ChiImage < ChiAbstractImage
                         this.data = reshape(this.data,this.ypixels*this.xpixels,chans);
                     otherwise
                         % Too many or too few dimensions. 
-                        err = MException('CHI:ChiImage:DimensionalityError', ...
+                        err = MException(['CHI:',mfilename,':DimensionalityError'], ...
                             'Data is not 1D, 2D or 3D');
                         throw(err);
                 end

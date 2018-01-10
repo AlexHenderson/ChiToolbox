@@ -65,10 +65,10 @@ classdef ChiMassSpecImage < ChiImage
                         superClassArgs{3} = s.reversex;
                         superClassArgs{4} = s.xlabel;
                         superClassArgs{5} = s.ylabel;
-                        superClassArgs{5} = s.mask;
-                        superClassArgs{5} = s.masked;
-                        superClassArgs{5} = s.filename;
-                        superClassArgs{5} = s.history.clone();
+                        superClassArgs{6} = s.mask;
+                        superClassArgs{7} = s.masked;
+                        superClassArgs{8} = s.filename;
+                        superClassArgs{9} = s.history.clone();
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
                             'Input not understood.');
@@ -105,6 +105,7 @@ classdef ChiMassSpecImage < ChiImage
             
             % ToDo: There's got to be a better way!!
             % http://undocumentedmatlab.com/blog/general-use-object-copy
+            % see the todo.m list
             
             obj = feval(class(this));
             
@@ -117,8 +118,12 @@ classdef ChiMassSpecImage < ChiImage
             obj.mask = this.mask;
             obj.masked = this.masked;
             
+            obj.xpixels = this.xpixels;
+            obj.ypixels = this.ypixels;
+
             obj.history = this.history.clone();
             obj.history.add('Cloned');
+            
         end
         
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

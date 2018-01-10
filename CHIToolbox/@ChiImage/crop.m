@@ -3,7 +3,7 @@ function output = crop(this, lowx,highx, lowy,highy)
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
     if ((lowx < 1) || (highx < 1) || (lowy < 1) || (highy < 1))
-        err = MException('CHI:ChiImage:OutOfRange', ...
+        err = MException(['CHI:',mfilename,':OutOfRange'], ...
             'Requested range is invalid');
         throw(err);
     end
@@ -15,12 +15,12 @@ function output = crop(this, lowx,highx, lowy,highy)
 
     % Check for out of range values
     if (lowx > this.xpixels) || (highx > this.xpixels)
-        err = MException('CHI:ChiImage:OutOfRange', ...
+        err = MException(['CHI:',mfilename,':OutOfRange'], ...
             'Requested x range is too low/high');
         throw(err);
     end            
     if (lowy > this.ypixels) || (highy > this.ypixels)
-        err = MException('CHI:ChiImage:OutOfRange', ...
+        err = MException(['CHI:',mfilename,':OutOfRange'], ...
             'Requested y range is too low/high');
         throw(err);
     end
@@ -57,20 +57,20 @@ function output = crop(this, lowx,highx, lowy,highy)
 % data isn't rectilinear. 
 
             % TODO: write code
-            err = MException('CHI:ChiImage:TODO', ...
+            err = MException(['CHI:',mfilename,':ToDo'], ...
                 'This code has yet to be written.');
             throw(err);
         else
             if all(all(~output.mask))
                 % All pixels in this cropped region are masked in
                 % the original. Therefore the output is empty. 
-                err = MException('CHI:ChiImage:DimensionalityError', ...
+                err = MException(['CHI:',mfilename,':DimensionalityError'], ...
                     'All requested pixels have been masked.');
                 throw(err);
             else
                 % Some pixels are masked and some are not. 
                 % TODO: write code
-                err = MException('CHI:ChiImage:TODO', ...
+                err = MException(['CHI:',mfilename,':ToDo'], ...
                     'This code has yet to be written.');
                 throw(err);
             end

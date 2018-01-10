@@ -58,7 +58,7 @@ classdef ChiAbstractImage < handle
         function numspectra = get.numspectra(this)
             % numspectra : Number of spectra in the image
             
-            numspectra = this.pixels;
+            numspectra = this.numpixels;
         end
     end
     

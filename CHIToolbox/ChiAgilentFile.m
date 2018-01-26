@@ -11,19 +11,19 @@ classdef ChiAgilentFile < handle
 %   myfile = ChiAgilentFile() creates an empty object.
 % 
 %   myfile = ChiAgilentFile.open() opens a dialog box to request a filename
-%   from the user. The selected file is opened converted to a ChiImage.
+%   from the user. The selected file is opened converted to a ChiIRImage.
 % 
 %   myfile = ChiAgilentFile.open(filename) opens the filename provided as a
 %   char string.
 %
 %   This class can read Agilent infrared hyperspectral images, either a
-%   single tile, or mosaicked (*.seq, *.dms).
+%   single tile, or mosaicked tile collection (*.seq, *.dms).
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiSpectrum ChiSpectralCollection ChiImage.
+%   ChiIRImage ChiSpectrum ChiSpectralCollection ChiImage.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -32,7 +32,7 @@ classdef ChiAgilentFile < handle
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 2.0, August 2017
+% Version 3.0, January 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -63,7 +63,7 @@ classdef ChiAgilentFile < handle
                 if ChiAgilentFile.isreadable(filename)
                     [wavenumbers,data,height,width,filename,acqdate] = agilentFile(filename); %#ok<ASGLU>
                 else
-                    err = MException('CHI:ChiAgilentFile:InputError', ...
+                    err = MException(['CHI:',mfilename,':InputError'], ...
                         'Filename does not appear to be an Agilent file (*.dms or *.seq).');
                     throw(err);
                 end                    
@@ -71,7 +71,8 @@ classdef ChiAgilentFile < handle
                 [wavenumbers,data,height,width,filename,acqdate] = agilentFile(); %#ok<ASGLU>
             end
 
-            obj = ChiImage(wavenumbers,data,true,'wavenumber (cm^{-1})','absorbance',width,height);
+            obj = ChiIRImage(wavenumbers,data);
+%             obj = ChiInfraredImage(wavenumbers,data,true,'wavenumber (cm^{-1})','absorbance',width,height);
             obj.filename = filename;
             obj.history.add(['Agilent file: ', filename]);
         end        

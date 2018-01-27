@@ -71,7 +71,8 @@ classdef ChiAgilentFile < handle
                 [wavenumbers,data,height,width,filename,acqdate] = agilentFile(); %#ok<ASGLU>
             end
 
-            obj = ChiIRImage(wavenumbers,data);
+            reversex = true;
+            obj = ChiIRImage(wavenumbers,data,reversex);
 %             obj = ChiInfraredImage(wavenumbers,data,true,'wavenumber (cm^{-1})','absorbance',width,height);
             obj.filename = filename;
             obj.history.add(['Agilent file: ', filename]);

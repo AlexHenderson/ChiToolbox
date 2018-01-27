@@ -41,7 +41,7 @@ if ~isa(input,'ChiImage')
     throw(err);
 end
     
-if isoctave() || verLessThan('matlab', '8.0.0') % princomp is deprecated in R2012b
+if utilities.isoctave() || verLessThan('matlab', '8.0.0') % princomp is deprecated in R2012b
     [pcloadings, pcscores, pcvariances, tsquared] = princomp(input.data, 'econ'); %#ok<PRINCOMP>
     pcexplained = 100 * (pcvariances/sum(pcvariances));
 else

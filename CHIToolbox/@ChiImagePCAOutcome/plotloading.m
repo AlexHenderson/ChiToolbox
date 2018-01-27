@@ -34,6 +34,17 @@ function plotloading(this,pc,varargin)
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/Chitoolbox
 
+%% Do we need a new figure?
+needfig = false;
+argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));
+if argposition
+    % Remove the parameter from the argument list
+    varargin(argposition) = [];
+else
+    % No 'nofig' found so create a new figure
+    needfig = true;
+end
+
 
     titlestub = 'Loading on principal component ';
     ylabelstub = 'loading on PC ';
@@ -41,7 +52,7 @@ function plotloading(this,pc,varargin)
     errormessagestub = 'Requested principal component is out of range. Max PCs = ';
 
     if ~isempty(this.loadings)
-        if ((pc > this.pcs) || (pc < 1))
+        if ((pc > this.numpcs) || (pc < 1))
             err = MException([errorcode, ':OutOfRange'], ...
                 [errormessagestub, num2str(this.numpcs), '.']);
             throw(err);
@@ -53,8 +64,14 @@ function plotloading(this,pc,varargin)
             varargin(argposition) = [];
         else
             % No 'nofig' found so create a new figure
+            windowtitlestub = 'PC loading ';
             windowtitle = [windowtitlestub, num2str(pc)];
-            figure('Name',windowtitle,'NumberTitle','off');
+            if needfig
+                figure('Name',windowtitle,'NumberTitle','off');
+            else
+                fig = gcf();
+                set(fig, 'Name',windowtitle,'NumberTitle','off');                
+            end
         end
         
         datatoplot = this.loadings(:,pc);

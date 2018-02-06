@@ -9,7 +9,7 @@ Author: Alex Henderson <alex.henderson@manchester.ac.uk>
 
 Start date 17 March 2014 (although coding has been in progress for many years). Still work in progress...
 
-If you find a problem with the Toolbox, please leave a message on Bitbucket site [https://bitbucket.org/AlexHenderson/chitoolbox/issues](https://bitbucket.org/AlexHenderson/chitoolbox/issues "https://bitbucket.org/AlexHenderson/chitoolbox/issues") or email Alex. 
+If you find a problem with the Toolbox, please leave a message on the Bitbucket site [https://bitbucket.org/AlexHenderson/chitoolbox/issues](https://bitbucket.org/AlexHenderson/chitoolbox/issues "https://bitbucket.org/AlexHenderson/chitoolbox/issues"), or email Alex. 
 
 ## File formats
 The following file formats are supported:
@@ -36,7 +36,6 @@ Assuming you have a .spc file in this location: C:\mydata\myfile.spc
     
     filename = 'C:\mydata\myfile.spc';
     myfile = ChiSPCFile.open(filename);
-
 	myfile.plot;
 
 ### Example 2
@@ -50,6 +49,8 @@ A dialog box will open allowing you to navigate to the location of the files. Se
 	myfile.plot('mean');	% mean of the spectra
 	
 	myfile.history.log		% list of filenames
+
+Perform principal components analysis
 	
 	pca2 = myfile.pca;
 	pca2.plotloadings(1);	% the loading on pc 1
@@ -64,7 +65,7 @@ Vector normalisation
 A dialog box will open allowing you to navigate to the location of the files. Select as many as required.  
 
 
-Both the following lines do the same thing, producing a copy of the data that has been vector normalised.
+Both the following lines do the same thing, producing a **copy** of the data that has been vector normalised.
 
 	myfilevn = myfile.vectornorm;
 	myfilevn = vectornorm(myfile);
@@ -75,7 +76,7 @@ The following line vector normalises the data *in situ* and does not produce a c
 
 
 ### Example 4
-Assuming there are 8 SPC files but you have more *a priori* knowledge. Assume there are three classes of data 'alpha', 'beta' and 'gamma' and the files are in the order: beta, gamma, gamma, beta, beta, beta, alpha, alpha
+Assuming there are 8 SPC files and you have some *a priori* knowledge. Assume there are three classes of data 'alpha', 'beta' and 'gamma' and the files are in the order: beta, gamma, gamma, beta, beta, beta, alpha, alpha
 
     spectra = ChiSPCFile.open();	% select the 8 files
 

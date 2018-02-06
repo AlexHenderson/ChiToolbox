@@ -70,7 +70,7 @@ Both the following lines do the same thing, producing a **copy** of the data tha
 	myfilevn = myfile.vectornorm;
 	myfilevn = vectornorm(myfile);
 
-The following line vector normalises the data *in situ* and does not produce a copy. Note the original variable is modified (nothing changes the files on disc). 
+The following line vector normalises the data *in situ* and does not produce a copy. Note the original variable is **modified** (nothing changes the files on disc). 
 
 	myfile.vectornorm;
 

@@ -1,11 +1,7 @@
 function varargout = roirect(this)
 
-%ROIRECT Summary of this function goes here
-%   Rectangular roi so returns an image
-%   Polygonal roi would return a spectral collection
-
-% plot  Plots spectra overlaid. 
-%
+% ROIRECT  Rectangular region of interest (ROI)
+% 
 % Syntax
 %   roirect();
 %   roi = roirect();
@@ -18,7 +14,7 @@ function varargout = roirect(this)
 %   interest into it.
 %
 % Notes
-%   If am image is not currently displayed, a total signal image is used
+%   If an image is not currently displayed, a total signal image is used
 %   (see the display function for details). 
 %
 % Copyright (c) 2018, Alex Henderson.
@@ -37,6 +33,9 @@ function varargout = roirect(this)
 % Version 1.0, January 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
+
+%   Rectangular roi so returns an image
+%   Polygonal roi would return a spectral collection. Not built yet
 
 if (nargout > 0)
     % We are expecting to generate a modified clone of this object

@@ -100,13 +100,13 @@ classdef ChiRenishawFile < handle
                     % We have one or more spectra rather than an image
                     % Check to see if we have a single spectrum or a profile
                     if (numel(data) == numel(ramanshift))
-                        obj = ChiSpectrum(ramanshift,data,true,x_label,y_label);
+                        obj = ChiRamanSpectrum(ramanshift,data,true,x_label,y_label);
                         obj.filename = filename;
                     else
-                        obj = ChiSpectralCollection(ramanshift,data,true,x_label,y_label);
+                        obj = ChiRamanSpectralCollection(ramanshift,data,true,x_label,y_label);
                     end               
                 else
-                    obj = ChiImage(ramanshift,data,true,x_label,y_label,width,height);
+                    obj = ChiRamanImage(ramanshift,data,true,x_label,y_label,width,height);
                     obj.filename = filename;
                 end
                 obj.history.add(['filename: ', filename]);
@@ -117,19 +117,19 @@ classdef ChiRenishawFile < handle
                     
                     if (i == 1)
                         % Workaround for broken ChiSpectralCollection.append
-                        obj = ChiSpectralCollection(ramanshift,data,true,x_label,y_label);
+                        obj = ChiRamanSpectralCollection(ramanshift,data,true,x_label,y_label);
                     else
                         if ((height == 1) && (width == 1))
                             % We have one or more spectra rather than an image
                             % Check to see if we have a single spectrum or a profile
                             if (numel(data) == numel(ramanshift))
-                                obj.append(ChiSpectrum(ramanshift,data,true,x_label,y_label));
+                                obj.append(ChiRamanSpectrum(ramanshift,data,true,x_label,y_label));
                             else
-                                obj.append(ChiSpectralCollection(ramanshift,data,true,x_label,y_label));
+                                obj.append(ChiRamanSpectralCollection(ramanshift,data,true,x_label,y_label));
                             end               
                         else
                             % An image
-                            obj.append(ChiSpectralCollection(ramanshift,data,true,x_label,y_label));
+                            obj.append(ChiRamanSpectralCollection(ramanshift,data,true,x_label,y_label));
                         end
                     end
                 end

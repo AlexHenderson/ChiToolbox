@@ -100,6 +100,18 @@ else
     end
 end
 
+% Tidy up labels between the two possible parsers
+if strfind(lower(x_label),'raman') %#ok<STRIFCND>
+    x_label = 'Raman shift (cm^{-1})';
+end
+if strfind(lower(x_label),'wavenumber') %#ok<STRIFCND>
+    x_label = 'wavenumbers (cm^{-1})';
+end
+if strfind(lower(y_label),'counts') %#ok<STRIFCND>
+    y_label = 'counts';
+end
+
+
 % Force y-values to row vectors
 [rows,cols] = size(data);
 if (rows == cols)

@@ -22,7 +22,7 @@ classdef ChiIRSpectrum < ChiSpectrum & ChiIRCharacter
 %   descending order), xlabel = 'wavenumber (cm^{-1})' and ylabel =
 %   'absorbance'.
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -41,9 +41,13 @@ classdef ChiIRSpectrum < ChiSpectrum & ChiIRCharacter
 
 
     properties (Constant)
-        type = 'infrared spectrum';
+%       ontology_term infrared spectrum
+        ontology_term = 'infrared spectrum';
+%       type A plot of absorbance or emission vs. wavelength/wavenumber/frequency obtained by measuring the absorption or emission of infrared radiation by a sample.
+        type = 'A plot of absorbance or emission vs. wavelength/wavenumber/frequency obtained by measuring the absorption or emission of infrared radiation by a sample'; 
+%       uri http://purl.obolibrary.org/obo/CHMO_0000818
         uri = 'http://purl.obolibrary.org/obo/CHMO_0000818'
-    end    
+    end
    
     properties (Dependent)
         wavenumbers

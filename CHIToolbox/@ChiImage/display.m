@@ -1,6 +1,6 @@
-function varargout = display(this,varargin)
+function varargout = display(this,varargin) %#ok<DISPLAY>
 
-% display Basic display function
+% display  Basic display function
 
 if ~isempty(this.data)
 

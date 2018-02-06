@@ -113,8 +113,8 @@ if argposition
 end
 
 %% Do the plotting
-
-if (~exist('this.classmembership','var') || isempty(this.classmembership))
+if isempty(this.classmembership)
+% if (~exist('this.classmembership','var') || isempty(this.classmembership))
     % No class information
     plotinfo = plotnoclasses(this,plotinfo,varargin{:});
 else

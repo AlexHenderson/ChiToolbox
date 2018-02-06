@@ -112,9 +112,15 @@ if argposition
     end
 end
 
+argposition = find(cellfun(@(x) strcmpi(x, 'force') , varargin));
+if argposition
+    % This is just to remove the 'force' term used by images in case it has
+    % been added in error.
+    varargin(argposition) = [];
+end
+
 %% Do the plotting
-if isempty(this.classmembership)
-% if (~exist('this.classmembership','var') || isempty(this.classmembership))
+if (~isprop(this,'classmembership') || isempty(this.classmembership))
     % No class information
     plotinfo = plotnoclasses(this,plotinfo,varargin{:});
 else

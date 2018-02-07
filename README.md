@@ -38,6 +38,9 @@ Assuming you have a .spc file in this location: C:\mydata\myfile.spc
     myfile = ChiSPCFile.open(filename);
 	myfile.plot;
 
+
+
+----------
 ### Example 2
 Assuming you have multiple SPC files in the same folder
 
@@ -57,6 +60,7 @@ Perform principal components analysis
 	pca2.plotloadings(2);	% the loading on pc 2
 	pca2.plotscores(1,2);	% scores plot of pcs 1 and 2
 
+----------
 ### Example 3
 Vector normalisation 
 
@@ -75,6 +79,7 @@ The following line vector normalises the data *in situ* and does not produce a c
 	myfile.vectornorm;
 
 
+----------
 ### Example 4
 Assuming there are 8 SPC files and you have some *a priori* knowledge. Assume there are three classes of data 'alpha', 'beta' and 'gamma' and the files are in the order: beta, gamma, gamma, beta, beta, beta, alpha, alpha
 
@@ -91,6 +96,7 @@ Assuming there are 8 SPC files and you have some *a priori* knowledge. Assume th
 	pca3 = spectra.pca;
 	pca3.plotscores(1,2);	% scores plot of pcs 1 and 2 labelled according to the class structure
 
+----------
 ### Example 5
 Assuming you have an Agilent FTIR image tile in this location: C:\mydata\myfile.seq
     

@@ -183,7 +183,7 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
             
             obj.xvals = this.xvals;
             obj.data = this.data;
-            obj.reversex = this.xvals;
+            obj.reversex = this.reversex;
             obj.xlabel = this.xlabel;
             obj.ylabel = this.ylabel;
             if ~isempty(this.classmembership)

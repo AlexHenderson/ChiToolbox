@@ -1,17 +1,25 @@
-function [eigenvectors,eigenvalues,percent_explained_variation] = cva(data,groupmembership)
+function [eigenvectors,eigenvalues,percent_explained_variation] = cva(data,groupmembership,varargin)
 
 % CVA Canonical Variates Analysis
 % usage:
 %     [eigenvectors,eigenvalues,percent_explained_variation] = cva(data,groupmembership);
+%     [eigenvectors,eigenvalues,percent_explained_variation] = cva(___,Name,Value);
 % input:
 %     data - typically pcscores, rows are observations, columns are variables on these observations
 %     groupmembership - vector of labels, one per row of data
+%     Name and Value should be in pairs. See below for options.  
 % output:
 %     eigenvectors - canonical variate eigenvectors, directions of most variation
 %     eigenvalues - canonical variate eigenvalues, importance of each eigenvector
 %     percent_explained_variation - percentage of variation explained by successive eigenvectors
+%
+% defaults:
+%     By default the classes are balanced using undersampling. This
+%     balancing can be removed by using a Name/Value pair of
+%     'sample','none'. Other options include 'sample','undersample' to
+%     duplicate the default status
 %     
-%   Copyright (c) 2015, Alex Henderson 
+%   Copyright (c) 2015-2018, Alex Henderson 
 %   Contact email: alex.henderson@manchester.ac.uk
 %   Licenced under the GNU General Public License (GPL) version 3
 %   http://www.gnu.org/copyleft/gpl.html
@@ -19,8 +27,13 @@ function [eigenvectors,eigenvalues,percent_explained_variation] = cva(data,group
 %   If you use this file in your work, please acknowledge the author(s) in
 %   your publications. 
 %
-%   version 1.0 June 2015
+% See also 
+%   undersample.
+%
+%   version 2.0 February 2018
 
+%   version 2.0 February 2018 Alex Henderson
+%   Added code to provide undersampling as a option. Default is undersampling
 %   version 1.0 June 2015 Alex Henderson
 %   initial release
 
@@ -36,13 +49,41 @@ function [eigenvectors,eigenvalues,percent_explained_variation] = cva(data,group
 % Could calculate within-group and between-group covariances at the same
 % time, but this is easier to follow. 
 
+%% Check inputs to see if different sampling methods are requested
+undersample = true;
+if (nargin > 2)
+    argposition = find(cellfun(@(x) strcmpi(x, 'sample') , varargin));
+    if argposition
+        switch lower(varargin{argposition+1})
+            case 'none'
+                undersample = false;
+            case 'undersample'
+                undersample = true;
+            otherwise
+                warning('Sampling type not understood. Falling back to the default of ''undersample''');
+        end        
+        
+        % Remove the parameter from the argument list
+        varargin(argposition+1) = [];
+        varargin(argposition) = []; %#ok<NASGU>
+    end
+end
+
+%% Perform sampling, if requested
+if undersample
+    [uniqueNames,chosenClassMasks] = undersample(groupmembership); %#ok<ASGLU>
+    
+    data = data(any(chosenClassMasks),:);
+    groupmembership = groupmembership(any(chosenClassMasks),:);    
+end
+
 %% Determine number of groups and valid outputs
 % Unique rows doesn't work for cell arrays, so need two versions of the
 % code here. 
 if (size(groupmembership,2) > 1)
-    [uniquegroups, not_required, groupindex] = unique(groupmembership, 'rows');
+    [uniquegroups, not_required, groupindex] = unique(groupmembership, 'rows'); %#ok<ASGLU>
 else
-    [uniquegroups, not_required, groupindex] = unique(groupmembership);
+    [uniquegroups, not_required, groupindex] = unique(groupmembership); %#ok<ASGLU>
 end
 numgroups = size(uniquegroups,1);
 [numspectra, numpts] = size(data);

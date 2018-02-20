@@ -5,6 +5,7 @@ classdef ChiMetadataSheet < handle
     properties
         title
         owner
+        version
         datapath
         filenames
         acquisitiondate
@@ -27,27 +28,28 @@ classdef ChiMetadataSheet < handle
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function this = ChiMetadataSheet(varargin)
             if (nargin > 0) % Support calling with 0 arguments
-            
-                this.history = ChiLogger();
 
-                met = this.metadatareader(varargin{:});
-
-                this.title = met.title;
-                this.owner = met.owner;
-                this.datapath = met.dataPath;
-                this.filenames = met.filenames;
-                this.acquisitiondate = met.acquisitionDate;
-                this.metadatafile = met.metadataFile;
-                this.filter = met.filter;
-                this.numparameters = met.numParameters;
-                this.membershipnames = met.originalParameterNames;
-                this.parametertypes = met.parameterTypes;
-                this.safemembershipnames = met.safeParameterNames;
-
-                this.classmemberships = cell(this.numparameters,1);
-                for i = 1:this.numparameters
-                    this.classmemberships{i} = ChiClassMembership(this.membershipnames{i},met.parameters{i});
-                end
+                this.read(varargin{:});
+%                 this.history = ChiLogger();
+% 
+%                 met = this.metadatareader(varargin{:});
+% 
+%                 this.title = met.title;
+%                 this.owner = met.owner;
+%                 this.datapath = met.dataPath;
+%                 this.filenames = met.filenames;
+%                 this.acquisitiondate = met.acquisitionDate;
+%                 this.metadatafile = met.metadataFile;
+%                 this.filter = met.filter;
+%                 this.numparameters = met.numParameters;
+%                 this.membershipnames = met.originalParameterNames;
+%                 this.parametertypes = met.parameterTypes;
+%                 this.safemembershipnames = met.safeParameterNames;
+% 
+%                 this.classmemberships = cell(this.numparameters,1);
+%                 for i = 1:this.numparameters
+%                     this.classmemberships{i} = ChiClassMembership(this.membershipnames{i},met.parameters{i});
+%                 end
             end
         end
         
@@ -57,6 +59,7 @@ classdef ChiMetadataSheet < handle
  
             x.title = this.title;
             x.owner = this.owner;
+            x.version = this.version;
             x.datapath = this.datapath;
             x.filenames = this.filenames;
             x.acquisitiondate = this.acquisitiondate;
@@ -81,6 +84,67 @@ classdef ChiMetadataSheet < handle
             
         end            
 
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function read(this,filename)
+%             if ~nargout
+%                 stacktrace = dbstack;
+%                 functionname = stacktrace.name;
+%                 err = MException(['CHI:',mfilename,':InputError'], ...
+%                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
+%                 throw(err);
+%             end
+            
+            if exist('filename', 'var')
+                [pathstr,name,ext] = fileparts(filename) ; %#ok<ASGLU>
+                if strcmpi(ext(1:4),'.xls')
+                    met = this.metadatareader(filename);
+                else
+                    err = MException(['CHI:',mfilename,':InputError'], ...
+                        'Filename does not appear to be an Excel file (*.xls or *.xlsx).');
+                    throw(err);
+                end
+            else
+                met = this.metadatareader();
+            end
+
+            this.title = met.title;
+            this.owner = met.owner;
+            this.version = met.version;
+            this.datapath = met.dataPath;
+            this.filenames = met.filenames;
+            this.acquisitiondate = met.acquisitionDate;
+            this.metadatafile = met.metadataFile;
+            this.filter = met.filter;
+            this.numparameters = met.numParameters;
+            this.membershipnames = met.originalParameterNames;
+            this.parametertypes = met.parameterTypes;
+            this.safemembershipnames = met.safeParameterNames;
+
+            this.classmemberships = cell(this.numparameters,1);
+            for i = 1:this.numparameters
+                this.classmemberships{i} = ChiClassMembership(this.membershipnames{i},met.parameters{i});
+            end
+                    
+            this.history = ChiLogger();
+            this.history.add(['Filename: ',this.metadatafile]);
+
+        end                    
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function open(this,varargin)
+            this.read(varargin{:});
+        end
+%         function obj = open(varargin)
+%             if ~nargout
+%                 stacktrace = dbstack;
+%                 functionname = stacktrace.name;
+%                 err = MException(['CHI:',mfilename,':InputError'], ...
+%                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
+%                 throw(err);
+%             end
+%             obj = ChiMetadataSheet.read(varargin{:});
+%         end
+        
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 %         function duplicate = clone(this)
 %             % from https://uk.mathworks.com/matlabcentral/newsreader/view_thread/257925            

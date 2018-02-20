@@ -66,6 +66,12 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
                             throw(err);
                         end
                     end
+                case 2
+                    superClassArgs{1} = varargin{1};
+                    superClassArgs{2} = varargin{2};
+                    superClassArgs{3} = 'true';
+                    superClassArgs{4} = 'wavenumber (cm^{-1})';
+                    superClassArgs{5} = 'absorbance';
                 otherwise
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
             end

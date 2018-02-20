@@ -67,7 +67,7 @@ classdef ChiRamanSpectralCollection < ChiSpectralCollection
                         end
                     end
                 otherwise
-                    utilities.warningnobacktrace('Not all parameters were interpreted. ')
+%                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
             end
             
             this@ChiSpectralCollection(superClassArgs{:});

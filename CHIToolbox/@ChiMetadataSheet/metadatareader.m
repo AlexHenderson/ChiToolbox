@@ -72,7 +72,14 @@ function metadata = loadMetadata(filename)
     end
     
     %% Get raw metadata
-    [dummy,dummy,rawData] = xlsread(filename, sheets{1}); %#ok<ASGLU>
+    [num,txt,rawData] = xlsread(filename, sheets{1});
+    % Excel 'remembers' deleted rows. xlsread imports these as NaNs.
+    % However they're not converted to numbers or text. Therefore we can
+    % determine the number of possible rows by using the lengths of the num
+    % and txt matrixes. The num matrix is 1 shorter since there are no
+    % numbers in the first row of the spreadsheet. 
+    numValidRows = max(size(num,1)+1, size(txt,1));
+    rawData = rawData(1:numValidRows,:);
     
     %% Remove empty columns
     numCols = size(rawData,2);
@@ -82,7 +89,7 @@ function metadata = loadMetadata(filename)
             rawData(:,i) = [];
         end
     end
-    
+
     %% Locate fields inside metadata sheet
     % Identify the title
     
@@ -124,6 +131,7 @@ function metadata = loadMetadata(filename)
     metadata.originalParameterNames = parameterName';
     metadata.parameterTypes = parameterType';
     metadata.metadataFile = filename;    
+    metadata.version = version;
     
     %% Get parameter info
     metadata.filter = struct;
@@ -140,12 +148,12 @@ function metadata = loadMetadata(filename)
                 % If any of the cells contain numbers, we need to convert them to a
                 % string version of the number
                 rawData(:, i) = cellfun(@num2str,rawData(:, i),'UniformOutput',false);
-                [metadata,safeParameterName,dummy,columnData] = buildLogicalFilter(parameterName{i}, rawData(:, i), metadata);
+                [metadata,safeParameterName,dummy,columnData] = buildLogicalFilter(parameterName{i}, rawData(:, i), metadata); %#ok<ASGLU>
                 metadata.safeParameterNames{i} = safeParameterName;
                 metadata.parameters{i} = columnData;
             case parameterTypeOptions{2}
                 % Should be Numeric
-                [metadata,safeParameterName,dummy,columnData] = buildNumericFilter(parameterName{i}, rawData(:, i), metadata);
+                [metadata,safeParameterName,dummy,columnData] = buildNumericFilter(parameterName{i}, rawData(:, i), metadata); %#ok<ASGLU>
                 metadata.safeParameterNames{i} = safeParameterName;
                 metadata.parameters{i} = columnData;
             case parameterTypeOptions{3}
@@ -153,7 +161,7 @@ function metadata = loadMetadata(filename)
                 % If any of the cells contain numbers, we need to convert them to a
                 % string version of the number
                 rawData(:, i) = cellfun(@num2str,rawData(:, i),'UniformOutput',false);
-                [metadata,safeParameterName,dummy,columnData] = buildCategoryFilter(parameterName{i}, rawData(:, i), metadata);
+                [metadata,safeParameterName,dummy,columnData] = buildCategoryFilter(parameterName{i}, rawData(:, i), metadata); %#ok<ASGLU>
                 metadata.safeParameterNames{i} = safeParameterName;
                 metadata.parameters{i} = columnData;
             otherwise
@@ -224,7 +232,7 @@ function [metadata,safeParameterName,filterName,rawData] = buildLogicalFilter(pa
 
     rawData = cell2mat(rawData);
     if ischar(rawData)
-        rawData = str2num(rawData);
+        rawData = str2num(rawData); %#ok<ST2NM>
     end
     rawData = logical(rawData);
     
@@ -247,7 +255,7 @@ function [metadata,safeParameterName,filterName,rawData] = buildNumericFilter(pa
     
     rawData = cell2mat(rawData);
     if ischar(rawData)
-        rawData = str2num(rawData);
+        rawData = str2num(rawData); %#ok<ST2NM>
     end
 
     metadata.filter = generateFilter(rawData, filterName, metadata.filter);

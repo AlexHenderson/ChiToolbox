@@ -9,7 +9,7 @@ Author: Alex Henderson <alex.henderson@manchester.ac.uk>
 
 Start date 17 March 2014 (although coding has been in progress for many years). Still work in progress...
 
-If you find a problem with the Toolbox, please leave a message on the Bitbucket site [https://bitbucket.org/AlexHenderson/chitoolbox/issues](https://bitbucket.org/AlexHenderson/chitoolbox/issues "https://bitbucket.org/AlexHenderson/chitoolbox/issues"), or email Alex. 
+If you find a problem with the Toolbox, please document the 'issue' on the Bitbucket site [https://bitbucket.org/AlexHenderson/chitoolbox/issues](https://bitbucket.org/AlexHenderson/chitoolbox/issues "https://bitbucket.org/AlexHenderson/chitoolbox/issues"), or email Alex. Similarly, requests for new features can be sent in the same way. 
 
 ## File formats
 The following file formats are supported:
@@ -28,8 +28,50 @@ The following file formats are supported:
 - Thermo Fisher Scientific GRAMS SPC (Generic)
 	- Data stored in .spc files using ChiThermoFile
 
+## Licence
+The ChiToolbox is copyright (c) 2014-2018 Alex Henderson   
+It is released under the GNU GPL 3.0 licence, a copy of which is included in the file collection, but which may also be found at [https://www.gnu.org/licenses/gpl-3.0.en.html](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
-## Example usage:
+The licences of the included files, detailed in the Credits section below, are equally or more liberal in nature.  
+
+## Credits
+
+Standing on the shoulders of giants, the following code is included in the Toolbox.
+
+#### Perceptually uniform colormaps
+Version 1.3.1   
+Copyright (c) 2016, Ander Biguri    
+Available from [https://uk.mathworks.com/matlabcentral/fileexchange/51986-perceptually-uniform-colormaps](https://uk.mathworks.com/matlabcentral/fileexchange/51986-perceptually-uniform-colormaps) 
+
+#### error_ellipse
+Version 1.0   
+Copyright (c) 2004, AJ Johnson   
+Available from [https://uk.mathworks.com/matlabcentral/fileexchange/4705-error-ellipse](https://uk.mathworks.com/matlabcentral/fileexchange/4705-error-ellipse)
+
+#### GSTools
+Version 1.3   
+Copyright (c) 2006, Kris De Gussem   
+Available from [https://uk.mathworks.com/matlabcentral/fileexchange/9938-gstools](https://uk.mathworks.com/matlabcentral/fileexchange/9938-gstools)
+
+#### raacampbell/shadedE​rrorBar
+Version 1.65 (downloaded from Github 2018-02-07, commit 1ea286c)   
+Rob Campbell   
+Available from [https://uk.mathworks.com/matlabcentral/fileexchange/26311-raacampbell-shadederrorbar](https://uk.mathworks.com/matlabcentral/fileexchange/26311-raacampbell-shadederrorbar)    
+See also [https://github.com/raacampbell/shadedErrorBar](https://github.com/raacampbell/shadedErrorBar)
+
+#### mksqlite
+Version 2.5   
+Martin Kortmann and Andreas Martin   
+Available from [http://mksqlite.sourceforge.net/](http://mksqlite.sourceforge.net/)    
+See also [https://github.com/AndreasMartin72/mksqlite](https://github.com/AndreasMartin72/mksqlite)
+
+#### sql_object
+Version 1.1   
+Andreas Martin   
+Available from [https://uk.mathworks.com/matlabcentral/fileexchange/58433-using-sqlite-databases-via-objects](https://uk.mathworks.com/matlabcentral/fileexchange/58433-using-sqlite-databases-via-objects)    
+
+
+## Example usage
 
 ### Example 1
 Assuming you have a .spc file in this location: C:\mydata\myfile.spc

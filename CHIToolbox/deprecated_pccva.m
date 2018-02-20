@@ -1,4 +1,6 @@
-function [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = pccva(data,groupmembership,pcs)
+function [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = deprecated_pccva(data,groupmembership,pcs)
+
+warning('Please consider using the ChiToolbox instead. Ask Alex for details')
 
 % PCCVA Principal Components - Canonical Variates Analysis
 % usage:

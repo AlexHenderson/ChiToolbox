@@ -125,6 +125,9 @@ try
     % Begin transaction
     metadataDB.Begin;   
 
+    % Change the default management of NULL values
+    metadataDB.NullAsNaN = 1;
+    
     % Create a table for the metadata sheet overarching information
     createHeadersStr = 'CREATE TABLE headers (version REAL, title TEXT, owner TEXT, datapath TEXT, numvariables INTEGER, numobservations INTEGER)';
     metadataDB.exec(createHeadersStr);
@@ -139,7 +142,7 @@ try
     dquote = '"';
     
     % Create a table for the actual metadata
-    createDataStr = 'CREATE TABLE data ("idx" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"filename" TEXT, "acquired" TEXT';
+    createDataStr = 'CREATE TABLE metadata ("idx" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"filename" TEXT, "acquired" TEXT';
     for i = 1:numVariables
         createDataStr = horzcat(createDataStr, comma, dquote, parameterName{i}, dquote); %#ok<AGROW>
         switch lower(parameterType{i}(1))
@@ -160,11 +163,11 @@ try
     for row = 1:numObservations
         % If the acquisition date is not available, make it a NULL
         acqdate = acquisitionDate{row}; 
-        if (any(isnan(acqdate)) || isempty(acqdate))
-            acqdate = 'NULL';
-        end
+%         if (any(isnan(acqdate)) || isempty(acqdate))
+%             acqdate = 'NULL';
+%         end
 
-        insertDataStr = sprintf('INSERT INTO data VALUES(%d,"%s","%s"', row, filenames{row}, acqdate);
+        insertDataStr = sprintf('INSERT INTO metadata VALUES(%d,"%s","%s"', row, filenames{row}, acqdate);
         for col = 1:numVariables
             value = rawSheetData{row,col};
             switch lower(parameterType{col}(1))

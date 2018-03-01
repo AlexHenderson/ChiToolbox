@@ -1,4 +1,4 @@
-function output = ChiKFoldPCCVA(data,numFolds,pcs)
+function [output,kfold_pccva_result] = ChiKFoldPCCVA(data,numFolds,pcs)
 
 % function: ChiKFoldPCCVA
 %           k-fold cross-validation using PC-CVA
@@ -201,22 +201,26 @@ for k = 1:numFolds
     foldInfo.testClassIds = testClassIds;
     
     %% PCCVA of the training set
-    [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = pccva(trainingSet,trainingClassIds,pcs);
+%     [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = pccva(trainingSet,trainingClassIds,pcs);
 
-    foldInfo.pccva.pcloadings = pcloadings;
-    foldInfo.pccva.pcscores = pcscores;
-    foldInfo.pccva.pcexplained = pcexplained;
-    foldInfo.pccva.pcs = pcs;
-    foldInfo.pccva.cvloadings = cvloadings;
-    foldInfo.pccva.cvscores = cvscores;
-    foldInfo.pccva.cvexplained = cvexplained;
-    foldInfo.pccva.cvs = cvs;
-    foldInfo.pccva.cveigenvectors = cveigenvectors;
-    foldInfo.pccva.cveigenvalues = cveigenvalues;
+    pccvaResult = data.pccva(pcs);
+    
+    foldInfo.pccvaResult = pccvaResult;
+
+%     foldInfo.pccva.pcloadings = pcloadings;
+%     foldInfo.pccva.pcscores = pcscores;
+%     foldInfo.pccva.pcexplained = pcexplained;
+%     foldInfo.pccva.pcs = pcs;
+%     foldInfo.pccva.cvloadings = cvloadings;
+%     foldInfo.pccva.cvscores = cvscores;
+%     foldInfo.pccva.cvexplained = cvexplained;
+%     foldInfo.pccva.cvs = cvs;
+%     foldInfo.pccva.cveigenvectors = cveigenvectors;
+%     foldInfo.pccva.cveigenvalues = cveigenvalues;
     
     %% Project the test data into the model
-    pcProjection = testSet * pcloadings;
-    cvProjection = pcProjection * cveigenvectors * diag(cveigenvalues);
+    pcProjection = testSet * pccvaResult.PCAOutcome.loadings;
+    cvProjection = pcProjection * pccvaResult.eigenvectors * diag(pccvaResult.eigenvalues);
 
     foldInfo.projection = cvProjection;
 
@@ -224,7 +228,7 @@ for k = 1:numFolds
     foldDistances = zeros(size(testSet,1), numUniqueClasses);
 
     for i = 1:numUniqueClasses
-        classcvscores = cvscores((trainingClassIds == i), :);
+        classcvscores = pccvaResult.scores((trainingClassIds == i), :);
         foldDistances(:,i) = mahal(cvProjection, classcvscores);
     end
     

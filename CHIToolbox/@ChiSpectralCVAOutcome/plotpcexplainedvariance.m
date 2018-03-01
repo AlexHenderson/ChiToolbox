@@ -40,6 +40,6 @@ function plotpcexplainedvariance(this,varargin)
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/Chitoolbox
 
-this.PCAOutcome.plotexplainedvariance(varargin{:});
+this.pca.plotexplainedvariance(varargin{:});
 
 end

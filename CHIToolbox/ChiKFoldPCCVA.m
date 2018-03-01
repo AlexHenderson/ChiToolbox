@@ -163,8 +163,8 @@ kfold_pccva_result.partitions = cvpartitions;
 % variance, or using the user defined number.
 
 if ~exist('pcs','var')
-    PCAOutcome = ChiSpectralPCA(data);
-    cumulative_explained_variance = cumsum(PCAOutcome.explained);
+    pca = ChiSpectralPCA(data);
+    cumulative_explained_variance = cumsum(pca.explained);
 
     % Determine valid PCs
     pcs = find((cumulative_explained_variance > 95), 1, 'first');
@@ -205,7 +205,7 @@ for k = 1:numFolds
 
     pccvaResult = data.pccva(pcs);
     
-    foldInfo.pccvaResult = pccvaResult;
+    foldInfo.pccva = pccvaResult;
 
 %     foldInfo.pccva.pcloadings = pcloadings;
 %     foldInfo.pccva.pcscores = pcscores;
@@ -219,7 +219,7 @@ for k = 1:numFolds
 %     foldInfo.pccva.cveigenvalues = cveigenvalues;
     
     %% Project the test data into the model
-    pcProjection = testSet * pccvaResult.PCAOutcome.loadings;
+    pcProjection = testSet * pccvaResult.pca.loadings;
     cvProjection = pcProjection * pccvaResult.eigenvectors * diag(pccvaResult.eigenvalues);
 
     foldInfo.projection = cvProjection;
@@ -320,4 +320,4 @@ end
 %% Collect the information from each fold into the global output
 kfold_pccva_result.folds = folds;
 
-output = ChiKFoldOutcome(numFolds,folds,pcs);
+output = ChiKFoldOutcome(folds);

@@ -5,8 +5,6 @@ function output = ChiPCCVA(this,pcs)
 % usage:
 %     [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = ChiPCCVA(data,groupmembership);
 %     [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = ChiPCCVA(data,groupmembership,pcs);
-%     [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = ChiPCCVA(data,groupmembership);
-%     [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = ChiPCCVA(data,groupmembership,pcs);
 %
 % input:
 %     data - rows of spectra

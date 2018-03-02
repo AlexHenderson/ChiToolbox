@@ -123,7 +123,12 @@ else
 end                      
 
 if (xvals(end) < xvals(1))
-    xvals = flip(xvals);
+    % flip was introduced in R2013b
+    if iscolumn(xvals)
+        xvals = flipud(xvals);
+    else
+        xvals = fliplr(xvals);
+    end        
     data = fliplr(data);
 end
 

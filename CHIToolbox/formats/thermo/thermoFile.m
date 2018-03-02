@@ -84,13 +84,16 @@ if (length(filenames) == 1)
             if strfind(lower(x_label),'raman') %#ok<STRIFCND>
                 % Raman data
                 obj = ChiRamanSpectralCollection(xvals,data,false,x_label,y_label);
+                obj.filenames = filenames;                                
             else
                 if strfind(lower(x_label),'wavenumber') %#ok<STRIFCND>
                     % IR data
                     obj = ChiIRSpectralCollection(xvals,data,true,x_label,y_label);
+                    obj.filenames = filenames;                                
                 else
                     % Generic data
                     obj = ChiSpectralCollection(xvals,data,false,x_label,y_label);
+                    obj.filenames = filenames;                                
                 end
             end
             
@@ -130,15 +133,18 @@ else
     if strfind(lower(x_label),'raman') %#ok<STRIFCND>
         % Raman data
         obj = ChiRamanSpectralCollection(xvals,data,false,x_label,y_label);
+        obj.filenames = filenames;                                
         filetype = 'raman';
     else
         if strfind(lower(x_label),'wavenumber') %#ok<STRIFCND>
             % IR data
             obj = ChiIRSpectralCollection(xvals,data,true,x_label,y_label);
-        filetype = 'ir';
+            obj.filenames = filenames;                                
+            filetype = 'ir';
         else
             % Generic data
             obj = ChiSpectralCollection(xvals,data,false,x_label,y_label);
+            obj.filenames = filenames;                                
             filetype = 'generic';
         end
     end
@@ -169,10 +175,13 @@ else
             switch filetype
                 case 'raman'
                     object = ChiRamanSpectralCollection(xvals,data,false,x_label,y_label);
+                    obj.filenames = filenames;                                
                 case 'ir'
                     object = ChiIRSpectralCollection(xvals,data,true,x_label,y_label);
+                    obj.filenames = filenames;                                
                 otherwise
                     object = ChiSpectralCollection(xvals,data,false,x_label,y_label);
+                    obj.filenames = filenames;                                
             end
         end               
         obj.append(object);

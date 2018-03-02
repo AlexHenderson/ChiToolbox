@@ -104,6 +104,7 @@ classdef ChiRenishawFile < handle
                         obj.filename = filename;
                     else
                         obj = ChiRamanSpectralCollection(ramanshift,data,true,x_label,y_label);
+                        obj.filenames = filenames;
                     end               
                 else
                     obj = ChiRamanImage(ramanshift,data,true,x_label,y_label,width,height);
@@ -118,6 +119,7 @@ classdef ChiRenishawFile < handle
                     if (i == 1)
                         % Workaround for broken ChiSpectralCollection.append
                         obj = ChiRamanSpectralCollection(ramanshift,data,true,x_label,y_label);
+                        obj.filenames = filenames;                        
                     else
                         if ((height == 1) && (width == 1))
                             % We have one or more spectra rather than an image
@@ -126,10 +128,12 @@ classdef ChiRenishawFile < handle
                                 obj.append(ChiRamanSpectrum(ramanshift,data,true,x_label,y_label));
                             else
                                 obj.append(ChiRamanSpectralCollection(ramanshift,data,true,x_label,y_label));
+                                obj.filenames = filenames;                                
                             end               
                         else
                             % An image
                             obj.append(ChiRamanSpectralCollection(ramanshift,data,true,x_label,y_label));
+                            obj.filenames = filenames;                                
                         end
                     end
                 end

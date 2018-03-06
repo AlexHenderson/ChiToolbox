@@ -47,6 +47,10 @@ axislabelstub = 'score on PC ';
 errorcode = 'Chi:ChiSpectralPCAOutcome';
 errormessagestub = 'Requested principal component is out of range. Max PCs = ';
 
+colours = 'bgrcmky';
+axiscolour = 'k';
+decplaces = 3;
+
 if ((pcx > this.numpcs) || (pcx < 1))
     err = MException([errorcode,':OutOfRange'], ...
         [errormessagestub, num2str(this.numpcs), '.']);
@@ -67,11 +71,6 @@ else
     windowtitle = [windowtitlestub, num2str(pcy), ' and ' num2str(pcx)];
     figure('Name',windowtitle,'NumberTitle','off');
 end    
-
-% colours = 'bgrcmky';
-colours = get(gca,'colororder');
-axiscolour = 'k';
-decplaces = 3;
 
 if ~isempty(this.classmembership)
     gscatter(this.scores(:,pcx), this.scores(:,pcy), this.classmembership.labels, colours, '.',varargin{:});

@@ -34,6 +34,6 @@ function plotpcloading(this,pc,varargin)
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/Chitoolbox
 
-this.pca.plotloading(pc,varargin{:});
+this.PCAOutcome.plotloading(pc,varargin{:});
 
 end

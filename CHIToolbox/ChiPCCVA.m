@@ -5,6 +5,8 @@ function output = ChiPCCVA(this,pcs)
 % usage:
 %     [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = ChiPCCVA(data,groupmembership);
 %     [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = ChiPCCVA(data,groupmembership,pcs);
+%     [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = ChiPCCVA(data,groupmembership);
+%     [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = ChiPCCVA(data,groupmembership,pcs);
 %
 % input:
 %     data - rows of spectra
@@ -45,19 +47,19 @@ function output = ChiPCCVA(this,pcs)
 
 %% Perform principal components analysis
 
-pca = ChiSpectralPCA(this);
+PCAOutcome = ChiSpectralPCA(this);
 
 %% Determine valid PCs
 % Valid PCs determined by the number required to reach 95% explained
 % variance, or using the user defined number. 
 if ~exist('pcs','var')
-    cumpcexplained = cumsum(pca.explained);
+    cumpcexplained = cumsum(PCAOutcome.explained);
     pcs = find((cumpcexplained > 95), 1, 'first');
 end
 
 % Only use valid pcs
-pca.loadings = pca.loadings(:,1:pcs);
-pca.scores = pca.scores(:,1:pcs);
+PCAOutcome.loadings = PCAOutcome.loadings(:,1:pcs);
+PCAOutcome.scores = PCAOutcome.scores(:,1:pcs);
 
 %% Determine number of valid canonical variates
 % Number of cvs is number-of-groups - 1
@@ -69,14 +71,14 @@ if (pcs < numcvs)
 end
 
 %% Perform canonical variates analysis
-[cveigenvectors,cveigenvalues,cvpercent_explained_variation] = ChiCVA(pca.scores,this.classmembership.labels);
+[cveigenvectors,cveigenvalues,cvpercent_explained_variation] = ChiCVA(PCAOutcome.scores,this.classmembership.labels);
 
 %% Generate output by mapping back to the original data
-cvloadings = pca.loadings * cveigenvectors;
-cvscores = pca.scores * (cveigenvectors * diag(cveigenvalues));
+cvloadings = PCAOutcome.loadings * cveigenvectors;
+cvscores = PCAOutcome.scores * (cveigenvectors * diag(cveigenvalues));
 cvexplained = cvpercent_explained_variation;
 
 %% Create a class to hold the output
 output = ChiSpectralCVAOutcome(cvscores,cvloadings,cvexplained,numcvs,...
-                               cveigenvectors,cveigenvalues,pcs,pca);
+                               cveigenvectors,cveigenvalues,pcs,PCAOutcome);
 

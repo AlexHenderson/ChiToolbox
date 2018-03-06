@@ -48,15 +48,15 @@ function [eigenvectors,eigenvalues,percent_explained_variation] = ChiCVA(data,gr
 
 
 %% Check inputs to see if different sampling methods are requested
-undersampleRequested = true;
+undersample = true;
 if (nargin > 2)
     argposition = find(cellfun(@(x) strcmpi(x, 'sample') , varargin));
     if argposition
         switch lower(varargin{argposition+1})
             case 'none'
-                undersampleRequested = false;
+                undersample = false;
             case 'undersample'
-                undersampleRequested = true;
+                undersample = true;
             otherwise
                 warning('Sampling type not understood. Falling back to the default of ''undersample''');
         end        
@@ -68,11 +68,11 @@ if (nargin > 2)
 end
 
 %% Perform sampling, if requested
-if undersampleRequested
-    chosen = utilities.undersample(groupmembership);
+if undersample
+    [uniqueNames,chosenClassMasks] = undersample(groupmembership); %#ok<ASGLU>
     
-    data = data(chosen,:);
-    groupmembership = groupmembership(chosen,:);    
+    data = data(any(chosenClassMasks),:);
+    groupmembership = groupmembership(any(chosenClassMasks),:);    
 end
 
 %% Determine number of groups and valid outputs

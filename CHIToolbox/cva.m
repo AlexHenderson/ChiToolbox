@@ -41,7 +41,7 @@ function [eigenvectors,eigenvalues,percent_explained_variation] = cva(data,group
 % A modification of canonical variates analysis to handle highly collinear multivariate data
 % Lars Nørgaard, Rasmus Bro, Frank Westad, Søren Balling
 % Journal of Chemometrics 20 (2006) 425-435
-% https://doi.org/10.1002/cem.1017
+% http://dx.doiorg/10.1002/cem.1017
 %
 % See also...
 % http://www.nag.co.uk/numeric/fn/manual/pdf/c28/c28int_fn04.pdf
@@ -50,15 +50,15 @@ function [eigenvectors,eigenvalues,percent_explained_variation] = cva(data,group
 % time, but this is easier to follow. 
 
 %% Check inputs to see if different sampling methods are requested
-undersampleRequired = true;
+undersample = true;
 if (nargin > 2)
     argposition = find(cellfun(@(x) strcmpi(x, 'sample') , varargin));
     if argposition
         switch lower(varargin{argposition+1})
             case 'none'
-                undersampleRequired = false;
+                undersample = false;
             case 'undersample'
-                undersampleRequired = true;
+                undersample = true;
             otherwise
                 warning('Sampling type not understood. Falling back to the default of ''undersample''');
         end        
@@ -70,7 +70,7 @@ if (nargin > 2)
 end
 
 %% Perform sampling, if requested
-if undersampleRequired
+if undersample
     [uniqueNames,chosenClassMasks] = undersample(groupmembership); %#ok<ASGLU>
     
     data = data(any(chosenClassMasks),:);

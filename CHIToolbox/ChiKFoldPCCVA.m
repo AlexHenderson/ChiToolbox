@@ -1,4 +1,4 @@
-function [output,kfold_pccva_result] = ChiKFoldPCCVA(data,numFolds,pcs)
+function output = ChiKFoldPCCVA(data,numFolds,pcs)
 
 % function: ChiKFoldPCCVA
 %           k-fold cross-validation using PC-CVA
@@ -163,8 +163,8 @@ kfold_pccva_result.partitions = cvpartitions;
 % variance, or using the user defined number.
 
 if ~exist('pcs','var')
-    pca = ChiSpectralPCA(data);
-    cumulative_explained_variance = cumsum(pca.explained);
+    PCAOutcome = ChiSpectralPCA(data);
+    cumulative_explained_variance = cumsum(PCAOutcome.explained);
 
     % Determine valid PCs
     pcs = find((cumulative_explained_variance > 95), 1, 'first');
@@ -201,26 +201,22 @@ for k = 1:numFolds
     foldInfo.testClassIds = testClassIds;
     
     %% PCCVA of the training set
-%     [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = pccva(trainingSet,trainingClassIds,pcs);
+    [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = pccva(trainingSet,trainingClassIds,pcs);
 
-    pccvaResult = data.pccva(pcs);
-    
-    foldInfo.pccva = pccvaResult;
-
-%     foldInfo.pccva.pcloadings = pcloadings;
-%     foldInfo.pccva.pcscores = pcscores;
-%     foldInfo.pccva.pcexplained = pcexplained;
-%     foldInfo.pccva.pcs = pcs;
-%     foldInfo.pccva.cvloadings = cvloadings;
-%     foldInfo.pccva.cvscores = cvscores;
-%     foldInfo.pccva.cvexplained = cvexplained;
-%     foldInfo.pccva.cvs = cvs;
-%     foldInfo.pccva.cveigenvectors = cveigenvectors;
-%     foldInfo.pccva.cveigenvalues = cveigenvalues;
+    foldInfo.pccva.pcloadings = pcloadings;
+    foldInfo.pccva.pcscores = pcscores;
+    foldInfo.pccva.pcexplained = pcexplained;
+    foldInfo.pccva.pcs = pcs;
+    foldInfo.pccva.cvloadings = cvloadings;
+    foldInfo.pccva.cvscores = cvscores;
+    foldInfo.pccva.cvexplained = cvexplained;
+    foldInfo.pccva.cvs = cvs;
+    foldInfo.pccva.cveigenvectors = cveigenvectors;
+    foldInfo.pccva.cveigenvalues = cveigenvalues;
     
     %% Project the test data into the model
-    pcProjection = testSet * pccvaResult.pca.loadings;
-    cvProjection = pcProjection * pccvaResult.eigenvectors * diag(pccvaResult.eigenvalues);
+    pcProjection = testSet * pcloadings;
+    cvProjection = pcProjection * cveigenvectors * diag(cveigenvalues);
 
     foldInfo.projection = cvProjection;
 
@@ -228,7 +224,7 @@ for k = 1:numFolds
     foldDistances = zeros(size(testSet,1), numUniqueClasses);
 
     for i = 1:numUniqueClasses
-        classcvscores = pccvaResult.scores((trainingClassIds == i), :);
+        classcvscores = cvscores((trainingClassIds == i), :);
         foldDistances(:,i) = mahal(cvProjection, classcvscores);
     end
     
@@ -320,4 +316,4 @@ end
 %% Collect the information from each fold into the global output
 kfold_pccva_result.folds = folds;
 
-output = ChiKFoldOutcome(folds);
+output = ChiKFoldOutcome(numFolds,folds,pcs);

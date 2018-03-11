@@ -13,11 +13,49 @@ function ChiUpdate()
 % simply downloaded. The Git program is also required. This can be found
 % at: https://git-scm.com/
 
-here = pwd();
-filename = mfilename('fullpath');
-[pathstr,name,ext] = fileparts(filename);
-cd(pathstr);
-system('git pull origin master');
-addpath(genpath(pwd));
-savepath();
-cd(here);
+
+% Store the current location for use later
+whereWeStartedFrom = pwd();
+
+try
+    disp('Checking code repository for changes');
+
+    % Check git is available
+    [status,cmdout] = system('git --version'); %#ok<ASGLU>
+    if status
+        err = MException(['CHI:',mfilename,':ResourceError'], ...
+            'The Git program is not available. Please install it and retry (https://git-scm.com/)');
+        throw(err);
+    end
+    
+    % Work out where this m-file is located
+    filename = mfilename('fullpath');
+    [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
+
+    % Move to that location. This is the root of the ChiToolbox
+    cd(pathstr);
+    
+    % Connect to git repository and update codebase
+    status = system('git pull origin master'); %#ok<NASGU>
+
+    % Since the file and folder structure may have changed, rebuild the path
+    disp('Rebuilding MATLAB path');
+    addpath(genpath(pwd));
+    savepath();
+    
+    % Return to the original directory
+    cd(whereWeStartedFrom);
+    disp('Done!');
+catch ME
+    % Return to the original directory
+    cd(whereWeStartedFrom);
+
+    % Report problem to user
+    switch ME.identifier
+        case ['CHI:',mfilename,':ResourceError']
+            utilities.warningnobacktrace(ME.message);
+        otherwise
+            utilities.warningnobacktrace('Could not update ChiToolbox');
+    end    
+end
+    

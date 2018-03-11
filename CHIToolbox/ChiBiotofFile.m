@@ -102,6 +102,7 @@ classdef ChiBiotofFile < handle
                     obj.filename = filename;
                 else
                     obj = ChiToFMassSpectralCollection(mass,data);
+                    obj.filenames = filenames;
                 end               
             else
                 % ToDo: convert to ToF image

@@ -56,6 +56,7 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
         xlabel = '' % text for abscissa label on plots (default = empty)
         ylabel = '' % text for ordinate label on plots (default = empty)
         classmembership % an instance of ChiClassMembership
+        filenames % cell array of filenames if opened from a list of files
         history
     end
 
@@ -85,6 +86,7 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                         this.reversex = s.reversex;
                         this.xlabel = s.xlabel;
                         this.ylabel = s.ylabel;
+                        this.filenames = cellstr(s.filename);
                         if ~isempty(s.history)
                             this.history = s.history.clone();
                             this.history.add(['Generated from a ', class(s), '. Filename: ', s.filename]);                        
@@ -186,6 +188,8 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
             obj.reversex = this.reversex;
             obj.xlabel = this.xlabel;
             obj.ylabel = this.ylabel;
+            obj.filenames = this.filenames;
+            
             if ~isempty(this.classmembership)
                 obj.classmembership = this.classmembership.clone();
             end

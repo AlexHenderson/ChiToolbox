@@ -36,7 +36,7 @@ function plotpcloadings(this,pc,varargin)
 
 % Simply a wrapper around the plotloading function
 
-this.PCAOutcome.plotloading(pc,varargin{:})
+this.pca.plotloading(pc,varargin{:})
 
 end
 

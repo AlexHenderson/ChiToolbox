@@ -60,7 +60,7 @@ colours = 'bgrcmky';
 axiscolour = 'k';
 decplaces = 3;
 
-if isempty(this.PCAOutcome.classmembership)
+if isempty(this.pca.classmembership)
     err = MException([errorcode,':InputError'], ...
         'This collection has no classmembership. Confidence ellipses cannot be drawn.');
     throw(err);
@@ -92,7 +92,7 @@ if ~exist('percentconf','var')
     percentconf = 95;
 end
 
-gscatter(this.scores(:,cvx), this.scores(:,cvy), this.PCAOutcome.classmembership.labels, colours, '.',varargin{:});
+gscatter(this.scores(:,cvx), this.scores(:,cvy), this.pca.classmembership.labels, colours, '.',varargin{:});
 
 %% Draw the confidence ellipses
 if ~exist('error_ellipse', 'file')
@@ -102,9 +102,9 @@ else
     % Draw confidence ellipses at the requested level
     hold on;
     colouridx = 0;
-    for i = 1:this.PCAOutcome.classmembership.numuniquelabels
-        thisgroupX = this.scores(this.PCAOutcome.classmembership.labelids == i, cvx);
-        thisgroupY = this.scores(this.PCAOutcome.classmembership.labelids == i, cvy);
+    for i = 1:this.pca.classmembership.numuniquelabels
+        thisgroupX = this.scores(this.pca.classmembership.labelids == i, cvx);
+        thisgroupY = this.scores(this.pca.classmembership.labelids == i, cvy);
         groupmeanX = mean(thisgroupX);
         groupmeanY = mean(thisgroupY);
         groupcov = cov(thisgroupX, thisgroupY);

@@ -81,7 +81,7 @@ decplaces = 3;
 
 if (this.numcvs > 1)
     % We can use a scatter plot
-    gscatter(this.scores(:,cvx), this.scores(:,cvy), this.PCAOutcome.classmembership.labels, colours, '.',varargin{:});
+    gscatter(this.scores(:,cvx), this.scores(:,cvy), this.pca.classmembership.labels, colours, '.',varargin{:});
     xlabel([axislabelstub, num2str(cvx), ' (', num2str(this.explained(cvx),decplaces), '%)']);
     ylabel([axislabelstub, num2str(cvy), ' (', num2str(this.explained(cvy),decplaces), '%)']);
     title([titlestub, num2str(cvx), ' and ', num2str(cvy), ' (',num2str(this.pcs), ' pcs)']);
@@ -94,8 +94,8 @@ if (this.numcvs > 1)
     
 else
     % Only a single canonical variate so we can use a box plot
-    boxplot(this.scores,this.PCAOutcome.classmembership.labels, 'jitter', 0.2, 'notch','on', 'orientation','vertical',varargin{:});
-    xlabel(this.PCAOutcome.classmembership.title);
+    boxplot(this.scores,this.pca.classmembership.labels, 'jitter', 0.2, 'notch','on', 'orientation','vertical',varargin{:});
+    xlabel(this.pca.classmembership.title);
     ylabel('score on cv 1');
     title('Score on canonical variate 1');    
 end

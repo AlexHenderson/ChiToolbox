@@ -43,6 +43,6 @@ function plotpcscoresconf(this,pcx,pcy,varargin)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-this.PCAOutcome.plotscoresconf(pcx,pcy,varargin{:});
+this.pca.plotscoresconf(pcx,pcy,varargin{:});
 
 end

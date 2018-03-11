@@ -10,7 +10,7 @@ classdef ChiSpectralCVAOutcome < handle
         eigenvectors;
         eigenvalues;        
         pcs;        % 95% cumulative explained variance
-        PCAOutcome; % ChiSpectralPCAOutcome
+        pca; % ChiSpectralPCAOutcome
         history;
     end
     
@@ -35,7 +35,7 @@ classdef ChiSpectralCVAOutcome < handle
                 this.eigenvectors = eigenvectors;
                 this.eigenvalues = eigenvalues;
                 this.pcs = pcs;
-                this.PCAOutcome = PCAOutcome;
+                this.pca = PCAOutcome;
             end 
         end
         

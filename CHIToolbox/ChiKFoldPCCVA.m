@@ -163,8 +163,8 @@ kfold_pccva_result.partitions = cvpartitions;
 % variance, or using the user defined number.
 
 if ~exist('pcs','var')
-    PCAOutcome = ChiSpectralPCA(data);
-    cumulative_explained_variance = cumsum(PCAOutcome.explained);
+    pca = ChiSpectralPCA(data);
+    cumulative_explained_variance = cumsum(pca.explained);
 
     % Determine valid PCs
     pcs = find((cumulative_explained_variance > 95), 1, 'first');

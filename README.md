@@ -70,6 +70,10 @@ Version 1.1
 Andreas Martin   
 Available from [https://uk.mathworks.com/matlabcentral/fileexchange/58433-using-sqlite-databases-via-objects](https://uk.mathworks.com/matlabcentral/fileexchange/58433-using-sqlite-databases-via-objects)    
 
+#### cividis
+Jamie R. Nuñez, Christopher R. Anderton, Ryan S. Renslow   
+Available from [https://github.com/fiji/fiji/blob/master/luts/cividis.txt](https://github.com/fiji/fiji/blob/master/luts/cividis.txt)   
+See also [https://arxiv.org/abs/1712.01662](https://arxiv.org/abs/1712.01662 "https://arxiv.org/abs/1712.01662")    
 
 ## Example usage
 

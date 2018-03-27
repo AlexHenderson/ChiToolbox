@@ -72,8 +72,13 @@ Available from [https://uk.mathworks.com/matlabcentral/fileexchange/58433-using-
 
 #### cividis
 Jamie R. Nuñez, Christopher R. Anderton, Ryan S. Renslow   
-Available from [https://github.com/fiji/fiji/blob/master/luts/cividis.txt](https://github.com/fiji/fiji/blob/master/luts/cividis.txt)   
+Available from [https://github.com/pnnl/cmaputil](https://github.com/pnnl/cmaputil)   
 See also [https://arxiv.org/abs/1712.01662](https://arxiv.org/abs/1712.01662 "https://arxiv.org/abs/1712.01662")    
+
+#### sgolayfilt
+Version 1.0   
+Andrew D. Horchler    
+Available from [https://github.com/horchler/sgolayfilt](https://github.com/horchler/sgolayfilt)   
 
 ## Example usage
 

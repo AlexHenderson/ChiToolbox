@@ -1,0 +1,3 @@
+This code is placed inside a package (using the + sign at the beginning 
+of the folder name) to prevent clashes with the sgolayfilt function in 
+the Signal Processing Toolbox. 

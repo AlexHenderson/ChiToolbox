@@ -80,6 +80,11 @@ Version 1.0
 Andrew D. Horchler    
 Available from [https://github.com/horchler/sgolayfilt](https://github.com/horchler/sgolayfilt)   
 
+#### RMieS
+Version 5.0   
+Paul Bassan    
+Available from [https://github.com/GardnerLabUoM/RMieS](https://github.com/GardnerLabUoM/RMieS)   
+
 ## Example usage
 
 ### Example 1

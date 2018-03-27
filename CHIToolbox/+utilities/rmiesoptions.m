@@ -27,6 +27,10 @@ classdef rmiesoptions < handle
 %     spacings = 10;            Number of values for each scattering parameter default 10
 %     orthogonalisation = 1;    Orthogonalisation ('No' == 0, 'Yes' == 1) (1 recommended)
 %     reference = 1;            Which reference spectrum ('Matrigel' == 1, 'Simulated' == 2)
+% 
+%   For more information on the parameters and their usage, see the
+%   readme.md file on the Github repository
+%   https://github.com/GardnerLabUoM/RMieS/blob/master/README.md
 %
 % Copyright (c) 2014-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.

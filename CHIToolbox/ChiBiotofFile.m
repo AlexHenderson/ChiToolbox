@@ -79,9 +79,9 @@ classdef ChiBiotofFile < handle
             
             % Let another function handle reading the files
             if exist('filenames', 'var')
-                [mass, data, height, width, filename] = biotofFile(filenames);
+                [mass, data, height, width] = biotofFile(filenames);
             else
-                [mass, data, height, width, filename] = biotofFile();
+                [mass, data, height, width, filenames] = biotofFile();
             end
                 
 %             % Check whether the files are OK for a Biotof reader
@@ -99,7 +99,7 @@ classdef ChiBiotofFile < handle
                 % Check to see if we have a single spectrum or a profile
                 if (numel(data) == numel(mass))
                     obj = ChiToFMassSpectrum(mass,data);
-                    obj.filename = filename;
+                    obj.filename = filenames;
                 else
                     obj = ChiToFMassSpectralCollection(mass,data);
                     obj.filenames = filenames;
@@ -107,9 +107,11 @@ classdef ChiBiotofFile < handle
             else
                 % ToDo: convert to ToF image
                 obj = ChiImage(mass,data,false,x_label,y_label,width,height);
-                obj.filename = filename;
+                obj.filename = filenames;
             end
-            obj.history.add(['filename: ', filename]);
+            for i = 1:size(filenames,1)
+                obj.history.add(['filename: ', filenames{i}]);
+            end
                 
         end     % function read
         

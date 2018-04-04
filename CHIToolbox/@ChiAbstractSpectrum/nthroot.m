@@ -15,7 +15,7 @@ function obj = nthroot(this,level)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   nthroot.
+%   nthroot sqrt cubert quadrt.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

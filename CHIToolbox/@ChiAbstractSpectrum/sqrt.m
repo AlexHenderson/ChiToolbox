@@ -15,7 +15,7 @@ function obj = sqrt(this)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   sqrt nthroot.
+%   sqrt cubert quadrt nthroot.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

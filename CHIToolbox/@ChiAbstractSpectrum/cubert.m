@@ -1,21 +1,21 @@
-function obj = cubrt(this)
+function obj = cubert(this)
 
-% cubrt  Takes the cube root of the data.
+% cubert  Takes the cube root of the data.
 %
 % Syntax
-%   cubrt();
-%   obj = cubrt();
+%   cubert();
+%   obj = cubert();
 %
 % Description
-%   cubrt() takes the cube root of the data.
+%   cubert() takes the cube root of the data.
 % 
-%   obj = cubrt() clones the object before taking the cube root. 
+%   obj = cubert() clones the object before taking the cube root. 
 %
 % Copyright (c) 2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   sqrt nthroot.
+%   sqrt quadrt nthroot.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

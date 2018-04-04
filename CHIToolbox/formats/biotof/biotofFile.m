@@ -1,4 +1,4 @@
-function [mass, data, height, width, filename] = biotofFile(filenames)
+function [mass, data, height, width, filenames] = biotofFile(filenames)
 
 %   Function: biotofFile
 %   Usage: [mass, data, height, width, filenames] = biotofFile();
@@ -44,16 +44,16 @@ if (~exist('filenames', 'var'))
     
 end
 
-if iscell(filenames)
-    filename = filenames{1};
-else
-    filename = filenames;
-end
-[pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
+% if iscell(filenames)
+%     filename = filenames{1};
+% else
+%     filename = filenames;
+% end
+[pathstr,name,ext] = fileparts(filenames{1}); %#ok<ASGLU>
 
 switch lower(ext)
     case '.xyt'
-        [data, mass] = xyt(filename); 
+        [data, mass] = xyt(filenames{1}); 
         height = 256;
         width = 256;
     case '.dat'
@@ -61,7 +61,7 @@ switch lower(ext)
         height = 1;
         width = 1;
     otherwise
-        error(['problem reading Biotof file: ', filename]);
+        error(['problem reading Biotof file: ', filenames{1}]);
 end
         
 end % function biotofFile

@@ -33,7 +33,7 @@ if nargout
     obj = this.clone();
     % Not a great approach, but quite generic. Prevents errors if the
     % function name changes
-    command = ['obj.', mfilename, '(level)'];
+    command = ['obj.', mfilename, '();'];
     eval(command);  
 else
     % We are expecting to modified this object in situ

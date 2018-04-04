@@ -75,11 +75,11 @@ for i=1:numberoffiles
        lowmass=max(mass(1), mass_i(1));
        highmass=min(mass(end), mass_i(end));
        
-       idx=find_value2(mass,[lowmass,highmass]);
+       idx=utilities.find_in_vector(mass,[lowmass,highmass]);
        mass=mass(idx(1):idx(2));
        spectra=spectra(:,idx(1):idx(2));
        
-       idx=find_value2(mass_i,[lowmass,highmass]);
+       idx=utilities.find_in_vector(mass_i,[lowmass,highmass]);
        mass_i=mass_i(idx(1):idx(2));
        spectrum_i=spectrum_i(idx(1):idx(2));
        

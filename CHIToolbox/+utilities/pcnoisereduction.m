@@ -1,6 +1,6 @@
 function [denoised,numpcs] = pcnoisereduction(data,numpcs)
 %NOISEREDUCTION Denoise using PCA
-%   Copyright (c) 2015 Alex Henderson (alex.henderson@manchester.ac.uk)
+%   Copyright (c) 2015-2018 Alex Henderson (alex.henderson@manchester.ac.uk)
 
 dims = size(data);
 
@@ -35,12 +35,7 @@ end
 
 
 % Do PCA
-if utilities.isoctave() || verLessThan('matlab', '8.0.0') % princomp is deprecated in R2012b
-    [pcloadings, pcscores] = princomp(data, 'econ'); %#ok<PRINCOMP>
-else
-    [pcloadings, pcscores] = pca(data); 
-end
-
+[pcloadings, pcscores] = utilities.chi_pca(input.data); 
 
 denoised = pcscores(:,1:numpcs) * pcloadings(:,1:numpcs)';
 denoised = denoised + repmat(mean(data),size(denoised,1),1);

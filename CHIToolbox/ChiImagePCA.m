@@ -20,8 +20,10 @@ function output = ChiImagePCA(input)
 %   If you use this file in your work, please acknowledge the author(s) in
 %   your publications. 
 %
-%   version 2.0 June 2017
+%   version 3.0 April 2018
 
+%   version 3.0 April 2018 Alex Henderson
+%     Centralised the PCA calculations
 %   version 2.0 June 2017 Alex Henderson
 %     Managed the deprecation of princomp
 %     Introduced Octave compatibility
@@ -41,15 +43,11 @@ if ~isa(input,'ChiImage')
     throw(err);
 end
     
-if utilities.isoctave() || verLessThan('matlab', '8.0.0') % princomp is deprecated in R2012b
-    [pcloadings, pcscores, pcvariances, tsquared] = princomp(input.data, 'econ'); %#ok<PRINCOMP>
-    pcexplained = 100 * (pcvariances/sum(pcvariances));
-else
-    [pcloadings, pcscores, pcvariances, tsquared, pcexplained] = pca(input.data); 
+[pcloadings, pcscores, pcvariances, pcexplained] = utilities.chi_pca(input.data); 
+
+output = ChiImagePCAOutcome(pcscores,pcloadings,pcexplained,pcvariances,input.xvals,input.xlabel,input.reversex,input.xpixels,input.ypixels);
+if ~isempty(input.filename)
+    output.history.add(['PCA of ', input.filename]);
 end
 
-    output = ChiImagePCAOutcome(pcscores,pcloadings,pcexplained,pcvariances,tsquared,input.xvals,input.xlabel,input.reversex,input.xpixels,input.ypixels);
-    if ~isempty(input.filename)
-        output.history.add(['PCA of ', input.filename]);
-    end
 end

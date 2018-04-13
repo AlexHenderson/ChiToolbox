@@ -18,11 +18,14 @@ The following file formats are supported:
 	- Single FTIR images (.seq files) using ChiAgilentFile
 	- Mosaicked FTIR images (.dms files) using ChiAgilentFile    
 - Biotof (ToFSIMS)
+	-  Spectral files (*.dat files) using ChiBiotofFile
 	-  Retrospective image files (*.xyt files) using ChiBiotofFile
 - Bruker (FTIR)
 	- Multiple spectra exported as a .mat file using ChiBrukerFile
 - Ionoptika (ToFSIMS)
 	-  Retrospective image files exported in the .h5 format using ChiIonoptikaFile
+- Mettler Toledo (FTIR)
+	-  Spectra exported to ASCII (*.asc) files using ChiMettlerToledoFile
 - Renishaw (Raman)
 	- WiRE Version 4 (*.wdf files), single spectra, multiple spectra, images using ChiRenishawFile
 - Thermo Fisher Scientific GRAMS SPC (Generic)

@@ -1,43 +1,52 @@
 function [xvals,spectra,filenames,header,x_label,y_label] = mettlertoledofiles(filenames)
 
-% not finished
+%  mettlertoledofiles  Reads multiple Mettler Toledo / Applied Systems .asc files
+%   usage: 
+%       [xvals,spectra,filenames,header,x_label,y_label] = mettlertoledofiles();
+%       [xvals,spectra,filenames,header,x_label,y_label] = mettlertoledofiles(filenames);
+%
+%   input:
+%   'filenames' cell array of filenames (optional - prompted if not supplied)
+% 
+%   output:
+%   'xvals' is a list of the x-values related to the data
+%   'spectra' is a matrix of spectra in rows
+%   'filenames' is a cell array of strings containing the full path to the
+%       .asc files
+%   'header' is a struct containing various parameters within the files
+%   'x_label' is the name of the unit on the x axis (eg. wavenumber)
+%   'y_label' is the name of the unit on the y axis (eg absorbance)
+%
+% Where the spectra are misaligned the data is linearly interpolated. The
+% maximum and minimum x-value limits are determined by the spectrum with
+% the smallest range, such that the spectra matrix only contains the range
+% that overlaps all input spectra. The data are aligned such that each
+% column of the spectra matrix corresponds to the same x-value.
+% 
+%                     *******Caution******* 
+%   This code is a hack of the Mettler Toledo / Applied Systems format.
+%   There were very few example files and so the function may give spurious
+%   results. If this is the case, please raise an issue on the BitBucket
+%   site: https://bitbucket.org/AlexHenderson/chitoolbox/issues
+% 
+%   Copyright (c) 2018, Alex Henderson 
+%   Contact email: alex.henderson@manchester.ac.uk
 
-% BIOTOFSPECTRA Reads the Biotof spectrum file format (Windows version)
-% Version 1.1
+%   Licenced under the GNU General Public License (GPL) version 3
+%   http://www.gnu.org/copyleft/gpl.html
+%   Other licensing options are available, please contact Alex for details
+%   If you use this file in your work, please acknowledge the author(s) in
+%   your publications. 
 %
-% usage: 
-% [mass,spectra,filenames] = biotofspectra(filenames);
-% or
-% [mass,spectra,filenames] = biotofspectra();
-%  (The second version prompts for one or more file names.)
-%
-% Takes zero, one or more file names. 
-% Returns:  'mass' a mass vector
-%           'spectra' a matrix of spectra in rows
-%           'filenames' a matrix of filenames used in the order the spectra
-%           appear
-% There is NO binning into fixed mass steps. Where the spectra are
-% misaligned the data is interpolated (linearly). The maximum and minimum
-% mass limits are determined by the spectrum with the smallest mass range,
-% such that the spectra matrix only contains the mass range that overlaps
-% all input spectra. The data are aligned such that each column of the
-% spectra matrix corresponds to the same mass.
-%
-% Copyright (c) Alex Henderson, July 2013
-% Version 1.1 
-
-% Version 1.1  Alex Henderson, July 2013
-%   Truncates the data if there are NaNs present in the first or
-%   last data points of any interpolated spectrum.
-% Version 1.0  Alex Henderson, June 2013
-%   Incorporates version 1.2 of the original Biotof spectrum reader
-%   'spectrum.m'
+%   version 1.0 April 2018, Alex Henderson
+%   The latest version of this file is available on Bitbucket
+%   https://bitbucket.org/AlexHenderson/chitoolbox
 
 
 if (exist('filenames', 'var') == 0)
     filter = '*.asc';
     filtername = 'Mettler Toledo Files (*.asc)';
-    filenames=getfilenames2(filter, filtername);
+    filenames = utilities.getfilenames(filter, filtername);
     if (isfloat(filenames) && (filenames==0))
         % Nothing chosen
         return;

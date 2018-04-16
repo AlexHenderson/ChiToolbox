@@ -78,7 +78,7 @@ classdef ChiBiotofFile < handle
             end
             
             % Let another function handle reading the files
-            if exist('filenames', 'var')
+            if exist('filenames', 'var') && ~isempty(filenames)
                 [mass, data, height, width] = biotofFile(filenames);
             else
                 [mass, data, height, width, filenames] = biotofFile();
@@ -106,7 +106,7 @@ classdef ChiBiotofFile < handle
                 end               
             else
                 % ToDo: convert to ToF image
-                obj = ChiImage(mass,data,false,x_label,y_label,width,height);
+                obj = ChiMassSpecImage(mass,data,false,x_label,y_label,width,height);
                 obj.filename = filenames;
             end
             for i = 1:size(filenames,1)
@@ -124,7 +124,7 @@ classdef ChiBiotofFile < handle
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end
-            obj = ChiBiotofFile.read(varargin{:});
+            obj = ChiBiotofFile.read(varargin);
         end
             
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -49,6 +49,11 @@ end
 % else
 %     filename = filenames;
 % end
+
+if ischar(filenames)
+    filenames = cellstr(filenames);
+end
+
 [pathstr,name,ext] = fileparts(filenames{1}); %#ok<ASGLU>
 
 switch lower(ext)

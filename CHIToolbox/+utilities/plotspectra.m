@@ -112,6 +112,17 @@ if argposition
     end
 end
 
+argposition = find(cellfun(@(x) strcmpi(x, 'grouped') , varargin));
+if argposition
+    varargin(argposition) = [];
+    if isempty(this.classmembership)
+        % Requested 'grouped', but no class information is available
+        utilities.warningnobacktrace('Plot ''grouped'' requested, but classmembership is missing.');
+    else
+        plotinfo.byclass = true;
+    end
+end
+
 argposition = find(cellfun(@(x) strcmpi(x, 'force') , varargin));
 if argposition
     % This is just to remove the 'force' term used by images in case it has
@@ -188,7 +199,9 @@ if plotinfo.functionplot
             % Plot the mean with the standard deviation plotted as a shaded
             % overlay. 
             colours = get(gca,'colororder');
-            shadedErrorBar(this.xvals,mean(this.data),std(this.data),{'Color',colours(1,:)},1);
+%             shadedErrorBar(this.xvals,mean(this.data),std(this.data),{'Color',colours(1,:)});
+            shadedErrorBar(this.xvals,this.data,{@mean,@std},'lineprops',{'color',colours(1,:)});
+            
         otherwise
             % ToDo: Correct the error code
             err = MException('CHI:ChiToolbox:UnknownInput', ...
@@ -226,7 +239,8 @@ if plotinfo.functionplot
             % Plot the mean with the standard deviation plotted as a shaded
             % overlay. 
             colours = get(gca,'colororder');
-            shadedErrorBar(this.xvals,mean(this.data),std(this.data),{'Color',colours(1,:)},1);
+%             shadedErrorBar(this.xvals,mean(this.data),std(this.data),{'Color',colours(1,:)},1);
+            shadedErrorBar(this.xvals,this.data,{@mean,@std},'lineprops',{'color',colours(1,:)});
         otherwise
             % ToDo: Correct the error code
             err = MException('CHI:ChiToolbox:UnknownInput', ...
@@ -283,7 +297,7 @@ for i = 1:this.classmembership.numuniquelabels
                 % Each class is averaged and plotted with a different colour.
                 % The standard deviation is plotted as a shaded overlay.
                 colour = colours(c,:);
-                figurehandle = shadedErrorBar(this.xvals,mean(spectra),std(spectra),{'Color',colour},1);
+                figurehandle = shadedErrorBar(this.xvals,spectra,{@mean,@std},'lineprops',{'color',colour});
                 legendHandles(i) = figurehandle.mainLine;
                 if (c == numcolours)
                     c = 1;  % Reset colours to the beginning
@@ -314,7 +328,7 @@ hold off;
 
 % Manage the legend. This is the colours of the lines, which is the same as
 % uniquelabels
-legend(legendHandles,this.classmembership.uniquelabels,'Location','best');
+legend(legendHandles,this.classmembership.uniquelabels,'Location','best','Interpreter','none');
 
 % Each line needs a class label for the datacursor. This is the class each
 % spectrum belongs to.

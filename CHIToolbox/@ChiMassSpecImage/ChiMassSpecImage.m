@@ -7,6 +7,7 @@ classdef ChiMassSpecImage < ChiImage
 %   massspecimage = ChiMassSpecImage(mass,data,reversex);
 %   massspecimage = ChiMassSpecImage(mass,data,reversex,xlabel);
 %   massspecimage = ChiMassSpecImage(mass,data,reversex,xlabel,ylabel);
+%   massspecimage = ChiMassSpecImage(mass,data,reversex,xlabel,ylabel,width,height);
 %   massspecimage = ChiMassSpecImage(ChiImage);
 %
 % Description
@@ -59,16 +60,16 @@ classdef ChiMassSpecImage < ChiImage
                     % Do nothing, this is an empty class
                 case 1
                     if isa(varargin{1},'ChiImage')
-                        s = varargin{1};
-                        superClassArgs{1} = s.xvals;
-                        superClassArgs{2} = s.data;
-                        superClassArgs{3} = s.reversex;
-                        superClassArgs{4} = s.xlabel;
-                        superClassArgs{5} = s.ylabel;
-                        superClassArgs{6} = s.mask;
-                        superClassArgs{7} = s.masked;
-                        superClassArgs{8} = s.filename;
-                        superClassArgs{9} = s.history.clone();
+                        input = varargin{1};
+                        superClassArgs{1} = input.xvals;
+                        superClassArgs{2} = input.data;
+                        superClassArgs{3} = input.reversex;
+                        superClassArgs{4} = input.xlabel;
+                        superClassArgs{5} = input.ylabel;
+                        superClassArgs{6} = input.mask;
+                        superClassArgs{7} = input.masked;
+                        superClassArgs{8} = input.filename;
+                        superClassArgs{9} = input.history.clone();
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
                             'Input not understood.');
@@ -84,6 +85,8 @@ classdef ChiMassSpecImage < ChiImage
                 case 4
                     superClassArgs{5} = 'intensity';   % ylabel
                 case 5
+                    superClassArgs = varargin;
+                case 7
                     superClassArgs = varargin;
                 otherwise
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')

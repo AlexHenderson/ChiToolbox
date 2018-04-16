@@ -91,7 +91,7 @@ Available from [https://github.com/GardnerLabUoM/RMieS](https://github.com/Gardn
 #### cluster-toolbox
 Version 2.0   
 Laboratory for Bioanalytical Spectroscopy (Biospec)    
-Available from [https://github.com/biospecbUoM/RMieShttps://github.com/Biospec/cluster-toolbox-v2.0](https://github.com/Biospec/cluster-toolbox-v2.0)   
+Available from [https://github.com/Biospec/cluster-toolbox-v2.0](https://github.com/Biospec/cluster-toolbox-v2.0)   
 
 ## Example usage
 

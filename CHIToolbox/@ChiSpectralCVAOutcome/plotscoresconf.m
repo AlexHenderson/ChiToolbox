@@ -92,7 +92,7 @@ if ~exist('percentconf','var')
     percentconf = 95;
 end
 
-gscatter(this.scores(:,cvx), this.scores(:,cvy), this.pca.classmembership.labels, colours, '.',varargin{:});
+nan.inst.gscatter(this.scores(:,cvx), this.scores(:,cvy), this.pca.classmembership.labels, colours, '.',varargin{:});
 
 %% Draw the confidence ellipses
 if ~exist('error_ellipse', 'file')

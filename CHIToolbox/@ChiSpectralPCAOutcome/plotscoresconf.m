@@ -50,6 +50,7 @@ errorcode = 'CHI:ChiSpectralPCAOutcome';
 errormessagestub = 'Requested principal component is out of range. Max PCs = ';
 
 colours = 'bgrcmky';
+% colours = get(gca,'colororder');
 axiscolour = 'k';
 decplaces = 3;
 
@@ -85,7 +86,7 @@ if ~exist('percentconf','var')
     percentconf = 95;
 end
 
-gscatter(this.scores(:,pcx), this.scores(:,pcy), this.classmembership.labels, colours, '.',varargin{:});
+nan.inst.gscatter(this.scores(:,pcx), this.scores(:,pcy), this.classmembership.labels, colours, '.',varargin{:});
 
 %% Draw the confidence ellipses
 if ~exist('error_ellipse', 'file')

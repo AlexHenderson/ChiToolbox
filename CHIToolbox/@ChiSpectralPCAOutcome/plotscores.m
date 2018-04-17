@@ -74,7 +74,7 @@ axiscolour = 'k';
 decplaces = 3;
 
 if ~isempty(this.classmembership)
-    gscatter(this.scores(:,pcx), this.scores(:,pcy), this.classmembership.labels, colours, '.',varargin{:});
+    nan.inst.gscatter(this.scores(:,pcx), this.scores(:,pcy), this.classmembership.labels, colours, '.',varargin{:});
 else
     scatter(this.scores(:,pcx), this.scores(:,pcy), '.',varargin{:});
 end    

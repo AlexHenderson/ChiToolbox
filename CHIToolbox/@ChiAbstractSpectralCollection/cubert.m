@@ -1,4 +1,4 @@
-function obj = cubert(this)
+function obj = cubert(varargin)
 
 % cubert  Takes the cube root of the data.
 %
@@ -24,20 +24,23 @@ function obj = cubert(this)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, April 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
+this = varargin{1};
+
 if nargout
     obj = this.clone();
-    % Not a great approach, but quite generic. Prevents errors if the
-    % function name changes
-    command = ['obj.', mfilename, '();'];
+    % Not a great approach, but quite generic. 
+    % Prevents errors if the function name changes. 
+    command = [mfilename, '(varargin{:});'];
     eval(command);  
 else
-    % We are expecting to modified this object in situ
-    this.data = nthroot(this.data,3);
+    % We are expecting to modify this object in situ
+    
+    level = 3;
+    this.data = nthroot(this.data,level);
     message = 'Cube root taken';
     this.history.add(message);
 end

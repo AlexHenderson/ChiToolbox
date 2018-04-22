@@ -1,4 +1,4 @@
-function obj = power(this,level)
+function obj = power(varargin)
 
 % topower  Raises the data to the given power
 %
@@ -24,19 +24,22 @@ function obj = power(this,level)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, April 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
+this = varargin{1};
+
 if nargout
     obj = this.clone();
-    % Not a great approach, but quite generic. Prevents errors if the
-    % function name changes
-    command = ['obj.', mfilename, '(level);'];
+    % Not a great approach, but quite generic. 
+    % Prevents errors if the function name changes. 
+    command = [mfilename, '(varargin{:});'];
     eval(command);  
 else
-    % We are expecting to modified this object in situ
+    % We are expecting to modify this object in situ
+    
+    level = varargin{2};
     this.data = power(this.data,level);
     message = ['Raise to power ', num2str(level)];
     this.history.add(message);

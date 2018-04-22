@@ -1,4 +1,4 @@
-function varargout = removerangeidx(this,varargin)
+function obj = removerangeidx(varargin)
 
 % removerangeidx  Removes one or more sections of the spectra. 
 %
@@ -21,7 +21,7 @@ function varargout = removerangeidx(this,varargin)
 %   then removes the relevant portion of the spectra from the clone. The
 %   original object is not modified.
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -34,45 +34,40 @@ function varargout = removerangeidx(this,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, August 2017
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
-ranges = cell2mat(varargin);
 
-if rem(length(ranges),2)
-    err = MException(['CHI:',mfilename,':IOError'], ...
-        'The from/to variables must be pairs of range limits.');
-    throw(err);
-end
+this = varargin{1};
 
-ranges = reshape(ranges,2,[]);
-ranges = ranges';
-ranges = sort(ranges,2); %#ok<UDIM>
-numRanges = size(ranges,1);
+if nargout
+    obj = this.clone();
+    % Not a great approach, but quite generic. 
+    % Prevents errors if the function name changes. 
+    command = [mfilename, '(varargin{:});'];
+    eval(command);  
+else
+    % We are expecting to modify this object in situ
 
-% We identify regions of the spectrum to remove by marking them on datamask
-datamask = false(size(this.xvals));
-
-for r = 1:numRanges    
-    datamask(ranges(r,1):ranges(r,2)) = true;
-end
-
-if (nargout > 0)
-    % We are expecting to generate a modified clone of this object
-    varargout{1} = clone(this);
-    varargout{1}.xvals(datamask) = [];
-    if (varargout{1}.numspectra > 1)
-        varargout{1}.data(:,datamask) = [];
-    else
-        varargout{1}.data(datamask) = [];
+    ranges = varargin{2:end};
+    if rem(length(ranges),2)
+        err = MException(['CHI:',mfilename,':IOError'], ...
+            'The from/to variables must be pairs of range limits.');
+        throw(err);
     end
+
+    ranges = reshape(ranges,2,[]);
+    ranges = ranges';
+    ranges = sort(ranges,2); %#ok<UDIM>
+    numRanges = size(ranges,1);
+
+    % We identify regions of the spectrum to remove by marking them on datamask
+    datamask = false(size(this.xvals));
 
     for r = 1:numRanges    
-        varargout{1}.history.add(['removerangeidx: from ', num2str(ranges(r,1)), ' to ', num2str(ranges(r,2))]);
+        datamask(ranges(r,1):ranges(r,2)) = true;
     end
-else
-    % We are expecting to modified this object in situ
+
     this.xvals(datamask) = [];
     if (this.numspectra > 1)
         this.data(:,datamask) = [];

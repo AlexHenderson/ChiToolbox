@@ -1,4 +1,4 @@
-function varargout = roirect(this)
+function obj = roirect(this)
 
 % ROIRECT  Rectangular region of interest (ROI)
 % 
@@ -30,19 +30,21 @@ function varargout = roirect(this)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, January 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 %   Rectangular roi so returns an image
 %   Polygonal roi would return a spectral collection. Not built yet
 
-if (nargout > 0)
-    % We are expecting to generate a modified clone of this object
-    varargout{1} = clone(this);
-    varargout{1}.history.add(['Created from a clone during ', mfilename]);
-    varargout{1}.roirect();
+if nargout
+    obj = this.clone();
+    % Not a great approach, but quite generic. 
+    % Prevents errors if the function name changes. 
+    command = [mfilename, '(varargin{:});'];
+    eval(command);  
 else
+    % We are expecting to modify this object in situ
+    
     % Determine the current figure window or create one
     fig = get(groot,'CurrentFigure');
     if isempty(fig)

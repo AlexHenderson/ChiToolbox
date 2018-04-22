@@ -1,4 +1,4 @@
-function varargout = removerange(this,varargin)
+function obj = removerange(varargin)
 
 % removerange  Removes one or more sections of the spectra. 
 %
@@ -20,7 +20,7 @@ function varargout = removerange(this,varargin)
 %   then removes the relevant portion(s) of the spectra from the clone. The
 %   original object is not modified.
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -33,46 +33,43 @@ function varargout = removerange(this,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-ranges = cell2mat(varargin);
-if rem(length(ranges),2)
-    err = MException('CHI:ChiImage:IOError', ...
-        'The from/to variables must be pairs of range limits.');
-    throw(err);
-end
+this = varargin{1};
 
-ranges = reshape(ranges,2,[]);
-ranges = ranges';
-ranges = sort(ranges,2); %#ok<UDIM>
-numRanges = size(ranges,1);
-
-% Sanity check
-% closest = zeros(size(range));
-% closest(:,1) = this.indexat(ranges(:,1));
-% closest(:,2) = this.indexat(ranges(:,2));
-
-% Convert x-axis units to index values making sure the range limits are
-% within the values of the range
-rangesidx(:,1) = this.indexat(ranges(:,1),'higherthan');
-rangesidx(:,2) = this.indexat(ranges(:,2),'lowerthan');
-
-if (nargout > 0)
-    % We are expecting to generate a modified clone of this object
-    varargout{1} = clone(this);
-    % Record what we have done (are about to do)
-    for r = 1:numRanges    
-        varargout{1}.history.add(['removerange: from ', num2str(ranges(r,1)), ' to ', num2str(ranges(r,2))]);
-    end
-    % Re-order the ranges into ascending order
-    rangesidx = reshape(rangesidx',1,[]);
-    % Hand off the actual range removal to removerangeidx
-    removerangeidx(varargout{1},rangesidx);
+if nargout
+    obj = this.clone();
+    % Not a great approach, but quite generic. 
+    % Prevents errors if the function name changes. 
+    command = [mfilename, '(varargin{:});'];
+    eval(command);  
 else
-    % We are expecting to modified this object in situ
+    % We are expecting to modify this object in situ
+
+    ranges = varargin{2:end};
+    if rem(length(ranges),2)
+        err = MException(['CHI:',mfilename,':IOError'], ...
+            'The from/to variables must be pairs of range limits.');
+        throw(err);
+    end
+
+    ranges = reshape(ranges,2,[]);
+    ranges = ranges';
+    ranges = sort(ranges,2); %#ok<UDIM>
+    numRanges = size(ranges,1);
+
+    % Sanity check
+    % closest = zeros(size(range));
+    % closest(:,1) = this.indexat(ranges(:,1));
+    % closest(:,2) = this.indexat(ranges(:,2));
+
+    % Convert x-axis units to index values making sure the range limits are
+    % within the values of the range
+    rangesidx(:,1) = this.indexat(ranges(:,1),'higherthan');
+    rangesidx(:,2) = this.indexat(ranges(:,2),'lowerthan');
+
     % Record what we have done (are about to do)
     for r = 1:numRanges    
         this.history.add(['removerange: from ', num2str(ranges(r,1)), ' to ', num2str(ranges(r,2))]);

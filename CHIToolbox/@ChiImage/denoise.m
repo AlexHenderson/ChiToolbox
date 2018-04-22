@@ -1,4 +1,4 @@
-function varargout = denoise(this,varargin)
+function obj = denoise(varargin)
 
 % denoise  Principal components noise reduction. 
 %
@@ -19,7 +19,7 @@ function varargout = denoise(this,varargin)
 %   performs one of the denoise functions on the clone. The original object
 %   is not modified.
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -32,19 +32,22 @@ function varargout = denoise(this,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-if (nargout > 0)
-    % We are expecting to generate a modified clone of this object
-    varargout{1} = clone(this);
-    [varargout{1}.data,pcs] = utilities.pcnoisereduction(varargout{1}.data,varargin{:});
-    varargout{1}.history.add(['noise reduction using ', num2str(pcs), ' pcs']);    
+this = varargin{1};
+
+if nargout
+    obj = this.clone();
+    % Not a great approach, but quite generic. 
+    % Prevents errors if the function name changes. 
+    command = [mfilename, '(varargin{:});'];
+    eval(command);  
 else
-    % We are expecting to modified this object in situ
-    [this.data,pcs] = utilities.pcnoisereduction(this.data,varargin{:});
+    % We are expecting to modify this object in situ
+    
+    [this.data,pcs] = utilities.pcnoisereduction(this.data,varargin{2:end});
     this.history.add(['noise reduction using ', num2str(pcs), ' pcs']);
 end
 

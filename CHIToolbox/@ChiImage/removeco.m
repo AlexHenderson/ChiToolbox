@@ -1,4 +1,4 @@
-function varargout = removeco(this,varargin)
+function obj = removeco(varargin)
 
 % removeco  Removes the CO region from the spectra (2250-2450 cm^{-1}). 
 %
@@ -14,7 +14,7 @@ function varargout = removeco(this,varargin)
 %   the CO region of the spectra from the clone. The original object is not
 %   modified.
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -27,15 +27,22 @@ function varargout = removeco(this,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, August 2017
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
+this = varargin{1};
+
 if nargout
-    varargout{:} = removerange(this,2250,2450);
+    obj = this.clone();
+    % Not a great approach, but quite generic. 
+    % Prevents errors if the function name changes. 
+    command = [mfilename, '(varargin{:});'];
+    eval(command);  
 else
-    removerange(this,2250,2450);
+    % We are expecting to modify this object in situ
+    
+    this.removerange(2250,2450);
 end
 
 end % function removeco

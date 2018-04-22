@@ -1,4 +1,4 @@
-function firstderiv(this,varargin)
+function obj = firstderiv(varargin)
 
 % firstderiv  Calculates the first derivative of the data
 %
@@ -30,7 +30,7 @@ function firstderiv(this,varargin)
 %   you have a 7 point smooth you will lose (or have approximated) 3 points
 %   from either end of the data.
 %
-% Copyright (c) 2018, Alex Henderson.
+% Copyright (c) 2007-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -43,20 +43,22 @@ function firstderiv(this,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 2.0, March 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
-%   (c) Alex Henderson Dec 2007
-%   Modified in 2018 to use Andrew Horchler's sgolayfilt function and
-%   convolution
+
+this = varargin{1};
 
 if nargout
     obj = this.clone();
-    obj.firstderiv(varargin{:});
+    % Not a great approach, but quite generic. 
+    % Prevents errors if the function name changes. 
+    command = [mfilename, '(varargin{:});'];
+    eval(command);  
 else
-    % We are expecting to modified this object in situ
-    [this.data,this.xvals,windowLength,endPoints] = utilities.firstderiv(this.xvals,this.data,varargin{:});
+    % We are expecting to modify this object in situ
+
+    [this.data,this.xvals,windowLength,endPoints] = utilities.firstderiv(this.xvals,this.data,varargin{2:end});
     
     message = 'first derivative';
     message = [message, ': window length = ', num2str(windowLength)];

@@ -81,8 +81,8 @@ end
 
 for i = 1:size(data,1)
     if valid
-        deriv(i,:) = (2 / dx.^2) * conv(data, G(:,3).', endPoints);
+        deriv(i,:) = (2 / dx.^2) * conv(data(i,:), G(:,3).', endPoints);
     else
-        deriv(i,:) = (2 / dx.^2) * conv(data, G(:,3).', endPoints);
+        deriv(i,:) = (2 / dx.^2) * conv(data(i,:), G(:,3).', endPoints);
     end
 end

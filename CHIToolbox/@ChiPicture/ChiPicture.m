@@ -1,4 +1,4 @@
-classdef ChiPicture
+classdef ChiPicture < handle
 % ChiPicture Storage class for 2D images (not hyperspectral images)
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
     

@@ -1,5 +1,5 @@
 function [denoised,numpcs] = pcnoisereduction(data,numpcs)
-%NOISEREDUCTION Denoise using PCA
+%PCNOISEREDUCTION Denoise using PCA
 %   Copyright (c) 2015-2018 Alex Henderson (alex.henderson@manchester.ac.uk)
 
 dims = size(data);
@@ -22,8 +22,6 @@ maxpcs = min(rows,cols);
 % Determine the number of principal components to retain, if not provided
 if ~exist('numpcs','var')
     numpcs = ceil(maxpcs * (1/3));
-else
-    
 end
 
 % Check the user supplied value is not too high
@@ -35,7 +33,7 @@ end
 
 
 % Do PCA
-[pcloadings, pcscores] = utilities.chi_pca(input.data); 
+[pcloadings, pcscores] = utilities.chi_pca(data); 
 
 denoised = pcscores(:,1:numpcs) * pcloadings(:,1:numpcs)';
 denoised = denoised + repmat(mean(data),size(denoised,1),1);

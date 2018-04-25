@@ -34,7 +34,7 @@ if nargout
     obj = this.clone();
     % Not a great approach, but quite generic. 
     % Prevents errors if the function name changes. 
-    command = [mfilename, '(varargin{:});'];
+    command = [mfilename, '(obj,varargin{2:end});'];
     eval(command);  
 else
     % We are expecting to modify this object in situ

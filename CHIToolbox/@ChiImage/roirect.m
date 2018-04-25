@@ -1,4 +1,4 @@
-function obj = roirect(this)
+function obj = roirect(varargin)
 
 % ROIRECT  Rectangular region of interest (ROI)
 % 
@@ -36,11 +36,14 @@ function obj = roirect(this)
 %   Rectangular roi so returns an image
 %   Polygonal roi would return a spectral collection. Not built yet
 
+
+this = varargin{1};
+
 if nargout
     obj = this.clone();
     % Not a great approach, but quite generic. 
     % Prevents errors if the function name changes. 
-    command = [mfilename, '(varargin{:});'];
+    command = [mfilename, '(obj,varargin{2:end});'];
     eval(command);  
 else
     % We are expecting to modify this object in situ

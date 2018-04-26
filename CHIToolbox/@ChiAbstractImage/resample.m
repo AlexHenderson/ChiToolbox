@@ -75,16 +75,17 @@ else
     
     pixelstosum_y = varargin{2};
     pixelstosum_x = varargin{3};
-    functiontoapply = varargin{4};
+    if (length(varargin) == 4) 
+        functiontoapply = lower(varargin{4});
+        if ~(strcmpi(functiontoapply,'sum') || ...
+             strcmpi(functiontoapply,'mean') || ...
+             strcmpi(functiontoapply,'std'))
+             err = MException(['CHI:',mfilename,':IOError'], ...
+            'Applied function can only be ''sum'', ''mean'' or ''std''.');
+            throw(err);
+        end
+    end
     
-    
-    djfvbsdfjvbdfksjhvbfkdjsbvs 
-    djfvbsdfjvbdfksjhvbfkdjsbvs 
-    djfvbsdfj check varargin for function name
-    djfvbsdfjvbdfksjhvbfkdjsbvs 
-    djfvbsdfjvbdfksjhvbfkdjsbvs 
-    
-
     outputrows = this.ypixels/pixelstosum_y;
     outputcols = this.xpixels/pixelstosum_x;
 

@@ -1,6 +1,11 @@
-function [map,previouscolormap] = ChiSequentialColormap()
+function [map,previouscolormap] = ChiSequentialColormap(levels)
 
 previouscolormap = colormap;
-map = viridis();
+
+if exist('levels','var')
+    map = viridis(levels);
+else
+    map = viridis();
+end    
 
 end

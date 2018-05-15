@@ -49,7 +49,7 @@ if nargout
 else
     % We are expecting to modify this object in situ
 
-    ranges = varargin{2:end};
+    ranges = cell2mat(varargin(2:end));
     if rem(length(ranges),2)
         err = MException(['CHI:',mfilename,':IOError'], ...
             'The from/to variables must be pairs of range limits.');

@@ -12,15 +12,20 @@ function [chosen,uniqueNames,chosenClassMasks,counts,originalClassMasks] = under
 %   larger classes to make the membership count of each class equal.
 %
 %   classMembership: A list with multiple class names
+% 
 %   chosen: A logical column vector where true values indicate the members
 %     of the classMembership that have been selected to form balanced
 %     classes.
+% 
 %   uniqueNames: The unique names of the classes
+% 
 %   chosenClassMasks: A logical matrix where each row represents a position
 %     in classMembership and one column per class in the same order as
 %     uniqueNames. True indicates the entry in classMembership is selected.
+% 
 %   counts: The count of each class in classMembership in the same order as
 %     uniqueNames
+% 
 %   originalClassMasks: The original classMembership expressed in the same
 %     manner as chosenClassMasks
 % 

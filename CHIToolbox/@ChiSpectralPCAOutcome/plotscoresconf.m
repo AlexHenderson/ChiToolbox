@@ -23,7 +23,7 @@ function plotscoresconf(this,pcx,pcy,percentconf,varargin)
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   scatter, or gscatter, functions for more details. 
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -38,6 +38,7 @@ function plotscoresconf(this,pcx,pcy,percentconf,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
+% Version 2.0, June 2018, fixed colours
 % Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
@@ -48,11 +49,6 @@ windowtitlestub = titlestub;
 axislabelstub = 'score on PC ';
 errorcode = 'CHI:ChiSpectralPCAOutcome';
 errormessagestub = 'Requested principal component is out of range. Max PCs = ';
-
-colours = 'bgrcmky';
-% colours = get(gca,'colororder');
-axiscolour = 'k';
-decplaces = 3;
 
 if isempty(this.classmembership)
     err = MException([errorcode,':InputError'], ...
@@ -86,6 +82,10 @@ if ~exist('percentconf','var')
     percentconf = 95;
 end
 
+colours = get(gca,'colororder');
+axiscolour = 'k';
+decplaces = 3;
+
 nan.inst.gscatter(this.scores(:,pcx), this.scores(:,pcy), this.classmembership.labels, colours, '.',varargin{:});
 
 %% Draw the confidence ellipses
@@ -108,7 +108,8 @@ else
             % seems unlikely though. 
             colouridx = 1;
         end
-        h = error_ellipse('C',groupcov,'mu',[groupmeanX,groupmeanY],'conf',percentconf/100, 'style', colours(colouridx));
+        h = error_ellipse('C',groupcov,'mu',[groupmeanX,groupmeanY],'conf',percentconf/100);
+        h.Color = colours(colouridx,:);
         set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
         
     end

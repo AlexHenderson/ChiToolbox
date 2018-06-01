@@ -56,10 +56,6 @@ axislabelstub = 'score on CV ';
 errorcode = 'CHI:ChiSpectralCVAOutcome';
 errormessagestub = 'Requested canonical variate is out of range. Max CVs = ';
 
-colours = 'bgrcmky';
-axiscolour = 'k';
-decplaces = 3;
-
 if isempty(this.pca.classmembership)
     err = MException([errorcode,':InputError'], ...
         'This collection has no classmembership. Confidence ellipses cannot be drawn.');
@@ -92,6 +88,11 @@ if ~exist('percentconf','var')
     percentconf = 95;
 end
 
+
+colours = get(gca,'colororder');
+axiscolour = 'k';
+decplaces = 3;
+
 nan.inst.gscatter(this.scores(:,cvx), this.scores(:,cvy), this.pca.classmembership.labels, colours, '.',varargin{:});
 
 %% Draw the confidence ellipses
@@ -114,7 +115,8 @@ else
             % seems unlikely though. 
             colouridx = 1;
         end
-        h = error_ellipse('C',groupcov,'mu',[groupmeanX,groupmeanY],'conf',percentconf/100, 'style', colours(colouridx));
+        h = error_ellipse('C',groupcov,'mu',[groupmeanX,groupmeanY],'conf',percentconf/100);
+        h.Color = colours(colouridx,:);
         set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
         
     end

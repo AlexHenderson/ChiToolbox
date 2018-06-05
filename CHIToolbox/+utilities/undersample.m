@@ -1,9 +1,10 @@
-function [chosen,uniqueNames,chosenClassMasks,counts,originalClassMasks] = undersample(classMembership)
+function [chosen,uniqueNames,chosenClassMasks,counts,originalClassMasks] = undersample(classMembership,requestedMin)
 
 % undersample  Balances class sizes by selecting class members based on the minimum membership
 %
 % Syntax
 %   [chosen,uniqueNames,chosenClassMasks,counts,originalClassMasks] = undersample(classMembership);
+%   [chosen,uniqueNames,chosenClassMasks,counts,originalClassMasks] = undersample(classMembership,requestedMin);
 %
 % Description
 %   [chosen,uniqueNames,chosenClassMasks,counts,originalClassMasks] = undersample(classMembership) 
@@ -11,6 +12,11 @@ function [chosen,uniqueNames,chosenClassMasks,counts,originalClassMasks] = under
 %   occurrences. It then randomly selects this number from each of the
 %   larger classes to make the membership count of each class equal.
 %
+%   [chosen,uniqueNames,chosenClassMasks,counts,originalClassMasks] = undersample(classMembership,requestedMin) 
+%   uses requestedMin as the minimum number of members to choose for each
+%   class. If the requestedMin is greater than the membership of the
+%   minority class, a warning is issued and the requestedMin is ignored. 
+% 
 %   classMembership: A list with multiple class names
 % 
 %   chosen: A logical column vector where true values indicate the members
@@ -42,8 +48,10 @@ function [chosen,uniqueNames,chosenClassMasks,counts,originalClassMasks] = under
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 2.0, February 2018
+% Version 3.0, June 2018
 
+% Version 3.0, June 2018
+% Allow user to chose minimum number of members. 
 % Version 2.0, February 2018
 % Added chosen output. This changes the function signature. 
 % Version 1.0, January 2018
@@ -53,7 +61,18 @@ function [chosen,uniqueNames,chosenClassMasks,counts,originalClassMasks] = under
 [uniqueNames,counts,numClasses,ic] = countclasses(classMembership,'stable');
 
 numValues = size(ic,1);
-minCount  = min(counts);
+[minCount,minClassId] = min(counts);
+
+if exist('requestedMin','var')
+    if (requestedMin < minCount)
+        % We need to undersample all classes
+        minCount = requestedMin;
+    else
+        message = sprintf('Not enough samples in the minority class (%s) to make up the requested number. Using minority class size (%d)',uniqueNames{minClassId},minCount);
+        utilities.warningnobacktrace(message);
+    end
+end
+        
 
 originalClassMasks = false(numValues,numClasses);
 chosenClassMasks   = false(numValues,numClasses);

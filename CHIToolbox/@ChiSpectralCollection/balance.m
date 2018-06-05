@@ -1,10 +1,11 @@
-function [obj] = balance(this,varargin)
+function [obj] = balance(varargin)
 
 % balance  Equalise class membership. 
 %
 % Syntax
 %   balance();
 %   balance(method);
+%   balance(____,minimum);
 %   balanced = balance(____);
 %
 % Description
@@ -14,6 +15,10 @@ function [obj] = balance(this,varargin)
 %
 %   balance(method) uses the approach specified by method to balance the
 %   classes. This version modifies the original object.
+%
+%   balance(____,minimum) uses minimum to define the number of members of
+%   each class. If minimum is greater than the membership of the minority
+%   class it is ignored. This version modifies the original object.
 %
 %   balanced = balance(____) first creates a clone of the object, then
 %   performs one of the balance functions on the clone. The original object
@@ -35,10 +40,12 @@ function [obj] = balance(this,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, May 2018
+% Version 2.0, June 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
+
+this = varargin{1};
 
 if isempty(this.classmembership)
     err = MException(['CHI:',mfilename,':IOError'], ...
@@ -46,12 +53,15 @@ if isempty(this.classmembership)
     throw(err);
 end
 
-% Check whether we're creating a new balanced object, or balancing in situ
 if nargout
     obj = this.clone();
-    obj.history.add('Created from a clone')
-    eval(['obj.',mfilename]);
+    % Not a great approach, but quite generic. 
+    % Prevents errors if the function name changes. 
+    command = [mfilename, '(obj,varargin{2:end});'];
+    eval(command);  
 else
+    % We are expecting to modify this object in situ
+    
     % Balance this object
     
     % Look for a valid method. A bit of overkill at the moment, but this
@@ -59,16 +69,22 @@ else
     
     balancingMethod = 'undersample';
     
-    if nargin
+    if (nargin > 1)
         argposition = find(cellfun(@(x) strcmpi(x, 'undersample') , varargin));
         if argposition
             balancingMethod = 'undersample';
+            varargin(argposition) = [];
         end
     end
 
     switch balancingMethod
         case 'undersample'
-            chosen = utilities.undersample(this.classmembership.labels);
+            if (length(varargin) > 1)
+                requestedMinimum = varargin{2};
+                chosen = utilities.undersample(this.classmembership.labels,requestedMinimum);
+            else
+                chosen = utilities.undersample(this.classmembership.labels);
+            end
             this.classmembership.labels = this.classmembership.labels(chosen,:);
             this.data = this.data(chosen,:);
             this.classmembership.history.add('undersampled')

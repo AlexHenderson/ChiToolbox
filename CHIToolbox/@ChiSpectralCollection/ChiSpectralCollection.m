@@ -126,7 +126,9 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                     this.reversex = varargin{3};
                     this.xlabel = varargin{4};
                     this.ylabel = varargin{5};
-                    this.classmembership = varargin{6}.clone();
+                    if ~isempty(varargin{6})
+                        this.classmembership = varargin{6}.clone();
+                    end
                     this.history = varargin{7}.clone();
                 otherwise
                     disp(nargin)
@@ -134,9 +136,14 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                         'Input not understood. Try creating a ChiSpectrum, or ChiSpectralCollection, and using that as input.');
                     throw(err);
             end
-                        
-        end
         
+            dims = size(this.data);
+            if (length(dims) == 3)
+                % 3d data so need to reshape
+                this.data = reshape(this.data,dims(1)*dims(2),dims(3));
+            end            
+            
+        end
         
 %         function this = ChiSpectralCollection(xvals,data,reversex,xlabel,ylabel,varargin)
 %             % Create an instance of ChiSpectralCollection with given parameters

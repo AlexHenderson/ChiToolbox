@@ -139,8 +139,19 @@ function this = appendcollection(this,varargin)
 
 % If we have an empty collection, we simply need to set the values
 if isempty(this.xvals)
-    % ToDo: This is a bug
-    this = varargin{1}.clone();
+    % Effectively create a clone, except doing that doesn't work. Grrr
+    this.xvals = varargin{1}.xvals;
+    this.data = varargin{1}.data;
+    this.reversex = varargin{1}.reversex;
+    this.xlabel = varargin{1}.xlabel;
+    this.ylabel = varargin{1}.ylabel;
+    if ~isempty(varargin{1}.classmembership)
+        this.classmembership = varargin{1}.classmembership.clone();
+    end
+    this.filenames  = varargin{1}.filenames;
+    if ~isempty(varargin{1}.history)
+        this.history = varargin{1}.history.clone();
+    end
 else
         
     newcoll = varargin{1}.clone();

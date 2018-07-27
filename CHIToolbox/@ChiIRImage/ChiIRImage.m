@@ -1,4 +1,4 @@
-classdef ChiIRImage < ChiImage
+classdef ChiIRImage < ChiImage & ChiIRCharacter
     
 % ChiIRImage  An infrared image.
 %

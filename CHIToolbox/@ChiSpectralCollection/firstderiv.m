@@ -1,4 +1,4 @@
-function firstderiv(this,varargin)
+function obj = firstderiv(this,varargin)
 
 % firstderiv  Calculates the first derivative of the data
 %

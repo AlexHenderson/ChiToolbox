@@ -1,4 +1,4 @@
-function secondderiv(this,varargin)
+function obj = secondderiv(this,varargin)
 
 % secondderiv  Calculates the second derivative of the data
 %

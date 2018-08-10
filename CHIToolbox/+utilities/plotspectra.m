@@ -328,8 +328,11 @@ hold off;
 
 % Manage the legend. This is the colours of the lines, which is the same as
 % uniquelabels
-legend(legendHandles,this.classmembership.uniquelabels,'Location','best','Interpreter','none');
-
+if isnumeric(this.classmembership.uniquelabels)
+    legend(legendHandles,cellstr(num2str(this.classmembership.uniquelabels)),'Location','best','Interpreter','none');
+else
+    legend(legendHandles,this.classmembership.uniquelabels,'Location','best','Interpreter','none');
+end
 % Each line needs a class label for the datacursor. This is the class each
 % spectrum belongs to.
 if plotinfo.functionplot

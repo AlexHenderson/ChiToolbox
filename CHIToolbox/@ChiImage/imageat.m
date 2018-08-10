@@ -1,5 +1,5 @@
 function output = imageat(varargin)
-% function output = imageat(this,from,to)
+% function output = imageat(from,to)
 %IMAGEAT Summary of this function goes here
 %   Detailed explanation goes here
 

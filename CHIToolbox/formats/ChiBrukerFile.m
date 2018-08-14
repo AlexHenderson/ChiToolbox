@@ -1,4 +1,4 @@
-classdef ChiBrukerFile < handle
+classdef ChiBrukerFile < ChiAbstractFileFormat
 
 % ChiBrukerFile  File format handler for Bruker Opus files (*.mat)
 % 
@@ -29,7 +29,7 @@ classdef ChiBrukerFile < handle
 %   are the rows and columns of the map. If filename is not provided, the
 %   user is prompted for a location. myfile is a ChiImage. 
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -42,15 +42,15 @@ classdef ChiBrukerFile < handle
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 3.0, August 2017
+% Version 4.0, August 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
     methods (Static)
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function yesno = isreadable(filename)
-            yesno = false;
+        function truefalse = isreadable(filename)
+            truefalse = false;
             % Check extension
             [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
             if ~strcmpi(ext,'.mat')
@@ -71,11 +71,21 @@ classdef ChiBrukerFile < handle
             end
             
             % ToDo: Check internal magic numbers
-            yesno = true;
+            truefalse = true;
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = read(varargin)
+        function extn = getExtension()
+            extn = '*.mat';
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function filter = getFiltername()
+            filter = 'Bruker Opus MAT Files (*.mat)';
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function obj = open(varargin)
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
@@ -97,7 +107,7 @@ classdef ChiBrukerFile < handle
         end        
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = open(varargin)
+        function obj = read(varargin)
         if ~nargout
             stacktrace = dbstack;
             functionname = stacktrace.name;
@@ -105,9 +115,14 @@ classdef ChiBrukerFile < handle
                 'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
             throw(err);
         end
-            obj = ChiBrukerFile.read(varargin{:});
+            obj = ChiBrukerFile.open(varargin{:});
         end
             
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function name = className()
+            name = mfilename('class');
+        end
+    
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     end
     

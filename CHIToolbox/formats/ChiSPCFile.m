@@ -26,7 +26,7 @@ classdef ChiSPCFile < ChiThermoFile
 %   ChiSpectralCollection. If any of these contain images, the pixels are
 %   unfolded and combined into a ChiSpectralCollection.
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -39,10 +39,23 @@ classdef ChiSPCFile < ChiThermoFile
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, August 2017
+% Version 2.0, August 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 % This is a helper class that simply maps to ChiThermoFile
 
+    methods (Static = true)
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function extn = getExtension()
+            extn = '*.spc';
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function filter = getFiltername()
+            filter = 'Thermo Scientific GRAMS Files (*.spc)';
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    end
 end

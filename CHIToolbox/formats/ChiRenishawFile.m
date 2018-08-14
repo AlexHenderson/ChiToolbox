@@ -1,4 +1,4 @@
-classdef ChiRenishawFile < handle
+classdef ChiRenishawFile < ChiAbstractFileFormat
 
 % ChiRenishawFile  File format handler for Renishaw (.wdf) files
 %
@@ -27,7 +27,7 @@ classdef ChiRenishawFile < handle
 %   of these contain images, the pixels are unfolded and combined into a
 %   ChiSpectralCollection.
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -40,21 +40,21 @@ classdef ChiRenishawFile < handle
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 2.0, August 2017
+% Version 3.0, August 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
     
     
     methods (Static)
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function yesno = isreadable(filenames)
+        function truefalse = isreadable(filenames)
 
             % Ensure filenames is a cell array
             if ~iscell(filenames)
                 filenames = cellstr(filenames);
             end
             
-            yesno = false;
+            truefalse = false;
             for i = 1:length(filenames)
                 % Check extension
                 [pathstr,name,ext] = fileparts(filenames{i}); %#ok<ASGLU>
@@ -63,11 +63,21 @@ classdef ChiRenishawFile < handle
                 end
             end
             % ToDo: Check internal magic numbers
-            yesno = true;
+            truefalse = true;
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = read(filenames)
+        function extn = getExtension()
+            extn = '*.wdf';
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function filter = getFiltername()
+            filter = 'Renishaw Files (*.wdf)';
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function obj = open(filenames)
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
@@ -142,7 +152,7 @@ classdef ChiRenishawFile < handle
         end        
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = open(varargin)
+        function obj = read(varargin)
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
@@ -150,9 +160,14 @@ classdef ChiRenishawFile < handle
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end
-            obj = ChiRenishawFile.read(varargin{:});
+            obj = ChiRenishawFile.open(varargin{:});
         end
             
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function name = className()
+            name = mfilename('class');
+        end
+    
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     end
     

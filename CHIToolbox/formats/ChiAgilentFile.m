@@ -1,4 +1,4 @@
-classdef ChiAgilentFile < handle
+classdef ChiAgilentFile < ChiAbstractFileFormat
 
 % ChiAgilentFile  File format handler for Agilent IR image (.dms, .seq) files
 %
@@ -23,7 +23,7 @@ classdef ChiAgilentFile < handle
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiIRImage ChiSpectrum ChiSpectralCollection ChiImage.
+%   ChiIRImage ChiSpectrum ChiSpectralCollection ChiImage ChiFile.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -32,26 +32,36 @@ classdef ChiAgilentFile < handle
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 3.0, January 2018
+% Version 4.0, August 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
     methods (Static)
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function yesno = isreadable(filename)
-            yesno = false;
+        function truefalse = isreadable(filename)
+            truefalse = false;
             % Check extension
             [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
             if ~(strcmpi(ext,'.dms') || strcmpi(ext,'.seq'))
                 return
             end
             % ToDo: Check internal magic numbers
-            yesno = true;
+            truefalse = true;
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = read(filename)
+        function extn = getExtension()
+            extn = '*.dms;*.seq';
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function filter = getFiltername()
+            filter = 'Agilent Image Files (*.dms,*.seq)';
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function obj = open(filename)
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
@@ -79,7 +89,7 @@ classdef ChiAgilentFile < handle
         end        
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = open(varargin)
+        function obj = read(varargin)
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
@@ -87,10 +97,18 @@ classdef ChiAgilentFile < handle
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end
-            obj = ChiAgilentFile.read(varargin{:});
+            obj = ChiAgilentFile.open(varargin{:});
         end
             
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function name = className()
+            name = mfilename('class');
+        end
+    
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    end
+
+    methods
     end
     
 end

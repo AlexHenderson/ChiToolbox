@@ -1,4 +1,4 @@
-classdef ChiThermoFile < handle
+classdef ChiThermoFile < ChiAbstractFileFormat
 
 % ChiThermoFile  File format handler for Thermo Fisher Scientific GRAMS (.spc) files
 %
@@ -26,7 +26,7 @@ classdef ChiThermoFile < handle
 %   ChiSpectralCollection. If any of these contain images, the pixels are
 %   unfolded and combined into a ChiSpectralCollection.
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -39,21 +39,21 @@ classdef ChiThermoFile < handle
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 2.0, August 2017
+% Version 3.0, August 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
     
     
     methods (Static)
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function yesno = isreadable(filenames)
+        function truefalse = isreadable(filenames)
 
             % Ensure filenames is a cell array
             if ~iscell(filenames)
                 filenames = cellstr(filenames);
             end
             
-            yesno = false;
+            truefalse = false;
             for i = 1:length(filenames)
                 % Check extension
                 [pathstr,name,ext] = fileparts(filenames{i}); %#ok<ASGLU>
@@ -62,11 +62,21 @@ classdef ChiThermoFile < handle
                 end
             end
             % ToDo: Check internal magic numbers
-            yesno = true;
+            truefalse = true;
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = read(filenames)
+        function extn = getExtension()
+            extn = '*.spc';
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function filter = getFiltername()
+            filter = 'Thermo Scientific GRAMS Files (*.spc)';
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function obj = open(filenames)
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
@@ -98,7 +108,7 @@ classdef ChiThermoFile < handle
         end        
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = open(varargin)
+        function obj = read(varargin)
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
@@ -106,9 +116,14 @@ classdef ChiThermoFile < handle
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end
-            obj = ChiThermoFile.read(varargin{:});
+            obj = ChiThermoFile.open(varargin{:});
         end
             
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function name = className()
+            name = mfilename('class');
+        end
+    
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     end
     

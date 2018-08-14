@@ -1,4 +1,4 @@
-classdef ChiIonoptikaFile < handle
+classdef ChiIonoptikaFile < ChiAbstractFileFormat
 
 % ChiIonoptikaFile  File format handler for Ionoptika (.h5) files
 %
@@ -15,7 +15,7 @@ classdef ChiIonoptikaFile < handle
 % 
 %   This class can read Ionoptika h5 files (Windows version) (*.h5). 
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -28,21 +28,21 @@ classdef ChiIonoptikaFile < handle
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, August 2017
+% Version 2.0, August 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
     
     
     methods (Static)
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function yesno = isreadable(filenames)
+        function truefalse = isreadable(filenames)
 
             % Ensure filenames is a cell array
             if ~iscell(filenames)
                 filenames = cellstr(filenames);
             end
             
-            yesno = false;
+            truefalse = false;
             for i = 1:length(filenames)
                 % Check extension
                 [pathstr,name,ext] = fileparts(filenames{i}); %#ok<ASGLU>
@@ -50,13 +50,23 @@ classdef ChiIonoptikaFile < handle
                     return
                 end
                 % Check internal magic numbers
-                yesno = ChiIonoptikaFile.checkmagicnumbers(filenames{i});
+                truefalse = ChiIonoptikaFile.checkmagicnumbers(filenames{i});
             end
             
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = read(filenames)
+        function extn = getExtension()
+            extn = '*.h5';
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function filter = getFiltername()
+            filter = 'Ionoptika Files (*.h5)';
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function obj = open(filenames)
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
@@ -99,7 +109,7 @@ classdef ChiIonoptikaFile < handle
         end        
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = open(varargin)
+        function obj = read(varargin)
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
@@ -107,7 +117,7 @@ classdef ChiIonoptikaFile < handle
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end
-            obj = ChiIonoptikaFile.read(varargin{:});
+            obj = ChiIonoptikaFile.open(varargin{:});
         end
             
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -134,6 +144,11 @@ classdef ChiIonoptikaFile < handle
 %             end
         end
             
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function name = className()
+            name = mfilename('class');
+        end
+    
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     end
     

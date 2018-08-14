@@ -1,8 +1,8 @@
-classdef ChiMettlerToledoFile < handle
+classdef ChiMettlerToledoFile < ChiAbstractFileFormat
 
 %     not finished
     
-% ChiBiotofFile  File format handler for Biotof spectra and image files
+% ChiMettlerToledoFile  File format handler for Biotof spectra and image files
 %
 % Syntax
 %   myfile = ChiBiotofFile();
@@ -48,16 +48,14 @@ classdef ChiMettlerToledoFile < handle
     
     methods (Static)
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function yesno = isreadable(filenames)
+        function truefalse = isreadable(filenames)
             
-            % Not functional at the moment. Simply returns true
-
             % Ensure filenames is a cell array
             if ~iscell(filenames)
                 filenames = cellstr(filenames);
             end
             
-            yesno = false;
+            truefalse = false;
             for i = 1:length(filenames)
                 % Check extension
                 [pathstr,name,ext] = fileparts(filenames{i}); %#ok<ASGLU>
@@ -66,11 +64,21 @@ classdef ChiMettlerToledoFile < handle
                 end
             end
             % ToDo: Check internal magic numbers
-            yesno = true;
+            truefalse = true;
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = read(filenames)
+        function extn = getExtension()
+            extn = '*.asc';
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function filter = getFiltername()
+            filter = 'Mettler Toledo Files (*.asc)';
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function obj = open(filenames)
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
@@ -139,10 +147,10 @@ classdef ChiMettlerToledoFile < handle
                 obj.history.add(['filename: ', filenames{i}]);
             end
                 
-        end     % function read
+        end     % function open
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = open(varargin)
+        function obj = read(varargin)
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
@@ -150,9 +158,14 @@ classdef ChiMettlerToledoFile < handle
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end
-            obj = ChiMettlerToledoFile.read(varargin{:});
+            obj = ChiMettlerToledoFile.open(varargin{:});
         end
             
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function name = className()
+            name = mfilename('class');
+        end
+    
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     end
     

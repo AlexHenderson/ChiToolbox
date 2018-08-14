@@ -1,4 +1,4 @@
-classdef ChiBiotofFile < handle
+classdef ChiBiotofFile < ChiAbstractFileFormat
 
 % ChiBiotofFile  File format handler for Biotof spectra and image files
 %
@@ -39,36 +39,44 @@ classdef ChiBiotofFile < handle
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, February 2018
+% Version 2.0, August 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
     
     
     methods (Static)
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function yesno = isreadable(filenames)
+        function truefalse = isreadable(filenames)
             
-            % Not functional at the moment. Simply returns true
-
             % Ensure filenames is a cell array
             if ~iscell(filenames)
                 filenames = cellstr(filenames);
             end
             
-            yesno = false;
+            truefalse = false;
             for i = 1:length(filenames)
                 % Check extension
                 [pathstr,name,ext] = fileparts(filenames{i}); %#ok<ASGLU>
-                if ~strcmpi(ext,'.dat') % or xyt
+                if ~(strcmpi(ext,'.dat') || strcmpi(ext,'.xyt'))
                     return
                 end
             end
             % ToDo: Check internal magic numbers
-            yesno = true;
+            truefalse = true;
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = read(filenames)
+        function extn = getExtension()
+            extn = '*.dat;*.xyt';
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function filter = getFiltername()
+            filter = 'Biotof Files (*.dat;*.xyt)';
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function obj = open(filenames)
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
@@ -113,10 +121,10 @@ classdef ChiBiotofFile < handle
                 obj.history.add(['filename: ', filenames{i}]);
             end
                 
-        end     % function read
+        end     % function open
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = open(varargin)
+        function obj = read(varargin)
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
@@ -124,9 +132,14 @@ classdef ChiBiotofFile < handle
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end
-            obj = ChiBiotofFile.read(varargin);
+            obj = ChiBiotofFile.open(varargin);
         end
             
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function name = className()
+            name = mfilename('class');
+        end
+    
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     end
     

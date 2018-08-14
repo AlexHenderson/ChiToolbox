@@ -1,0 +1,6 @@
+https://github.com/okomarov/getSubclasses
+Downloaded 10 August 2018
+Latest commit 95dc300 on Jun 30, 2016
+
+Line 105 in getSubclasses.m commented out. 
+% disp(mcls.Name)  Commented out by Alex Henderson

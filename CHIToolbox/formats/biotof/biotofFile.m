@@ -44,12 +44,6 @@ if (~exist('filenames', 'var'))
     
 end
 
-% if iscell(filenames)
-%     filename = filenames{1};
-% else
-%     filename = filenames;
-% end
-
 if ischar(filenames)
     filenames = cellstr(filenames);
 end

@@ -1,5 +1,6 @@
-classdef ChiAbstractImage < handle
-% ChiAbstractImage Abstract class to define spatial characteristics
+classdef (Abstract) ChiAbstractImage < handle
+    
+% ChiAbstractImage  Abstract class to define spatial characteristics
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
 % Here we manage the data as a 2D object rather than 3D to simplify

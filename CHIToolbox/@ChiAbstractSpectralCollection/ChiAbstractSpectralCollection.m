@@ -1,5 +1,5 @@
-classdef ChiAbstractSpectralCollection < handle
-% ChiAbstractSpectralCollection Abstract class to define collections of spectra
+classdef (Abstract) ChiAbstractSpectralCollection < handle
+% ChiAbstractSpectralCollection  Abstract class to define collections of spectra
 % Copyright (c) 2017 Alex Henderson (alex.henderson@manchester.ac.uk)
 
 % Here we manage the data as a 2D object

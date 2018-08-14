@@ -21,7 +21,7 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
 %   collection = ChiSpectralCollection(xvals,data,reversex) uses the
 %   provided value for reversex. 
 % 
-%   collection = ChiSpectralCollection(xvals,data,reversex,vlabel,ylabel)
+%   collection = ChiSpectralCollection(xvals,data,reversex,xlabel,ylabel)
 %   uses the provided values for xlabel and ylabel.
 % 
 %   collection = ChiSpectralCollection(ChiSpectrum) uses the contents of

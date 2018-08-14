@@ -1,8 +1,52 @@
 classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
     
-% ChiIRSpectralCollection Storage class for IR spectra
-% Copyright (c) 2017 Alex Henderson (alex.henderson@manchester.ac.uk)
-    
+% ChiIRSpectralCollection  Storage class for a collection of infrared spectra
+%
+% Syntax
+%   collection = ChiIRSpectralCollection();
+%   collection = ChiIRSpectralCollection(wavenumbers,data);
+%   collection = ChiIRSpectralCollection(wavenumbers,data,reversex);
+%   collection = ChiIRSpectralCollection(wavenumbers,data,reversex,xlabel,ylabel);
+%   collection = ChiIRSpectralCollection(ChiSpectrum);
+%   collection = ChiIRSpectralCollection(ChiSpectralCollection);
+% 
+% Description
+%   collection = ChiIRSpectralCollection() creates an empty infrared
+%   spectral collection.
+%
+%   collection = ChiIRSpectralCollection(wavenumbers,data) creates an
+%   infrared spectral collection using default values for reversex (true),
+%   xlabel ('wavenumber (cm^{-1})') and ylabel ('absorbance').
+% 
+%   collection = ChiIRSpectralCollection(wavenumbers,data,reversex) uses the
+%   provided value for reversex. 
+% 
+%   collection = ChiIRSpectralCollection(wavenumbers,data,reversex,xlabel,ylabel)
+%   uses the provided values for xlabel and ylabel.
+% 
+%   collection = ChiIRSpectralCollection(ChiSpectrum) uses the contents of
+%   the ChiSpectrum to populate the collection.
+% 
+%   collection = ChiIRSpectralCollection(ChiSpectralCollection) uses the
+%   contents of the ChiSpectralCollection to populate the collection.
+%
+% Copyright (c) 2017, Alex Henderson.
+% Licenced under the GNU General Public License (GPL) version 3.
+%
+% See also 
+%   ChiSpectrum ChiSpectralCollection ChiToFMassSpectralCollection.
+
+% Contact email: alex.henderson@manchester.ac.uk
+% Licenced under the GNU General Public License (GPL) version 3
+% http://www.gnu.org/copyleft/gpl.html
+% Other licensing options are available, please contact Alex for details
+% If you use this file in your work, please acknowledge the author(s) in
+% your publications. 
+
+% Version 1.0, 2017
+% The latest version of this file is available on Bitbucket
+% https://bitbucket.org/AlexHenderson/chitoolbox
+
 % ToDo: We need a mechanism of adding collections of spectra together. A
 % collection could simply be a single spectrum or ChiSpectrum. We could
 % interpolate these in the same manner as BiotofSpectrum. 

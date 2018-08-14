@@ -2,37 +2,33 @@ classdef ChiMettlerToledoFile < ChiAbstractFileFormat
 
 %     not finished
     
-% ChiMettlerToledoFile  File format handler for Biotof spectra and image files
+% ChiMettlerToledoFile  File format handler for Mettler Toledo / Applied Systems spectral files
 %
 % Syntax
-%   myfile = ChiBiotofFile();
-%   myfile = ChiBiotofFile.open();
-%   myfile = ChiBiotofFile.open(filename(s));
+%   myfile = ChiMettlerToledoFile();
+%   myfile = ChiMettlerToledoFile.open();
+%   myfile = ChiMettlerToledoFile.open(filename(s));
 %
 % Description
-%   myfile = ChiBiotofFile() creates an empty object.
+%   myfile = ChiMettlerToledoFile() creates an empty object.
 % 
-%   myfile = ChiBiotofFile.open() opens a dialog box to request filenames
-%   from the user. The selected files are opened and concatenated into a
-%   ChiToFMassSpectrum, ChiToFMassSpectralCollection or ChiImage as appropriate.
+%   myfile = ChiMettlerToledoFile.open() opens a dialog box to request
+%   filenames from the user. The selected files are opened and concatenated
+%   into a ChiSpectrum or ChiSpectralCollection as appropriate.
 % 
-%   myfile = ChiBiotofFile.open(filenames) opens the filenames provided in
-%   a cell array of strings.
+%   myfile = ChiMettlerToledoFile.open(filenames) opens the filenames
+%   provided in a cell array of strings.
 %
-%   This class can read one or more Biotof spectral files (*.dat) or a
-%   single Biotof image file (*.xyt). The file format has the capacity to
-%   hold different types of information. If a single file containing a
-%   spectrum is selected, then myfile is a ChiToFMassSpectrum. If multiple
-%   spectral files are selected, then myfile is a
-%   ChiToFMassSpectralCollection. If a single file containing an image is
-%   selected, then myfile is a ChiImage. If multiple image files are
-%   selected, only first is read.
+%   This class can read one or more Mettler Toledo / Applied Systems
+%   spectral files (*.asc). If a single file containing a spectrum is
+%   selected, then myfile is a ChiSpectrum. If multiple spectral files are
+%   selected, then myfile is a ChiSpectralCollection.
 %
 % Copyright (c) 2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiToFMassSpectrum ChiToFMassSpectralCollection ChiSpectrum ChiSpectralCollection ChiImage.
+%   ChiSpectrum ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -41,7 +37,7 @@ classdef ChiMettlerToledoFile < ChiAbstractFileFormat
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, February 2018
+% Version 1.0, April 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
     
@@ -74,7 +70,7 @@ classdef ChiMettlerToledoFile < ChiAbstractFileFormat
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function filter = getFiltername()
-            filter = 'Mettler Toledo Files (*.asc)';
+            filter = 'Mettler Toledo ASCII Files (*.asc)';
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

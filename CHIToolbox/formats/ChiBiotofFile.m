@@ -118,7 +118,11 @@ classdef ChiBiotofFile < ChiAbstractFileFormat
                 obj.filename = filenames;
             end
             for i = 1:size(filenames,1)
-                obj.history.add(['filename: ', filenames{i}]);
+                if iscell(filenames)
+                    obj.history.add(['filename: ', filenames{i}]);
+                else
+                    obj.history.add(['filename: ', filenames(i)]);
+                end
             end
                 
         end     % function open

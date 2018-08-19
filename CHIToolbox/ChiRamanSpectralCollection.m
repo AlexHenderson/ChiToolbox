@@ -1,4 +1,4 @@
-classdef ChiRamanSpectralCollection < ChiSpectralCollection
+classdef ChiRamanSpectralCollection < ChiSpectralCollection & ChiRamanCharacter
     
 % ChiRamanSpectralCollection Storage class for Raman spectra
 % Copyright (c) 2018 Alex Henderson (alex.henderson@manchester.ac.uk)

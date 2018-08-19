@@ -5,6 +5,7 @@ function plotspectrum(this,varargin)
 % Syntax
 %   plotspectrum();
 %   plotspectrum('nofig');
+%   plotspectrum(____,'axes',desiredaxes);
 %
 % Description
 %   plotspectrum() creates a 2-D line plot of the ChiSpectrum object in a
@@ -13,14 +14,17 @@ function plotspectrum(this,varargin)
 %   plotspectrum('nofig') plots the spectra in the currently active
 %   figure window, or creates a new figure if none is available.
 %
+%   plotspectrum(____,'axes',desiredaxes) plots the spectrum in the
+%   desiredaxes. Defaults to gca. 
+% 
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot function for more details. 
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   plot ChiSpectrum.
+%   plot ChiSpectrum gca.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -29,7 +33,7 @@ function plotspectrum(this,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2017
+% Version 2.0, August 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -47,17 +51,28 @@ else
     figure;
 end
 
+%% Get required axes
+argposition = find(cellfun(@(x) strcmpi(x, 'axes') , varargin));
+if argposition
+    % Remove the parameters from the argument list
+    ax = varargin{argposition+1};
+    varargin(argposition + 1) = [];
+    varargin(argposition) = [];
+else
+    ax = gca;
+end
+
 %% Do the plotting
-plot(this.xvals,this.data,varargin{:});
+plot(ax,this.xvals,this.data,varargin{:});
 
 %% Prettify plot
-utilities.tightxaxis();
+utilities.tightxaxis(ax);
 
 if this.reversex
-    set(gca,'XDir','reverse');
+    set(ax,'XDir','reverse');
 end
 if ~isempty(this.xlabel)
-    set(get(gca,'XLabel'),'String',this.xlabel);
+    set(get(ax,'XLabel'),'String',this.xlabel);
 end
 
 if isempty(this.ylabel)
@@ -65,7 +80,7 @@ if isempty(this.ylabel)
 else
     ylab = this.ylabel;
 end
-set(get(gca,'YLabel'),'String',ylab);
+set(get(ax,'YLabel'),'String',ylab);
 
 %% Manage data cursor information
 figurehandle = gcf;

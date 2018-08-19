@@ -7,6 +7,7 @@ function plotspectra(this,varargin)
 %   plotspectra(function);
 %   plotspectra(____,'byclass');
 %   plotspectra(____,'nofig');
+%   plotspectra(____,'axes',desiredaxes);
 %
 % Description
 %   plotspectra() creates a 2-D line plot of the ChiSpectrum, or
@@ -33,14 +34,17 @@ function plotspectra(this,varargin)
 %   plotspectra(____,'nofig') plots the spectra in the currently active
 %   figure window, or creates a new figure if none is available.
 %
+%   plotspectra(____,'axes',desiredaxes) plots the spectra in the
+%   desiredaxes. Defaults to gca. 
+% 
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot function for more details. 
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   plot shadedErrorBar datacursor ChiSpectrum ChiSpectralCollection.
+%   plot shadedErrorBar datacursor ChiSpectrum ChiSpectralCollection gca.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -49,7 +53,7 @@ function plotspectra(this,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2017
+% Version 2.0, August 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -187,20 +191,32 @@ function plotinfo = plotnoclasses(this,plotinfo,varargin)
 % cannot display class information since none is available, so display the
 % function name instead. 
 
+% Get required axes
+argposition = find(cellfun(@(x) strcmpi(x, 'axes') , varargin));
+if argposition
+    % Remove the parameters from the argument list
+    ax = varargin{argposition+1};
+    varargin(argposition + 1) = [];
+    varargin(argposition) = [];
+else
+    ax = gca;
+end
+
+
 if plotinfo.functionplot
     switch plotinfo.appliedfunction
         case 'mean'
-            plot(this.xvals,mean(this.data),varargin{:});
+            plot(ax,this.xvals,mean(this.data),varargin{:});
         case 'sum'
-            plot(this.xvals,sum(this.data),varargin{:});
+            plot(ax,this.xvals,sum(this.data),varargin{:});
         case 'median'
-            plot(this.xvals,median(this.data),varargin{:});
+            plot(ax,this.xvals,median(this.data),varargin{:});
         case 'std'
             % Plot the mean with the standard deviation plotted as a shaded
             % overlay. 
             colours = get(gca,'colororder');
 %             shadedErrorBar(this.xvals,mean(this.data),std(this.data),{'Color',colours(1,:)});
-            shadedErrorBar(this.xvals,this.data,{@mean,@std},'lineprops',{'color',colours(1,:)});
+            shadedErrorBar(ax,this.xvals,this.data,{@mean,@std},'lineprops',{'color',colours(1,:)});
             
         otherwise
             % ToDo: Correct the error code
@@ -212,7 +228,7 @@ if plotinfo.functionplot
     plotinfo.linelabels = cellstr(plotinfo.appliedfunction);
 else
     % Plot all the spectra, without a legend or advanced datacursor
-    plot(this.xvals,this.data,varargin{:});
+    plot(ax,this.xvals,this.data,varargin{:});
 end
     
 end
@@ -224,23 +240,34 @@ function plotinfo = plotwithclassesbutnotused(this,plotinfo,varargin)
 % everything. We still need the class information for the datacursor for
 % the scenario where we plot everything.
 
+% Get required axes
+argposition = find(cellfun(@(x) strcmpi(x, 'axes') , varargin));
+if argposition
+    % Remove the parameters from the argument list
+    ax = varargin{argposition+1};
+    varargin(argposition + 1) = [];
+    varargin(argposition) = [];
+else
+    ax = gca;
+end
+
 if plotinfo.functionplot
     switch plotinfo.appliedfunction
         case 'mean'
             % Plot the mean of the entire data set
-            plot(this.xvals,mean(this.data),varargin{:});
+            plot(ax,this.xvals,mean(this.data),varargin{:});
         case 'sum'
             % Plot the sum of the entire data set
-            plot(this.xvals,sum(this.data),varargin{:});
+            plot(ax,this.xvals,sum(this.data),varargin{:});
         case 'median'
             % Plot the sum of the entire data set
-            plot(this.xvals,median(this.data),varargin{:});
+            plot(ax,this.xvals,median(this.data),varargin{:});
         case 'std'
             % Plot the mean with the standard deviation plotted as a shaded
             % overlay. 
             colours = get(gca,'colororder');
 %             shadedErrorBar(this.xvals,mean(this.data),std(this.data),{'Color',colours(1,:)},1);
-            shadedErrorBar(this.xvals,this.data,{@mean,@std},'lineprops',{'color',colours(1,:)});
+            shadedErrorBar(ax,this.xvals,this.data,{@mean,@std},'lineprops',{'color',colours(1,:)});
         otherwise
             % ToDo: Correct the error code
             err = MException('CHI:ChiToolbox:UnknownInput', ...
@@ -251,7 +278,7 @@ if plotinfo.functionplot
     plotinfo.linelabels = cellstr(plotinfo.appliedfunction);
 else
     % Plot all the spectra, without a legend
-    plot(this.xvals,this.data,varargin{:});
+    plot(ax, this.xvals,this.data,varargin{:});
     
     % Each line needs a class label for the datacursor. This is the class each
     % spectrum belongs to. The spectra are plotted in natural order, so this is
@@ -273,31 +300,42 @@ function plotinfo = plotwithclasses(this,plotinfo,varargin)
 % Unfortunately, when we group by class, the ordering of the labels
 % changes.
 
+% Get required axes
+argposition = find(cellfun(@(x) strcmpi(x, 'axes') , varargin));
+if argposition
+    % Remove the parameters from the argument list
+    ax = varargin{argposition+1};
+    varargin(argposition + 1) = [];
+    varargin(argposition) = [];
+else
+    ax = gca;
+end
+
 c = 1;
 colours = get(gca,'colororder');
 numcolours = size(colours,1);
 legendHandles = zeros(this.classmembership.numuniquelabels,1);
 
-hold on;
+hold(ax,'on');
 for i = 1:this.classmembership.numuniquelabels
     spectra = this.data(this.classmembership.labelids == i,:);
 
     if plotinfo.functionplot
         switch plotinfo.appliedfunction
             case 'mean'
-                figurehandle = plot(this.xvals,mean(spectra),varargin{:});
+                figurehandle = plot(ax,this.xvals,mean(spectra),varargin{:});
                 legendHandles(i) = figurehandle(1);
             case 'sum'
-                figurehandle = plot(this.xvals,sum(spectra),varargin{:});
+                figurehandle = plot(ax,this.xvals,sum(spectra),varargin{:});
                 legendHandles(i) = figurehandle(1);
             case 'median'
-                figurehandle = plot(this.xvals,median(spectra),varargin{:});
+                figurehandle = plot(ax,this.xvals,median(spectra),varargin{:});
                 legendHandles(i) = figurehandle(1);
             case 'std'
                 % Each class is averaged and plotted with a different colour.
                 % The standard deviation is plotted as a shaded overlay.
                 colour = colours(c,:);
-                figurehandle = shadedErrorBar(this.xvals,spectra,{@mean,@std},'lineprops',{'color',colour});
+                figurehandle = shadedErrorBar(ax,this.xvals,spectra,{@mean,@std},'lineprops',{'color',colour});
                 legendHandles(i) = figurehandle.mainLine;
                 if (c == numcolours)
                     c = 1;  % Reset colours to the beginning
@@ -314,7 +352,7 @@ for i = 1:this.classmembership.numuniquelabels
     else
         % Spectra belonging to the same class are plotted with the same colour
         colour = colours(c,:);
-        figurehandle = plot(this.xvals,spectra,'Color',colour,varargin{:});
+        figurehandle = plot(ax,this.xvals,spectra,'Color',colour,varargin{:});
         legendHandles(i) = figurehandle(1);
         if (c == numcolours)
             c = 1;  % Reset colours to the beginning
@@ -324,7 +362,7 @@ for i = 1:this.classmembership.numuniquelabels
         
     end
 end
-hold off;
+hold(ax,'off');
 
 % Manage the legend. This is the colours of the lines, which is the same as
 % uniquelabels

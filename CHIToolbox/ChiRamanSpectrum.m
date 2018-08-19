@@ -1,4 +1,4 @@
-classdef ChiRamanSpectrum < ChiSpectrum
+classdef ChiRamanSpectrum < ChiSpectrum & ChiRamanCharacter
 
 % ChiRamanSpectrum  A Raman spectrum. 
 %
@@ -40,11 +40,11 @@ classdef ChiRamanSpectrum < ChiSpectrum
 
 
     properties (Constant)
-%       ontology_term Raman spectrum
+        % ontology_term Raman spectrum
         ontology_term = 'Raman spectrum';
-%       type A plot of intensity vs. Raman shift (cm-1) obtained by measuring the Raman scattering of monochromatic light from a sample. [database_cross_reference: DOI:10.1021/jp001661l]
+        % type A plot of intensity vs. Raman shift (cm-1) obtained by measuring the Raman scattering of monochromatic light from a sample. [database_cross_reference: DOI:10.1021/jp001661l]
         type = 'A plot of intensity vs. Raman shift (cm-1) obtained by measuring the Raman scattering of monochromatic light from a sample. [database_cross_reference: DOI:10.1021/jp001661l]'; 
-%       uri http://purl.obolibrary.org/obo/CHMO_0000823
+        % uri http://purl.obolibrary.org/obo/CHMO_0000823
         uri = 'http://purl.obolibrary.org/obo/CHMO_0000823'
     end    
    
@@ -108,7 +108,7 @@ classdef ChiRamanSpectrum < ChiSpectrum
             
             obj.xvals = this.xvals;
             obj.data = this.data;
-            obj.reversex = this.xvals;
+            obj.reversex = this.reversex;
             obj.xlabel = this.xlabel;
             obj.ylabel = this.ylabel;
             obj.filename = this.filename;
@@ -131,7 +131,7 @@ classdef ChiRamanSpectrum < ChiSpectrum
         function set.ramanshift(this,x)
             if (length(x) ~= length(this.data))
                 err = MException(['CHI:',mfilename,':OutOfRange'], ...
-                    'Raman shift and data are different lengths.');
+                    'Raman shift and the data are different lengths.');
                 throw(err);
             end
             if (x(1) > x(end))
@@ -141,6 +141,21 @@ classdef ChiRamanSpectrum < ChiSpectrum
         end
         
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%         function modelbaselinegui(this)
+        function grrrrr = modelme(this)
+            % Call the standalone function version of modelbaselinegui
+%            results = modelbaselinegui(this.xvals,this.data,this.xlabel,this.ylabel);
+           results = modelbaselinegui(this);
+        end
+        %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function modelbaselinegui(varargin)
+            % Call the standalone function version of modelbaselinegui
+%            results = modelbaselinegui(this.xvals,this.data,this.xlabel,this.ylabel);
+            a = 9;
+           results = modelbaselinegui(varargin);
+%            results = modelbaselinegui(this.xvals,this.data,this,this.xlabel,this.ylabel);
+            a = 9;
+        end
     end
     
 end

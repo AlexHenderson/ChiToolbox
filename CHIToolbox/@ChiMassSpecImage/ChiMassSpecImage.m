@@ -95,6 +95,8 @@ classdef ChiMassSpecImage < ChiImage
             % ToDo: Need to manage the additional fields in the base class
             
             this@ChiImage(superClassArgs{:});
+            this.spectrumclassname = 'ChiMassSpectrum';
+            this.spectralcollectionclassname = 'ChiMassSpectralCollection';
             
 %             if (~isempty(varargin) && isa(varargin{1},'ChiSpectrum'))
 %                 this.filename = varargin{1}.filename;

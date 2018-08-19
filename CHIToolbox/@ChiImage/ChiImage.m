@@ -6,39 +6,41 @@ classdef ChiImage < ChiAbstractImage
     % matlab.mixin.Copyable only for >R2011a
     % Want compatibility with R2009a
     
-    %% Properties
-        properties  
-            %% Basic properties
-            xvals;  % abscissa as a row vector
-            data;  % ordinate as a 2D array (unfolded matrix)
-%             reversex@logical = false; % should abscissa be plotted increasing (false = default) or decreasing (true)
-            reversex = false; % should abscissa be plotted increasing (false = default) or decreasing (true)
-            xlabel = ''; % text for abscissa label on plots (default = empty)
-            ylabel = ''; % text for ordinate label on plots (default = empty)
-            mask;
-            masked = false;
-            filename = '';
-            history;
-        end
+    properties  
+        xvals;  % Abscissa as a row vector
+        data;  % Ordinate as a 2D array (unfolded matrix)
+        reversex = false; % Should abscissa be plotted increasing (false) or decreasing
+        xlabel = ''; % Text for abscissa label on plots (default = empty)
+        ylabel = ''; % Text for ordinate label on plots (default = empty)
+        mask;
+        masked = false;
+        filename = '';
+        history;
+    end
 
-        properties %(SetAccess = protected)
-            xpixels;    % Number of pixels in the x-direction (width)
-            ypixels;    % Number of pixels in the y-direction (height)
-%             numpixels;  % in ChiAbstractImage
-%             numspectra; % in ChiAbstractImage
-        end          
-        
-        properties (Dependent = true)
-        %% Calculated properties
-            totalspectrum;  % sum of columns of data
-            totalimage;     % sum of layers of data
+    properties 
+        xpixels;    % Number of pixels in the x-direction (width)
+        ypixels;    % Number of pixels in the y-direction (height)
+    end          
+
+    properties (Dependent = true)
+        totalspectrum;  % Sum of columns of data
+        totalimage;     % Sum of layers of data
+    end
+
+    methods (Static)
+        function spectrumclassname = spectrumclassname()
+            spectrumclassname = 'ChiSpectrum';
         end
-    
-    %% Methods
+    end        
+        
     methods
-        %% Constructor
+        % Constructor
         function this = ChiImage(xvals,data,reversex,xlabel,ylabel,xpixels,ypixels,masked,mask,filename)
             % Create an instance of ChiImage with given parameters
+            
+            this.spectrumclassname = 'ChiSpectrum';
+            this.spectralcollectionclassname = 'ChiSpectralCollection';
             
             if (nargin > 0) % Support calling with 0 arguments
                 this.xvals = xvals;
@@ -92,23 +94,20 @@ classdef ChiImage < ChiAbstractImage
             end 
         end
         
-        %% clone : Make a copy of this image
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function output = clone(this)
-            % Make a copy of this image
+            % Create a (deep) copy of this image
             output = ChiImage(this.xvals,this.data,this.reversex,this.xlabel,this.ylabel,this.xpixels,this.ypixels,this.masked,this.mask,this.filename);
             output.history = this.history.clone();
         end
         
-        %% totalspectrum : Calculate total signal spectrum
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function totalspectrum = get.totalspectrum(this)
-            % Calculate total signal spectrum
-            
             totalspectrum = ChiSpectrum(this.xvals,sum(this.data),this.reversex,this.xlabel,this.ylabel);
         end        
         
-        %% totalimage : Calculate total signal image
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function totalimage = get.totalimage(this)
-            % Calculate total signal image
                         
             if this.masked
                 unmasked = zeros(this.xpixels*this.ypixels, this.channels);
@@ -129,19 +128,17 @@ classdef ChiImage < ChiAbstractImage
             totalimage = ChiPicture(totrows,this.xpixels,this.ypixels);
         end        
         
-        %% xpixels : Width of image
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function xpixels = get.xpixels(this)
-            % xpixels : Width of image
-            
             xpixels = this.xpixels;
         end
         
-        %% ypixels : Height of image
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function ypixels = get.ypixels(this)
-            % ypixels : Height of image
-            
             ypixels = this.ypixels;
         end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
     end % methods
 end % class ChiImage 

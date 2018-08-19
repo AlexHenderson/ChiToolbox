@@ -18,6 +18,10 @@ classdef (Abstract) ChiAbstractSpectralCollection < handle
 
     properties (Abstract, SetAccess = protected)
     end          
+    
+    properties
+        spectrumclassname;  % The name of the class is a single spectrum is selected
+    end
 
     properties (Dependent = true, SetAccess = protected)
     %% Calculated properties
@@ -38,9 +42,5 @@ classdef (Abstract) ChiAbstractSpectralCollection < handle
         end
     end
     
-    methods (Abstract)
-        clone(this);
-    end
     
 end
-

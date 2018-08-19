@@ -122,6 +122,7 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
             
             this@ChiSpectralCollection(superClassArgs{:});
             this@ChiIRCharacter();
+            this.spectrumclassname = 'ChiIRSpectrum';
 
             % We have no way of knowing whether the value for reversex is
             % correct or not, so assume the user knows what they're doing.

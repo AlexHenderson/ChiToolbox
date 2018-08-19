@@ -42,11 +42,11 @@ classdef ChiIRImage < ChiImage & ChiIRCharacter
 
 
     properties (Constant)
-%       ontology_term infrared map
-       ontology_term = 'infrared map';
-%         type A data set derived from infrared microscopy consisting of a three-dimensional image where two axes describe the x and y spatial dimensions and the third dimension represents the infrared wavelength. The image is obtained by stacking one image per infrared wavelength sequentially. 
+        % ontology_term: infrared map
+        ontology_term = 'infrared map';
+        % type: A data set derived from infrared microscopy consisting of a three-dimensional image where two axes describe the x and y spatial dimensions and the third dimension represents the infrared wavelength. The image is obtained by stacking one image per infrared wavelength sequentially. 
         type = 'A data set derived from infrared microscopy consisting of a three-dimensional image where two axes describe the x and y spatial dimensions and the third dimension represents the infrared wavelength. The image is obtained by stacking one image per infrared wavelength sequentially.'; 
-%         uri http://purl.obolibrary.org/obo/CHMO_0001893
+        % uri: http://purl.obolibrary.org/obo/CHMO_0001893
         uri = 'http://purl.obolibrary.org/obo/CHMO_0001893'
     end    
    
@@ -98,12 +98,9 @@ classdef ChiIRImage < ChiImage & ChiIRCharacter
             % ToDo: Need to manage the additional fields in the base class
             
             this@ChiImage(superClassArgs{:});
+            this.spectrumclassname = 'ChiIRSpectrum';
+            this.spectralcollectionclassname = 'ChiIRSpectralCollection';
             
-%             if (~isempty(varargin) && isa(varargin{1},'ChiSpectrum'))
-%                 this.filename = varargin{1}.filename;
-%                 this.history = varargin{1}.history.clone();
-%                 this.history.add(['Generated from a ', class(varargin{1}), '.']);
-%             end
         end
        
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

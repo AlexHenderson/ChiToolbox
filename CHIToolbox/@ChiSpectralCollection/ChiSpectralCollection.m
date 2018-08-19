@@ -75,6 +75,8 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
         
         function this = ChiSpectralCollection(varargin)
             
+            this.spectrumclassname = 'ChiSpectrum';
+            
             switch nargin
                 case 0
                     this.history = ChiLogger();

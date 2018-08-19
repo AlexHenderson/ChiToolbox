@@ -28,10 +28,27 @@ classdef (Abstract) ChiAbstractSpectrum < handle
             % Calculate number of channels
             numchannels = length(this.data);
         end
+
+        % Name of variable
+        function name = variablename(this) %#ok<MANU>
+            name = utilities.callingline();
+            
+%             expr = '';
+% 
+%     [start_idx, end_idx, extents, matches, tokens, names, splits] = regexp(str, expr);
+% 
+%     monthword=tokens{1,1}{1};
+%     day=tokens{1,1}{2};
+            
+            
+            
+            
+        end
     end
     
     methods (Abstract)
         clone(this);
     end
+    
 end
 

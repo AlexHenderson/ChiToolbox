@@ -1,6 +1,6 @@
-function output = spectrumat(this,xpos,ypos)
+function spectrum = spectrumat(this,xpos,ypos)
 % Get spectrum at a given location in the image
-% Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
+% Copyright (c) 2014-2018 Alex Henderson (alex.henderson@manchester.ac.uk)
 
     % Handle error where xpos and/or ypos are outside image
     if (xpos > this.xpixels) || (ypos > this.ypixels)
@@ -32,8 +32,11 @@ function output = spectrumat(this,xpos,ypos)
         spectrumdata = squeeze(y(ypos,xpos,:));
     end
 
-    output = ChiSpectrum(this.xvals,spectrumdata,this.reversex,this.xlabel,this.ylabel);
-    output.history.add(['spectrumat, x=', num2str(xpos), ', y=', num2str(ypos)]);
-    this.history.add(['spectrumat, x=', num2str(xpos), ', y=', num2str(ypos)]);
+    spectrumclass = str2func(this.spectrumclassname);
+    spectrum = spectrumclass(this.xvals,spectrumdata,this.reversex,this.xlabel,this.ylabel);
+    
+%     spectrum = ChiSpectrum(this.xvals,spectrumdata,this.reversex,this.xlabel,this.ylabel);
+    spectrum.history.add(['Spectrum at, x=', num2str(xpos), ', y=', num2str(ypos)]);
+    this.history.add(['Spectrum at, x=', num2str(xpos), ', y=', num2str(ypos)]);
 
 end

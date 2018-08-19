@@ -34,8 +34,6 @@ function spectrum = spectrumat(this,xpos,ypos)
 
     spectrumclass = str2func(this.spectrumclassname);
     spectrum = spectrumclass(this.xvals,spectrumdata,this.reversex,this.xlabel,this.ylabel);
-    
-%     spectrum = ChiSpectrum(this.xvals,spectrumdata,this.reversex,this.xlabel,this.ylabel);
     spectrum.history.add(['Spectrum at, x=', num2str(xpos), ', y=', num2str(ypos)]);
     this.history.add(['Spectrum at, x=', num2str(xpos), ', y=', num2str(ypos)]);
 

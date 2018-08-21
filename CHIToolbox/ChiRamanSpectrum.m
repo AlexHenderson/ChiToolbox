@@ -90,6 +90,7 @@ classdef ChiRamanSpectrum < ChiSpectrum & ChiRamanCharacter
             end
             
             this@ChiSpectrum(superClassArgs{:});
+            this@ChiRamanCharacter();
             
             if (~isempty(varargin) && isa(varargin{1},'ChiSpectrum'))
                 this.filename = varargin{1}.filename;
@@ -113,6 +114,8 @@ classdef ChiRamanSpectrum < ChiSpectrum & ChiRamanCharacter
             obj.ylabel = this.ylabel;
             obj.filename = this.filename;
             
+            obj.baseline = this.baseline.clone();
+
             if ~isempty(this.history)
                 obj.history = this.history.clone();
                 obj.history.add('Cloned');

@@ -18,7 +18,7 @@ function [obj] = balance(varargin)
 %
 %   balance(____,minimum) uses minimum to define the number of members of
 %   each class. If minimum is greater than the membership of the minority
-%   class it is ignored. This version modifies the original object.
+%   class, it is ignored. This version modifies the original object.
 %
 %   balanced = balance(____) first creates a clone of the object, then
 %   performs one of the balance functions on the clone. The original object

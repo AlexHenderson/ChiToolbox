@@ -32,7 +32,7 @@ function vn_data = vectornorm(data)
 % Calculates the following:
 %   1. Squares each variable in 'data'.
 %   2. Sums these squares and calculates the square root of the result.
-%      This is the 'vector length'.
+%      This is the 'vector length' (L2-norm). 
 %   3. Divides each of the original data variables by the vector length.
 %   4. Outputs the result to a MATLAB variable
 
@@ -52,7 +52,7 @@ end
 squares = data .^ 2;                % square of each variable ([n,m])
 sum_of_squares = sum(squares, 2);   % sum of the squares along the rows ([n,1])
 
-divisor = sqrt(sum_of_squares);     % ([n,1])
+divisor = sqrt(sum_of_squares);     % ([n,1]) == L2-Norm
 
 divisor(divisor == 0) = 1;          % avoid divide by zero error
 

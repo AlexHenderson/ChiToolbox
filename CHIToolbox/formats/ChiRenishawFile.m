@@ -86,7 +86,7 @@ classdef ChiRenishawFile < ChiAbstractFileFormat
                 throw(err);
             end
             % If filename(s) are not provided, ask the user
-            if ~exist('filenames', 'var')
+            if ~exist('filenames', 'var') || isempty(filenames)
                 filenames = utilities.getfilenames(vertcat(...
                         {'*.wdf', 'Renishaw Files (*.wdf)'}));
 
@@ -160,7 +160,7 @@ classdef ChiRenishawFile < ChiAbstractFileFormat
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end
-            obj = ChiRenishawFile.open(varargin{:});
+            obj = ChiRenishawFile.open(varargin);
         end
             
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

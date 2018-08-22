@@ -103,7 +103,8 @@ classdef ChiImage < ChiAbstractImage
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function totalspectrum = get.totalspectrum(this)
-            totalspectrum = ChiSpectrum(this.xvals,sum(this.data),this.reversex,this.xlabel,this.ylabel);
+            spectrumclass = str2func(this.spectrumclassname);
+            totalspectrum = spectrumclass(this.xvals,sum(this.data),this.reversex,this.xlabel,this.ylabel);
         end        
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

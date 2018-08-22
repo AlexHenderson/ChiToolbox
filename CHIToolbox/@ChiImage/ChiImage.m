@@ -110,7 +110,7 @@ classdef ChiImage < ChiAbstractImage
         function totalimage = get.totalimage(this)
                         
             if this.masked
-                unmasked = zeros(this.xpixels*this.ypixels, this.channels);
+                unmasked = zeros(this.xpixels*this.ypixels, this.numchannels);
                 totindex = 1;
                 for i = 1:length(this.mask)
                     if this.mask(i)

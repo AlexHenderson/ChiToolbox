@@ -1,6 +1,6 @@
 function varargout = keeprange(this,varargin)
 
-% keeprange  Retains one or more sections of the spectrum. 
+% keeprange  Retains one or more sections of the spectra. 
 %
 % Syntax
 %   keeprange(from,to);
@@ -8,7 +8,7 @@ function varargout = keeprange(this,varargin)
 %   modified = keeprange(____);
 %
 % Description
-%   keeprange(from,to) retains the region of the spectrum delimited by the
+%   keeprange(from,to) retains the region of the spectra delimited by the
 %   values from and to (inclusive). The parameters from and to are in xaxis
 %   units (not index values). This version modifies the original object.
 %
@@ -17,7 +17,7 @@ function varargout = keeprange(this,varargin)
 %   object.
 %
 %   modified = keeprange(____) first creates a clone of the object,
-%   then retains the relevant portion(s) of the spectrum from the clone. The
+%   then retains the relevant portion(s) of the spectra from the clone. The
 %   original object is not modified.
 %
 % Copyright (c) 2017, Alex Henderson.
@@ -40,7 +40,7 @@ function varargout = keeprange(this,varargin)
 
 ranges = cell2mat(varargin);
 if rem(length(ranges),2)
-    err = MException('CHI:ChiSpectrum:IOError', ...
+        err = MException(['CHI:', mfilename, ':IOError'], ...
         'The from/to variables must be pairs of range limits.');
     throw(err);
 end

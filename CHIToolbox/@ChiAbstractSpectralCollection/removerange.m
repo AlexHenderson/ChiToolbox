@@ -1,6 +1,6 @@
 function varargout = removerange(this,varargin)
 
-% removerange  Removes one or more sections of the spectrum. 
+% removerange  Removes one or more sections of the spectra. 
 %
 % Syntax
 %   removerange(from,to);
@@ -8,10 +8,9 @@ function varargout = removerange(this,varargin)
 %   modified = removerange(____);
 %
 % Description
-%   removerange(from,to) removes the region of the spectrum delimited by
-%   the values from and to (inclusive). The parameters from and to are in
-%   xaxis units (not index values). This version modifies the original
-%   object.
+%   removerange(from,to) removes the region of the spectra delimited by the
+%   values from and to (inclusive). The parameters from and to are in xaxis
+%   units (not index values). This version modifies the original object.
 %
 %   removerange(from1,to1,from2,to2,...) removes the multiple regions.
 %   Regions are in pairs: from -> to. This version modifies the original
@@ -25,7 +24,7 @@ function varargout = removerange(this,varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   removerangeidx ChiSpectrum.
+%   removerangeidx ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -41,8 +40,8 @@ function varargout = removerange(this,varargin)
 
 ranges = cell2mat(varargin);
 if rem(length(ranges),2)
-    err = MException('CHI:ChiSpectrum:IOError', ...
-        'The from/to variables must be pairs of range limits.');
+        err = MException(['CHI:', mfilename, ':IOError'], ...
+        'The ranges variable must be pairs of range limits.');
     throw(err);
 end
 

@@ -1,44 +1,93 @@
-function test_suite = test_ChiSpectrum
-initTestSuite;
+classdef test_ChiSpectrum < matlab.unittest.TestCase
 
-function [cs] = setup
-xvals = [1:10];
-yvals = [11:20];
-cs = ChiSpectrum(xvals,yvals);
+    
+    properties
+        spectrum
+        xvals = 1:10;
+        yvals = 11:20;
+    end
+    
+    % =====================================================================
+    methods (TestMethodSetup)
+        function createChiSpectrum(this)
+            % comment
+            this.spectrum = ChiSpectrum(this.xvals,this.yvals);
+        end
+    end    
+    
+    % =====================================================================
+    methods (Test)
+        
+        function test_numchannels(this)
+            this.verifyEqual(this.spectrum.numchannels(), 10);
+        end
+   
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function test_sum(this)
+            this.verifyEqual(this.spectrum.sum(), 155);
+        end
 
-function test_numChannels(cs)
-assertEqual(cs.numChannels(), 10);
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function test_sumrangeidx(this)
+            this.verifyEqual(this.spectrum.sumrangeidx(3,6), 58);
+        end
 
-function test_sum(cs)
-assertEqual(cs.sum(), 155);
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function test_sumrange(this)
+            this.verifyEqual(this.spectrum.sumrange(6,3), 58);
+        end
 
-function test_sumrangeidx(cs)
-assertEqual(cs.sumrangeidx(3,6), 58);
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function test_keeprangeidx(this)
+            expected = ChiSpectrum([3,4,5,6],[13,14,15,16]);
+            sub = this.spectrum.keeprangeidx(3,6);
+            expected.history = sub.history.clone();
+            this.verifyEqual(sub, expected);
+        end
 
-function test_sumrange(cs)
-assertEqual(cs.sumrange(6,3), 58);
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function test_keeprange(this)
+            expected = ChiSpectrum([3,4,5,6],[13,14,15,16]);
+            sub = this.spectrum.keeprange(3,6);
+            expected.history = sub.history.clone();
+            this.verifyEqual(sub, expected);
+        end
 
-function test_subspectrumidx(cs)
-expected = ChiSpectrum([3,4,5,6],[13,14,15,16]);
-sub = cs.subspectrumidx(3,6);
-expected.history = sub.history;
-assertEqual(sub, expected);
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function test_removerangeidx(this)
+            expected = ChiSpectrum([1,2,7,8,9,10],[11,12,17,18,19,20]);
+            remo = this.spectrum.removerangeidx(3,6);
+            expected.history = remo.history.clone();
+            this.verifyEqual(remo, expected);
+        end
 
-function test_subspectrum(cs)
-expected = ChiSpectrum([3,4,5,6],[13,14,15,16]);
-sub = cs.subspectrum(3,6);
-expected.history = sub.history;
-assertEqual(sub, expected);
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function test_removerange(this)
+            expected = ChiSpectrum([1,2,7,8,9,10],[11,12,17,18,19,20]);
+            remo = this.spectrum.removerange(3,6);
+            expected.history = remo.history.clone();
+            this.verifyEqual(remo, expected);
+        end
 
-function test_removerangeidx(cs)
-expected = ChiSpectrum([1,2,7,8,9,10],[11,12,17,18,19,20]);
-remo = cs.removerangeidx(3,6);
-expected.history = remo.history;
-assertEqual(remo, expected);
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function test_clone_same(this)
+            cloned = this.spectrum.clone();
+            cloned.history = [];
+            this.spectrum.history = [];
+            this.verifyEqual(this.spectrum, cloned);
+        end
 
-function test_removerange(cs)
-expected = ChiSpectrum([1,2,7,8,9,10],[11,12,17,18,19,20]);
-remo = cs.removerange(3,6);
-expected.history = remo.history;
-assertEqual(remo, expected);
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function test_clone_different(this)
+            cloned = this.spectrum.clone();
+            changed = this.spectrum.keeprange(6,3);
+            cloned.history = [];
+            changed.history = [];
+            this.verifyNotEqual(cloned, changed);
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    end
+    
+end
 

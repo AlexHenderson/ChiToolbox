@@ -1,13 +1,29 @@
-function test_suite = test_ChiSwap
-initTestSuite;
+classdef test_ChiSwap < matlab.unittest.TestCase
 
-function test_differentNumbers
-[a,b]=ChiSwap(1,2);
-assertEqual([a,b], [2,1]);
+    
+    properties
+    end
+    
+    % =====================================================================
+    methods (Test)
 
-function test_sameNumbers
-[a,b]=ChiSwap(5,5);
-assertEqual([a,b], [5,5]);
+        function test_differentNumbers(this)
+            [a,b] = ChiSwap(1,2);
+            this.verifyEqual([a,b], [2,1]);
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function test_sameNumbers(this)
+            [a,b] = ChiSwap(5,5);
+            this.verifyEqual([a,b], [5,5]);
+        end
 
-function test_errorTooManyVariables
-assertExceptionThrown(@() ChiSwap(1, 2, 3), 'MATLAB:TooManyInputs');
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%         function test_errorTooManyVariables(this)
+%             this.verifyError(ChiSwap(1, 2, 3), 'MATLAB:TooManyInputs');
+%         end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    end
+end
+

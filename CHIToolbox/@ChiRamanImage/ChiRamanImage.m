@@ -1,4 +1,4 @@
-classdef ChiRamanImage < ChiImage
+classdef ChiRamanImage < ChiImage & ChiRamanCharacter
     
 % ChiRamanImage  A Raman image.
 %
@@ -99,6 +99,8 @@ classdef ChiRamanImage < ChiImage
             % ToDo: Need to manage the additional fields in the base class
             
             this@ChiImage(superClassArgs{:});
+            this@ChiRamanCharacter();
+            
             this.spectrumclassname = 'ChiRamanSpectrum';
             this.spectralcollectionclassname = 'ChiRamanSpectralCollection';
             

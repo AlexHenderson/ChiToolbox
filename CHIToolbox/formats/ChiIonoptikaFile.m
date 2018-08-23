@@ -100,7 +100,7 @@ classdef ChiIonoptikaFile < ChiAbstractFileFormat
             if (length(filenames) == 1)
                 [mass,data,height,width,layers,filename,x_label,y_label] = ionoptika_hd5file(filenames{1}); %#ok<ASGLU>
                 
-                obj = ChiImage(mass,data,false,x_label,y_label,width,height);
+                obj = ChiToFMassSpecImage(mass,data,false,x_label,y_label,width,height);
                 obj.filename = filenames{1};
                 obj.history.add(['filename: ', filenames{1}]);
             else

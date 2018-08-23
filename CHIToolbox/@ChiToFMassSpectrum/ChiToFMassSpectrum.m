@@ -1,4 +1,4 @@
-classdef ChiToFMassSpectrum < ChiSpectrum
+classdef ChiToFMassSpectrum < ChiSpectrum & ChiToFMSCharacter
 
 % ChiToFMassSpectrum  A time-of-flight mass spectrum. 
 %
@@ -87,6 +87,7 @@ classdef ChiToFMassSpectrum < ChiSpectrum
             end
             
             this@ChiSpectrum(superClassArgs{:});
+            this@ChiToFMSCharacter();
             
             if (~isempty(varargin) && isa(varargin{1},'ChiSpectrum'))
                 this.filename = varargin{1}.filename;
@@ -105,7 +106,7 @@ classdef ChiToFMassSpectrum < ChiSpectrum
             
             obj.xvals = this.xvals;
             obj.data = this.data;
-            obj.reversex = this.xvals;
+            obj.reversex = this.reversex;
             obj.xlabel = this.xlabel;
             obj.ylabel = this.ylabel;
             obj.filename = this.filename;

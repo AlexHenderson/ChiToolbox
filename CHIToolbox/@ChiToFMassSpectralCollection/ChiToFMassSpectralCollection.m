@@ -1,16 +1,16 @@
-classdef ChiToFMassSpectralCollection < ChiSpectralCollection
+classdef ChiToFMassSpectralCollection < ChiSpectralCollection & ChiToFMSCharacter
     
 % ChiToFMassSpectralCollection  Storage class for time-of-flight mass spectra
 % Copyright (c) 2017 Alex Henderson (alex.henderson@manchester.ac.uk)
     
-    % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    % =====================================================================
     properties (Dependent)
         mass
     end
     
-    % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    % =====================================================================
     methods
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
         function this = ChiToFMassSpectralCollection(varargin)
           
             superClassArgs = varargin;
@@ -42,6 +42,7 @@ classdef ChiToFMassSpectralCollection < ChiSpectralCollection
                             superClassArgs{3} = s.reversex;
                             superClassArgs{4} = s.xlabel;
                             superClassArgs{5} = s.ylabel;
+                            
                             if ~isempty(s.classmembership)
                                 superClassArgs{6} = s.classmembership.clone();
                             end
@@ -63,11 +64,10 @@ classdef ChiToFMassSpectralCollection < ChiSpectralCollection
             end
             
             this@ChiSpectralCollection(superClassArgs{:});
+            this@ChiToFMSCharacter();
+            
             this.spectrumclassname = 'ChiToFMassSpectrum';
 
-            % We have no way of knowing whether the value for reversex is
-            % correct or not, so assume the user knows what they're doing.
-            
             if isempty(this.xlabel)
                 this.xlabel = 'm/z (amu)';   % xlabel
             end

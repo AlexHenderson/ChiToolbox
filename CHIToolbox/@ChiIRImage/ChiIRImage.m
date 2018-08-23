@@ -98,6 +98,8 @@ classdef ChiIRImage < ChiImage & ChiIRCharacter
             % ToDo: Need to manage the additional fields in the base class
             
             this@ChiImage(superClassArgs{:});
+            this@ChiIRCharacter();
+            
             this.spectrumclassname = 'ChiIRSpectrum';
             this.spectralcollectionclassname = 'ChiIRSpectralCollection';
             

@@ -1,4 +1,4 @@
-classdef ChiMassSpecImage < ChiImage
+classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
     
 % ChiMassSpecImage  A mass spectral image.
 %
@@ -26,7 +26,7 @@ classdef ChiMassSpecImage < ChiImage
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiImage ChiSIMSSpectralCollection ChiSpectralCollection.
+%   ChiImage ChiMassSpectralCollection ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -41,8 +41,12 @@ classdef ChiMassSpecImage < ChiImage
 
 
     properties (Constant)
-%         type = 'time-of-flight mass spectrum';
-%         uri = 'http://purl.obolibrary.org/obo/CHMO_0000828'
+%       ontology_term mass spectrum
+       ontology_term = 'mass spectrum';
+%         type A plot of the relative abundance of a beam or other collection of ions as a function of the mass-to-charge ratio (m/z). 
+        type = 'A plot of the relative abundance of a beam or other collection of ions as a function of the mass-to-charge ratio (m/z).'; 
+%         uri http://purl.obolibrary.org/obo/MS_1000294
+        uri = 'http://purl.obolibrary.org/obo/MS_1000294'
     end    
    
     properties (Dependent)
@@ -116,7 +120,7 @@ classdef ChiMassSpecImage < ChiImage
             
             obj.xvals = this.xvals;
             obj.data = this.data;
-            obj.reversex = this.xvals;
+            obj.reversex = this.reversex;
             obj.xlabel = this.xlabel;
             obj.ylabel = this.ylabel;
             obj.filename = this.filename;

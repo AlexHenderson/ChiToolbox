@@ -7,18 +7,16 @@ classdef ChiSpectrum < ChiAbstractSpectrum
     
     % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     properties
-        xvals;  % abscissa as a row vector
-        data;  % ordinate as a row vector
-        reversex = false; % should abscissa be plotted increasing (false = default) or decreasing (true)
-        xlabel = ''; % text for abscissa label on plots (default = empty)
-        ylabel = ''; % text for ordinate label on plots (default = empty)
-        filename = ''; % name of the file opened (default = empty)
-        history;
+        xvals;      % Abscissa as a row vector
+        data;       % Contents of object as a 2D matrix, spectra in rows
+        reversex;   % Should abscissa be plotted in decreasing order
+        xlabel;     % Text for abscissa label on plots
+        ylabel;     % Text for ordinate label on plots
+        classmembership % An instance of ChiClassMembership
+        filename    % Name of file opened, if appropriate
+        history     % Log of data processing steps
     end
     
-    properties
-        ontologyinfo
-    end
     
     methods
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

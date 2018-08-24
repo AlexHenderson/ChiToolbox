@@ -16,7 +16,7 @@ classdef (Abstract) ChiAbstractSpectralCollection < handle
         spectrumclassname;  % The name of the class if a single spectrum is selected
     end
 
-    properties (Abstract)
+    properties
         % The definition of this data using ontological descriptors (see ChiOntologyInformation).
         ontologyinfo
     end    

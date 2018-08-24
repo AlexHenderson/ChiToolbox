@@ -50,19 +50,14 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
 
     % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     properties  
-        xvals  % abscissa as a row vector
-        data  % ordinate as a 2D array (unfolded matrix)
-        reversex = false % should abscissa be plotted increasing (false = default) or decreasing (true)
-        xlabel = '' % text for abscissa label on plots (default = empty)
-        ylabel = '' % text for ordinate label on plots (default = empty)
-        classmembership % an instance of ChiClassMembership
-        filenames % cell array of filenames if opened from a list of files
-        history
-    end
-
-    % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    properties
-        ontologyinfo
+        xvals;      % Abscissa as a row vector
+        data;       % Contents of object as a 2D matrix, spectra in rows
+        reversex;   % Should abscissa be plotted in decreasing order
+        xlabel;     % Text for abscissa label on plots
+        ylabel;     % Text for ordinate label on plots
+        classmembership % An instance of ChiClassMembership
+        filenames   % Cell array of filenames if opened from a list of files
+        history     % Log of data processing steps
     end
 
     % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

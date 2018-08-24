@@ -22,7 +22,7 @@ classdef (Abstract) ChiAbstractImage < handle
         spectralcollectionclassname;  % The name of the class if multiple spectra are selected
     end   
     
-    properties (Abstract)
+    properties
         % The definition of this data using ontological descriptors (see ChiOntologyInformation).
         ontologyinfo
     end    

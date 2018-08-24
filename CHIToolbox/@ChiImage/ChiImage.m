@@ -7,25 +7,21 @@ classdef ChiImage < ChiAbstractImage
     % Want compatibility with R2009a
     
     properties  
-        xvals;  % Abscissa as a row vector
-        data;  % Ordinate as a 2D array (unfolded matrix)
-        reversex = false; % Should abscissa be plotted increasing (false) or decreasing
-        xlabel = ''; % Text for abscissa label on plots (default = empty)
-        ylabel = ''; % Text for ordinate label on plots (default = empty)
-        mask;
+        xvals;      % Abscissa as a row vector
+        data;       % Contents of object as a 2D matrix, spectra in rows
+        reversex;   % Should abscissa be plotted in decreasing order
+        xlabel;     % Text for abscissa label on plots
+        ylabel;     % Text for ordinate label on plots
+        mask;  
         masked = false;
-        filename = '';
-        history;
+        filename = '';  % Name of the file, if appropriate
+        history;    % Log of data processing steps
     end
 
     properties 
         xpixels;    % Number of pixels in the x-direction (width)
         ypixels;    % Number of pixels in the y-direction (height)
     end          
-
-    properties
-        ontologyinfo
-    end
 
     properties (Dependent = true)
         totalspectrum;  % Sum of columns of data

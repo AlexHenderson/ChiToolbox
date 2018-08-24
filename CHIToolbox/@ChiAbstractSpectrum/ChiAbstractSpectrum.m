@@ -14,7 +14,7 @@ classdef (Abstract) ChiAbstractSpectrum < handle
         numspectra = 1; % Number of rows of data
     end
     
-    properties (Abstract)
+    properties
         % The definition of this data using ontological descriptors (see ChiOntologyInformation).
         ontologyinfo
     end    

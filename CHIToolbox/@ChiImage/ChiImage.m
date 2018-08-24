@@ -23,24 +23,45 @@ classdef ChiImage < ChiAbstractImage
         ypixels;    % Number of pixels in the y-direction (height)
     end          
 
+    properties
+        ontologyinfo
+    end
+
     properties (Dependent = true)
         totalspectrum;  % Sum of columns of data
         totalimage;     % Sum of layers of data
     end
 
+    % =====================================================================
     methods (Static)
+    % =====================================================================
         function spectrumclassname = spectrumclassname()
             spectrumclassname = 'ChiSpectrum';
         end
     end        
         
+    % =====================================================================
     methods
+    % =====================================================================
         % Constructor
         function this = ChiImage(xvals,data,reversex,xlabel,ylabel,xpixels,ypixels,masked,mask,filename)
             % Create an instance of ChiImage with given parameters
             
             this.spectrumclassname = 'ChiSpectrum';
             this.spectralcollectionclassname = 'ChiSpectralCollection';
+            
+            this.ontologyinfo = ChiOntologyInformation();
+            this.ontologyinfo.term = 'chemical map';
+            this.ontologyinfo.description = ['A data set derived from ' ...
+                'microspectroscopy consisting of a three-dimensional ' ...
+                'image where two axes describe the x and y spatial ' ...
+                'dimensions and the third dimension represents ' ...
+                'spectral wavelength. The image is obtained by ' ...
+                'stacking one image per spectral wavelength ' ...
+                'sequentially. [database_cross_reference: ' ...
+                'http://www.spectroscopyeurope.com/NIR_14_3.pdf].'];
+            this.ontologyinfo.uri = 'http://purl.obolibrary.org/obo/CHMO_0001891';
+            this.ontologyinfo.isaccurate = true;
             
             if (nargin > 0) % Support calling with 0 arguments
                 this.xvals = xvals;

@@ -113,7 +113,6 @@ classdef ChiBiotofFile < ChiAbstractFileFormat
                     obj.filenames = filenames;
                 end               
             else
-                % ToDo: convert to ToF image
                 obj = ChiMassSpecImage(mass,data,false,x_label,y_label,width,height);
                 obj.filename = filenames;
             end

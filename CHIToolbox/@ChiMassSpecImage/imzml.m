@@ -22,7 +22,7 @@ function imzml(varargin)
 %       Name = 'centroid', Value is either true or false depending on
 %       whether the data has been centroided. Default = false.
 %       Example
-%           j105data.imzml('polarity','neg', centroid,true);
+%           j105data.imzml('polarity','neg', 'centroid',true);
 % 
 % Notes
 %   Writing an imzml/ibd file pair takes a LONG TIME and uses A LOT of disc

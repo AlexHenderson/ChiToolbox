@@ -5,15 +5,11 @@ classdef (Abstract) ChiAbstractSpectralCollection < handle
 % Here we manage the data as a 2D object
 
     properties (Abstract)
-        xvals;  % abscissa as a row vector
+        xvals;      % Abscissa as a row vector
         data;       % Contents of object as a 2D matrix, spectra in rows
-        reversex; % should abscissa be plotted increasing or decreasing
-                  % true means plot high to low
-%         reversex@logical; % should abscissa be plotted increasing or decreasing
-%         xlabel@char; % text for abscissa label on plots
-%         ylabel@char; % text for ordinate label on plots
-        xlabel; % text for abscissa label on plots
-        ylabel; % text for ordinate label on plots
+        reversex;   % Should abscissa be plotted in decreasing order
+        xlabel;     % Text for abscissa label on plots
+        ylabel;     % Text for ordinate label on plots
     end
 
     properties

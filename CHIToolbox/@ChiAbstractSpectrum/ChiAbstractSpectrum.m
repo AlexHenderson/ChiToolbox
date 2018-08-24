@@ -3,11 +3,11 @@ classdef (Abstract) ChiAbstractSpectrum < handle
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
     
     properties (Abstract)
-        xvals;  % Abscissa as a row vector
-        data;   % Ordinate as a row vector
-        reversex; % Should abscissa be plotted in decreasing order
-        xlabel; % Text for abscissa label on plots
-        ylabel; % Text for ordinate label on plots
+        xvals;      % Abscissa as a row vector
+        data;       % Ordinate as a row vector
+        reversex;   % Should abscissa be plotted in decreasing order
+        xlabel;     % Text for abscissa label on plots
+        ylabel;     % Text for ordinate label on plots
     end
     
     properties

@@ -7,14 +7,14 @@ classdef (Abstract) ChiAbstractImage < handle
 % operations
 
     properties (Abstract)
-        xvals;  % Abscissa as a row vector
-        data;   % Contents of object as a 2D matrix
-        reversex; % Should abscissa be plotted increasing (false) or decreasing
-        xlabel; % Text for abscissa label on plots
-        ylabel; % Text for ordinate label on plots
+        xvals;      % Abscissa as a row vector
+        data;       % Contents of object as a 2D matrix, spectra in rows
+        reversex;   % Should abscissa be plotted in decreasing order
+        xlabel;     % Text for abscissa label on plots
+        ylabel;     % Text for ordinate label on plots
         
-        xpixels;  % Number of pixels in the x-direction (width)
-        ypixels;  % Number of pixels in the y-direction (height)
+        xpixels;    % Number of pixels in the x-direction (width)
+        ypixels;    % Number of pixels in the y-direction (height)
     end          
 
     properties

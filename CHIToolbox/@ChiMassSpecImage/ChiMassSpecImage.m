@@ -40,20 +40,17 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-    properties (Constant)
-%       ontology_term mass spectrum
-       ontology_term = 'mass spectrum';
-%         type A plot of the relative abundance of a beam or other collection of ions as a function of the mass-to-charge ratio (m/z). 
-        type = 'A plot of the relative abundance of a beam or other collection of ions as a function of the mass-to-charge ratio (m/z).'; 
-%         uri http://purl.obolibrary.org/obo/MS_1000294
-        uri = 'http://purl.obolibrary.org/obo/MS_1000294'
-    end    
-   
+    properties
+        imzmlproperties
+    end
+    
     properties (Dependent)
         mass
     end
     
+    % =====================================================================
     methods
+    % =====================================================================
         function this = ChiMassSpecImage(varargin)
           
             superClassArgs = varargin;
@@ -99,8 +96,18 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
             % ToDo: Need to manage the additional fields in the base class
             
             this@ChiImage(superClassArgs{:});
+            
             this.spectrumclassname = 'ChiMassSpectrum';
             this.spectralcollectionclassname = 'ChiMassSpectralCollection';
+            
+            % As close as we can get  
+            this.ontologyinfo = ChiOntologyInformation();
+            this.ontologyinfo.term = 'mass spectrum';
+            this.ontologyinfo.description = ['A plot of the relative ' ...
+                'abundance of a beam or other collection of ions as a ' ...
+                'function of the mass-to-charge ratio (m/z).']; 
+            this.ontologyinfo.uri = 'http://purl.obolibrary.org/obo/MS_1000294';            
+            this.ontologyinfo.isaccurate = false;
             
 %             if (~isempty(varargin) && isa(varargin{1},'ChiSpectrum'))
 %                 this.filename = varargin{1}.filename;

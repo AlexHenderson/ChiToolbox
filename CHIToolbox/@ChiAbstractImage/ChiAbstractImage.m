@@ -22,6 +22,11 @@ classdef (Abstract) ChiAbstractImage < handle
         spectralcollectionclassname;  % The name of the class if multiple spectra are selected
     end   
     
+    properties (Abstract)
+        % The definition of this data using ontological descriptors (see ChiOntologyInformation).
+        ontologyinfo
+    end    
+    
     properties (Dependent = true, SetAccess = protected)
         width;          % Number of pixels in the x-direction
         height;         % Number of pixels in the y-direction
@@ -30,9 +35,9 @@ classdef (Abstract) ChiAbstractImage < handle
         numspectra;     % Number of spectra in the image
     end
     
-    % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    % =====================================================================
     methods
-    % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    % =====================================================================
 
         function width = get.width(this)
             width = this.xpixels;
@@ -62,9 +67,9 @@ classdef (Abstract) ChiAbstractImage < handle
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     end
     
-    % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    % =====================================================================
     methods (Abstract)
-    % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    % =====================================================================
         clone(this);
     end
     

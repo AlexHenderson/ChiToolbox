@@ -71,7 +71,18 @@ classdef ChiRamanSpectralCollection < ChiSpectralCollection & ChiRamanCharacter
             end
             
             this@ChiSpectralCollection(superClassArgs{:});
+            this@ChiRamanCharacter();
+            
             this.spectrumclassname = 'ChiRamanSpectrum';
+            
+            this.ontologyinfo = ChiOntologyInformation();
+            this.ontologyinfo.term = 'Raman spectrum';
+            this.ontologyinfo.description = ['A plot of intensity vs. ' ...
+                'Raman shift (cm-1) obtained by measuring the Raman ' ...
+                'scattering of monochromatic light from a sample. ' ...
+                '[database_cross_reference: DOI:10.1021/jp001661l]'];
+            this.ontologyinfo.uri = 'http://purl.obolibrary.org/obo/CHMO_0000823';
+            this.ontologyinfo.isaccurate = false;
 
             % We have no way of knowing whether the value for reversex is
             % correct or not, so assume the user knows what they're doing.

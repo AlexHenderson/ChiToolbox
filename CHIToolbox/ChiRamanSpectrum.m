@@ -39,15 +39,6 @@ classdef ChiRamanSpectrum < ChiSpectrum & ChiRamanCharacter
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-    properties (Constant)
-        % ontology_term Raman spectrum
-        ontology_term = 'Raman spectrum';
-        % type A plot of intensity vs. Raman shift (cm-1) obtained by measuring the Raman scattering of monochromatic light from a sample. [database_cross_reference: DOI:10.1021/jp001661l]
-        type = 'A plot of intensity vs. Raman shift (cm-1) obtained by measuring the Raman scattering of monochromatic light from a sample. [database_cross_reference: DOI:10.1021/jp001661l]'; 
-        % uri http://purl.obolibrary.org/obo/CHMO_0000823
-        uri = 'http://purl.obolibrary.org/obo/CHMO_0000823'
-    end    
-   
     properties (Dependent)
         ramanshift
     end
@@ -91,6 +82,15 @@ classdef ChiRamanSpectrum < ChiSpectrum & ChiRamanCharacter
             
             this@ChiSpectrum(superClassArgs{:});
             this@ChiRamanCharacter();
+            
+            this.ontologyinfo = ChiOntologyInformation();
+            this.ontologyinfo.term = 'Raman spectrum';
+            this.ontologyinfo.description = ['A plot of intensity vs. ' ...
+                'Raman shift (cm-1) obtained by measuring the Raman ' ...
+                'scattering of monochromatic light from a sample. ' ...
+                '[database_cross_reference: DOI:10.1021/jp001661l]'];
+            this.ontologyinfo.uri = 'http://purl.obolibrary.org/obo/CHMO_0000823';
+            this.ontologyinfo.isaccurate = true;
             
             if (~isempty(varargin) && isa(varargin{1},'ChiSpectrum'))
                 this.filename = varargin{1}.filename;

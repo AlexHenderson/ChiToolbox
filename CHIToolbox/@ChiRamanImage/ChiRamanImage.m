@@ -41,16 +41,6 @@ classdef ChiRamanImage < ChiImage & ChiRamanCharacter
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-    properties (Constant)
-        % ToDo: This is the closest match. Requested addition to CHMO on 2/2/2018
-%       ontology_term Raman microscopy
-       ontology_term = 'Raman microscopy';
-%         type The collection of spatially resolved Raman spectra of a sample during optical microscopy. 
-        type = 'The collection of spatially resolved Raman spectra of a sample during optical microscopy.'; 
-%         uri http://purl.obolibrary.org/obo/CHMO_0000056
-        uri = 'http://purl.obolibrary.org/obo/CHMO_0000056'
-    end    
-   
     properties (Dependent)
         ramanimage     % A vector of wavenumber values in ascending order
     end
@@ -103,6 +93,15 @@ classdef ChiRamanImage < ChiImage & ChiRamanCharacter
             
             this.spectrumclassname = 'ChiRamanSpectrum';
             this.spectralcollectionclassname = 'ChiRamanSpectralCollection';
+            
+            % ToDo: This is the closest match. Requested addition to CHMO on 2/2/2018
+            this.ontologyinfo = ChiOntologyInformation();
+            this.ontologyinfo.term = 'Raman microscopy';
+            this.ontologyinfo.description = ['The collection of ' ...
+                'spatially resolved Raman spectra of a sample during ' ...
+                'optical microscopy.'];
+            this.ontologyinfo.uri = 'http://purl.obolibrary.org/obo/CHMO_0000056';
+            this.ontologyinfo.isaccurate = false;
             
 %             if (~isempty(varargin) && isa(varargin{1},'ChiSpectrum'))
 %                 this.filename = varargin{1}.filename;

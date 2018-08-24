@@ -41,15 +41,6 @@ classdef ChiIRImage < ChiImage & ChiIRCharacter
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-    properties (Constant)
-        % ontology_term: infrared map
-        ontology_term = 'infrared map';
-        % type: A data set derived from infrared microscopy consisting of a three-dimensional image where two axes describe the x and y spatial dimensions and the third dimension represents the infrared wavelength. The image is obtained by stacking one image per infrared wavelength sequentially. 
-        type = 'A data set derived from infrared microscopy consisting of a three-dimensional image where two axes describe the x and y spatial dimensions and the third dimension represents the infrared wavelength. The image is obtained by stacking one image per infrared wavelength sequentially.'; 
-        % uri: http://purl.obolibrary.org/obo/CHMO_0001893
-        uri = 'http://purl.obolibrary.org/obo/CHMO_0001893'
-    end    
-   
     properties (Dependent)
         wavenumbers     % A vector of wavenumber values in ascending order
     end
@@ -102,6 +93,18 @@ classdef ChiIRImage < ChiImage & ChiIRCharacter
             
             this.spectrumclassname = 'ChiIRSpectrum';
             this.spectralcollectionclassname = 'ChiIRSpectralCollection';
+            
+            this.ontologyinfo = ChiOntologyInformation();
+            this.ontologyinfo.term = 'infrared map';
+            this.ontologyinfo.description = ['A data set derived from ' ...
+                'infrared microscopy consisting of a ' ...
+                'three-dimensional image where two axes describe the ' ...
+                'x and y spatial dimensions and the third dimension ' ...
+                'represents the infrared wavelength. The image is ' ...
+                'obtained by stacking one image per infrared ' ...
+                'wavelength sequentially.'];
+            this.ontologyinfo.uri = 'http://purl.obolibrary.org/obo/CHMO_0001893';
+            this.ontologyinfo.isaccurate = true;
             
         end
        

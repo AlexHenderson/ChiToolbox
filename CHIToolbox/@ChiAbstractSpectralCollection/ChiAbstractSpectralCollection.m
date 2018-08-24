@@ -16,26 +16,30 @@ classdef (Abstract) ChiAbstractSpectralCollection < handle
         ylabel; % text for ordinate label on plots
     end
 
-    properties (Abstract, SetAccess = protected)
-    end          
-    
     properties
-        spectrumclassname;  % The name of the class is a single spectrum is selected
+        spectrumclassname;  % The name of the class if a single spectrum is selected
     end
 
+    properties (Abstract)
+        % The definition of this data using ontological descriptors (see ChiOntologyInformation).
+        ontologyinfo
+    end    
+    
     properties (Dependent = true, SetAccess = protected)
-    %% Calculated properties
         numchannels;    % Number of data points
         numspectra;     % Number of spectra
     end
     
+    % =====================================================================
     methods
-        %% numchannels : Calculate number of data points in the spectra
+    % =====================================================================
+        % numchannels : Calculate number of data points in the spectra
         function numchannels = get.numchannels(this)
             % Calculate number of data points per spectrum
             numchannels = size(this.data,2);
         end
-        %% numspectra : Calculate number of spectra in the collection
+        
+        % numspectra : Calculate number of spectra in the collection
         function numspectra = get.numspectra(this)
             % Calculate number of spectra in this collection
             numspectra = size(this.data,1);

@@ -61,8 +61,9 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
     end
 
     % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    properties (SetAccess = protected)
-    end          
+    properties
+        ontologyinfo
+    end
 
     % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     properties (Dependent = true)
@@ -74,8 +75,6 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
         % Constructor
         
         function this = ChiSpectralCollection(varargin)
-            
-            this.spectrumclassname = 'ChiSpectrum';
             
             switch nargin
                 case 0
@@ -144,6 +143,16 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                 % 3d data so need to reshape
                 this.data = reshape(this.data,dims(1)*dims(2),dims(3));
             end            
+            
+            this.spectrumclassname = 'ChiSpectrum';
+            
+            this.ontologyinfo = ChiOntologyInformation();
+            this.ontologyinfo.term = 'spectrum';
+            this.ontologyinfo.description = ['A plot of a measured ' ...
+                'quantity against some experimental parameter. ' ...
+                '[database_cross_reference: rsc:cb]'];
+            this.ontologyinfo.uri = 'http://purl.obolibrary.org/obo/CHMO_0000800';
+            this.ontologyinfo.isaccurate = false;            
             
         end
         

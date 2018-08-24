@@ -122,8 +122,18 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
             
             this@ChiSpectralCollection(superClassArgs{:});
             this@ChiIRCharacter();
+            
             this.spectrumclassname = 'ChiIRSpectrum';
 
+            this.ontologyinfo = ChiOntologyInformation();
+            this.ontologyinfo.term = 'infrared spectrum';
+            this.ontologyinfo.description = ['A plot of absorbance or ' ...
+                'emission vs. wavelength/wavenumber/frequency ' ...
+                'obtained by measuring the absorption or emission of ' ...
+                'infrared radiation by a sample'];
+            this.ontologyinfo.uri = 'http://purl.obolibrary.org/obo/CHMO_0000818';
+            this.ontologyinfo.isaccurate = false;
+            
             % We have no way of knowing whether the value for reversex is
             % correct or not, so assume the user knows what they're doing.
             

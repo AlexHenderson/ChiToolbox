@@ -40,15 +40,6 @@ classdef ChiIRSpectrum < ChiSpectrum & ChiIRCharacter
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-    properties (Constant)
-%       ontology_term infrared spectrum
-        ontology_term = 'infrared spectrum';
-%       type A plot of absorbance or emission vs. wavelength/wavenumber/frequency obtained by measuring the absorption or emission of infrared radiation by a sample.
-        type = 'A plot of absorbance or emission vs. wavelength/wavenumber/frequency obtained by measuring the absorption or emission of infrared radiation by a sample'; 
-%       uri http://purl.obolibrary.org/obo/CHMO_0000818
-        uri = 'http://purl.obolibrary.org/obo/CHMO_0000818'
-    end
-   
     properties (Dependent)
         wavenumbers
     end
@@ -92,6 +83,15 @@ classdef ChiIRSpectrum < ChiSpectrum & ChiIRCharacter
             
             this@ChiSpectrum(superClassArgs{:});
             this@ChiIRCharacter();
+            
+            this.ontologyinfo = ChiOntologyInformation();
+            this.ontologyinfo.term = 'infrared spectrum';
+            this.ontologyinfo.description = ['A plot of absorbance or ' ...
+                'emission vs. wavelength/wavenumber/frequency ' ...
+                'obtained by measuring the absorption or emission of ' ...
+                'infrared radiation by a sample'];
+            this.ontologyinfo.uri = 'http://purl.obolibrary.org/obo/CHMO_0000818';
+            this.ontologyinfo.isaccurate = true;
             
             if (~isempty(varargin) && isa(varargin{1},'ChiSpectrum'))
                 this.filename = varargin{1}.filename;

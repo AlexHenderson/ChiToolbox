@@ -16,6 +16,10 @@ classdef ChiSpectrum < ChiAbstractSpectrum
         history;
     end
     
+    properties
+        ontologyinfo
+    end
+    
     methods
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function this = ChiSpectrum(xvals,data,reversex,xlabel,ylabel)
@@ -57,6 +61,15 @@ classdef ChiSpectrum < ChiAbstractSpectrum
                     this.reversex = true;
                 end
             end 
+            
+            this.ontologyinfo = ChiOntologyInformation();
+            this.ontologyinfo.term = 'spectrum';
+            this.ontologyinfo.description = ['A plot of a measured ' ...
+                'quantity against some experimental parameter. ' ...
+                '[database_cross_reference: rsc:cb]'];
+            this.ontologyinfo.uri = 'http://purl.obolibrary.org/obo/CHMO_0000800';
+            this.ontologyinfo.isaccurate = true;            
+            
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -40,20 +40,13 @@ classdef ChiToFMassSpectrum < ChiSpectrum & ChiToFMSCharacter
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-    properties  % Can't be Constant since we inherit from MassSpectralCharacter
-        % ontology_term time-of-flight mass spectrum;
-        ontology_term = 'time-of-flight mass spectrum';
-        % type A plot of relative abundance (%) vs. mass-to-charge ratio obtained from a mass spectrometry experiment where the mass-to-charge ratio is determined from the time they take to reach a detector.
-        type = 'A plot of relative abundance (%) vs. mass-to-charge ratio obtained from a mass spectrometry experiment where the mass-to-charge ratio is determined from the time they take to reach a detector.';
-        % uri http://purl.obolibrary.org/obo/CHMO_0000828
-        uri = 'http://purl.obolibrary.org/obo/CHMO_0000828'
-    end    
-
     properties (Dependent)
         mass
     end
     
+    % =====================================================================
     methods
+    % =====================================================================
         function this = ChiToFMassSpectrum(varargin)
           
             superClassArgs = varargin;
@@ -92,6 +85,12 @@ classdef ChiToFMassSpectrum < ChiSpectrum & ChiToFMSCharacter
             
             this@ChiSpectrum(superClassArgs{:});
             this@ChiToFMSCharacter();
+            
+            this.ontologyinfo = ChiOntologyInformation();
+            this.ontologyinfo.term = 'time-of-flight mass spectrum';
+            this.ontologyinfo.description = 'A plot of relative abundance (%) vs. mass-to-charge ratio obtained from a mass spectrometry experiment where the mass-to-charge ratio is determined from the time they take to reach a detector.';
+            this.ontologyinfo.uri = 'http://purl.obolibrary.org/obo/CHMO_0000828';
+            this.ontologyinfo.isaccurate = true;
             
             if (~isempty(varargin) && isa(varargin{1},'ChiSpectrum'))
                 this.filename = varargin{1}.filename;

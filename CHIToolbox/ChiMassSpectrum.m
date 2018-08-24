@@ -39,21 +39,13 @@ classdef ChiMassSpectrum < ChiSpectrum & ChiMassSpecCharacter
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-    properties (Constant)
-%       ontology_term mass spectrum
-       ontology_term = 'mass spectrum';
-%         type A plot of the relative abundance of a beam or other collection of ions as a function of the mass-to-charge ratio (m/z). 
-        type = 'A plot of the relative abundance of a beam or other collection of ions as a function of the mass-to-charge ratio (m/z).'; 
-%         uri http://purl.obolibrary.org/obo/MS_1000294
-        uri = 'http://purl.obolibrary.org/obo/MS_1000294'
-    end    
-    
-   
     properties (Dependent)
         mass
     end
     
+    % =====================================================================
     methods
+    % =====================================================================
         function this = ChiMassSpectrum(varargin)
           
             superClassArgs = varargin;
@@ -98,6 +90,14 @@ classdef ChiMassSpectrum < ChiSpectrum & ChiMassSpecCharacter
             
             this@ChiSpectrum(superClassArgs{:});
             this@ChiMassSpecCharacter();
+            
+            this.ontologyinfo = ChiOntologyInformation();
+            this.ontologyinfo.term = 'mass spectrum';
+            this.ontologyinfo.description = ['A plot of the relative ' ...
+                'abundance of a beam or other collection of ions as a ' ...
+                'function of the mass-to-charge ratio (m/z).']; 
+            this.ontologyinfo.uri = 'http://purl.obolibrary.org/obo/MS_1000294';            
+            this.ontologyinfo.isaccurate = true;
             
             if (~isempty(varargin) && isa(varargin{1},'ChiSpectrum'))
                 this.filename = varargin{1}.filename;

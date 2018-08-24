@@ -40,21 +40,13 @@ classdef ChiMassSpectralCollection < ChiSpectralCollection & ChiMassSpecCharacte
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-    % Can't find a 'collection' of mass spectra
-    properties (Constant)
-%       ontology_term mass spectrum
-       ontology_term = 'mass spectrum';
-%         type A plot of the relative abundance of a beam or other collection of ions as a function of the mass-to-charge ratio (m/z). 
-        type = 'A plot of the relative abundance of a beam or other collection of ions as a function of the mass-to-charge ratio (m/z).'; 
-%         uri http://purl.obolibrary.org/obo/MS_1000294
-        uri = 'http://purl.obolibrary.org/obo/MS_1000294'
-    end    
-   
     properties (Dependent)
         mass
     end
     
+    % =====================================================================
     methods
+    % =====================================================================
         function this = ChiMassSpectralCollection(varargin)
           
             superClassArgs = varargin;
@@ -103,8 +95,16 @@ classdef ChiMassSpectralCollection < ChiSpectralCollection & ChiMassSpecCharacte
             this@ChiMassSpecCharacter();
             
             this.spectrumclassname = 'ChiMassSpectrum';
-%             this.spectralcollectionclassname = 'ChiMassSpectralCollection';
             
+            % As close as we can get  
+            this.ontologyinfo = ChiOntologyInformation();
+            this.ontologyinfo.term = 'mass spectrum';
+            this.ontologyinfo.description = ['A plot of the relative ' ...
+                'abundance of a beam or other collection of ions as a ' ...
+                'function of the mass-to-charge ratio (m/z).']; 
+            this.ontologyinfo.uri = 'http://purl.obolibrary.org/obo/MS_1000294';            
+            this.ontologyinfo.isaccurate = false;
+
             if (~isempty(varargin) && isa(varargin{1},'ChiSpectralCollection'))
                 this.history = varargin{1}.history.clone();
                 this.history.add(['Generated from a ', class(varargin{1}), '.']);

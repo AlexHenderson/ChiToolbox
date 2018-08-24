@@ -91,7 +91,7 @@ classdef ChiIonoptikaFile < ChiAbstractFileFormat
             
             % Check whether the files are OK for a Ionoptika reader
             if ~ChiIonoptikaFile.isreadable(filenames)
-                err = MException('CHI:ChiIonoptikaFile:InputError', ...
+                err = MException(['CHI:',mfilename, 'InputError'], ...
                     'Filenames do not appear to be Ionoptika files (*.h5).');
                 throw(err);
             end
@@ -100,7 +100,17 @@ classdef ChiIonoptikaFile < ChiAbstractFileFormat
             if (length(filenames) == 1)
                 [mass,data,height,width,layers,filename,x_label,y_label] = ionoptika_hd5file(filenames{1}); %#ok<ASGLU>
                 
-                obj = ChiToFMassSpecImage(mass,data,false,x_label,y_label,width,height);
+                % Work out whether this is a continuum dataset or a mass
+                % binned one. Crude method
+                mstep1 = mass(2) - mass(1);
+                mstep2 = mass(end) - mass(end-1);
+                if (mstep1 == mstep2)
+                    obj = ChiMassSpecImage(double(mass),double(data),false,x_label,y_label,width,height);
+                else
+                    obj = ChiToFMassSpecImage(double(mass),double(data),false,x_label,y_label,width,height);
+                end
+                
+                obj.imzmlproperties.instrument = 'Ionoptika J105';
                 obj.filename = filenames{1};
                 obj.history.add(['filename: ', filenames{1}]);
             else

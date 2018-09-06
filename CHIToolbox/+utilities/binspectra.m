@@ -144,7 +144,8 @@ function [newx,newy] = rebintolinear(x,y,binwidth,sumormean,startvalue,stopvalue
     % Truncate data to match the required start and stop values. 
     % Define the start value as the first channel that contributes to that
     % bin. Similarly for the stop value using the last channel.
-    indicies = find_value2(x,[startvalue-binwidth/2,stopvalue+binwidth/2]);
+    indicies = this.indexat([startvalue-binwidth/2, stopvalue+binwidth/2]);
+%      indicies = find_value2(x,[startvalue-binwidth/2,stopvalue+binwidth/2]);
     x = x(indicies(1):indicies(2));
     y = y(:,indicies(1):indicies(2));
     
@@ -165,7 +166,8 @@ function [newx,newy] = rebintolinear(x,y,binwidth,sumormean,startvalue,stopvalue
     bincentres = (startvalue:binwidth:stopvalue)';
     
     % Find the matrix index values for these new channel bins. 
-    indicies = find_value2(x,binedges);    
+    indicies = this.indexat(binedges);    
+%     indicies = find_value2(x,binedges);    
     
     % Make some space for the results
     if issparse(y)

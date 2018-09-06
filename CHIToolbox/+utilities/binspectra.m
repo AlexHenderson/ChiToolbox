@@ -116,9 +116,9 @@ else
     
     switch lower(xmode)
         case 'mass' 
-            [this.xvals,this.data] = rebintolinear(this.xvals,this.data,range,func,start,stop);
+            [this.xvals,this.data] = rebintolinear(this,range,func,start,stop);
         case 'time'
-            [this.xvals,this.data] = rebincombine(this.xvals,this.data,range,func);
+            [this.xvals,this.data] = rebincombine(this,range,func);
     %     case 'adaptive'
             %do something
     %     case 'wavenumber'
@@ -136,7 +136,7 @@ end % main function
 %% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % rebin mass
 
-function [newx,newy] = rebintolinear(x,y,binwidth,sumormean,startvalue,stopvalue)
+function [newx,newy] = rebintolinear(this,binwidth,sumormean,startvalue,stopvalue)
 
     % Here we wish to combine a non-linear collection of channels into a
     % linear one. This is the case for time-to-mass conversion. 
@@ -146,8 +146,9 @@ function [newx,newy] = rebintolinear(x,y,binwidth,sumormean,startvalue,stopvalue
     % bin. Similarly for the stop value using the last channel.
     indicies = this.indexat([startvalue-binwidth/2, stopvalue+binwidth/2]);
 %      indicies = find_value2(x,[startvalue-binwidth/2,stopvalue+binwidth/2]);
-    x = x(indicies(1):indicies(2));
-    y = y(:,indicies(1):indicies(2));
+%     x = x(indicies(1):indicies(2));
+
+    y = this.data(:,indicies(1):indicies(2));
     
     
 %     largestexistingxspacing = (x(end) - x(end-1));
@@ -204,7 +205,7 @@ end % function rebintolinear
 %% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % rebin time
 
-function [newx,newy] = rebincombine(x,y,numchanstocombine,sumormean)
+function [newx,newy] = rebincombine(this,numchanstocombine,sumormean)
 
     % numchanstocombine is the number of channels to combine together.
     % Each new channel is a combination of numchanstocombine old channels.
@@ -219,6 +220,9 @@ function [newx,newy] = rebincombine(x,y,numchanstocombine,sumormean)
     
     % Reshape the data such that we have a block of data that has the
     % number of rows that need to be combined, then sum (or average). 
+    
+    x = this.xvals;
+    y = this.data;
     
     % Convert to columns of data since columns are quicker to work with. 
     y = y';

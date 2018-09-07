@@ -1,6 +1,6 @@
 function plotscoresbyclass(this,cvx,cvy,varargin)
 
-% plotscores  Plots canonical variate scores for each class separately. 
+% plotscoresbyclass  Plots canonical variate scores for each class separately. 
 %
 % Syntax
 %   plotscoresbyclass(cvx,cvy);
@@ -75,7 +75,7 @@ if (this.numcvs > 1)
     % Could put this into a single figure, using subplot, but need to manage
     % the layout. Easiest to produce separate figures for now. 
     for i = 1:this.pca.classmembership.numuniquelabels
-        label = this.pca.classmembership.labels{i};
+        label = this.pca.classmembership.uniquelabels{i};
         windowtitle = [windowtitlestub, num2str(cvx), ' and ' num2str(cvy), ' (', label, ')' ];
         figure('Name',windowtitle,'NumberTitle','off');
 

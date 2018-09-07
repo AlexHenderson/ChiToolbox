@@ -131,8 +131,7 @@ end
 %% Labels and titles
 xlabel([axislabelstub, num2str(cvx), ' (', num2str(this.explained(cvx),decplaces), '%)']);
 ylabel([axislabelstub, num2str(cvy), ' (', num2str(this.explained(cvy),decplaces), '%)']);
-title([titlestub, num2str(cvx), ' and ', num2str(cvy), ' (', num2str(percentconf), '% conf)']);
-
+title([titlestub, num2str(cvx), ' and ', num2str(cvy), ' (', num2str(this.pcs), ' pcs, ', num2str(percentconf), '% conf)']);
 
 %% Legend
 % if ~isempty(this.classmembership)

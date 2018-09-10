@@ -50,6 +50,17 @@ else
     figure('Name',windowtitle,'NumberTitle','off');
 end
 
+errorcode = 'Chi:ChiSpectralPCAOutcome';
+errormessagestub = 'Requested principal component is out of range. Max PCs = ';
+
+if exist('limitpcs','var')
+    if ((limitpcs > this.numpcs) || (limitpcs < 1))
+        err = MException([errorcode,':OutOfRange'], ...
+            [errormessagestub, num2str(this.numpcs), '.']);
+        throw(err);
+    end
+end
+
 if exist('limitpcs','var')
     plot(this.explained(1:limitpcs),'o-',varargin{:});
 else

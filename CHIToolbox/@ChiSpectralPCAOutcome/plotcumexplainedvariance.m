@@ -44,7 +44,7 @@ errorcode = 'Chi:ChiSpectralPCAOutcome';
 errormessagestub = 'Requested principal component is out of range. Max PCs = ';
 
 if exist('limitpcs','var')
-    if ((limitpcs > this.pcs) || (limitpcs < 1))
+    if ((limitpcs > this.numpcs) || (limitpcs < 1))
         err = MException([errorcode,':OutOfRange'], ...
             [errormessagestub, num2str(this.numpcs), '.']);
         throw(err);

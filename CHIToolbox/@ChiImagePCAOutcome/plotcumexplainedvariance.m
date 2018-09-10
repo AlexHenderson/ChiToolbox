@@ -40,16 +40,6 @@ function plotcumexplainedvariance(this,limitpcs,varargin)
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
-errorcode = 'CHI:ChiSpectralPCAOutcome';
-errormessagestub = 'Requested principal component is out of range. Max PCs = ';
-
-if exist('limitpcs','var')
-    if ((limitpcs > this.pcs) || (limitpcs < 1))
-        err = MException([errorcode,':OutOfRange'], ...
-            [errormessagestub, num2str(this.numpcs), '.']);
-        throw(err);
-    end
-end
 
 argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));
 if argposition
@@ -59,6 +49,17 @@ else
     % No 'nofig' found so create a new figure
     windowtitle = 'Cumulative percentage explained variance';
     figure('Name',windowtitle,'NumberTitle','off');
+end
+
+errorcode = 'CHI:ChiImagePCAOutcome';
+errormessagestub = 'Requested principal component is out of range. Max PCs = ';
+
+if exist('limitpcs','var')
+    if ((limitpcs > this.numpcs) || (limitpcs < 1))
+        err = MException([errorcode,':OutOfRange'], ...
+            [errormessagestub, num2str(this.numpcs), '.']);
+        throw(err);
+    end
 end
 
 cumexplained = cumsum(this.explained);

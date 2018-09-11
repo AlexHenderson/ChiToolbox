@@ -1,4 +1,5 @@
-function display(this,varargin) %#ok<DISPLAY>
+function display(varargin) %#ok<DISPLAY>
+% function display(this,varargin) %#ok<DISPLAY>
 
 % display  Plots one, or more, spectra. Multiple spectra are overlaid. 
 %
@@ -36,6 +37,7 @@ function display(this,varargin) %#ok<DISPLAY>
 % Passing the actual plotting functionality off to a separate function to
 % co-locate the feature. 
 
-    plot(this,varargin{:});
+    plot(varargin{1});
+%     plot(this,varargin{:});
     
 end

@@ -84,6 +84,7 @@ classdef ChiToFMassSpecImage < ChiMassSpecImage & ChiToFMSCharacter
 
             obj.history = this.history.clone();
             obj.history.add('Cloned');
+            obj.imzmlproperties = this.imzmlproperties;
             
         end
         

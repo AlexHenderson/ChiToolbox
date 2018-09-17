@@ -76,14 +76,14 @@ if strcmpi(this.imzmlproperties.instrument, 'Ionoptika J105')
 
     argposition = find(cellfun(@(x) strcmpi(x, 'polarity') , varargin));
     if argposition
-        polarity = varargin(argposition+1);
+        polarity = varargin{argposition+1};
         varargin(argposition+1) = [];
         varargin(argposition) = [];
     end
 
     argposition = find(cellfun(@(x) strcmpi(x, 'centroid') , varargin));
     if argposition
-        isCentroided = varargin(argposition+1);
+        isCentroided = varargin{argposition+1};
         varargin(argposition+1) = [];
         varargin(argposition) = [];
     end

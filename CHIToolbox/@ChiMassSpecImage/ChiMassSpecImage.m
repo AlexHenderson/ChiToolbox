@@ -139,6 +139,7 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
 
             obj.history = this.history.clone();
             obj.history.add('Cloned');
+            obj.imzmlproperties = this.imzmlproperties;
             
         end
         

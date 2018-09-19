@@ -1,26 +1,29 @@
 function plotloadings(cv,varargin)
 
-% plotloading  Plots the canonical variate loading of your choice. 
+% plotloadings  Plots the canonical variate loading of your choice. 
 %
 % Syntax
 %   plotloadings(cv);
 %   plotloadings(cv,'nofig');
+%   plotloadings(____,'bar');
 %
 % Description
-%   plotloadings(cv) creates a 2-D bar chart of the canonical variate cv in
+%   plotloadings(cv) creates a 2-D line chart of the canonical variate cv in
 %   a new figure window.
 %
 %   plotloadings(cv,'nofig') plots the loading in the currently active
 %   figure window, or creates a new figure if none is available.
 %
+%   plotloadings(____,'bar') generates a bar plot rather than a line plot.
+%
 %   Other parameters can be applied to customise the plot. See the MATLAB
-%   bar function for more details. 
+%   plot/bar functions for more details. 
 %
 % Copyright (c) 2017, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   bar plotscores plotexplainedvariance plotcumexplainedvariance
+%   plot bar plotscores plotexplainedvariance plotcumexplainedvariance
 %   plotpcscores plotpcloading plotpcexplainedvariance
 %   plotpccumexplainedvariance ChiSpectralCVAOutcome ChiSpectralCollection.
 
@@ -31,11 +34,11 @@ function plotloadings(cv,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2017
+% Version 2.0, September 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
+
 
 plotloading(cv,varargin{:})
 
 end
-

@@ -1,26 +1,29 @@
 function plotloadings(this,pc,varargin)
 
-% plotloadings  Plots the principal component loading of your choice. 
+% plotloading  Plots the principal component loading of your choice. 
 %
 % Syntax
-%   plotloadings(pc);
-%   plotloadings(pc,'nofig');
+%   plotloading(pc);
+%   plotloading(pc,'nofig');
+%   plotloading(____,'bar');
 %
 % Description
-%   plotloadings(pc) creates a 2-D bar chart of the principal component
+%   plotloading(pc) creates a 2-D line chart of the principal component
 %   pc in a new figure window.
 %
-%   plotloadings(pc,'nofig') plots the loading in the currently active
+%   plotloading(pc,'nofig') plots the loading in the currently active
 %   figure window, or creates a new figure if none is available.
+% 
+%   plotloading(____,'bar') generates a bar plot, rather than a line plot.
 %
 %   Other parameters can be applied to customise the plot. See the MATLAB
-%   bar function for more details. 
+%   plot/bar functions for more details. 
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   bar plotscores plotexplainedvariance plotcumexplainedvariance
+%   plot bar plotscores plotexplainedvariance plotcumexplainedvariance
 %   ChiSpectralPCAOutcome ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
@@ -30,11 +33,12 @@ function plotloadings(this,pc,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2017
+% Version 2.0, September 2018
 % The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/Chitoolbox
+% https://bitbucket.org/AlexHenderson/chitoolbox
 
 % Simply a wrapper around the plotloading function
+
 
 plotloading(this,pc,varargin{:})
 

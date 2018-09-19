@@ -5,22 +5,25 @@ function plotloading(this,cv,varargin)
 % Syntax
 %   plotloading(cv);
 %   plotloading(cv,'nofig');
+%   plotloading(____,'bar');
 %
 % Description
-%   plotloading(cv) creates a 2-D bar chart of the canonical variate cv in
+%   plotloading(cv) creates a 2-D line chart of the canonical variate cv in
 %   a new figure window.
 %
 %   plotloading(cv,'nofig') plots the loading in the currently active
 %   figure window, or creates a new figure if none is available.
 %
+%   plotloading(____,'bar') generates a bar plot rather than a line plot.
+%
 %   Other parameters can be applied to customise the plot. See the MATLAB
-%   bar function for more details. 
+%   plot/bar functions for more details. 
 %
 % Copyright (c) 2017, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   bar plotscores plotexplainedvariance plotcumexplainedvariance
+%   plot bar plotscores plotexplainedvariance plotcumexplainedvariance
 %   plotpcscores plotpcloading plotpcexplainedvariance
 %   plotpccumexplainedvariance ChiSpectralCVAOutcome ChiSpectralCollection.
 
@@ -31,7 +34,7 @@ function plotloading(this,cv,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2017
+% Version 2.0, September 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -41,6 +44,8 @@ function plotloading(this,cv,varargin)
     ylabelstub = 'loading on CV ';
     errorcode = 'CHI:ChiSpectralCVAOutcome';
     errormessagestub = 'Requested canonical variate is out of range. Max CVs = ';
+
+    barplot = false;
 
     if ~isempty(this.loadings)
         if ((cv > this.cvs) || (cv < 1))
@@ -59,12 +64,29 @@ function plotloading(this,cv,varargin)
             figure('Name',windowtitle,'NumberTitle','off');
         end
         
+        argposition = find(cellfun(@(x) strcmpi(x, 'bar') , varargin));
+        if argposition
+            % Remove the parameter from the argument list
+            varargin(argposition) = [];
+            barplot = true;
+        end
+        
         datatoplot = this.loadings(:,cv);
-        bar(this.pca.xvals, datatoplot, varargin{:});
+        if barplot
+            bar(this.pca.xvals, datatoplot, varargin{:});
+        else
+            plot(this.pca.xvals, datatoplot, varargin{:});
+        end
+        
         if this.pca.reversex
             set(gca,'XDir','reverse');
         end
         utilities.tightxaxis;
+        
+        if ~barplot
+            utilities.drawy0axis(axis);
+        end
+        
         xlabel(this.pca.xlabel);        
         ylabel([ylabelstub, num2str(cv), ' (', num2str(this.explained(cv),3), '%)']);
         title([titlestub, num2str(cv)]);

@@ -60,6 +60,14 @@ else
 
     [this.data,this.xvals,windowLength,endPoints] = utilities.firstderiv(this.xvals,this.data,varargin{2:end});
     
+    this.ylabelname = ['d(', this.ylabelname, ') / d(', this.xlabelname, ')'];
+
+    if isempty(this.ylabelunit)
+        this.ylabelunit = ['1/',this.xlabelunit];
+    else
+        this.ylabelunit = [this.ylabelunit, '/', this.xlabelunit];
+    end
+    
     message = 'first derivative';
     message = [message, ': window length = ', num2str(windowLength)];
     message = [message, ', end points = ', endPoints];

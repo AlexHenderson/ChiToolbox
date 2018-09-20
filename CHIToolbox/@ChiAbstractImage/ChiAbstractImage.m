@@ -73,7 +73,7 @@ classdef (Abstract) ChiAbstractImage < handle
             if isempty(this.xlabelunit)
                 xlabel = this.xlabelname;
             else
-                xlabel = [this.xlabelname, ' / ', this.xlabelunit, ''];
+                xlabel = [this.xlabelname, ' (', this.xlabelunit, ')'];
             end                
         end
         
@@ -82,7 +82,7 @@ classdef (Abstract) ChiAbstractImage < handle
             if isempty(this.ylabelunit)
                 ylabel = this.ylabelname;
             else
-                ylabel = [this.ylabelname, ' / ', this.ylabelunit, ''];
+                ylabel = [this.ylabelname, ' (', this.ylabelunit, ')'];
             end                
         end
         

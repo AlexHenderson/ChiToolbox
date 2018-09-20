@@ -19,12 +19,16 @@ classdef ChiToFMSCharacter < ChiMassSpecCharacter
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, August 2018
+% Version 2.0, September 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
     properties
+%         timeresolution  % in picoseconds
+%         constanta       % a in ax^2 + bx + c
+%         constantb       % b in ax^2 + bx + c
+%         constantc       % c in ax^2 + bx + c
     end
     
     methods

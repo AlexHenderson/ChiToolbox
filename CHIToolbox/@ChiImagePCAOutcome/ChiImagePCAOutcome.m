@@ -8,7 +8,8 @@ classdef ChiImagePCAOutcome < handle
         explained;
         variances;
         xvals;
-        xlabel; % text for abscissa label on plots
+        xlabelname; % text for abscissa label on plots
+        xlabelunit; % text for abscissa label on plots
         reversex;
         mask;
         masked = false;
@@ -33,7 +34,7 @@ classdef ChiImagePCAOutcome < handle
     
     methods
         %% Constructor
-        function this = ChiImagePCAOutcome(scores,loadings,explained,variances,xvals,xlabel,reversex,xpixels,ypixels)
+        function this = ChiImagePCAOutcome(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex,xpixels,ypixels)
             % Create an instance of ChiSpectralPCAOutcome with given parameters
             
             if (nargin > 0) % Support calling with 0 arguments
@@ -43,7 +44,8 @@ classdef ChiImagePCAOutcome < handle
                 this.explained = explained;
                 this.variances = variances;
                 this.xvals = xvals;
-                this.xlabel = xlabel;
+                this.xlabelname = xlabelname;
+                this.xlabelunit = xlabelunit;
                 this.reversex = reversex;
                 this.xpixels = xpixels;
                 this.ypixels = ypixels;
@@ -62,7 +64,7 @@ classdef ChiImagePCAOutcome < handle
         %% clone : Make a copy of this image
         function output = clone(this)
             % Make a copy of this image
-            output = ChiImagePCAOutcome(this.scores,this.loadings,this.explained,this.variances,this.xvals,this.xlabel,this.reversex,this.xpixels,this.ypixels);
+            output = ChiImagePCAOutcome(this.scores,this.loadings,this.explained,this.variances,this.xvals,this.xlabelname,this.xlabelunit,this.reversex,this.xpixels,this.ypixels);
             output.history = this.history.clone();
         end
         

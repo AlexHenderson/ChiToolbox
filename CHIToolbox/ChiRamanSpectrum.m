@@ -5,21 +5,23 @@ classdef ChiRamanSpectrum < ChiSpectrum & ChiRamanCharacter
 % Syntax
 %   RamanSpectrum = ChiRamanSpectrum(ramanshift,data);
 %   RamanSpectrum = ChiRamanSpectrum(ramanshift,data,reversex);
-%   RamanSpectrum = ChiRamanSpectrum(ramanshift,data,reversex,xlabel);
-%   RamanSpectrum = ChiRamanSpectrum(ramanshift,data,reversex,xlabel,ylabel);
+%   RamanSpectrum = ChiRamanSpectrum(ramanshift,data,reversex,xlabel,xunit,ylabel,yunit);
 %   RamanSpectrum = ChiRamanSpectrum(ChiSpectrum);
 %
 % Description
 %   RamanSpectrum = ChiRamanSpectrum(ramanshift,data) creates a Raman
-%   spectrum object using default values for reversex, xlabel and ylabel.
+%   spectrum object using default values.
 %
 %   RamanSpectrum = ChiRamanSpectrum(ChiSpectrum) creates a Raman spectrum
-%   object from a ChiSpectrum object using default values for reversex,
-%   xlabel and ylabel. No check is made to determine if the ChiSpectrum
-%   object contains valid Raman data.
+%   object from a ChiSpectrum object using default values. No check is made
+%   to determine if the ChiSpectrum object contains valid Raman data.
 % 
-%   Default values are reversex = true (ramanshift is plotted in ascending
-%   order), xlabel = 'Raman shift (cm^{-1})' and ylabel = 'intensity'.
+%   Default values are: 
+%       reversex = false (Raman shift is plotted in ascending order)
+%       xlabel   = 'Raman shift'
+%       xunit    = 'cm^{-1}'
+%       ylabel   = 'intensity'
+%       yunit    = 'counts'
 %
 % Copyright (c) 2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -58,22 +60,26 @@ classdef ChiRamanSpectrum < ChiSpectrum & ChiRamanCharacter
                         superClassArgs{1} = s.xvals;
                         superClassArgs{2} = s.data;
                         superClassArgs{3} = s.reversex;
-                        superClassArgs{4} = s.xlabel;
-                        superClassArgs{5} = s.ylabel;
+                        superClassArgs{4} = s.xlabelname;
+                        superClassArgs{5} = s.xlabelunit;
+                        superClassArgs{6} = s.ylabelname;
+                        superClassArgs{7} = s.ylabelunit;
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
                             'Input not understood.');
                         throw(err);
                     end
                 case 2
-                    superClassArgs{3} = false;   % reversex
-                    superClassArgs{4} = 'Raman shift (cm^{-1})';   % xlabel
-                    superClassArgs{5} = 'intensity';   % ylabel
+                    superClassArgs{3} = false;          % reversex = ascending
+                    superClassArgs{4} = 'Raman shift';  % xlabelname
+                    superClassArgs{5} = 'cm^{-1}';      % xlabelunits
+                    superClassArgs{6} = 'intensity';    % ylabelname
+                    superClassArgs{7} = 'counts';       % ylabelunits
                 case 3
-                    superClassArgs{4} = 'Raman shift (cm^{-1})';   % xlabel
-                    superClassArgs{5} = 'intensity';   % ylabel
-                case 4
-                    superClassArgs{5} = 'intensity';   % ylabel
+                    superClassArgs{4} = 'Raman shift';  % xlabelname
+                    superClassArgs{5} = 'cm^{-1}';      % xlabelunits
+                    superClassArgs{6} = 'intensity';    % ylabelname
+                    superClassArgs{7} = 'counts';       % ylabelunits
                 case 5
                     superClassArgs = varargin;
                 otherwise
@@ -110,8 +116,10 @@ classdef ChiRamanSpectrum < ChiSpectrum & ChiRamanCharacter
             obj.xvals = this.xvals;
             obj.data = this.data;
             obj.reversex = this.reversex;
-            obj.xlabel = this.xlabel;
-            obj.ylabel = this.ylabel;
+            obj.xlabelname = this.xlabelname;
+            obj.xlabelunit = this.xlabelunit;
+            obj.ylabelname = this.ylabelname;
+            obj.ylabelunit = this.ylabelunit;
             obj.filename = this.filename;
             
             obj.baseline = this.baseline.clone();
@@ -144,21 +152,6 @@ classdef ChiRamanSpectrum < ChiSpectrum & ChiRamanCharacter
         end
         
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-%         function modelbaselinegui(this)
-        function grrrrr = modelme(this)
-            % Call the standalone function version of modelbaselinegui
-%            results = modelbaselinegui(this.xvals,this.data,this.xlabel,this.ylabel);
-           results = modelbaselinegui(this);
-        end
-        %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function modelbaselinegui(varargin)
-            % Call the standalone function version of modelbaselinegui
-%            results = modelbaselinegui(this.xvals,this.data,this.xlabel,this.ylabel);
-            a = 9;
-           results = modelbaselinegui(varargin);
-%            results = modelbaselinegui(this.xvals,this.data,this,this.xlabel,this.ylabel);
-            a = 9;
-        end
     end
     
 end

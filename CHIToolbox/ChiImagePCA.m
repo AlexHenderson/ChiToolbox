@@ -45,7 +45,7 @@ end
     
 [pcloadings, pcscores, pcvariances, pcexplained] = utilities.chi_pca(input.data); 
 
-output = ChiImagePCAOutcome(pcscores,pcloadings,pcexplained,pcvariances,input.xvals,input.xlabel,input.reversex,input.xpixels,input.ypixels);
+output = ChiImagePCAOutcome(pcscores,pcloadings,pcexplained,pcvariances,input.xvals,input.xlabelname,input.xlabelunit,input.reversex,input.xpixels,input.ypixels);
 if ~isempty(input.filename)
     output.history.add(['PCA of ', input.filename]);
 end

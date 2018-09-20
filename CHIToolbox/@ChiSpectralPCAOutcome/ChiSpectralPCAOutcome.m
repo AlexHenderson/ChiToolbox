@@ -8,7 +8,8 @@ classdef ChiSpectralPCAOutcome < handle
         explained;
         variances;
         xvals;
-        xlabel; % text for abscissa label on plots
+        xlabelname; % text for abscissa label on plots
+        xlabelunit; % text for abscissa label on plots
         reversex;
         classmembership; % an instance of ChiClassMembership
         history;
@@ -16,12 +17,13 @@ classdef ChiSpectralPCAOutcome < handle
     
     properties (Dependent = true)
         %% Calculated properties
-        numpcs;
+        numpcs
+        xlabel
     end
     
     methods
         %% Constructor
-        function this = ChiSpectralPCAOutcome(scores,loadings,explained,variances,xvals,xlabel,reversex)
+        function this = ChiSpectralPCAOutcome(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex)
             % Create an instance of ChiSpectralPCAOutcome with given parameters
             
             this.history = cell(1);
@@ -32,26 +34,39 @@ classdef ChiSpectralPCAOutcome < handle
                 this.explained = explained;
                 this.variances = variances;
                 this.xvals = xvals;
-                this.xlabel = xlabel;
+                this.xlabelname = xlabelname;
+                this.xlabelunit = xlabelunit;
                 this.reversex = reversex;
                 
                 this.xvals = ChiForceToRow(this.xvals);
             end 
         end
         
-        %% xpixels : Width of image
-        function numpcs = get.numpcs(this)
-            numpcs = size(this.loadings,2);
-        end
-       
-        %% clone : Make a copy of this image
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        % clone : Make a copy of this image
         function output = clone(this)
             % Make a copy of this image
-            output = ChiSpectralPCAOutcome(this.scores,this.loadings,this.explained,this.variances,this.xvals,this.xlabel,this.reversex);
+            output = ChiSpectralPCAOutcome(this.scores,this.loadings,this.explained,this.variances,this.xvals,this.xlabelname,this.xlabelunit,this.reversex);
             output.classmembership = this.classmembership;
             output.history = this.history;
             
         end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function numpcs = get.numpcs(this)
+            numpcs = size(this.loadings,2);
+        end
+       
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function xlabel = get.xlabel(this)
+            if isempty(this.xlabelunit)
+                xlabel = this.xlabelname;
+            else
+                xlabel = [this.xlabelname, ' / ', this.xlabelunit, ''];
+            end                
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
     end
     

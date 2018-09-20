@@ -105,9 +105,9 @@ classdef ChiIonoptikaFile < ChiAbstractFileFormat
                 mstep1 = mass(2) - mass(1);
                 mstep2 = mass(end) - mass(end-1);
                 if (mstep1 == mstep2)
-                    obj = ChiMassSpecImage(double(mass),double(data),false,x_label,y_label,width,height);
+                    obj = ChiMassSpecImage(double(mass),double(data));
                 else
-                    obj = ChiToFMassSpecImage(double(mass),double(data),false,x_label,y_label,width,height);
+                    obj = ChiToFMassSpecImage(double(mass),double(data));
                 end
                 
                 obj.imzmlproperties.instrument = 'Ionoptika J105';

@@ -109,30 +109,34 @@ classdef ChiMettlerToledoFile < ChiAbstractFileFormat
                     % Single spectrum
                     if strfind(lower(x_label),'raman') %#ok<STRIFCND>
                         % Raman data
-                        obj = ChiRamanSpectrum(xvals,data,false,x_label,y_label);
+                        obj = ChiRamanSpectrum(xvals,data);
                     else
                         if strfind(lower(x_label),'wavenumber') %#ok<STRIFCND>
                             % IR data
-                            obj = ChiIRSpectrum(xvals,data,true,x_label,y_label);
+                            obj = ChiIRSpectrum(xvals,data);
                         else
                             % Generic data
-                            obj = ChiSpectrum(xvals,data,false,x_label,y_label);
+                            xunit = '';
+                            yunit = '';
+                            obj = ChiSpectrum(xvals,data,false,x_label,xunit,y_label,yunit);
                         end
                     end
                 else
                     % Multiple spectra
                     if strfind(lower(x_label),'raman') %#ok<STRIFCND>
                         % Raman data
-                        obj = ChiRamanSpectralCollection(xvals,data,false,x_label,y_label);
+                        obj = ChiRamanSpectralCollection(xvals,data);
                         obj.filenames = filenames;                                
                     else
                         if strfind(lower(x_label),'wavenumber') %#ok<STRIFCND>
                             % IR data
-                            obj = ChiIRSpectralCollection(xvals,data,true,x_label,y_label);
+                            obj = ChiIRSpectralCollection(xvals,data);
                             obj.filenames = filenames;                                
                         else
                             % Generic data
-                            obj = ChiSpectralCollection(xvals,data,false,x_label,y_label);
+                            xunit = '';
+                            yunit = '';
+                            obj = ChiSpectralCollection(xvals,data,false,x_label,y_label,x_label,xunit,y_label,yunit);
                             obj.filenames = filenames;                                
                         end
                     end

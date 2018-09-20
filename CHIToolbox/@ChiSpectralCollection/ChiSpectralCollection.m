@@ -6,7 +6,7 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
 %   collection = ChiSpectralCollection();
 %   collection = ChiSpectralCollection(xvals,data);
 %   collection = ChiSpectralCollection(xvals,data,reversex);
-%   collection = ChiSpectralCollection(xvals,data,reversex,xlabel,ylabel);
+%   collection = ChiSpectralCollection(xvals,data,reversex,xlabel,xunit,ylabel,yunit);
 %   collection = ChiSpectralCollection(ChiSpectrum);
 %   collection = ChiSpectralCollection(ChiSpectralCollection);
 % 
@@ -21,8 +21,8 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
 %   collection = ChiSpectralCollection(xvals,data,reversex) uses the
 %   provided value for reversex. 
 % 
-%   collection = ChiSpectralCollection(xvals,data,reversex,xlabel,ylabel)
-%   uses the provided values for xlabel and ylabel.
+%   collection = ChiSpectralCollection(xvals,data,reversex,xlabel,xunit,ylabel,yunit)
+%   uses the provided values for xlabel/unit and ylabel/unit.
 % 
 %   collection = ChiSpectralCollection(ChiSpectrum) uses the contents of
 %   the ChiSpectrum to populate the collection.
@@ -53,8 +53,10 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
         xvals;      % Abscissa as a row vector
         data;       % Contents of object as a 2D matrix, spectra in rows
         reversex;   % Should abscissa be plotted in decreasing order
-        xlabel;     % Text for abscissa label on plots
-        ylabel;     % Text for ordinate label on plots
+        xlabelname = ''; % Text for abscissa label on plots
+        xlabelunit = ''; % Text for the abscissa label unit on plots
+        ylabelname = ''; % Text for ordinate label on plots
+        ylabelunit = ''; % Text for the ordinate label unit on plots
         classmembership % An instance of ChiClassMembership
         filenames   % Cell array of filenames if opened from a list of files
         history     % Log of data processing steps
@@ -80,8 +82,10 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                         this.xvals = s.xvals;
                         this.data = s.data;
                         this.reversex = s.reversex;
-                        this.xlabel = s.xlabel;
-                        this.ylabel = s.ylabel;
+                        this.xlabelname = s.xlabelname;
+                        this.xlabelunit = s.xlabelunit;
+                        this.ylabelname = s.ylabelname;
+                        this.ylabelunit = s.ylabelunit;
                         this.filenames = cellstr(s.filename);
                         if ~isempty(s.history)
                             this.history = s.history.clone();
@@ -102,30 +106,54 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                     this.xvals = varargin{1};
                     this.data = varargin{2};
                     this.history = ChiLogger();
-                case 5
-                    this.xvals = varargin{1};
-                    this.data = varargin{2};
-                    this.reversex = varargin{3};
-                    this.xlabel = varargin{4};
-                    this.ylabel = varargin{5};
-                    this.history = ChiLogger();                
-                case 6
-                    this.xvals = varargin{1};
-                    this.data = varargin{2};
-                    this.reversex = varargin{3};
-                    this.xlabel = varargin{4};
-                    this.ylabel = varargin{5};
-                    this.history = varargin{6}.clone();                    
                 case 7
                     this.xvals = varargin{1};
                     this.data = varargin{2};
                     this.reversex = varargin{3};
-                    this.xlabel = varargin{4};
-                    this.ylabel = varargin{5};
-                    if ~isempty(varargin{6})
-                        this.classmembership = varargin{6}.clone();
+                    this.xlabelname = varargin{4};
+                    this.xlabelunit = varargin{5};
+                    this.ylabelname = varargin{6};
+                    this.ylabelunit = varargin{7};
+                    this.history = ChiLogger();                
+                case 8
+                    this.xvals = varargin{1};
+                    this.data = varargin{2};
+                    this.reversex = varargin{3};
+                    this.xlabelname = varargin{4};
+                    this.xlabelunit = varargin{5};
+                    this.ylabelname = varargin{6};
+                    this.ylabelunit = varargin{7};
+                    this.history = varargin{8}.clone();                    
+                case 9
+                    this.xvals = varargin{1};
+                    this.data = varargin{2};
+                    this.reversex = varargin{3};
+                    this.xlabelname = varargin{4};
+                    this.xlabelunit = varargin{5};
+                    this.ylabelname = varargin{6};
+                    this.ylabelunit = varargin{7};
+                    if ~isempty(varargin{8})
+                        this.classmembership = varargin{8}.clone();
                     end
-                    this.history = varargin{7}.clone();
+                    if ~isempty(varargin{9})
+                        this.filenames = varargin{9};
+                    end
+                    this.history = ChiLogger();                
+                case 10
+                    this.xvals = varargin{1};
+                    this.data = varargin{2};
+                    this.reversex = varargin{3};
+                    this.xlabelname = varargin{4};
+                    this.xlabelunit = varargin{5};
+                    this.ylabelname = varargin{6};
+                    this.ylabelunit = varargin{7};
+                    if ~isempty(varargin{8})
+                        this.classmembership = varargin{8}.clone();
+                    end
+                    if ~isempty(varargin{9})
+                        this.filenames = varargin{9};
+                    end
+                    this.history = varargin{10}.clone();
                 otherwise
                     disp(nargin)
                     err = MException('CHI:ChiSpectralCollection:InputError', ...
@@ -150,49 +178,8 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
             this.ontologyinfo.isaccurate = false;            
             
         end
-        
-%         function this = ChiSpectralCollection(xvals,data,reversex,xlabel,ylabel,varargin)
-%             % Create an instance of ChiSpectralCollection with given parameters
-% 
-%             this.history = ChiLogger();
-% 
-%             if (nargin > 0) % Support calling with 0 arguments
-%                 this.xvals = xvals;
-%                 this.data = data;
-% 
-%                 % Force x-values to row vector
-%                 this.xvals = ChiForceToRow(this.xvals);
-% 
-%                 % Force y-values to row vectors
-%                 [rows,cols] = size(this.data);
-%                 if (rows == cols)
-%                     utilities.warningnobacktrace('Data matrix is square. Assuming spectra are in rows.');
-%                 else
-%                     if (rows == length(this.xvals))
-%                         this.data = this.data';
-%                     end
-%                 end                      
-% 
-%                 % Set other parameters if available
-%                 if (nargin > 2)
-%                     this.reversex = reversex;
-%                     if (nargin > 3)
-%                         this.xlabel = xlabel;
-%                         this.ylabel = ylabel;
-%                     end
-%                 end
-%             end 
-%         end
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        % Make a copy of this image
-%         function output = clone(this)
-%             % Make a copy of this image
-%             output = ChiSpectralCollection(this.xvals,this.data,this.reversex,this.xlabel,this.ylabel);
-%             output.classmembership = this.classmembership;
-%             output.history = this.history.clone();
-%         end
-
         function obj = clone(this)
             
             % ToDo: There's got to be a better way!!
@@ -203,8 +190,10 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
             obj.xvals = this.xvals;
             obj.data = this.data;
             obj.reversex = this.reversex;
-            obj.xlabel = this.xlabel;
-            obj.ylabel = this.ylabel;
+            obj.xlabelname = this.xlabelname;
+            obj.xlabelunit = this.xlabelunit;
+            obj.ylabelname = this.ylabelname;
+            obj.ylabelunit = this.ylabelunit;
             obj.filenames = this.filenames;
             
             if ~isempty(this.classmembership)

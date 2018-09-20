@@ -8,8 +8,10 @@ classdef (Abstract) ChiAbstractSpectralCollection < handle
         xvals;      % Abscissa as a row vector
         data;       % Contents of object as a 2D matrix, spectra in rows
         reversex;   % Should abscissa be plotted in decreasing order
-        xlabel;     % Text for abscissa label on plots
-        ylabel;     % Text for ordinate label on plots
+        xlabelname; % Text for abscissa label on plots
+        xlabelunit; % Text for the abscissa label unit on plots
+        ylabelname; % Text for ordinate label on plots
+        ylabelunit; % Text for the ordinate label unit on plots
     end
 
     properties
@@ -24,6 +26,9 @@ classdef (Abstract) ChiAbstractSpectralCollection < handle
     properties (Dependent = true, SetAccess = protected)
         numchannels;    % Number of data points
         numspectra;     % Number of spectra
+        xlabel          % Composition of the xlabelname and the xlabelunit
+        ylabel          % Composition of the ylabelname and the ylabelunit
+        
     end
     
     % =====================================================================
@@ -35,11 +40,33 @@ classdef (Abstract) ChiAbstractSpectralCollection < handle
             numchannels = size(this.data,2);
         end
         
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         % numspectra : Calculate number of spectra in the collection
         function numspectra = get.numspectra(this)
             % Calculate number of spectra in this collection
             numspectra = size(this.data,1);
         end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function xlabel = get.xlabel(this)
+            if isempty(this.xlabelunit)
+                xlabel = this.xlabelname;
+            else
+                xlabel = [this.xlabelname, ' / ', this.xlabelunit, ''];
+            end                
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function ylabel = get.ylabel(this)
+            if isempty(this.ylabelunit)
+                ylabel = this.ylabelname;
+            else
+                ylabel = [this.ylabelname, ' / ', this.ylabelunit, ''];
+            end                
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        
     end
     
     

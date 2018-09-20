@@ -10,17 +10,21 @@ classdef ChiSpectrum < ChiAbstractSpectrum
         xvals;      % Abscissa as a row vector
         data;       % Contents of object as a 2D matrix, spectra in rows
         reversex;   % Should abscissa be plotted in decreasing order
-        xlabel;     % Text for abscissa label on plots
-        ylabel;     % Text for ordinate label on plots
+        xlabelname = ''; % Text for abscissa label on plots
+        xlabelunit = ''; % Text for the abscissa label unit on plots
+        ylabelname = ''; % Text for ordinate label on plots
+        ylabelunit = ''; % Text for the ordinate label unit on plots
         classmembership % An instance of ChiClassMembership
         filename    % Name of file opened, if appropriate
         history     % Log of data processing steps
     end
     
+    properties (Dependent = true)
+    end
     
     methods
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function this = ChiSpectrum(xvals,data,reversex,xlabel,ylabel)
+        function this = ChiSpectrum(xvals,data,reversex,xlabelname,xlabelunit,ylabelname,ylabelunit)
             % Create an instance of ChiSpectrum with given parameters
             
             if (nargin > 0) % Support calling with 0 arguments
@@ -33,6 +37,11 @@ classdef ChiSpectrum < ChiAbstractSpectrum
                 
                 this.xvals = xvals;
                 this.data = data;
+                this.reversex = 0;
+                this.xlabelname = '';
+                this.xlabelunit = '';
+                this.ylabelname = '';                
+                this.ylabelunit = '';                
                 this.history = ChiLogger();
                 
                 % Force to row vectors
@@ -42,8 +51,10 @@ classdef ChiSpectrum < ChiAbstractSpectrum
                 if (nargin > 2)
                     this.reversex = reversex;
                     if (nargin > 3)
-                        this.xlabel = xlabel;
-                        this.ylabel = ylabel;
+                        this.xlabelname = xlabelname;
+                        this.xlabelunit = xlabelunit;
+                        this.ylabelname = ylabelname;
+                        this.ylabelunit = ylabelunit;
                     end
                 end
                 
@@ -73,7 +84,7 @@ classdef ChiSpectrum < ChiAbstractSpectrum
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function output = clone(this)
             % Make a copy of this spectrum
-            output = ChiSpectrum(this.xvals,this.data,this.reversex,this.xlabel,this.ylabel);
+            output = ChiSpectrum(this.xvals,this.data,this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.xlabelunit);
             output.filename = this.filename;
             output.history = this.history.clone();
         end        

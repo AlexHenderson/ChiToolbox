@@ -1,26 +1,30 @@
 classdef ChiToFMassSpecImage < ChiMassSpecImage & ChiToFMSCharacter
 
-% ChiMassSpecImage  A mass spectral image.
+% ChiToFMassSpecImage  A mass spectral image.
 %
 % Syntax
-%   massspecimage = ChiToFMassSpecImage(mass,data);
-%   massspecimage = ChiToFMassSpecImage(mass,data,reversex);
-%   massspecimage = ChiToFMassSpecImage(mass,data,reversex,xlabel);
-%   massspecimage = ChiToFMassSpecImage(mass,data,reversex,xlabel,ylabel);
-%   massspecimage = ChiToFMassSpecImage(mass,data,reversex,xlabel,ylabel,width,height);
-%   massspecimage = ChiToFMassSpecImage(ChiImage);
+%   tofmassspecimage = ChiToFMassSpecImage(mass,data);
+%   tofmassspecimage = ChiToFMassSpecImage(mass,data,reversex);
+%   tofmassspecimage = ChiToFMassSpecImage(mass,data,reversex,xlabel,xunit,ylabel,yunit);
+%   tofmassspecimage = ChiToFMassSpecImage(mass,data,reversex,xlabel,xunit,ylabel,yunit,width,height);
+%   tofmassspecimage = ChiToFMassSpecImage(ChiImage);
 %
 % Description
-%   massspecimage = ChiToFMassSpecImage(mass,data) creates a mass spectral
-%   image object using default values for reversex, xlabel and ylabel.
+%   tofmassspecimage = ChiToFMassSpecImage(mass,data) creates a mass
+%   spectral image object using default values for reversex, xlabel/unit
+%   and ylabel/unit.
 %
-%   massspecimage = ChiToFMassSpecImage(ChiImage) creates a mass spectral
-%   image object from a ChiImage object using default values for reversex,
-%   xlabel and ylabel. No check is made to determine if the ChiImage object
-%   contains valid ms data.
+%   tofmassspecimage = ChiToFMassSpecImage(ChiImage) creates a mass
+%   spectral image object from a ChiImage object using default values for
+%   reversex, xlabel/unit and ylabel/unit. No check is made to determine if
+%   the ChiImage object contains valid ms data.
 % 
-%   Default values are reversex = false (mass is plotted in ascending
-%   order), xlabel = 'm/z (amu)' and ylabel = 'intensity'.
+%   Default values are: 
+%       reversex = false (mass is plotted in ascending order)
+%       xlabel   = 'm/z'
+%       xunit    = 'amu'
+%       ylabel   = 'intensity'
+%       yunit    = 'counts'
 %
 % Copyright (c) 2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -73,8 +77,10 @@ classdef ChiToFMassSpecImage < ChiMassSpecImage & ChiToFMSCharacter
             obj.xvals = this.xvals;
             obj.data = this.data;
             obj.reversex = this.reversex;
-            obj.xlabel = this.xlabel;
-            obj.ylabel = this.ylabel;
+            obj.xlabelname = this.xlabelname;
+            obj.xlabelunit = this.xlabelunit;
+            obj.ylabelname = this.ylabelname;
+            obj.ylabelunit = this.ylabelunit;
             obj.filename = this.filename;
             obj.mask = this.mask;
             obj.masked = this.masked;

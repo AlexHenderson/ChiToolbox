@@ -6,8 +6,10 @@ classdef (Abstract) ChiAbstractSpectrum < handle
         xvals;      % Abscissa as a row vector
         data;       % Ordinate as a row vector
         reversex;   % Should abscissa be plotted in decreasing order
-        xlabel;     % Text for abscissa label on plots
-        ylabel;     % Text for ordinate label on plots
+        xlabelname; % Text for abscissa label on plots
+        xlabelunit; % Text for the abscissa label unit on plots
+        ylabelname; % Text for ordinate label on plots
+        ylabelunit; % Text for the ordinate label unit on plots
     end
     
     properties
@@ -21,6 +23,8 @@ classdef (Abstract) ChiAbstractSpectrum < handle
     
     properties (Dependent = true, SetAccess = protected)
         numchannels;    % Number of data points
+        xlabel          % Composition of the xlabelname and the xlabelunit
+        ylabel          % Composition of the ylabelname and the ylabelunit
     end
 
     % =====================================================================
@@ -36,6 +40,24 @@ classdef (Abstract) ChiAbstractSpectrum < handle
         % Name of variable
         function name = variablename(this) %#ok<MANU>
             name = utilities.callingline();
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function xlabel = get.xlabel(this)
+            if isempty(this.xlabelunit)
+                xlabel = this.xlabelname;
+            else
+                xlabel = [this.xlabelname, ' / ', this.xlabelunit, ''];
+            end                
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function ylabel = get.ylabel(this)
+            if isempty(this.ylabelunit)
+                ylabel = this.ylabelname;
+            else
+                ylabel = [this.ylabelname, ' / ', this.ylabelunit, ''];
+            end                
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

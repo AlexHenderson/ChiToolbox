@@ -10,8 +10,10 @@ classdef (Abstract) ChiAbstractImage < handle
         xvals;      % Abscissa as a row vector
         data;       % Contents of object as a 2D matrix, spectra in rows
         reversex;   % Should abscissa be plotted in decreasing order
-        xlabel;     % Text for abscissa label on plots
-        ylabel;     % Text for ordinate label on plots
+        xlabelname; % Text for abscissa label on plots
+        xlabelunit; % Text for the abscissa label unit on plots
+        ylabelname; % Text for ordinate label on plots
+        ylabelunit; % Text for the ordinate label unit on plots
         
         xpixels;    % Number of pixels in the x-direction (width)
         ypixels;    % Number of pixels in the y-direction (height)
@@ -33,6 +35,8 @@ classdef (Abstract) ChiAbstractImage < handle
         numchannels;    % Number of data points
         numpixels;      % Number of pixels in the image
         numspectra;     % Number of spectra in the image
+        xlabel          % Composition of the xlabelname and the xlabelunit
+        ylabel          % Composition of the ylabelname and the ylabelunit
     end
     
     % =====================================================================
@@ -62,6 +66,24 @@ classdef (Abstract) ChiAbstractImage < handle
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function numspectra = get.numspectra(this)
             numspectra = this.numpixels;
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function xlabel = get.xlabel(this)
+            if isempty(this.xlabelunit)
+                xlabel = this.xlabelname;
+            else
+                xlabel = [this.xlabelname, ' / ', this.xlabelunit, ''];
+            end                
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function ylabel = get.ylabel(this)
+            if isempty(this.ylabelunit)
+                ylabel = this.ylabelname;
+            else
+                ylabel = [this.ylabelname, ' / ', this.ylabelunit, ''];
+            end                
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

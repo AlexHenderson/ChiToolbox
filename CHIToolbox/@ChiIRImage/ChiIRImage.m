@@ -5,8 +5,7 @@ classdef ChiIRImage < ChiImage & ChiIRCharacter
 % Syntax
 %   irimage = ChiIRImage(wavenumbers,data);
 %   irimage = ChiIRImage(wavenumbers,data,reversex);
-%   irimage = ChiIRImage(wavenumbers,data,reversex,xlabel);
-%   irimage = ChiIRImage(wavenumbers,data,reversex,xlabel,ylabel);
+%   irimage = ChiIRImage(wavenumbers,data,reversex,xlabel,xunit,ylabel,yunit);
 %   irimage = ChiIRImage(ChiImage);
 %
 % Description
@@ -20,8 +19,10 @@ classdef ChiIRImage < ChiImage & ChiIRCharacter
 % 
 %   Default values are: 
 %       reversex = true (wavenumbers are plotted in descending order);
-%       xlabel = 'wavenumbers (cm^{-1})', and;
-%       ylabel = 'absorbance'.
+%       xlabel   = 'wavenumber'
+%       xunit    = 'cm^{-1}'
+%       ylabel   = 'absorbance'
+%       yunit    = ''
 %
 % Copyright (c) 2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -60,12 +61,14 @@ classdef ChiIRImage < ChiImage & ChiIRCharacter
                         superClassArgs{1} = s.xvals;
                         superClassArgs{2} = s.data;
                         superClassArgs{3} = s.reversex;
-                        superClassArgs{4} = s.xlabel;
-                        superClassArgs{5} = s.ylabel;
-                        superClassArgs{6} = s.mask;
-                        superClassArgs{7} = s.masked;
-                        superClassArgs{8} = s.filename;
-                        superClassArgs{9} = s.history.clone();
+                        superClassArgs{4} = s.xlabelname;
+                        superClassArgs{5} = s.xlabelunit;
+                        superClassArgs{6} = s.ylabelname;
+                        superClassArgs{7} = s.ylabelunit;
+                        superClassArgs{8} = s.mask;
+                        superClassArgs{9} = s.masked;
+                        superClassArgs{10} = s.filename;
+                        superClassArgs{11} = s.history.clone();
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
                             'Input not understood.');
@@ -73,13 +76,15 @@ classdef ChiIRImage < ChiImage & ChiIRCharacter
                     end
                 case 2
                     superClassArgs{3} = false;         % reversex = ascending
-                    superClassArgs{4} = 'wavenumbers (cm^{-1})';   % xlabel
-                    superClassArgs{5} = 'absorbance';   % ylabel
+                    superClassArgs{4} = 'wavenumber';   % xlabelname
+                    superClassArgs{5} = 'cm^{-1}';      % xlabelunit
+                    superClassArgs{6} = 'absorbance';   % ylabelname
+                    superClassArgs{7} = '';             % ylabelunit (unitless)
                 case 3
-                    superClassArgs{4} = 'wavenumbers (cm^{-1})';   % xlabel
-                    superClassArgs{5} = 'absorbance';   % ylabel
-                case 4
-                    superClassArgs{5} = 'absorbance';   % ylabel
+                    superClassArgs{4} = 'wavenumber';   % xlabelname
+                    superClassArgs{5} = 'cm^{-1}';      % xlabelunit
+                    superClassArgs{6} = 'absorbance';   % ylabelname
+                    superClassArgs{7} = '';             % ylabelunit (unitless)
                 case 5
                     superClassArgs = varargin;
                 otherwise
@@ -120,8 +125,10 @@ classdef ChiIRImage < ChiImage & ChiIRCharacter
             obj.xvals = this.xvals;
             obj.data = this.data;
             obj.reversex = this.reversex;
-            obj.xlabel = this.xlabel;
-            obj.ylabel = this.ylabel;
+            obj.xlabelname = this.xlabelname;
+            obj.xlabelunit = this.xlabelunit;
+            obj.ylabelname = this.ylabelname;
+            obj.ylabelunit = this.ylabelunit;
             obj.filename = this.filename;
             obj.mask = this.mask;
             obj.masked = this.masked;

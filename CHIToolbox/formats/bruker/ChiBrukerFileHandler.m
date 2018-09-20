@@ -77,9 +77,6 @@ wavenumbers = AB(:,1);
 data = AB(:,2:end);
 data = data';
 
-x_label = 'wavenumber (cm^{-1})';
-y_label = 'absorbance';
-
 %% Convert to ChiToolbox format
 if isMap
     % Handle case where the file represents a map
@@ -88,17 +85,18 @@ if isMap
     data = flip(data,1);
     data = reshape(data,height*width,[]);
     
-    brukerData = ChiImage(wavenumbers,data,true,x_label,y_label,width,height);
+%     brukerData = ChiIRImage(wavenumbers,data,true,x_label,y_label,width,height);
+    brukerData = ChiIRImage(wavenumbers,data);
     brukerData.filename = filename;    
 else
     if (size(data,1) == 1)
         % We only have a single spectrum
-        brukerData = ChiIRSpectrum(wavenumbers,data,true,x_label,y_label);
+        brukerData = ChiIRSpectrum(wavenumbers,data);
         brukerData.filename = filename;
     else
         % We have a number of spectra, but these are not part of a mapping
         % experiment
-        brukerData = ChiIRSpectralCollection(wavenumbers,data,true,x_label,y_label);
+        brukerData = ChiIRSpectralCollection(wavenumbers,data);
     end
 end
 

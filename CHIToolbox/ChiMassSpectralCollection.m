@@ -5,22 +5,24 @@ classdef ChiMassSpectralCollection < ChiSpectralCollection & ChiMassSpecCharacte
 % Syntax
 %   massspecdata = ChiMassSpectralCollection(mass,data);
 %   massspecdata = ChiMassSpectralCollection(mass,data,reversex);
-%   massspecdata = ChiMassSpectralCollection(mass,data,reversex,xlabel);
-%   massspecdata = ChiMassSpectralCollection(mass,data,reversex,xlabel,ylabel);
+%   massspecdata = ChiMassSpectralCollection(mass,data,reversex,xlabel,xunit,ylabel,yunit);
 %   massspecdata = ChiMassSpectralCollection(ChiSpectralCollection);
 %
 % Description
 %   massspecdata = ChiMassSpectralCollection(mass,data) creates a mass
-%   spectral collection using default values for reversex, xlabel and
-%   ylabel.
+%   spectral collection using default values.
 %
 %   massspecdata = ChiMassSpectralCollection(ChiSpectralCollection) creates
 %   a mass spectral collection from a ChiSpectralCollection using default
-%   values for reversex, xlabel and ylabel. No check is made to determine
-%   if the ChiSpectralCollection contains valid mass spectral data.
+%   values. No check is made to determine if the ChiSpectralCollection
+%   contains valid mass spectral data.
 % 
-%   Default values are reversex = false (mass is plotted in ascending
-%   order), xlabel = 'm/z (amu)' and ylabel = 'intensity'.
+%   Default values are: 
+%       reversex = false (mass is plotted in ascending order)
+%       xlabel   = 'm/z'
+%       xunit    = 'amu'
+%       ylabel   = 'intensity'
+%       yunit    = 'counts'
 %
 % Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -61,29 +63,33 @@ classdef ChiMassSpectralCollection < ChiSpectralCollection & ChiMassSpecCharacte
                         superClassArgs{1} = input.xvals;
                         superClassArgs{2} = input.data;
                         superClassArgs{3} = input.reversex;
-                        superClassArgs{4} = input.xlabel;
-                        superClassArgs{5} = input.ylabel;
-                        superClassArgs{6} = input.classmembership;
-                        superClassArgs{7} = input.filenames;
-%                         superClassArgs{8} = input.filename;
-%                         superClassArgs{9} = input.history.clone();
+                        superClassArgs{4} = input.xlabelname;
+                        superClassArgs{5} = input.xlabelunit;
+                        superClassArgs{6} = input.ylabelname;
+                        superClassArgs{7} = input.ylabelunit;
+                        superClassArgs{8} = input.classmembership;
+                        superClassArgs{9} = input.filenames;
+%                         superClassArgs{9} = input.filename;
+%                         superClassArgs{10} = input.history.clone();
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
                             'Input not understood.');
                         throw(err);
                     end
                 case 2
-                    superClassArgs{3} = false;         % reversex = ascending
-                    superClassArgs{4} = 'm/z (amu)';   % xlabel
-                    superClassArgs{5} = 'intensity';   % ylabel
+                    superClassArgs{3} = false;          % reversex = ascending
+                    superClassArgs{4} = 'm/z';          % xlabelname
+                    superClassArgs{5} = 'amu';          % xlabelunit
+                    superClassArgs{6} = 'intensity';    % ylabelname
+                    superClassArgs{7} = 'counts';       % ylabelunit
                 case 3
-                    superClassArgs{4} = 'm/z (amu)';   % xlabel
-                    superClassArgs{5} = 'intensity';   % ylabel
-                case 4
-                    superClassArgs{5} = 'intensity';   % ylabel
-                case 5
-                    superClassArgs = varargin;
+                    superClassArgs{4} = 'm/z';          % xlabelname
+                    superClassArgs{5} = 'amu';          % xlabelunit
+                    superClassArgs{6} = 'intensity';    % ylabelname
+                    superClassArgs{7} = 'counts';       % ylabelunit
                 case 7
+                    superClassArgs = varargin;
+                case 9
                     superClassArgs = varargin;
                 otherwise
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
@@ -123,8 +129,10 @@ classdef ChiMassSpectralCollection < ChiSpectralCollection & ChiMassSpecCharacte
             obj.xvals = this.xvals;
             obj.data = this.data;
             obj.reversex = this.reversex;
-            obj.xlabel = this.xlabel;
-            obj.ylabel = this.ylabel;
+            obj.xlabelname = this.xlabelname;
+            obj.xlabelunit = this.xlabelunit;
+            obj.ylabelname = this.xlabelname;
+            obj.ylabelunit = this.ylabelunit;
 
             if ~isempty(this.classmembership)
                 obj.classmembership = this.classmembership.clone();

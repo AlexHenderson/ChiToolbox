@@ -99,9 +99,6 @@ classdef ChiBiotofFile < ChiAbstractFileFormat
 %                 throw(err);
 %             end
             
-            x_label = 'm/z';
-            y_label = 'counts';
-            
             if ((height == 1) && (width == 1))
                 % We have one or more spectra rather than an image
                 % Check to see if we have a single spectrum or a profile
@@ -113,7 +110,9 @@ classdef ChiBiotofFile < ChiAbstractFileFormat
                     obj.filenames = filenames;
                 end               
             else
-                obj = ChiMassSpecImage(mass,data,false,x_label,y_label,width,height);
+                % We read Biotof images at nominal mass, so they are no
+                % longer ToF-SIMS images
+                obj = ChiMassSpecImage(mass,data);
                 obj.filename = filenames;
             end
             for i = 1:size(filenames,1)

@@ -26,13 +26,15 @@ classdef ChiToFMassSpectralCollection < ChiSpectralCollection & ChiToFMSCharacte
                         superClassArgs{1} = s.xvals;
                         superClassArgs{2} = s.data;
                         superClassArgs{3} = s.reversex;
-                        superClassArgs{4} = s.xlabel;
-                        superClassArgs{5} = s.ylabel;
+                        superClassArgs{4} = s.xlabelname;
+                        superClassArgs{5} = s.xlabelunit;
+                        superClassArgs{6} = s.ylabelname;
+                        superClassArgs{7} = s.ylabelunit;
                         if ~isempty(s.history)
-                            superClassArgs{6} = s.history.clone();
-                            superClassArgs{6}.add('Created from a ChiSpectrum');
+                            superClassArgs{8} = s.history.clone();
+                            superClassArgs{8}.add('Created from a ChiSpectrum');
                         else
-                            superClassArgs{6} = ChiLogger();                
+                            superClassArgs{8} = ChiLogger();                
                         end
                         
                     else
@@ -41,18 +43,20 @@ classdef ChiToFMassSpectralCollection < ChiSpectralCollection & ChiToFMSCharacte
                             superClassArgs{1} = s.xvals;
                             superClassArgs{2} = s.data;
                             superClassArgs{3} = s.reversex;
-                            superClassArgs{4} = s.xlabel;
-                            superClassArgs{5} = s.ylabel;
+                            superClassArgs{4} = s.xlabelname;
+                            superClassArgs{5} = s.xlabelunit;
+                            superClassArgs{6} = s.ylabelname;
+                            superClassArgs{7} = s.ylabelunit;
                             
                             if ~isempty(s.classmembership)
-                                superClassArgs{6} = s.classmembership.clone();
+                                superClassArgs{8} = s.classmembership.clone();
                             end
 
                             if ~isempty(s.history)
-                                superClassArgs{7} = s.history.clone();
-                                superClassArgs{7}.add('Created from a ChiSpectralCollection');
+                                superClassArgs{9} = s.history.clone();
+                                superClassArgs{9}.add('Created from a ChiSpectralCollection');
                             else
-                                superClassArgs{7} = ChiLogger();                
+                                superClassArgs{9} = ChiLogger();                
                             end
                         else
                             err = MException(['CHI:',mfilename,':InputError'], ...
@@ -76,10 +80,12 @@ classdef ChiToFMassSpectralCollection < ChiSpectralCollection & ChiToFMSCharacte
             this.ontologyinfo.isaccurate = false;
 
             if isempty(this.xlabel)
-                this.xlabel = 'm/z (amu)';   % xlabel
+                this.xlabelname = 'm/z';
+                this.xlabelunit = 'amu';
             end
             if isempty(this.ylabel)
-                this.ylabel = 'intensity';   % ylabel
+                this.ylabelname = 'intensity';
+                this.ylabelunit = 'counts';
             end
                 
         end
@@ -91,8 +97,10 @@ classdef ChiToFMassSpectralCollection < ChiSpectralCollection & ChiToFMSCharacte
             obj.xvals = this.xvals;
             obj.data = this.data;
             obj.reversex = this.reversex;
-            obj.xlabel = this.xlabel;
-            obj.ylabel = this.ylabel;
+            obj.xlabelname = this.xlabelname;
+            obj.xlabelunit = this.xlabelunit;
+            obj.ylabelname = this.ylabelname;
+            obj.ylabelunit = this.ylabelunit;
             
             if ~isempty(this.classmembership)
                 obj.classmembership = this.classmembership.clone();
@@ -129,5 +137,4 @@ classdef ChiToFMassSpectralCollection < ChiSpectralCollection & ChiToFMSCharacte
         
     end % methods
 
-end % class ChiImage 
-
+end % class ChiToFMassSpectralCollection 

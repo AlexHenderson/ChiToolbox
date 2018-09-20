@@ -67,14 +67,16 @@ if (length(filenames) == 1)
             % Spectrum
             if strfind(lower(x_label),'raman') %#ok<STRIFCND>
                 % Raman data
-                obj = ChiRamanSpectrum(xvals,data,false,x_label,y_label);
+                obj = ChiRamanSpectrum(xvals,data);
             else
                 if strfind(lower(x_label),'wavenumber') %#ok<STRIFCND>
                     % IR data
-                    obj = ChiIRSpectrum(xvals,data,true,x_label,y_label);
+                    obj = ChiIRSpectrum(xvals,data);
                 else
                     % Generic data
-                    obj = ChiSpectrum(xvals,data,false,x_label,y_label);
+                    xunit = '';
+                    yunit = '';
+                    obj = ChiSpectrum(xvals,data,false,x_label,xunit,y_label,yunit);
                 end
             end
             obj.filename = filename;
@@ -83,16 +85,18 @@ if (length(filenames) == 1)
             % Multiple spectra
             if strfind(lower(x_label),'raman') %#ok<STRIFCND>
                 % Raman data
-                obj = ChiRamanSpectralCollection(xvals,data,false,x_label,y_label);
+                obj = ChiRamanSpectralCollection(xvals,data);
                 obj.filenames = filenames;                                
             else
                 if strfind(lower(x_label),'wavenumber') %#ok<STRIFCND>
                     % IR data
-                    obj = ChiIRSpectralCollection(xvals,data,true,x_label,y_label);
+                    obj = ChiIRSpectralCollection(xvals,data);
                     obj.filenames = filenames;                                
                 else
                     % Generic data
-                    obj = ChiSpectralCollection(xvals,data,false,x_label,y_label);
+                    xunit = '';
+                    yunit = '';
+                    obj = ChiSpectralCollection(xvals,data,false,x_label,xunit,y_label,yunit);
                     obj.filenames = filenames;                                
                 end
             end
@@ -102,14 +106,16 @@ if (length(filenames) == 1)
         % Image data
         if strfind(lower(x_label),'raman') %#ok<STRIFCND>
             % Raman data
-            obj = ChiRamanImage(xvals,data,false,x_label,y_label,width,height);
+            obj = ChiRamanImage(xvals,data);
         else
             if strfind(lower(x_label),'wavenumber') %#ok<STRIFCND>
                 % IR data
-                obj = ChiIRImage(xvals,data,true,x_label,y_label,width,height);
+                obj = ChiIRImage(xvals,data);
             else
                 % Generic data
-                obj = ChiImage(xvals,data,false,x_label,y_label,width,height);
+                xunit = '';
+                yunit = '';
+                obj = ChiImage(xvals,data,false,x_label,xunit,y_label,yunit,width,height);
             end
         end
         obj.filename = filename;
@@ -132,18 +138,20 @@ else
 
     if strfind(lower(x_label),'raman') %#ok<STRIFCND>
         % Raman data
-        obj = ChiRamanSpectralCollection(xvals,data,false,x_label,y_label);
+        obj = ChiRamanSpectralCollection(xvals,data);
         obj.filenames = filenames;                                
         filetype = 'raman';
     else
         if strfind(lower(x_label),'wavenumber') %#ok<STRIFCND>
             % IR data
-            obj = ChiIRSpectralCollection(xvals,data,true,x_label,y_label);
+            obj = ChiIRSpectralCollection(xvals,data);
             obj.filenames = filenames;                                
             filetype = 'ir';
         else
             % Generic data
-            obj = ChiSpectralCollection(xvals,data,false,x_label,y_label);
+            xunit = '';
+            yunit = '';
+            obj = ChiSpectralCollection(xvals,data,false,x_label,xunit,y_label,yunit);
             obj.filenames = filenames;                                
             filetype = 'generic';
         end
@@ -165,22 +173,26 @@ else
         if (numel(data) == numel(xvals))
             switch filetype
                 case 'raman'
-                    object = ChiRamanSpectrum(xvals,data,false,x_label,y_label);
+                    object = ChiRamanSpectrum(xvals,data);
                 case 'ir'
-                    object = ChiIRSpectrum(xvals,data,true,x_label,y_label);
+                    object = ChiIRSpectrum(xvals,data);
                 otherwise
-                    object = ChiSpectrum(xvals,data,false,x_label,y_label);
+                    xunit = '';
+                    yunit = '';
+                    object = ChiSpectrum(xvals,data,false,x_label,xunit,y_label,yunit);
             end
         else
             switch filetype
                 case 'raman'
-                    object = ChiRamanSpectralCollection(xvals,data,false,x_label,y_label);
+                    object = ChiRamanSpectralCollection(xvals,data);
                     obj.filenames = filenames;                                
                 case 'ir'
-                    object = ChiIRSpectralCollection(xvals,data,true,x_label,y_label);
+                    object = ChiIRSpectralCollection(xvals,data);
                     obj.filenames = filenames;                                
                 otherwise
-                    object = ChiSpectralCollection(xvals,data,false,x_label,y_label);
+                    xunit = '';
+                    yunit = '';
+                    object = ChiSpectralCollection(xvals,data,false,x_label,xunit,y_label,yunit);
                     obj.filenames = filenames;                                
             end
         end               
@@ -190,4 +202,3 @@ else
 end
 
 end % function thermoFile
-

@@ -10,8 +10,10 @@ classdef ChiImage < ChiAbstractImage
         xvals;      % Abscissa as a row vector
         data;       % Contents of object as a 2D matrix, spectra in rows
         reversex;   % Should abscissa be plotted in decreasing order
-        xlabel;     % Text for abscissa label on plots
-        ylabel;     % Text for ordinate label on plots
+        xlabelname = ''; % Text for abscissa label on plots
+        xlabelunit = ''; % Text for the abscissa label unit on plots
+        ylabelname = ''; % Text for ordinate label on plots
+        ylabelunit = ''; % Text for the ordinate label unit on plots
         mask;  
         masked = false;
         filename = '';  % Name of the file, if appropriate
@@ -40,7 +42,7 @@ classdef ChiImage < ChiAbstractImage
     methods
     % =====================================================================
         % Constructor
-        function this = ChiImage(xvals,data,reversex,xlabel,ylabel,xpixels,ypixels,masked,mask,filename)
+        function this = ChiImage(xvals,data,reversex,xlabelname,xlabelunit,ylabelname,ylabelunit,xpixels,ypixels,masked,mask,filename)
             % Create an instance of ChiImage with given parameters
             
             this.spectrumclassname = 'ChiSpectrum';
@@ -70,15 +72,17 @@ classdef ChiImage < ChiAbstractImage
                 if (nargin > 2)
                     this.reversex = reversex;
                     if (nargin > 3)
-                        this.xlabel = xlabel;
-                        this.ylabel = ylabel;
-                        if (nargin > 5)
+                        this.xlabelname = xlabelname;
+                        this.xlabelunit = xlabelunit;
+                        this.ylabelname = ylabelname;
+                        this.ylabelunit = ylabelunit;
+                        if (nargin > 7)
                             this.xpixels = xpixels;
                             this.ypixels = ypixels;
-                            if (nargin > 7)
+                            if (nargin > 9)
                                 this.masked = masked;
                                 this.mask = mask;
-                                if (nargin > 9)
+                                if (nargin > 11)
                                     this.filename = filename;
                                 end
                             end
@@ -114,15 +118,16 @@ classdef ChiImage < ChiAbstractImage
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function output = clone(this)
             % Create a (deep) copy of this image
-            output = ChiImage(this.xvals,this.data,this.reversex,this.xlabel,this.ylabel,this.xpixels,this.ypixels,this.masked,this.mask,this.filename);
+            output = ChiImage(this.xvals,this.data,this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit,this.xpixels,this.ypixels,this.masked,this.mask,this.filename);
             output.history = this.history.clone();
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function totalspectrum = get.totalspectrum(this)
             spectrumclass = str2func(this.spectrumclassname);
-            totalspectrum = spectrumclass(this.xvals,sum(this.data),this.reversex,this.xlabel,this.ylabel);
-        end        
+            totalspectrum = spectrumclass(this.xvals,sum(this.data),this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit);
+            totalspectrum.filename = this.filename;
+        end                
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function totalimage = get.totalimage(this)

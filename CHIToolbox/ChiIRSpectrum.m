@@ -5,22 +5,23 @@ classdef ChiIRSpectrum < ChiSpectrum & ChiIRCharacter
 % Syntax
 %   IRSpectrum = ChiIRSpectrum(wavenumbers,data);
 %   IRSpectrum = ChiIRSpectrum(wavenumbers,data,reversex);
-%   IRSpectrum = ChiIRSpectrum(wavenumbers,data,reversex,xlabel);
-%   IRSpectrum = ChiIRSpectrum(wavenumbers,data,reversex,xlabel,ylabel);
+%   IRSpectrum = ChiIRSpectrum(wavenumbers,data,reversex,xlabel,xunit,ylabel,yunit);
 %   IRSpectrum = ChiIRSpectrum(ChiSpectrum);
 %
 % Description
 %   IRSpectrum = ChiIRSpectrum(wavenumbers,data) creates an IR spectrum
-%   object using default values for reversex, xlabel and ylabel.
+%   object using default values.
 %
 %   IRSpectrum = ChiIRSpectrum(ChiSpectrum) creates an IR spectrum object
-%   from a ChiSpectrum object using default values for reversex, xlabel and
-%   ylabel. No check is made to determine if the ChiSpectrum object
-%   contains valid IR data.
+%   from a ChiSpectrum object using default values. No check is made to
+%   determine if the ChiSpectrum object contains valid IR data.
 % 
-%   Default values are reversex = true (wavenumbers are plotted in
-%   descending order), xlabel = 'wavenumber (cm^{-1})' and ylabel =
-%   'absorbance'.
+%   Default values are: 
+%       reversex = true (wavenumbers are plotted in descending order);
+%       xlabel   = 'wavenumber'
+%       xunit    = 'cm^{-1}'
+%       ylabel   = 'absorbance'
+%       yunit    = ''
 %
 % Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -59,8 +60,10 @@ classdef ChiIRSpectrum < ChiSpectrum & ChiIRCharacter
                         superClassArgs{1} = s.xvals;
                         superClassArgs{2} = s.data;
                         superClassArgs{3} = s.reversex;
-                        superClassArgs{4} = s.xlabel;
-                        superClassArgs{5} = s.ylabel;
+                        superClassArgs{4} = s.xlabelname;
+                        superClassArgs{5} = s.xlabelunit;
+                        superClassArgs{6} = s.ylabelname;
+                        superClassArgs{7} = s.ylabelunit;
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
                             'Input not understood.');
@@ -68,14 +71,16 @@ classdef ChiIRSpectrum < ChiSpectrum & ChiIRCharacter
                     end
                 case 2
                     superClassArgs{3} = true;   % reversex
-                    superClassArgs{4} = 'wavenumber (cm^{-1})';   % xlabel
-                    superClassArgs{5} = 'absorbance';   % ylabel
+                    superClassArgs{4} = 'wavenumber';
+                    superClassArgs{5} = 'cm^{-1}';
+                    superClassArgs{6} = 'absorbance';
+                    superClassArgs{7} = '';
                 case 3
-                    superClassArgs{4} = 'wavenumber (cm^{-1})';   % xlabel
-                    superClassArgs{5} = 'absorbance';   % ylabel
-                case 4
-                    superClassArgs{5} = 'absorbance';   % ylabel
-                case 5
+                    superClassArgs{4} = 'wavenumber';
+                    superClassArgs{5} = 'cm^{-1}';
+                    superClassArgs{6} = 'absorbance';
+                    superClassArgs{7} = '';
+                case 7
                     superClassArgs = varargin;
                 otherwise
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
@@ -111,8 +116,10 @@ classdef ChiIRSpectrum < ChiSpectrum & ChiIRCharacter
             obj.xvals = this.xvals;
             obj.data = this.data;
             obj.reversex = this.reversex;
-            obj.xlabel = this.xlabel;
-            obj.ylabel = this.ylabel;
+            obj.xlabelname = this.xlabelname;
+            obj.xlabelunit = this.xlabelunit;
+            obj.ylabelname = this.ylabelname;
+            obj.ylabelunit = this.ylabelunit;
             obj.filename = this.filename;
             
             if ~isempty(this.history)

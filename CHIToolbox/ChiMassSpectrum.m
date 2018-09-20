@@ -5,21 +5,23 @@ classdef ChiMassSpectrum < ChiSpectrum & ChiMassSpecCharacter
 % Syntax
 %   massspectrum = ChiMassSpectrum(mass,data);
 %   massspectrum = ChiMassSpectrum(mass,data,reversex);
-%   massspectrum = ChiMassSpectrum(mass,data,reversex,xlabel);
-%   massspectrum = ChiMassSpectrum(mass,data,reversex,xlabel,ylabel);
+%   massspectrum = ChiMassSpectrum(mass,data,reversex,xlabel,xunit,ylabel,yunit);
 %   massspectrum = ChiMassSpectrum(ChiSpectrum);
 %
 % Description
 %   massspectrum = ChiMassSpectrum(mass,data) creates a mass spectrum using
-%   default values for reversex, xlabel and ylabel.
+%   default values.
 %
 %   massspectrum = ChiMassSpectrum(ChiSpectrum) creates a mass spectrum
-%   from a ChiSpectrum using default values for reversex, xlabel and
-%   ylabel. No check is made to determine if the ChiSpectrum contains valid
-%   mass spectral data.
+%   from a ChiSpectrum using default values. No check is made to determine
+%   if the ChiSpectrum contains valid mass spectral data.
 % 
-%   Default values are reversex = false (mass is plotted in ascending
-%   order), xlabel = 'm/z (amu)' and ylabel = 'intensity'.
+%   Default values are: 
+%       reversex = false (mass is plotted in ascending order)
+%       xlabel   = 'm/z'
+%       xunit    = 'amu'
+%       ylabel   = 'intensity'
+%       yunit    = 'counts'
 %
 % Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -61,26 +63,29 @@ classdef ChiMassSpectrum < ChiSpectrum & ChiMassSpecCharacter
                         superClassArgs{1} = input.xvals;
                         superClassArgs{2} = input.data;
                         superClassArgs{3} = input.reversex;
-                        superClassArgs{4} = input.xlabel;
-                        superClassArgs{5} = input.ylabel;
-%                         superClassArgs{9} = input.history.clone();
+                        superClassArgs{4} = input.xlabelname;
+                        superClassArgs{5} = input.xlabelunit;
+                        superClassArgs{6} = input.ylabelname;
+                        superClassArgs{7} = input.ylabelunit;
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
                             'Input not understood.');
                         throw(err);
                     end
                 case 2
-                    superClassArgs{3} = false;         % reversex = ascending
-                    superClassArgs{4} = 'm/z (amu)';   % xlabel
-                    superClassArgs{5} = 'intensity';   % ylabel
+                    superClassArgs{3} = false;          % reversex = ascending
+                    superClassArgs{4} = 'm/z';          % xlabelname
+                    superClassArgs{5} = 'amu';          % xlabelunit
+                    superClassArgs{6} = 'intensity';    % ylabelname
+                    superClassArgs{7} = 'counts';       % ylabelunit
                 case 3
-                    superClassArgs{4} = 'm/z (amu)';   % xlabel
-                    superClassArgs{5} = 'intensity';   % ylabel
-                case 4
-                    superClassArgs{5} = 'intensity';   % ylabel
-                case 5
-                    superClassArgs = varargin;
+                    superClassArgs{4} = 'm/z';          % xlabelname
+                    superClassArgs{5} = 'amu';          % xlabelunit
+                    superClassArgs{6} = 'intensity';    % ylabelname
+                    superClassArgs{7} = 'counts';       % ylabelunit
                 case 7
+                    superClassArgs = varargin;
+                case 9
                     superClassArgs = varargin;
                 otherwise
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
@@ -118,8 +123,10 @@ classdef ChiMassSpectrum < ChiSpectrum & ChiMassSpecCharacter
             obj.xvals = this.xvals;
             obj.data = this.data;
             obj.reversex = this.reversex;
-            obj.xlabel = this.xlabel;
-            obj.ylabel = this.ylabel;
+            obj.xlabelname = this.xlabelname;
+            obj.xlabelunit = this.xlabelunit;
+            obj.ylabelname = this.xlabelname;
+            obj.ylabelunit = this.ylabelunit;
             obj.filename = this.filename;
 
             obj.history = this.history.clone();

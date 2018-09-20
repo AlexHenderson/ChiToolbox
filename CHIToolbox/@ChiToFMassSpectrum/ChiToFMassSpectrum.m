@@ -5,22 +5,25 @@ classdef ChiToFMassSpectrum < ChiSpectrum & ChiToFMSCharacter
 % Syntax
 %   tofmassspectrum = ChiToFMassSpectrum(mass,data);
 %   tofmassspectrum = ChiToFMassSpectrum(mass,data,reversex);
-%   tofmassspectrum = ChiToFMassSpectrum(mass,data,reversex,xlabel);
-%   tofmassspectrum = ChiToFMassSpectrum(mass,data,reversex,xlabel,ylabel);
+%   tofmassspectrum = ChiToFMassSpectrum(mass,data,reversex,xlabel,xunit,ylabel,yunit);
 %   tofmassspectrum = ChiToFMassSpectrum(ChiSpectrum);
 %
 % Description
 %   tofmassspectrum = ChiToFMassSpectrum(mass,data) creates a
 %   time-of-flight mass spectrum object using default values for reversex,
-%   xlabel and ylabel.
+%   xlabel/unit and ylabel/unit.
 %
 %   tofmassspectrum = ChiToFMassSpectrum(ChiSpectrum) creates a tof-ms
 %   spectrum object from a ChiSpectrum object using default values for
-%   reversex, xlabel and ylabel. No check is made to determine if the
-%   ChiSpectrum object contains valid tof-ms data.
+%   reversex, xlabel/unit and ylabel/unit. No check is made to determine if
+%   the ChiSpectrum object contains valid tof-ms data.
 % 
-%   Default values are reversex = false (mass is plotted in ascending
-%   order), xlabel = 'm/z (amu)' and ylabel = 'intensity'.
+%   Default values are: 
+%       reversex = false (mass is plotted in ascending order)
+%       xlabel   = 'm/z'
+%       xunit    = 'amu'
+%       ylabel   = 'intensity'
+%       yunit    = 'counts'
 %
 % Copyright (c) 2017, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -61,22 +64,26 @@ classdef ChiToFMassSpectrum < ChiSpectrum & ChiToFMSCharacter
                         superClassArgs{1} = s.xvals;
                         superClassArgs{2} = s.data;
                         superClassArgs{3} = s.reversex;
-                        superClassArgs{4} = s.xlabel;
-                        superClassArgs{5} = s.ylabel;
+                        superClassArgs{4} = s.xlabelname;
+                        superClassArgs{5} = s.xlabelunit;
+                        superClassArgs{6} = s.ylabelname;
+                        superClassArgs{7} = s.ylabelunit;
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
                             'Input not understood.');
                         throw(err);
                     end
                 case 2
-                    superClassArgs{3} = false;   % reversex = ascending
-                    superClassArgs{4} = 'm/z (amu)';   % xlabel
-                    superClassArgs{5} = 'intensity';   % ylabel
+                    superClassArgs{3} = false;
+                    superClassArgs{4} = 'm/z';
+                    superClassArgs{5} = 'amu';
+                    superClassArgs{6} = 'intensity';
+                    superClassArgs{7} = 'counts';
                 case 3
-                    superClassArgs{4} = 'm/z (amu)';   % xlabel
-                    superClassArgs{5} = 'intensity';   % ylabel
-                case 4
-                    superClassArgs{5} = 'intensity';   % ylabel
+                    superClassArgs{4} = 'm/z';
+                    superClassArgs{5} = 'amu';
+                    superClassArgs{6} = 'intensity';
+                    superClassArgs{7} = 'counts';
                 case 5
                     superClassArgs = varargin;
                 otherwise
@@ -110,8 +117,10 @@ classdef ChiToFMassSpectrum < ChiSpectrum & ChiToFMSCharacter
             obj.xvals = this.xvals;
             obj.data = this.data;
             obj.reversex = this.reversex;
-            obj.xlabel = this.xlabel;
-            obj.ylabel = this.ylabel;
+            obj.xlabelname = this.xlabelname;
+            obj.xlabelunit = this.xlabelunit;
+            obj.ylabelname = this.ylabelname;
+            obj.ylabelunit = this.ylabelunit;
             obj.filename = this.filename;
             
             obj.history = this.history.clone();

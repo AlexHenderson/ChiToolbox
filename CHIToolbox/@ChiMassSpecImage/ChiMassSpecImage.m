@@ -5,9 +5,8 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
 % Syntax
 %   massspecimage = ChiMassSpecImage(mass,data);
 %   massspecimage = ChiMassSpecImage(mass,data,reversex);
-%   massspecimage = ChiMassSpecImage(mass,data,reversex,xlabel);
-%   massspecimage = ChiMassSpecImage(mass,data,reversex,xlabel,ylabel);
-%   massspecimage = ChiMassSpecImage(mass,data,reversex,xlabel,ylabel,width,height);
+%   massspecimage = ChiMassSpecImage(mass,data,reversex,xlabel,xunit,ylabel,yunit);
+%   massspecimage = ChiMassSpecImage(mass,data,reversex,xlabel,xunit,ylabel,yunit,width,height);
 %   massspecimage = ChiMassSpecImage(ChiImage);
 %
 % Description
@@ -19,8 +18,12 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
 %   xlabel and ylabel. No check is made to determine if the ChiImage object
 %   contains valid ms data.
 % 
-%   Default values are reversex = false (mass is plotted in ascending
-%   order), xlabel = 'm/z (amu)' and ylabel = 'intensity'.
+%   Default values are: 
+%       reversex = false (mass is plotted in ascending order)
+%       xlabel   = 'm/z'
+%       xunit    = 'amu'
+%       ylabel   = 'intensity'
+%       yunit    = 'counts'
 %
 % Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -65,29 +68,33 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
                         superClassArgs{1} = input.xvals;
                         superClassArgs{2} = input.data;
                         superClassArgs{3} = input.reversex;
-                        superClassArgs{4} = input.xlabel;
-                        superClassArgs{5} = input.ylabel;
-                        superClassArgs{6} = input.mask;
-                        superClassArgs{7} = input.masked;
-                        superClassArgs{8} = input.filename;
-                        superClassArgs{9} = input.history.clone();
+                        superClassArgs{4} = input.xlabelname;
+                        superClassArgs{5} = input.xlabelunit;
+                        superClassArgs{6} = input.ylabelname;
+                        superClassArgs{7} = input.ylabelunit;
+                        superClassArgs{8} = input.mask;
+                        superClassArgs{9} = input.masked;
+                        superClassArgs{10} = input.filename;
+                        superClassArgs{11} = input.history.clone();
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
                             'Input not understood.');
                         throw(err);
                     end
                 case 2
-                    superClassArgs{3} = false;         % reversex = ascending
-                    superClassArgs{4} = 'm/z (amu)';   % xlabel
-                    superClassArgs{5} = 'intensity';   % ylabel
+                    superClassArgs{3} = false;          % reversex = ascending
+                    superClassArgs{4} = 'm/z';          % xlabelname
+                    superClassArgs{5} = 'amu';          % xlabelunit
+                    superClassArgs{6} = 'intensity';    % ylabelname
+                    superClassArgs{7} = 'counts';       % ylabelunit
                 case 3
-                    superClassArgs{4} = 'm/z (amu)';   % xlabel
-                    superClassArgs{5} = 'intensity';   % ylabel
-                case 4
-                    superClassArgs{5} = 'intensity';   % ylabel
-                case 5
-                    superClassArgs = varargin;
+                    superClassArgs{4} = 'm/z';          % xlabelname
+                    superClassArgs{5} = 'amu';          % xlabelunit
+                    superClassArgs{6} = 'intensity';    % ylabelname
+                    superClassArgs{7} = 'counts';       % ylabelunit
                 case 7
+                    superClassArgs = varargin;
+                case 9
                     superClassArgs = varargin;
                 otherwise
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
@@ -128,8 +135,10 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
             obj.xvals = this.xvals;
             obj.data = this.data;
             obj.reversex = this.reversex;
-            obj.xlabel = this.xlabel;
-            obj.ylabel = this.ylabel;
+            obj.xlabelname = this.xlabelname;
+            obj.xlabelunit = this.xlabelunit;
+            obj.ylabelname = this.xlabelname;
+            obj.ylabelunit = this.ylabelunit;
             obj.filename = this.filename;
             obj.mask = this.mask;
             obj.masked = this.masked;

@@ -5,8 +5,7 @@ classdef ChiRamanImage < ChiImage & ChiRamanCharacter
 % Syntax
 %   ramanimage = ChiRamanImage(ramanshift,data);
 %   ramanimage = ChiRamanImage(ramanshift,data,reversex);
-%   ramanimage = ChiRamanImage(ramanshift,data,reversex,xlabel);
-%   ramanimage = ChiRamanImage(ramanshift,data,reversex,xlabel,ylabel);
+%   ramanimage = ChiRamanImage(ramanshift,data,reversex,xlabel,xunit,ylabel,yunit);
 %   ramanimage = ChiRamanImage(ChiImage);
 %
 % Description
@@ -19,9 +18,11 @@ classdef ChiRamanImage < ChiImage & ChiRamanCharacter
 %   Raman data.
 % 
 %   Default values are: 
-%       reversex = false (Raman shifts are plotted in ascending order);
-%       xlabel = 'Raman shift (cm^{-1})', and;
-%       ylabel = 'intensity'.
+%       reversex = false (Raman shift is plotted in ascending order)
+%       xlabel   = 'Raman shift'
+%       xunit    = 'cm^{-1}'
+%       ylabel   = 'intensity'
+%       yunit    = 'counts'
 %
 % Copyright (c) 2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -42,7 +43,7 @@ classdef ChiRamanImage < ChiImage & ChiRamanCharacter
 
 
     properties (Dependent)
-        ramanimage     % A vector of wavenumber values in ascending order
+        ramanshift     % A vector of Raman shift values in ascending order
     end
     
     methods
@@ -60,26 +61,30 @@ classdef ChiRamanImage < ChiImage & ChiRamanCharacter
                         superClassArgs{1} = s.xvals;
                         superClassArgs{2} = s.data;
                         superClassArgs{3} = s.reversex;
-                        superClassArgs{4} = s.xlabel;
-                        superClassArgs{5} = s.ylabel;
-                        superClassArgs{6} = s.mask;
-                        superClassArgs{7} = s.masked;
-                        superClassArgs{8} = s.filename;
-                        superClassArgs{9} = s.history.clone();
+                        superClassArgs{4} = s.xlabelname;
+                        superClassArgs{5} = s.xlabelunit;
+                        superClassArgs{6} = s.ylabelname;
+                        superClassArgs{7} = s.ylabelunit;
+                        superClassArgs{8} = s.mask;
+                        superClassArgs{9} = s.masked;
+                        superClassArgs{10} = s.filename;
+                        superClassArgs{11} = s.history.clone();
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
                             'Input not understood.');
                         throw(err);
                     end
                 case 2
-                    superClassArgs{3} = false;         % reversex = ascending
-                    superClassArgs{4} = 'ramanimage (cm^{-1})';   % xlabel
-                    superClassArgs{5} = 'intensity';   % ylabel
+                    superClassArgs{3} = false;          % reversex = ascending
+                    superClassArgs{4} = 'Raman shift';  % xlabelname
+                    superClassArgs{5} = 'cm^{-1}';      % xlabelunits
+                    superClassArgs{6} = 'intensity';    % ylabelname
+                    superClassArgs{7} = 'counts';       % ylabelunits
                 case 3
-                    superClassArgs{4} = 'ramanimage (cm^{-1})';   % xlabel
-                    superClassArgs{5} = 'intensity';   % ylabel
-                case 4
-                    superClassArgs{5} = 'intensity';   % ylabel
+                    superClassArgs{4} = 'Raman shift';  % xlabelname
+                    superClassArgs{5} = 'cm^{-1}';      % xlabelunits
+                    superClassArgs{6} = 'intensity';    % ylabelname
+                    superClassArgs{7} = 'counts';       % ylabelunits
                 case 5
                     superClassArgs = varargin;
                 otherwise
@@ -122,8 +127,10 @@ classdef ChiRamanImage < ChiImage & ChiRamanCharacter
             obj.xvals = this.xvals;
             obj.data = this.data;
             obj.reversex = this.reversex;
-            obj.xlabel = this.xlabel;
-            obj.ylabel = this.ylabel;
+            obj.xlabelname = this.xlabelname;
+            obj.xlabelunit = this.xlabelunit;
+            obj.ylabelname = this.ylabelname;
+            obj.ylabelunit = this.ylabelunit;
             obj.filename = this.filename;
             obj.mask = this.mask;
             obj.masked = this.masked;
@@ -137,12 +144,12 @@ classdef ChiRamanImage < ChiImage & ChiRamanCharacter
         end
         
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function ramanimage = get.ramanimage(this)
-            ramanimage = this.xvals;
+        function ramanshift = get.ramanshift(this)
+            ramanshift = this.xvals;
         end
         
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function set.ramanimage(this,w)
+        function set.ramanshift(this,w)
             if (length(w) ~= size(this.data,2))
                 err = MException(['CHI:',mfilename,':OutOfRange'], ...
                     'Raman shift and data are different lengths.');

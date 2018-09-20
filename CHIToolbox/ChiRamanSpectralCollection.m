@@ -33,13 +33,15 @@ classdef ChiRamanSpectralCollection < ChiSpectralCollection & ChiRamanCharacter
                         superClassArgs{1} = s.xvals;
                         superClassArgs{2} = s.data;
                         superClassArgs{3} = s.reversex;
-                        superClassArgs{4} = s.xlabel;
-                        superClassArgs{5} = s.ylabel;
+                        superClassArgs{4} = s.xlabelname;
+                        superClassArgs{5} = s.xlabelunit;
+                        superClassArgs{6} = s.ylabelname;
+                        superClassArgs{7} = s.ylabelunit;
                         if ~isempty(s.history)
-                            superClassArgs{6}.history = s.history.clone();
-                            superClassArgs{6}.history.add('Created from a ChiSpectrum');
+                            superClassArgs{8}.history = s.history.clone();
+                            superClassArgs{8}.history.add('Created from a ChiSpectrum');
                         else
-                            superClassArgs{6}.history = ChiLogger();                
+                            superClassArgs{8}.history = ChiLogger();                
                         end
                         
                     else
@@ -48,17 +50,19 @@ classdef ChiRamanSpectralCollection < ChiSpectralCollection & ChiRamanCharacter
                             superClassArgs{1} = s.xvals;
                             superClassArgs{2} = s.data;
                             superClassArgs{3} = s.reversex;
-                            superClassArgs{4} = s.xlabel;
-                            superClassArgs{5} = s.ylabel;
+                            superClassArgs{4} = s.xlabelname;
+                            superClassArgs{5} = s.xlabelunit;
+                            superClassArgs{6} = s.ylabelname;
+                            superClassArgs{7} = s.ylabelunit;
                             if ~isempty(s.classmembership)
-                                superClassArgs{6} = s.classmembership.clone();
+                                superClassArgs{8} = s.classmembership.clone();
                             end
 
                             if ~isempty(s.history)
-                                superClassArgs{7} = s.history.clone();
-                                superClassArgs{7}.add('Created from a ChiSpectralCollection');
+                                superClassArgs{9} = s.history.clone();
+                                superClassArgs{9}.add('Created from a ChiSpectralCollection');
                             else
-                                superClassArgs{7} = ChiLogger();                
+                                superClassArgs{9} = ChiLogger();                
                             end
                         else
                             err = MException(['CHI:',mfilename,':InputError'], ...
@@ -88,10 +92,12 @@ classdef ChiRamanSpectralCollection < ChiSpectralCollection & ChiRamanCharacter
             % correct or not, so assume the user knows what they're doing.
             
             if isempty(this.xlabel)
-                this.xlabel = 'Raman shift (cm^{-1})';   % xlabel
+                this.xlabelname = 'Raman shift';
+                this.xlabelunit = 'cm^{-1}';
             end
             if isempty(this.ylabel)
-                this.ylabel = 'intensity';   % ylabel
+                this.ylabelname = 'intensity';
+                this.ylabelunit = 'counts';
             end
                 
         end
@@ -103,8 +109,10 @@ classdef ChiRamanSpectralCollection < ChiSpectralCollection & ChiRamanCharacter
             obj.xvals = this.xvals;
             obj.data = this.data;
             obj.reversex = this.reversex;
-            obj.xlabel = this.xlabel;
-            obj.ylabel = this.ylabel;
+            obj.xlabelname = this.xlabelname;
+            obj.xlabelunit = this.xlabelunit;
+            obj.ylabelname = this.ylabelname;
+            obj.ylabelunit = this.ylabelunit;
             
             if ~isempty(this.classmembership)
                 obj.classmembership = this.classmembership.clone();

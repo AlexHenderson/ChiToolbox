@@ -6,7 +6,7 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
 %   collection = ChiIRSpectralCollection();
 %   collection = ChiIRSpectralCollection(wavenumbers,data);
 %   collection = ChiIRSpectralCollection(wavenumbers,data,reversex);
-%   collection = ChiIRSpectralCollection(wavenumbers,data,reversex,xlabel,ylabel);
+%   collection = ChiIRSpectralCollection(wavenumbers,data,reversex,xlabel,xunit,ylabel,yunit);
 %   collection = ChiIRSpectralCollection(ChiSpectrum);
 %   collection = ChiIRSpectralCollection(ChiSpectralCollection);
 % 
@@ -15,14 +15,14 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
 %   spectral collection.
 %
 %   collection = ChiIRSpectralCollection(wavenumbers,data) creates an
-%   infrared spectral collection using default values for reversex (true),
-%   xlabel ('wavenumber (cm^{-1})') and ylabel ('absorbance').
+%   infrared spectral collection using default values.
 % 
-%   collection = ChiIRSpectralCollection(wavenumbers,data,reversex) uses the
-%   provided value for reversex. 
+%   collection = ChiIRSpectralCollection(wavenumbers,data,reversex) uses
+%   the provided value for reversex.
 % 
-%   collection = ChiIRSpectralCollection(wavenumbers,data,reversex,xlabel,ylabel)
-%   uses the provided values for xlabel and ylabel.
+%   collection =
+%   ChiIRSpectralCollection(wavenumbers,data,reversex,xlabel,xunit,ylabel,yunit)
+%   uses the provided values for xlabel/unit and ylabel/unit.
 % 
 %   collection = ChiIRSpectralCollection(ChiSpectrum) uses the contents of
 %   the ChiSpectrum to populate the collection.
@@ -30,6 +30,13 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
 %   collection = ChiIRSpectralCollection(ChiSpectralCollection) uses the
 %   contents of the ChiSpectralCollection to populate the collection.
 %
+%   Default values are: 
+%       reversex = true (wavenumbers are plotted in descending order);
+%       xlabel   = 'wavenumber'
+%       xunit    = 'cm^{-1}'
+%       ylabel   = 'absorbance'
+%       yunit    = ''
+% 
 % Copyright (c) 2017, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
@@ -77,13 +84,15 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
                         superClassArgs{1} = s.xvals;
                         superClassArgs{2} = s.data;
                         superClassArgs{3} = s.reversex;
-                        superClassArgs{4} = s.xlabel;
-                        superClassArgs{5} = s.ylabel;
+                        superClassArgs{4} = s.xlabelname;
+                        superClassArgs{5} = s.xlabelunit;
+                        superClassArgs{6} = s.ylabelname;
+                        superClassArgs{7} = s.ylabelunit;
                         if ~isempty(s.history)
-                            superClassArgs{6}.history = s.history.clone();
-                            superClassArgs{6}.history.add('Created from a ChiSpectrum');
+                            superClassArgs{8}.history = s.history.clone();
+                            superClassArgs{8}.history.add('Created from a ChiSpectrum');
                         else
-                            superClassArgs{6}.history = ChiLogger();                
+                            superClassArgs{8}.history = ChiLogger();                
                         end
                         
                     else
@@ -92,17 +101,19 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
                             superClassArgs{1} = s.xvals;
                             superClassArgs{2} = s.data;
                             superClassArgs{3} = s.reversex;
-                            superClassArgs{4} = s.xlabel;
-                            superClassArgs{5} = s.ylabel;
+                            superClassArgs{4} = s.xlabelname;
+                            superClassArgs{5} = s.xlabelunit;
+                            superClassArgs{6} = s.ylabelname;
+                            superClassArgs{7} = s.ylabelunit;
                             if ~isempty(s.classmembership)
-                                superClassArgs{6} = s.classmembership.clone();
+                                superClassArgs{8} = s.classmembership.clone();
                             end
 
                             if ~isempty(s.history)
-                                superClassArgs{7} = s.history.clone();
-                                superClassArgs{7}.add('Created from a ChiSpectralCollection');
+                                superClassArgs{9} = s.history.clone();
+                                superClassArgs{9}.add('Created from a ChiSpectralCollection');
                             else
-                                superClassArgs{7} = ChiLogger();                
+                                superClassArgs{9} = ChiLogger();                
                             end
                         else
                             err = MException(['CHI:',mfilename,':InputError'], ...
@@ -114,8 +125,10 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
                     superClassArgs{1} = varargin{1};
                     superClassArgs{2} = varargin{2};
                     superClassArgs{3} = 'true';
-                    superClassArgs{4} = 'wavenumber (cm^{-1})';
-                    superClassArgs{5} = 'absorbance';
+                    superClassArgs{4} = 'wavenumber';
+                    superClassArgs{5} = 'cm^{-1}';
+                    superClassArgs{6} = 'absorbance';
+                    superClassArgs{7} = '';
                 otherwise
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
             end
@@ -137,11 +150,13 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
             % We have no way of knowing whether the value for reversex is
             % correct or not, so assume the user knows what they're doing.
             
-            if isempty(this.xlabel)
-                this.xlabel = 'wavenumber (cm^{-1})';   % xlabel
+            if isempty(this.xlabelname)
+                this.xlabelname = 'wavenumber';
+                this.xlabelunit = 'cm^{-1}';
             end
-            if isempty(this.ylabel)
-                this.ylabel = 'absorbance';   % ylabel
+            if isempty(this.ylabelname)
+                this.ylabelname = 'absorbance';
+                this.ylabelunit = '';
             end
                 
         end
@@ -153,8 +168,10 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
             obj.xvals = this.xvals;
             obj.data = this.data;
             obj.reversex = this.reversex;
-            obj.xlabel = this.xlabel;
-            obj.ylabel = this.ylabel;
+            obj.xlabelname = this.xlabelname;
+            obj.xlabelunit = this.xlabelunit;
+            obj.ylabelname = this.ylabelname;
+            obj.ylabelunit = this.ylabelunit;
             
             if ~isempty(this.classmembership)
                 obj.classmembership = this.classmembership.clone();

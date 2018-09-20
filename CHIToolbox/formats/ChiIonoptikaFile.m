@@ -98,8 +98,7 @@ classdef ChiIonoptikaFile < ChiAbstractFileFormat
             
             % Open the file(s)
             if (length(filenames) == 1)
-                [mass,data,height,width,layers,filename,x_label,y_label] = ionoptika_hd5file(filenames{1}); %#ok<ASGLU>
-                
+                [mass,data,height,width,layers,filename,x_label,y_label,imzmlinfo] = ionoptika_hd5file(filenames{1}); %#ok<ASGLU>
                 % Work out whether this is a continuum dataset or a mass
                 % binned one. Crude method
                 mstep1 = mass(2) - mass(1);
@@ -110,7 +109,7 @@ classdef ChiIonoptikaFile < ChiAbstractFileFormat
                     obj = ChiToFMassSpecImage(double(mass),double(data));
                 end
                 
-                obj.imzmlproperties.instrument = 'Ionoptika J105';
+                obj.imzmlproperties = imzmlinfo;
                 obj.filename = filenames{1};
                 obj.history.add(['filename: ', filenames{1}]);
             else

@@ -1,8 +1,8 @@
-function [mass,data,height,width,layers,filename,x_label,y_label] = ionoptika_hd5file(filename)
+function [mass,data,height,width,layers,filename,x_label,y_label,imzmlinfo] = ionoptika_hd5file(filename)
 
 %   Function: ionoptika_hd5file
-%   Usage: [mass,data,height,width,layers,filename,x_label,y_label] = ionoptika_hd5file();
-%   Usage: [mass,data,height,width,layers,filename,x_label,y_label] = ionoptika_hd5file(filename);
+%   Usage: [mass,data,height,width,layers,filename,x_label,y_label,imzmlinfo] = ionoptika_hd5file();
+%   Usage: [mass,data,height,width,layers,filename,x_label,y_label,imzmlinfo] = ionoptika_hd5file(filename);
 %
 %   Extracts the data from an Ionoptika .hd5 file.
 %
@@ -18,10 +18,11 @@ function [mass,data,height,width,layers,filename,x_label,y_label] = ionoptika_hd
 %   'filename' is a string containing the full path to the .hd5 file
 %   'x_label' is the name of the unit on the x axis (m/z)
 %   'y_label' is the name of the unit on the y axis (intensity)
+%   'imzmlinfo' is information specific to the imzml file format
 % 
 %   Depth profiles are not handled yet.     
 %
-%   Copyright (c) 2017, Alex Henderson 
+%   Copyright (c) 2017-2018, Alex Henderson 
 %   Contact email: alex.henderson@manchester.ac.uk
 %   Licenced under the GNU General Public License (GPL) version 3
 %   http://www.gnu.org/copyleft/gpl.html
@@ -49,6 +50,8 @@ end
 height = 1; %#ok<NASGU>
 width = 1; %#ok<NASGU>
 layers = 1; % This code doesn't handle depth profiles yet. 
+
+imzmlinfo.instrument = 'Ionoptika J105';
 
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % Read the file

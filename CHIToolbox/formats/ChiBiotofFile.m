@@ -112,7 +112,7 @@ classdef ChiBiotofFile < ChiAbstractFileFormat
             else
                 % We read Biotof images at nominal mass, so they are no
                 % longer ToF-SIMS images
-                obj = ChiMassSpecImage(mass,data);
+                obj = ChiMassSpecImage(mass,data,width,height);
                 obj.filename = filenames;
             end
             for i = 1:size(filenames,1)

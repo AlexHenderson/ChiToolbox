@@ -86,7 +86,7 @@ if isMap
     data = reshape(data,height*width,[]);
     
 %     brukerData = ChiIRImage(wavenumbers,data,true,x_label,y_label,width,height);
-    brukerData = ChiIRImage(wavenumbers,data);
+    brukerData = ChiIRImage(wavenumbers,data,width,height);
     brukerData.filename = filename;    
 else
     if (size(data,1) == 1)

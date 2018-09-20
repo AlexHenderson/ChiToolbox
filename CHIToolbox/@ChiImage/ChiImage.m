@@ -9,6 +9,8 @@ classdef ChiImage < ChiAbstractImage
     properties  
         xvals;      % Abscissa as a row vector
         data;       % Contents of object as a 2D matrix, spectra in rows
+        xpixels;    % Number of pixels in the x-direction (width)
+        ypixels;    % Number of pixels in the y-direction (height)
         reversex;   % Should abscissa be plotted in decreasing order
         xlabelname = ''; % Text for abscissa label on plots
         xlabelunit = ''; % Text for the abscissa label unit on plots
@@ -19,11 +21,6 @@ classdef ChiImage < ChiAbstractImage
         filename = '';  % Name of the file, if appropriate
         history;    % Log of data processing steps
     end
-
-    properties 
-        xpixels;    % Number of pixels in the x-direction (width)
-        ypixels;    % Number of pixels in the y-direction (height)
-    end          
 
     properties (Dependent = true)
         totalspectrum;  % Sum of columns of data
@@ -42,7 +39,7 @@ classdef ChiImage < ChiAbstractImage
     methods
     % =====================================================================
         % Constructor
-        function this = ChiImage(xvals,data,reversex,xlabelname,xlabelunit,ylabelname,ylabelunit,xpixels,ypixels,masked,mask,filename)
+        function this = ChiImage(xvals,data,xpixels,ypixels,reversex,xlabelname,xlabelunit,ylabelname,ylabelunit,masked,mask,filename)
             % Create an instance of ChiImage with given parameters
             
             this.spectrumclassname = 'ChiSpectrum';
@@ -70,15 +67,15 @@ classdef ChiImage < ChiAbstractImage
                 this.xvals = ChiForceToRow(this.xvals);
                 
                 if (nargin > 2)
-                    this.reversex = reversex;
-                    if (nargin > 3)
-                        this.xlabelname = xlabelname;
-                        this.xlabelunit = xlabelunit;
-                        this.ylabelname = ylabelname;
-                        this.ylabelunit = ylabelunit;
-                        if (nargin > 7)
-                            this.xpixels = xpixels;
-                            this.ypixels = ypixels;
+                    this.xpixels = xpixels;
+                    this.ypixels = ypixels;
+                    if (nargin > 4)
+                        this.reversex = reversex;
+                        if (nargin > 5)
+                            this.xlabelname = xlabelname;
+                            this.xlabelunit = xlabelunit;
+                            this.ylabelname = ylabelname;
+                            this.ylabelunit = ylabelunit;
                             if (nargin > 9)
                                 this.masked = masked;
                                 this.mask = mask;
@@ -98,7 +95,7 @@ classdef ChiImage < ChiAbstractImage
                         this.data = reshape(this.data,ypixels*xpixels,[]);
                     case 2
                         % 2D so probably don't need to reshape
-                        this.data = reshape(this.data,this.ypixels*this.xpixels,[]);
+                        % this.data = reshape(this.data,this.ypixels*this.xpixels,[]);
                         % TODO: Check xpixels and ypixels are valid
                     case 3
                         % 3D data so unfold array
@@ -118,7 +115,7 @@ classdef ChiImage < ChiAbstractImage
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function output = clone(this)
             % Create a (deep) copy of this image
-            output = ChiImage(this.xvals,this.data,this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit,this.xpixels,this.ypixels,this.masked,this.mask,this.filename);
+            output = ChiImage(this.xvals,this.data,this.xpixels,this.ypixels,this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit,this.masked,this.mask,this.filename);
             output.history = this.history.clone();
         end
         

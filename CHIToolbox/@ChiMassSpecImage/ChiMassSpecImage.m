@@ -3,15 +3,15 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
 % ChiMassSpecImage  A mass spectral image.
 %
 % Syntax
-%   massspecimage = ChiMassSpecImage(mass,data);
-%   massspecimage = ChiMassSpecImage(mass,data,reversex);
-%   massspecimage = ChiMassSpecImage(mass,data,reversex,xlabel,xunit,ylabel,yunit);
-%   massspecimage = ChiMassSpecImage(mass,data,reversex,xlabel,xunit,ylabel,yunit,width,height);
+%   massspecimage = ChiMassSpecImage(mass,data,xpixels,ypixels);
+%   massspecimage = ChiMassSpecImage(mass,data,xpixels,ypixels,reversex);
+%   massspecimage = ChiMassSpecImage(mass,data,xpixels,ypixels,reversex,xlabel,xunit,ylabel,yunit);
 %   massspecimage = ChiMassSpecImage(ChiImage);
 %
 % Description
-%   massspecimage = ChiMassSpecImage(mass,data) creates a mass spectral
-%   image object using default values for reversex, xlabel and ylabel.
+%   massspecimage = ChiMassSpecImage(mass,data,xpixels,ypixels) creates a
+%   mass spectral image object using default values for reversex, xlabel
+%   and ylabel.
 %
 %   massspecimage = ChiMassSpecImage(ChiImage) creates a mass spectral
 %   image object from a ChiImage object using default values for reversex,
@@ -67,34 +67,38 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
                         input = varargin{1};
                         superClassArgs{1} = input.xvals;
                         superClassArgs{2} = input.data;
-                        superClassArgs{3} = input.reversex;
-                        superClassArgs{4} = input.xlabelname;
-                        superClassArgs{5} = input.xlabelunit;
-                        superClassArgs{6} = input.ylabelname;
-                        superClassArgs{7} = input.ylabelunit;
-                        superClassArgs{8} = input.mask;
-                        superClassArgs{9} = input.masked;
-                        superClassArgs{10} = input.filename;
-                        superClassArgs{11} = input.history.clone();
+                        superClassArgs{3} = input.xpixels;
+                        superClassArgs{4} = input.ypixels;
+                        superClassArgs{5} = input.reversex;
+                        superClassArgs{6} = input.xlabelname;
+                        superClassArgs{7} = input.xlabelunit;
+                        superClassArgs{8} = input.ylabelname;
+                        superClassArgs{9} = input.ylabelunit;
+                        superClassArgs{10} = input.mask;
+                        superClassArgs{11} = input.masked;
+                        superClassArgs{12} = input.filename;
+                        superClassArgs{13} = input.history.clone();
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
                             'Input not understood.');
                         throw(err);
                     end
-                case 2
-                    superClassArgs{3} = false;          % reversex = ascending
-                    superClassArgs{4} = 'm/z';          % xlabelname
-                    superClassArgs{5} = 'amu';          % xlabelunit
-                    superClassArgs{6} = 'intensity';    % ylabelname
-                    superClassArgs{7} = 'counts';       % ylabelunit
-                case 3
-                    superClassArgs{4} = 'm/z';          % xlabelname
-                    superClassArgs{5} = 'amu';          % xlabelunit
-                    superClassArgs{6} = 'intensity';    % ylabelname
-                    superClassArgs{7} = 'counts';       % ylabelunit
-                case 7
-                    superClassArgs = varargin;
+                case 4
+                    superClassArgs{5} = false;          % reversex = ascending
+                    superClassArgs{6} = 'm/z';          % xlabelname
+                    superClassArgs{7} = 'amu';          % xlabelunit
+                    superClassArgs{8} = 'intensity';    % ylabelname
+                    superClassArgs{9} = 'counts';       % ylabelunit
+                case 5
+                    superClassArgs{6} = 'm/z';          % xlabelname
+                    superClassArgs{7} = 'amu';          % xlabelunit
+                    superClassArgs{8} = 'intensity';    % ylabelname
+                    superClassArgs{9} = 'counts';       % ylabelunit
                 case 9
+                    superClassArgs = varargin;
+                case 12
+                    superClassArgs = varargin;
+                case 13
                     superClassArgs = varargin;
                 otherwise
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
@@ -134,20 +138,20 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
             
             obj.xvals = this.xvals;
             obj.data = this.data;
+            obj.xpixels = this.xpixels;
+            obj.ypixels = this.ypixels;
             obj.reversex = this.reversex;
             obj.xlabelname = this.xlabelname;
             obj.xlabelunit = this.xlabelunit;
-            obj.ylabelname = this.xlabelname;
+            obj.ylabelname = this.ylabelname;
             obj.ylabelunit = this.ylabelunit;
-            obj.filename = this.filename;
             obj.mask = this.mask;
             obj.masked = this.masked;
+            obj.filename = this.filename;
             
-            obj.xpixels = this.xpixels;
-            obj.ypixels = this.ypixels;
-
             obj.history = this.history.clone();
             obj.history.add('Cloned');
+            
             obj.imzmlproperties = this.imzmlproperties;
             
         end

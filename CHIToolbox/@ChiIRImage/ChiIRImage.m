@@ -3,14 +3,15 @@ classdef ChiIRImage < ChiImage & ChiIRCharacter
 % ChiIRImage  An infrared image.
 %
 % Syntax
-%   irimage = ChiIRImage(wavenumbers,data);
-%   irimage = ChiIRImage(wavenumbers,data,reversex);
-%   irimage = ChiIRImage(wavenumbers,data,reversex,xlabel,xunit,ylabel,yunit);
+%   irimage = ChiIRImage(wavenumbers,data,xpixels,ypixels);
+%   irimage = ChiIRImage(wavenumbers,data,xpixels,ypixels,reversex);
+%   irimage = ChiIRImage(wavenumbers,data,xpixels,ypixels,reversex,xlabel,xunit,ylabel,yunit);
 %   irimage = ChiIRImage(ChiImage);
 %
 % Description
-%   irimage = ChiIRImage(wavenumbers,data) creates an infrared image object
-%   using default values for reversex, xlabel and ylabel.
+%   irimage = ChiIRImage(wavenumbers,data,xpixels,ypixels) creates an
+%   infrared image object using default values for reversex, xlabel and
+%   ylabel.
 %
 %   irimage = ChiIRImage(ChiImage) creates an infrared image object from a
 %   ChiImage object using default values for reversex, xlabel and ylabel.
@@ -60,32 +61,38 @@ classdef ChiIRImage < ChiImage & ChiIRCharacter
                         s = varargin{1};
                         superClassArgs{1} = s.xvals;
                         superClassArgs{2} = s.data;
-                        superClassArgs{3} = s.reversex;
-                        superClassArgs{4} = s.xlabelname;
-                        superClassArgs{5} = s.xlabelunit;
-                        superClassArgs{6} = s.ylabelname;
-                        superClassArgs{7} = s.ylabelunit;
-                        superClassArgs{8} = s.mask;
-                        superClassArgs{9} = s.masked;
-                        superClassArgs{10} = s.filename;
-                        superClassArgs{11} = s.history.clone();
+                        superClassArgs{3} = s.xpixels;
+                        superClassArgs{4} = s.ypixels;
+                        superClassArgs{5} = s.reversex;
+                        superClassArgs{6} = s.xlabelname;
+                        superClassArgs{7} = s.xlabelunit;
+                        superClassArgs{8} = s.ylabelname;
+                        superClassArgs{9} = s.ylabelunit;
+                        superClassArgs{10} = s.mask;
+                        superClassArgs{11} = s.masked;
+                        superClassArgs{12} = s.filename;
+                        superClassArgs{13} = s.history.clone();
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
                             'Input not understood.');
                         throw(err);
                     end
-                case 2
-                    superClassArgs{3} = false;         % reversex = ascending
-                    superClassArgs{4} = 'wavenumber';   % xlabelname
-                    superClassArgs{5} = 'cm^{-1}';      % xlabelunit
-                    superClassArgs{6} = 'absorbance';   % ylabelname
-                    superClassArgs{7} = '';             % ylabelunit (unitless)
-                case 3
-                    superClassArgs{4} = 'wavenumber';   % xlabelname
-                    superClassArgs{5} = 'cm^{-1}';      % xlabelunit
-                    superClassArgs{6} = 'absorbance';   % ylabelname
-                    superClassArgs{7} = '';             % ylabelunit (unitless)
+                case 4
+                    superClassArgs{5} = false;         % reversex = ascending
+                    superClassArgs{6} = 'wavenumber';   % xlabelname
+                    superClassArgs{7} = 'cm^{-1}';      % xlabelunit
+                    superClassArgs{8} = 'absorbance';   % ylabelname
+                    superClassArgs{9} = '';             % ylabelunit (unitless)
                 case 5
+                    superClassArgs{6} = 'wavenumber';   % xlabelname
+                    superClassArgs{7} = 'cm^{-1}';      % xlabelunit
+                    superClassArgs{8} = 'absorbance';   % ylabelname
+                    superClassArgs{9} = '';             % ylabelunit (unitless)
+                case 9
+                    superClassArgs = varargin;
+                case 12
+                    superClassArgs = varargin;
+                case 13
                     superClassArgs = varargin;
                 otherwise
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
@@ -124,18 +131,17 @@ classdef ChiIRImage < ChiImage & ChiIRCharacter
             
             obj.xvals = this.xvals;
             obj.data = this.data;
+            obj.xpixels = this.xpixels;
+            obj.ypixels = this.ypixels;
             obj.reversex = this.reversex;
             obj.xlabelname = this.xlabelname;
             obj.xlabelunit = this.xlabelunit;
             obj.ylabelname = this.ylabelname;
             obj.ylabelunit = this.ylabelunit;
-            obj.filename = this.filename;
             obj.mask = this.mask;
             obj.masked = this.masked;
+            obj.filename = this.filename;
             
-            obj.xpixels = this.xpixels;
-            obj.ypixels = this.ypixels;
-
             obj.history = this.history.clone();
             obj.history.add('Cloned');
             

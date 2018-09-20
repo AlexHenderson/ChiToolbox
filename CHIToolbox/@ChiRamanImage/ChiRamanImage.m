@@ -3,14 +3,15 @@ classdef ChiRamanImage < ChiImage & ChiRamanCharacter
 % ChiRamanImage  A Raman image.
 %
 % Syntax
-%   ramanimage = ChiRamanImage(ramanshift,data);
-%   ramanimage = ChiRamanImage(ramanshift,data,reversex);
-%   ramanimage = ChiRamanImage(ramanshift,data,reversex,xlabel,xunit,ylabel,yunit);
+%   ramanimage = ChiRamanImage(ramanshift,data,xpixels,ypixels);
+%   ramanimage = ChiRamanImage(ramanshift,data,,xpixels,ypixelsreversex);
+%   ramanimage = ChiRamanImage(ramanshift,data,xpixels,ypixels,reversex,xlabel,xunit,ylabel,yunit);
 %   ramanimage = ChiRamanImage(ChiImage);
 %
 % Description
-%   ramanimage = ChiRamanImage(ramanshift,data) creates a Raman image
-%   object using default values for reversex, xlabel and ylabel.
+%   ramanimage = ChiRamanImage(ramanshift,data,xpixels,ypixels) creates a
+%   Raman image object using default values for reversex, xlabel and
+%   ylabel.
 %
 %   ramanimage = ChiRamanImage(ChiImage) creates a Raman image object from
 %   a ChiImage object using default values for reversex, xlabel and ylabel.
@@ -60,32 +61,38 @@ classdef ChiRamanImage < ChiImage & ChiRamanCharacter
                         s = varargin{1};
                         superClassArgs{1} = s.xvals;
                         superClassArgs{2} = s.data;
-                        superClassArgs{3} = s.reversex;
-                        superClassArgs{4} = s.xlabelname;
-                        superClassArgs{5} = s.xlabelunit;
-                        superClassArgs{6} = s.ylabelname;
-                        superClassArgs{7} = s.ylabelunit;
-                        superClassArgs{8} = s.mask;
-                        superClassArgs{9} = s.masked;
-                        superClassArgs{10} = s.filename;
-                        superClassArgs{11} = s.history.clone();
+                        superClassArgs{3} = s.xpixels;
+                        superClassArgs{4} = s.ypixels;
+                        superClassArgs{5} = s.reversex;
+                        superClassArgs{6} = s.xlabelname;
+                        superClassArgs{7} = s.xlabelunit;
+                        superClassArgs{8} = s.ylabelname;
+                        superClassArgs{9} = s.ylabelunit;
+                        superClassArgs{10} = s.mask;
+                        superClassArgs{11} = s.masked;
+                        superClassArgs{12} = s.filename;
+                        superClassArgs{13} = s.history.clone();
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
                             'Input not understood.');
                         throw(err);
                     end
-                case 2
-                    superClassArgs{3} = false;          % reversex = ascending
-                    superClassArgs{4} = 'Raman shift';  % xlabelname
-                    superClassArgs{5} = 'cm^{-1}';      % xlabelunits
-                    superClassArgs{6} = 'intensity';    % ylabelname
-                    superClassArgs{7} = 'counts';       % ylabelunits
-                case 3
-                    superClassArgs{4} = 'Raman shift';  % xlabelname
-                    superClassArgs{5} = 'cm^{-1}';      % xlabelunits
-                    superClassArgs{6} = 'intensity';    % ylabelname
-                    superClassArgs{7} = 'counts';       % ylabelunits
+                case 4
+                    superClassArgs{5} = false;          % reversex = ascending
+                    superClassArgs{6} = 'Raman shift';  % xlabelname
+                    superClassArgs{7} = 'cm^{-1}';      % xlabelunits
+                    superClassArgs{8} = 'intensity';    % ylabelname
+                    superClassArgs{9} = 'counts';       % ylabelunits
                 case 5
+                    superClassArgs{6} = 'Raman shift';  % xlabelname
+                    superClassArgs{7} = 'cm^{-1}';      % xlabelunits
+                    superClassArgs{8} = 'intensity';    % ylabelname
+                    superClassArgs{9} = 'counts';       % ylabelunits
+                case 9
+                    superClassArgs = varargin;
+                case 12
+                    superClassArgs = varargin;
+                case 13
                     superClassArgs = varargin;
                 otherwise
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
@@ -108,11 +115,6 @@ classdef ChiRamanImage < ChiImage & ChiRamanCharacter
             this.ontologyinfo.uri = 'http://purl.obolibrary.org/obo/CHMO_0000056';
             this.ontologyinfo.isaccurate = false;
             
-%             if (~isempty(varargin) && isa(varargin{1},'ChiSpectrum'))
-%                 this.filename = varargin{1}.filename;
-%                 this.history = varargin{1}.history.clone();
-%                 this.history.add(['Generated from a ', class(varargin{1}), '.']);
-%             end
         end
        
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -126,18 +128,17 @@ classdef ChiRamanImage < ChiImage & ChiRamanCharacter
             
             obj.xvals = this.xvals;
             obj.data = this.data;
+            obj.xpixels = this.xpixels;
+            obj.ypixels = this.ypixels;
             obj.reversex = this.reversex;
             obj.xlabelname = this.xlabelname;
             obj.xlabelunit = this.xlabelunit;
             obj.ylabelname = this.ylabelname;
             obj.ylabelunit = this.ylabelunit;
-            obj.filename = this.filename;
             obj.mask = this.mask;
             obj.masked = this.masked;
+            obj.filename = this.filename;
             
-            obj.xpixels = this.xpixels;
-            obj.ypixels = this.ypixels;
-
             obj.history = this.history.clone();
             obj.history.add('Cloned');
             

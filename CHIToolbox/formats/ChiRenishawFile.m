@@ -117,7 +117,7 @@ classdef ChiRenishawFile < ChiAbstractFileFormat
                         obj.filenames = filenames;
                     end               
                 else
-                    obj = ChiRamanImage(ramanshift,data);
+                    obj = ChiRamanImage(ramanshift,data,width,height);
                     obj.filename = filename;
                 end
                 obj.history.add(['filename: ', filename]);

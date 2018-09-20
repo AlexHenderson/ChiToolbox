@@ -81,7 +81,7 @@ classdef ChiAgilentFile < ChiAbstractFileFormat
                 [wavenumbers,data,height,width,filename,acqdate] = agilentFile(); %#ok<ASGLU>
             end
 
-            obj = ChiIRImage(wavenumbers,data);
+            obj = ChiIRImage(wavenumbers,data,width,height);
             obj.filename = filename;
             obj.history.add(['Agilent file: ', filename]);
         end        

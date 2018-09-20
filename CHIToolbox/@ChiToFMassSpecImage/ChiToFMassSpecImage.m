@@ -3,16 +3,15 @@ classdef ChiToFMassSpecImage < ChiMassSpecImage & ChiToFMSCharacter
 % ChiToFMassSpecImage  A mass spectral image.
 %
 % Syntax
-%   tofmassspecimage = ChiToFMassSpecImage(mass,data);
-%   tofmassspecimage = ChiToFMassSpecImage(mass,data,reversex);
-%   tofmassspecimage = ChiToFMassSpecImage(mass,data,reversex,xlabel,xunit,ylabel,yunit);
-%   tofmassspecimage = ChiToFMassSpecImage(mass,data,reversex,xlabel,xunit,ylabel,yunit,width,height);
+%   tofmassspecimage = ChiToFMassSpecImage(mass,data,xpixels,ypixels);
+%   tofmassspecimage = ChiToFMassSpecImage(mass,data,xpixels,ypixels,reversex);
+%   tofmassspecimage = ChiToFMassSpecImage(mass,data,xpixels,ypixels,reversex,xlabel,xunit,ylabel,yunit);
 %   tofmassspecimage = ChiToFMassSpecImage(ChiImage);
 %
 % Description
-%   tofmassspecimage = ChiToFMassSpecImage(mass,data) creates a mass
-%   spectral image object using default values for reversex, xlabel/unit
-%   and ylabel/unit.
+%   tofmassspecimage = ChiToFMassSpecImage(mass,data,xpixels,ypixels)
+%   creates a mass spectral image object using default values for reversex,
+%   xlabel/unit and ylabel/unit.
 %
 %   tofmassspecimage = ChiToFMassSpecImage(ChiImage) creates a mass
 %   spectral image object from a ChiImage object using default values for
@@ -76,20 +75,20 @@ classdef ChiToFMassSpecImage < ChiMassSpecImage & ChiToFMSCharacter
             
             obj.xvals = this.xvals;
             obj.data = this.data;
+            obj.xpixels = this.xpixels;
+            obj.ypixels = this.ypixels;
             obj.reversex = this.reversex;
             obj.xlabelname = this.xlabelname;
             obj.xlabelunit = this.xlabelunit;
             obj.ylabelname = this.ylabelname;
             obj.ylabelunit = this.ylabelunit;
-            obj.filename = this.filename;
             obj.mask = this.mask;
             obj.masked = this.masked;
+            obj.filename = this.filename;
             
-            obj.xpixels = this.xpixels;
-            obj.ypixels = this.ypixels;
-
             obj.history = this.history.clone();
             obj.history.add('Cloned');
+
             obj.imzmlproperties = this.imzmlproperties;
             
         end

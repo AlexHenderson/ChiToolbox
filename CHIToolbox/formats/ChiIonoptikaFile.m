@@ -104,9 +104,9 @@ classdef ChiIonoptikaFile < ChiAbstractFileFormat
                 mstep1 = mass(2) - mass(1);
                 mstep2 = mass(end) - mass(end-1);
                 if (mstep1 == mstep2)
-                    obj = ChiMassSpecImage(double(mass),double(data));
+                    obj = ChiMassSpecImage(double(mass),double(data),width,height);
                 else
-                    obj = ChiToFMassSpecImage(double(mass),double(data));
+                    obj = ChiToFMassSpecImage(double(mass),double(data),width,height);
                 end
                 
                 obj.imzmlproperties = imzmlinfo;

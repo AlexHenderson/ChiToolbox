@@ -106,16 +106,16 @@ if (length(filenames) == 1)
         % Image data
         if strfind(lower(x_label),'raman') %#ok<STRIFCND>
             % Raman data
-            obj = ChiRamanImage(xvals,data);
+            obj = ChiRamanImage(xvals,data,width,height);
         else
             if strfind(lower(x_label),'wavenumber') %#ok<STRIFCND>
                 % IR data
-                obj = ChiIRImage(xvals,data);
+                obj = ChiIRImage(xvals,data,width,height);
             else
                 % Generic data
                 xunit = '';
                 yunit = '';
-                obj = ChiImage(xvals,data,false,x_label,xunit,y_label,yunit,width,height);
+                obj = ChiImage(xvals,data,width,height,false,x_label,xunit,y_label,yunit,width,height);
             end
         end
         obj.filename = filename;

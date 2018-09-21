@@ -10,7 +10,7 @@ function spectrum = spectrumat(this,which)
     end            
 
     spectrumclass = str2func(this.spectrumclassname);
-    spectrum = spectrumclass(this.xvals,this.data(which,:),this.reversex,this.xlabel,this.ylabel);
+    spectrum = spectrumclass(this.xvals,this.data(which,:),this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit);
     spectrum.history.add(['Spectrum at pos=', num2str(which)]);
     this.history.add(['Spectrum at pos=', num2str(which)]);
 

@@ -33,8 +33,8 @@ function spectrum = spectrumat(this,xpos,ypos)
     end
 
     spectrumclass = str2func(this.spectrumclassname);
-    spectrum = spectrumclass(this.xvals,spectrumdata,this.reversex,this.xlabel,this.ylabel);
-    spectrum.filename = this.filename;
+    spectrum = spectrumclass(this.xvals,spectrumdata,this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit);
+    spectrum.filenames = this.filenames;
     spectrum.history.add(['Spectrum at, x=', num2str(xpos), ', y=', num2str(ypos)]);
     this.history.add(['Spectrum at, x=', num2str(xpos), ', y=', num2str(ypos)]);
 

@@ -76,7 +76,7 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
                         superClassArgs{9} = input.ylabelunit;
                         superClassArgs{10} = input.mask;
                         superClassArgs{11} = input.masked;
-                        superClassArgs{12} = input.filename;
+                        superClassArgs{12} = input.filenames;
                         superClassArgs{13} = input.history.clone();
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
@@ -120,11 +120,6 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
             this.ontologyinfo.uri = 'http://purl.obolibrary.org/obo/MS_1000294';            
             this.ontologyinfo.isaccurate = false;
             
-%             if (~isempty(varargin) && isa(varargin{1},'ChiSpectrum'))
-%                 this.filename = varargin{1}.filename;
-%                 this.history = varargin{1}.history.clone();
-%                 this.history.add(['Generated from a ', class(varargin{1}), '.']);
-%             end
         end
        
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -147,7 +142,7 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
             obj.ylabelunit = this.ylabelunit;
             obj.mask = this.mask;
             obj.masked = this.masked;
-            obj.filename = this.filename;
+            obj.filenames = this.filenames;
             
             obj.history = this.history.clone();
             obj.history.add('Cloned');

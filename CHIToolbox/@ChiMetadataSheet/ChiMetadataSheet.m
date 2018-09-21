@@ -7,7 +7,7 @@ classdef ChiMetadataSheet < handle
         owner
         version
         datapath
-        filenames
+        filenames = {};
         acquisitiondate
         metadatafile
         filter
@@ -85,7 +85,7 @@ classdef ChiMetadataSheet < handle
         end            
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function read(this,filename)
+        function read(this,filenames)
 %             if ~nargout
 %                 stacktrace = dbstack;
 %                 functionname = stacktrace.name;
@@ -94,10 +94,10 @@ classdef ChiMetadataSheet < handle
 %                 throw(err);
 %             end
             
-            if exist('filename', 'var')
-                [pathstr,name,ext] = fileparts(filename) ; %#ok<ASGLU>
+            if exist('filenames', 'var')
+                [pathstr,name,ext] = fileparts(filenames) ; %#ok<ASGLU>
                 if strcmpi(ext(1:4),'.xls')
-                    met = this.metadatareader(filename);
+                    met = this.metadatareader(filenames);
                 else
                     err = MException(['CHI:',mfilename,':InputError'], ...
                         'Filename does not appear to be an Excel file (*.xls or *.xlsx).');

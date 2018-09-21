@@ -58,7 +58,7 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
         ylabelname = ''; % Text for ordinate label on plots
         ylabelunit = ''; % Text for the ordinate label unit on plots
         classmembership % An instance of ChiClassMembership
-        filenames   % Cell array of filenames if opened from a list of files
+        filenames = {};   % Cell array of filenames if opened from a list of files
         history     % Log of data processing steps
     end
 
@@ -86,10 +86,10 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                         this.xlabelunit = s.xlabelunit;
                         this.ylabelname = s.ylabelname;
                         this.ylabelunit = s.ylabelunit;
-                        this.filenames = cellstr(s.filename);
+                        this.filenames = cellstr(s.filenames);
                         if ~isempty(s.history)
                             this.history = s.history.clone();
-                            this.history.add(['Generated from a ', class(s), '. Filename: ', s.filename]);                        
+                            this.history.add(['Generated from a ', class(s), '. Filename: ', s.filenames]);                        
                         else
                             this.history = ChiLogger();                
                         end

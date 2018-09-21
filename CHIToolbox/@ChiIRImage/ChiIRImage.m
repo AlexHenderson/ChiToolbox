@@ -70,7 +70,7 @@ classdef ChiIRImage < ChiImage & ChiIRCharacter
                         superClassArgs{9} = s.ylabelunit;
                         superClassArgs{10} = s.mask;
                         superClassArgs{11} = s.masked;
-                        superClassArgs{12} = s.filename;
+                        superClassArgs{12} = s.filenames;
                         superClassArgs{13} = s.history.clone();
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
@@ -140,7 +140,7 @@ classdef ChiIRImage < ChiImage & ChiIRCharacter
             obj.ylabelunit = this.ylabelunit;
             obj.mask = this.mask;
             obj.masked = this.masked;
-            obj.filename = this.filename;
+            obj.filenames = this.filenames;
             
             obj.history = this.history.clone();
             obj.history.add('Cloned');

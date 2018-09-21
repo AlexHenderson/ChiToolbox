@@ -69,7 +69,7 @@ classdef ChiMassSpectralCollection < ChiSpectralCollection & ChiMassSpecCharacte
                         superClassArgs{7} = input.ylabelunit;
                         superClassArgs{8} = input.classmembership;
                         superClassArgs{9} = input.filenames;
-%                         superClassArgs{9} = input.filename;
+%                         superClassArgs{9} = input.filenames;
 %                         superClassArgs{10} = input.history.clone();
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...

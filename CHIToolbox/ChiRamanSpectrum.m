@@ -99,7 +99,7 @@ classdef ChiRamanSpectrum < ChiSpectrum & ChiRamanCharacter
             this.ontologyinfo.isaccurate = true;
             
             if (~isempty(varargin) && isa(varargin{1},'ChiSpectrum'))
-                this.filename = varargin{1}.filename;
+                this.filenames = varargin{1}.filenames;
                 this.history = varargin{1}.history.clone();
                 this.history.add(['Generated from a ', class(varargin{1}), '.']);
             end
@@ -120,7 +120,7 @@ classdef ChiRamanSpectrum < ChiSpectrum & ChiRamanCharacter
             obj.xlabelunit = this.xlabelunit;
             obj.ylabelname = this.ylabelname;
             obj.ylabelunit = this.ylabelunit;
-            obj.filename = this.filename;
+            obj.filenames = this.filenames;
             
             obj.baseline = this.baseline.clone();
 

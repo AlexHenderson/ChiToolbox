@@ -15,7 +15,7 @@ classdef ChiSpectrum < ChiAbstractSpectrum
         ylabelname = ''; % Text for ordinate label on plots
         ylabelunit = ''; % Text for the ordinate label unit on plots
         classmembership % An instance of ChiClassMembership
-        filename    % Name of file opened, if appropriate
+        filenames = {};    % Name of file opened, if appropriate
         history     % Log of data processing steps
     end
     
@@ -85,7 +85,7 @@ classdef ChiSpectrum < ChiAbstractSpectrum
         function output = clone(this)
             % Make a copy of this spectrum
             output = ChiSpectrum(this.xvals,this.data,this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.xlabelunit);
-            output.filename = this.filename;
+            output.filenames = this.filenames;
             output.history = this.history.clone();
         end        
         

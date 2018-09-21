@@ -84,7 +84,7 @@ classdef ChiToFMassSpecImage < ChiMassSpecImage & ChiToFMSCharacter
             obj.ylabelunit = this.ylabelunit;
             obj.mask = this.mask;
             obj.masked = this.masked;
-            obj.filename = this.filename;
+            obj.filenames = this.filenames;
             
             obj.history = this.history.clone();
             obj.history.add('Cloned');

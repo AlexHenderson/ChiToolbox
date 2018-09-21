@@ -18,7 +18,7 @@ classdef ChiImage < ChiAbstractImage
         ylabelunit = ''; % Text for the ordinate label unit on plots
         mask;  
         masked = false;
-        filename = '';  % Name of the file, if appropriate
+        filenames = {};  % Name of the file, if appropriate
         history;    % Log of data processing steps
     end
 
@@ -39,7 +39,7 @@ classdef ChiImage < ChiAbstractImage
     methods
     % =====================================================================
         % Constructor
-        function this = ChiImage(xvals,data,xpixels,ypixels,reversex,xlabelname,xlabelunit,ylabelname,ylabelunit,masked,mask,filename)
+        function this = ChiImage(xvals,data,xpixels,ypixels,reversex,xlabelname,xlabelunit,ylabelname,ylabelunit,masked,mask,filenames)
             % Create an instance of ChiImage with given parameters
             
             this.spectrumclassname = 'ChiSpectrum';
@@ -80,7 +80,7 @@ classdef ChiImage < ChiAbstractImage
                                 this.masked = masked;
                                 this.mask = mask;
                                 if (nargin > 11)
-                                    this.filename = filename;
+                                    this.filenames = filenames;
                                 end
                             end
                         end
@@ -115,7 +115,7 @@ classdef ChiImage < ChiAbstractImage
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function output = clone(this)
             % Create a (deep) copy of this image
-            output = ChiImage(this.xvals,this.data,this.xpixels,this.ypixels,this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit,this.masked,this.mask,this.filename);
+            output = ChiImage(this.xvals,this.data,this.xpixels,this.ypixels,this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit,this.masked,this.mask,this.filenames);
             output.history = this.history.clone();
         end
         
@@ -123,7 +123,7 @@ classdef ChiImage < ChiAbstractImage
         function totalspectrum = get.totalspectrum(this)
             spectrumclass = str2func(this.spectrumclassname);
             totalspectrum = spectrumclass(this.xvals,sum(this.data),this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit);
-            totalspectrum.filename = this.filename;
+            totalspectrum.filenames = this.filenames;
         end                
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

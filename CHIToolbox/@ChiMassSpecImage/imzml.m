@@ -9,9 +9,8 @@ function imzml(varargin)
 %
 % Description
 %   imzml() requests a filename from the user to save the imzml files
-%   (.imzml/.ibd pair) to. The data is assumed to be positive ion and not
-%   centroided. The output files are saved to the same location as the
-%   original data. 
+%   (.imzml/.ibd pair) to. The data is assumed to be positive ion. The
+%   output files are saved to the same location as the original data.
 % 
 %   imzml(____,filename) saves the .imzml/.ibd files using the filename
 %   provided. For example, C:\data\mydata.imzml
@@ -19,17 +18,15 @@ function imzml(varargin)
 %   imzml(Name,Value) allows for Name/Value pairs.
 %       Name = 'polarity', Value is either 'pos' or 'neg' for positive ion
 %       or negative ion data respectively. Default = 'pos'. 
-%       Name = 'centroid', Value is either true or false depending on
-%       whether the data has been centroided. Default = false.
 %       Example
-%           j105data.imzml('polarity','neg', 'centroid',true);
+%           j105data.imzml('polarity','neg');
 % 
 % Notes
 %   Writing an imzml/ibd file pair takes a LONG TIME and uses A LOT of disc
 %   space. Just sayin'...
 % 
 %   If the data is centroided (peak-picked) the number of peaks per pixel
-%   must be the same for all pixels. 
+%   must be the same for all pixels. The peakdetect function assures this. 
 % 
 %   More information on the imzml file format is available from
 %   https://ms-imaging.org/wp/imzml/
@@ -47,7 +44,7 @@ function imzml(varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, August 2018
+% Version 2.0, September 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -69,7 +66,6 @@ this = varargin{1};
 if strcmpi(this.imzmlproperties.instrument, 'Ionoptika J105')
     
     isPositiveIon = true;
-    isCentroided = false;
     filename = '';
 
     polarity = 'pos';
@@ -77,13 +73,6 @@ if strcmpi(this.imzmlproperties.instrument, 'Ionoptika J105')
     argposition = find(cellfun(@(x) strcmpi(x, 'polarity') , varargin));
     if argposition
         polarity = varargin{argposition+1};
-        varargin(argposition+1) = [];
-        varargin(argposition) = [];
-    end
-
-    argposition = find(cellfun(@(x) strcmpi(x, 'centroid') , varargin));
-    if argposition
-        isCentroided = varargin{argposition+1};
         varargin(argposition+1) = [];
         varargin(argposition) = [];
     end
@@ -114,7 +103,7 @@ if strcmpi(this.imzmlproperties.instrument, 'Ionoptika J105')
     end
 
     j105toimzml(this.mass, this.data, this.width, this.height, ...
-                isPositiveIon, isCentroided, filename);
+                isPositiveIon, this.iscentroided, filename);
 
 else
     err = MException(['CHI:',mfilename, 'InputError'], ...

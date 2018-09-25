@@ -25,6 +25,7 @@ classdef ChiMassSpecCharacter < handle
 
 
     properties
+        iscentroided = false;
     end
     
     methods

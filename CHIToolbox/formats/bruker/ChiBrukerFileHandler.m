@@ -1,4 +1,4 @@
-function brukerData = ChiBrukerFileHandler(varargin)
+function obj = ChiBrukerFileHandler(varargin)
 
 % ChiBrukerFileHandler  File format handler for Bruker Opus files
 % 
@@ -58,20 +58,21 @@ end
 % only possible remaining entry is the filename
 
 if ~isempty(varargin)
-    filename = varargin{1};
+    filenames = varargin{1};
 else
-    filename = utilities.getfilename('*.mat', 'Bruker Opus MAT Files (*.mat)');
-    if (isfloat(filename) && (filename == 0))
-        return;
-    end
-    filename = filename{1};
+    filenames = utilities.getfilename('*.mat', 'Bruker Opus MAT Files (*.mat)');
 end
 
-%% Import the data
-load(filename);
+if ~iscell(filenames)
+    filenames = cellstr(filenames);
+end
 
+
+%% Import the data
 % The contents always contains a variable called AB
-AB = flipud(AB); %#ok<NODEF>
+brukermatfile = load(filenames{1}, 'AB');
+AB = brukermatfile.AB;
+AB = flipud(AB);
 
 wavenumbers = AB(:,1);
 data = AB(:,2:end);
@@ -85,21 +86,22 @@ if isMap
     data = flip(data,1);
     data = reshape(data,height*width,[]);
     
-%     brukerData = ChiIRImage(wavenumbers,data,true,x_label,y_label,width,height);
-    brukerData = ChiIRImage(wavenumbers,data,width,height);
-    brukerData.filename = filename;    
+    obj = ChiIRImage(wavenumbers,data,width,height);
 else
     if (size(data,1) == 1)
         % We only have a single spectrum
-        brukerData = ChiIRSpectrum(wavenumbers,data);
-        brukerData.filename = filename;
+        obj = ChiIRSpectrum(wavenumbers,data);
     else
         % We have a number of spectra, but these are not part of a mapping
         % experiment
-        brukerData = ChiIRSpectralCollection(wavenumbers,data);
+        obj = ChiIRSpectralCollection(wavenumbers,data);
     end
 end
 
-brukerData.history.add(['filename: ', filename]);
+obj.filenames = filenames;
 
-end % function ChiBrukerFile
+for i = 1:length(filenames)
+    obj.history.add(['Bruker Opus MAT file: ', filenames{i}]);
+end
+            
+end % function ChiBrukerFileHandler

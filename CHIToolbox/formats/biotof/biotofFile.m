@@ -1,4 +1,4 @@
-function [mass, data, height, width, filenames] = biotofFile(filenames)
+function [mass, data, height, width, filenames, imzmlinfo] = biotofFile(filenames)
 
 %   Function: biotofFile
 %   Usage: [mass, data, height, width, filenames] = biotofFile();
@@ -50,11 +50,14 @@ end
 
 [pathstr,name,ext] = fileparts(filenames{1}); %#ok<ASGLU>
 
+imzmlinfo = [];
+
 switch lower(ext)
     case '.xyt'
         [data, mass] = xyt(filenames{1}); 
         height = 256;
         width = 256;
+        imzmlinfo.instrument = 'Biotof';
     case '.dat'
         [mass,data] = biotofspectra(filenames);
         height = 1;

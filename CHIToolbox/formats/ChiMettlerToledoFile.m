@@ -37,27 +37,22 @@ classdef ChiMettlerToledoFile < ChiAbstractFileFormat
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, April 2018
+% Version 2.0, September 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
     
     
     methods (Static)
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function truefalse = isreadable(filenames)
-            
-            % Ensure filenames is a cell array
-            if ~iscell(filenames)
-                filenames = cellstr(filenames);
+        function truefalse = isreadable(filename)
+            if iscell(filename)
+                filename = filename{1};
             end
-            
             truefalse = false;
-            for i = 1:length(filenames)
-                % Check extension
-                [pathstr,name,ext] = fileparts(filenames{i}); %#ok<ASGLU>
-                if ~strcmpi(ext,'.asc')
-                    return
-                end
+            % Check extension
+            [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
+            if ~strcmpi(ext,'.asc')
+                return
             end
             % ToDo: Check internal magic numbers
             truefalse = true;
@@ -75,29 +70,38 @@ classdef ChiMettlerToledoFile < ChiAbstractFileFormat
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function obj = open(filenames)
+            % Do we have somewhere to put the data?
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
-                err = MException(['CHI:',mfilename,':InputError'], ...
+                err = MException(['CHI:',mfilename,':IOError'], ...
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end
             
-            % Let another function handle reading the files
-            if exist('filenames', 'var')
-                [xvals,data,unused,header,x_label,y_label] = mettlertoledofiles(filenames); %#ok<ASGLU>
-            else
-                [xvals,data,filenames,header,x_label,y_label] = mettlertoledofiles(); %#ok<ASGLU>
+            % If filename(s) are not provided, ask the user
+            if ~exist('filenames', 'var')
+                filenames = utilities.getfilenames({ChiMettlerToledoFile.getExtension(), ChiMettlerToledoFile.getFiltername()});
             end
-                
-%             % Check whether the files are OK for this reader
-%             if ~ChiMettlerToledoFile.isreadable(filenames)
-%                 err = MException(['CHI:',mfilename,':InputError'], ...
-%                     'Filenames do not appear to be Mettler Toledo text files (*.asc).');
-%                 throw(err);
-%             end
-
-            % defaults
+            
+            % Make sure we have a cell array of filenames
+            if ~iscell(filenames)
+                filenames = cellstr(filenames);
+            end
+            
+            % Check whether the files are OK for a Mettler Toledo reader
+            for i = 1:length(filenames) 
+                if ~ChiMettlerToledoFile.isreadable(filenames{i})
+                    message = sprintf('Filename %s is not a Mettler Toledo file (*.asc).', utilities.pathescape(filenames{i}));
+                    err = MException(['CHI:',mfilename,':InputError'], message);
+                    throw(err);
+                end
+            end
+            
+            % Open the file(s)
+            [xvals,data,unused,header,x_label,y_label] = mettlertoledofiles(filenames); %#ok<ASGLU>
+            
+            % Force a single spectrum output
             height = 1;
             width = 1;
             
@@ -126,25 +130,24 @@ classdef ChiMettlerToledoFile < ChiAbstractFileFormat
                     if strfind(lower(x_label),'raman') %#ok<STRIFCND>
                         % Raman data
                         obj = ChiRamanSpectralCollection(xvals,data);
-                        obj.filenames = filenames;                                
                     else
                         if strfind(lower(x_label),'wavenumber') %#ok<STRIFCND>
                             % IR data
                             obj = ChiIRSpectralCollection(xvals,data);
-                            obj.filenames = filenames;                                
                         else
                             % Generic data
                             xunit = '';
                             yunit = '';
                             obj = ChiSpectralCollection(xvals,data,false,x_label,y_label,x_label,xunit,y_label,yunit);
-                            obj.filenames = filenames;                                
                         end
                     end
 
                 end               
             end
+            
+            obj.filenames = filenames;
             for i = 1:size(filenames,1)
-                obj.history.add(['filename: ', filenames{i}]);
+                obj.history.add(['Mettler Toledo file: ', filenames{i}]);
             end
                 
         end     % function open
@@ -154,7 +157,7 @@ classdef ChiMettlerToledoFile < ChiAbstractFileFormat
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
-                err = MException(['CHI:',mfilename,':InputError'], ...
+                err = MException(['CHI:',mfilename,':IOError'], ...
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end

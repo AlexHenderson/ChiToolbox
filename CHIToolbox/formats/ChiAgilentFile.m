@@ -32,7 +32,7 @@ classdef ChiAgilentFile < ChiAbstractFileFormat
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 4.0, August 2018
+% Version 5.0, September 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -40,6 +40,9 @@ classdef ChiAgilentFile < ChiAbstractFileFormat
     methods (Static)
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function truefalse = isreadable(filename)
+            if iscell(filename)
+                filename = filename{1};
+            end
             truefalse = false;
             % Check extension
             [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
@@ -61,29 +64,48 @@ classdef ChiAgilentFile < ChiAbstractFileFormat
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = open(filename)
+        function obj = open(filenames)
+            % Do we have somewhere to put the data?
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
-                err = MException(['CHI:',mfilename,':InputError'], ...
+                err = MException(['CHI:',mfilename,':IOError'], ...
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end
-            if exist('filename', 'var')
-                if ChiAgilentFile.isreadable(filename)
-                    [wavenumbers,data,height,width,filename,acqdate] = agilentFile(filename); %#ok<ASGLU>
-                else
-                    err = MException(['CHI:',mfilename,':InputError'], ...
-                        'Filename does not appear to be an Agilent file (*.dms or *.seq).');
-                    throw(err);
-                end                    
-            else
-                [wavenumbers,data,height,width,filename,acqdate] = agilentFile(); %#ok<ASGLU>
+            
+            % If filename(s) are not provided, ask the user
+            if ~exist('filenames', 'var')
+                filenames = utilities.getfilenames({ChiAgilentFile.getExtension(), ChiAgilentFile.getFiltername()});
             end
-
+            
+            % Make sure we have a cell array of filenames
+            if ~iscell(filenames)
+                filenames = cellstr(filenames);
+            end
+            
+            % Check whether the files are OK for an Agilent reader
+            for i = 1:length(filenames) 
+                if ~ChiAgilentFile.isreadable(filenames{i})
+                    message = sprintf('Filename %s is not an Agilent file (*.dms/*.seq).', utilities.pathescape(filenames{i}));
+                    err = MException(['CHI:',mfilename,':InputError'], message);
+                    throw(err);
+                end
+            end
+            
+            % Open the file(s)
+            if (length(filenames) > 1)
+                utilities.warningnobacktrace('Only reading the first file.');
+                filenames = filenames(1);
+            end
+            
+            [wavenumbers,data,height,width,filename,acqdate] = agilentFile(filenames{1}); %#ok<ASGLU>
+            
             obj = ChiIRImage(wavenumbers,data,width,height);
-            obj.filename = filename;
-            obj.history.add(['Agilent file: ', filename]);
+            obj.filenames = filenames;
+            for i = 1:length(filenames)
+                obj.history.add(['Agilent file: ', filenames{i}]);
+            end
         end        
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -91,7 +113,7 @@ classdef ChiAgilentFile < ChiAbstractFileFormat
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
-                err = MException(['CHI:',mfilename,':InputError'], ...
+                err = MException(['CHI:',mfilename,':IOError'], ...
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end

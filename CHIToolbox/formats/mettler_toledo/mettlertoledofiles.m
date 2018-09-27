@@ -59,7 +59,7 @@ numberoffiles=size(filenames,1);
 for i=1:numberoffiles
 
     % ToDo: match the x and y units, or throw an error
-    [xvals_i,spectrum_i,unused,header,x_label,y_label] = mettlertoledo(filenames{i,:}); %#ok<ASGLU>
+    [xvals_i,spectrum_i,unused,header,x_label,y_label] = mettlertoledo(filenames{i}); %#ok<ASGLU>
     if (i==1)
         % First time through we initialise the data array
         spectra = zeros(numberoffiles,length(spectrum_i));

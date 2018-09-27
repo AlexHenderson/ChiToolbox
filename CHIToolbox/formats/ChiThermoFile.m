@@ -39,27 +39,22 @@ classdef ChiThermoFile < ChiAbstractFileFormat
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 3.0, August 2018
+% Version 4.0, September 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
     
     
     methods (Static)
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function truefalse = isreadable(filenames)
-
-            % Ensure filenames is a cell array
-            if ~iscell(filenames)
-                filenames = cellstr(filenames);
+        function truefalse = isreadable(filename)
+            if iscell(filename)
+                filename = filename{1};
             end
-            
             truefalse = false;
-            for i = 1:length(filenames)
-                % Check extension
-                [pathstr,name,ext] = fileparts(filenames{i}); %#ok<ASGLU>
-                if ~strcmpi(ext,'.spc')
-                    return
-                end
+            % Check extension
+            [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
+            if ~strcmpi(ext,'.spc')
+                return
             end
             % ToDo: Check internal magic numbers
             truefalse = true;
@@ -77,29 +72,32 @@ classdef ChiThermoFile < ChiAbstractFileFormat
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function obj = open(filenames)
+            % Do we have somewhere to put the data?
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
-                err = MException(['CHI:',mfilename,':InputError'], ...
+                err = MException(['CHI:',mfilename,':IOError'], ...
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end
 
             % If filename(s) are not provided, ask the user
             if ~exist('filenames', 'var')
-                filenames = utilities.getfilenames(vertcat(...
-                        {'*.spc',  'Thermo Scientific GRAMS Files (*.spc)'}));
-
-                if (isfloat(filenames) && (filenames == 0))
-                    return;
-                end
+                filenames = utilities.getfilenames({ChiThermoFile.getExtension(), ChiThermoFile.getFiltername()});
+            end
+            
+            % Make sure we have a cell array of filenames
+            if ~iscell(filenames)
+                filenames = cellstr(filenames);
             end
             
             % Check whether the files are OK for a Thermo reader
-            if ~ChiThermoFile.isreadable(filenames)
-                err = MException('CHI:ChiThermoFile:InputError', ...
-                    'Filenames do not appear to be Thermo Fisher files (*.spc).');
-                throw(err);
+            for i = 1:length(filenames) 
+                if ~ChiThermoFile.isreadable(filenames{i})
+                    message = sprintf('Filename %s is not a Thermo Fisher file (*.spc).', utilities.pathescape(filenames{i}));
+                    err = MException(['CHI:',mfilename,':InputError'], message);
+                    throw(err);
+                end
             end
             
             % Open the file(s)
@@ -112,7 +110,7 @@ classdef ChiThermoFile < ChiAbstractFileFormat
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
-                err = MException(['CHI:',mfilename,':InputError'], ...
+                err = MException(['CHI:',mfilename,':IOError'], ...
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end

@@ -1,4 +1,4 @@
-function obj = ChiFile(filename)
+function obj = ChiFile(filenames)
 
 % ChiFile  Opens a range of different filetypes
 %
@@ -31,7 +31,7 @@ function obj = ChiFile(filename)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, August 2018
+% Version 2.0, September 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
     
@@ -43,21 +43,18 @@ function obj = ChiFile(filename)
 % Note this is a free function, not a class. 
 
 
-    if ~exist('filename', 'var')
+    % If filename(s) are not provided, ask the user
+    if ~exist('filenames', 'var')
         filters = ChiFileReader.assembleFilters();
-        filename = utilities.getfilename(filters);
-        if (isfloat(filename) && (filename == 0))
-            return;
-        end
-        filename = filename{1};
+        filenames = utilities.getfilenames(filters);
     end
 
-    if ischar(filename)
-        obj = ChiFileReader.read(filename);
-    else
-        err = MException(['CHI:',mfilename,':InputError'], ...
-            'No filename provided.');
-        throw(err);
+    % Make sure we have a cell array of filenames
+    if ~iscell(filenames)
+        filenames = cellstr(filenames);
     end
-            
+    
+    % Pass filenames on to next stage
+    obj = ChiFileReader.read(filenames);
+    
 end

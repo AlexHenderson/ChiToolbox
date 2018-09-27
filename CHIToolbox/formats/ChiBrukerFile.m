@@ -42,7 +42,7 @@ classdef ChiBrukerFile < ChiAbstractFileFormat
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 4.0, August 2018
+% Version 5.0, September 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -50,6 +50,9 @@ classdef ChiBrukerFile < ChiAbstractFileFormat
     methods (Static)
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function truefalse = isreadable(filename)
+            if iscell(filename)
+                filename = filename{1};
+            end
             truefalse = false;
             % Check extension
             [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
@@ -66,7 +69,7 @@ classdef ChiBrukerFile < ChiAbstractFileFormat
                 return
             end
             
-            if ~strcmpi(contents.name, 'AB')
+            if ~strcmpi(contents(1).name, 'AB')
                 return
             end
             
@@ -85,25 +88,43 @@ classdef ChiBrukerFile < ChiAbstractFileFormat
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = open(varargin)
+        function obj = open(filenames)
+            % Do we have somewhere to put the data?
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
-                err = MException(['CHI:',mfilename,':InputError'], ...
+                err = MException(['CHI:',mfilename,':IOError'], ...
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end
-            if (nargin > 0)
-                if ChiBrukerFile.isreadable(varargin{1})
-                    obj = ChiBrukerFileHandler(varargin{:});
-                else
-                    err = MException(['CHI:',mfilename,':InputError'], ...
-                        'Filename does not appear to be a Bruker Opus file (*.mat).');
+            
+            % If filename(s) are not provided, ask the user
+            if ~exist('filenames', 'var')
+                filenames = utilities.getfilenames({ChiBrukerFile.getExtension(), ChiBrukerFile.getFiltername()});
+            end
+            
+            % Make sure we have a cell array of filenames
+            if ~iscell(filenames)
+                filenames = cellstr(filenames);
+            end
+            
+            % Check whether the files are OK for a Bruker reader
+            for i = 1:length(filenames) 
+                if ~ChiBrukerFile.isreadable(filenames{i})
+                    message = sprintf('Filename %s is not a Bruker Opus MAT file (*.mat).', utilities.pathescape(filenames{i}));
+                    err = MException(['CHI:',mfilename,':InputError'], message);
                     throw(err);
                 end
-            else
-                obj = ChiBrukerFileHandler();
             end
+            
+            % Open the file(s)
+            if (length(filenames) > 1)
+                utilities.warningnobacktrace('Only reading the first file.');
+                filenames = filenames(1);
+            end
+
+            obj = ChiBrukerFileHandler(filenames);
+            
         end        
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -111,7 +132,7 @@ classdef ChiBrukerFile < ChiAbstractFileFormat
         if ~nargout
             stacktrace = dbstack;
             functionname = stacktrace.name;
-            err = MException(['CHI:',mfilename,':InputError'], ...
+            err = MException(['CHI:',mfilename,':IOError'], ...
                 'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
             throw(err);
         end

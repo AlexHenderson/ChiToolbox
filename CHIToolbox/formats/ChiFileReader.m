@@ -3,11 +3,11 @@ classdef ChiFileReader
 % ChiFileReader  Opens a range of different filetypes
 %
 % Syntax
-%   myfile = ChiFileReader.read(filename);
+%   myfile = ChiFileReader.read(filenames);
 %
 % Description
-%   myfile = ChiFileReader.read(filename) opens the filename provided as a
-%   char string.
+%   myfile = ChiFileReader.read(filenames) opens the filenames provided as
+%   a cell array of strings.
 %
 %   This class can read a range of different filetypes.
 %
@@ -24,7 +24,7 @@ classdef ChiFileReader
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, August 2018
+% Version 2.0, September 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
     
@@ -38,12 +38,13 @@ classdef ChiFileReader
 % instantiate the class. It removes redundant braces from the signature
 % (ie. ChiFileReader.read() rather than ChiFileReader().read())
 
+
     methods (Static)
         
         function subclasses = getChildren()
             % Generate a list of classes that inherit from the rootclass. 
             rootclass = 'ChiAbstractFileFormat';
-            [thispath] = fileparts(mfilename('fullpath'));
+            thispath = fileparts(mfilename('fullpath'));
             rootpath = thispath;
             tb = getSubclasses(rootclass,rootpath); 
             subclasses = tb.names;
@@ -51,22 +52,27 @@ classdef ChiFileReader
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function reader = findReader(filename) %#ok<INUSD>
+        function readers = findReader(filenames)
             % Cycle through the subclasses, accessing their static members.
-            reader = '';
+            readers = {};
             subclasses = ChiFileReader.getChildren();
             
             if isempty(subclasses)
-                error('no reader available');
+                err = MException(['CHI:',mfilename,':InputError'], ...
+                    'No file readers are available');
+                throw(err);                
             else
-                for i = 1:length(subclasses)
-                    truefalse = false; %#ok<NASGU>
-                    commandline = [subclasses{i}, '.isreadable(filename);'];
-                    truefalse = eval(commandline);
-                    if truefalse
-                        reader = subclasses{i};
+                for f = 1:length(filenames)
+                    for i = 1:length(subclasses)
+                        truefalse = false; %#ok<NASGU>
+                        commandline = [subclasses{i}, '.isreadable(filenames{f});'];
+                        truefalse = eval(commandline);
+                        if truefalse
+                            readers = vertcat(readers,subclasses{i}); %#ok<AGROW>
+                        end
                     end
                 end
+                readers = unique(readers);
             end
         end
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -117,15 +123,22 @@ classdef ChiFileReader
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = read(filename)
-            reader = ChiFileReader.findReader(filename);
-            if isempty(reader)
+        function obj = read(filenames)
+            % Reads the filename(s) provided
+            readers = ChiFileReader.findReader(filenames);
+            if isempty(readers)
                 err = MException(['CHI:',mfilename,':InputError'], ...
                     'Sorry, cannot read this file type.');
                 throw(err);
             else
-                commandline = [reader, '.read(filename);'];
-                obj = eval(commandline);
+                if (length(readers) > 1)
+                    err = MException(['CHI:',mfilename,':InputError'], ...
+                        'Multiple file readers are available. Please use the specific reader. ');
+                    throw(err);
+                else
+                    commandline = [readers{1}, '.read(filenames);'];
+                    obj = eval(commandline);
+                end
             end
         end
         
@@ -134,4 +147,3 @@ classdef ChiFileReader
     end
     
 end
-

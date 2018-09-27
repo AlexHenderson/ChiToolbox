@@ -28,31 +28,25 @@ classdef ChiIonoptikaFile < ChiAbstractFileFormat
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 2.0, August 2018
+% Version 3.0, September 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
     
     
     methods (Static)
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function truefalse = isreadable(filenames)
-
-            % Ensure filenames is a cell array
-            if ~iscell(filenames)
-                filenames = cellstr(filenames);
+        function truefalse = isreadable(filename)
+            if iscell(filename)
+                filename = filename{1};
             end
-            
             truefalse = false;
-            for i = 1:length(filenames)
-                % Check extension
-                [pathstr,name,ext] = fileparts(filenames{i}); %#ok<ASGLU>
-                if ~strcmpi(ext,'.h5')
-                    return
-                end
-                % Check internal magic numbers
-                truefalse = ChiIonoptikaFile.checkmagicnumbers(filenames{i});
+            % Check extension
+            [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
+            if ~strcmpi(ext,'.h5')
+                return
             end
-            
+            % ToDo: Check internal magic numbers
+            truefalse = true;
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,54 +61,58 @@ classdef ChiIonoptikaFile < ChiAbstractFileFormat
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function obj = open(filenames)
+            % Do we have somewhere to put the data?
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
-                err = MException(['CHI:',mfilename,':InputError'], ...
+                err = MException(['CHI:',mfilename,':IOError'], ...
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end
+            
             % If filename(s) are not provided, ask the user
             if ~exist('filenames', 'var')
-                filenames = utilities.getfilenames(vertcat(...
-                        {'*.h5', 'Ionoptika Files (*.h5)'}));
-
-                if (isfloat(filenames) && (filenames == 0))
-                    return;
-                end
+                filenames = utilities.getfilenames({ChiIonoptikaFile.getExtension(), ChiIonoptikaFile.getFiltername()});
             end
             
-            % Ensure filenames is a cell array
+            % Make sure we have a cell array of filenames
             if ~iscell(filenames)
                 filenames = cellstr(filenames);
             end
             
-            % Check whether the files are OK for a Ionoptika reader
-            if ~ChiIonoptikaFile.isreadable(filenames)
-                err = MException(['CHI:',mfilename, 'InputError'], ...
-                    'Filenames do not appear to be Ionoptika files (*.h5).');
-                throw(err);
+            % Check whether the files are OK for a Thermo reader
+            for i = 1:length(filenames) 
+                if ~ChiThermoFile.isreadable(filenames{i})
+                    message = sprintf('Filename %s is not an Ionoptika file (*.h5).', utilities.pathescape(filenames{i}));
+                    err = MException(['CHI:',mfilename,':InputError'], message);
+                    throw(err);
+                end
             end
             
             % Open the file(s)
-            if (length(filenames) == 1)
-                [mass,data,height,width,layers,filename,x_label,y_label,imzmlinfo] = ionoptika_hd5file(filenames{1}); %#ok<ASGLU>
-                % Work out whether this is a continuum dataset or a mass
-                % binned one. Crude method
-                mstep1 = mass(2) - mass(1);
-                mstep2 = mass(end) - mass(end-1);
-                if (mstep1 == mstep2)
-                    obj = ChiMassSpecImage(double(mass),double(data),width,height);
-                else
-                    obj = ChiToFMassSpecImage(double(mass),double(data),width,height);
-                end
-                
-                obj.imzmlproperties = imzmlinfo;
-                obj.filename = filenames{1};
-                obj.history.add(['filename: ', filenames{1}]);
-            else
-                utilities.warningnobacktrace('Can only handle a single file at the moment.');
+            if (length(filenames) > 1)
+                utilities.warningnobacktrace('Only reading the first file.');
+                filenames = filenames(1);
             end
+            
+            [mass,data,height,width,layers,filename,x_label,y_label,imzmlinfo] = ionoptika_hd5file(filenames{1}); %#ok<ASGLU>
+            
+            % Work out whether this is a continuum dataset or a mass
+            % binned one. Crude method, but...
+            mstep1 = mass(2) - mass(1);
+            mstep2 = mass(end) - mass(end-1);
+            if (mstep1 == mstep2)
+                obj = ChiMassSpecImage(double(mass),double(data),width,height);
+            else
+                obj = ChiToFMassSpecImage(double(mass),double(data),width,height);
+            end
+
+            obj.imzmlproperties = imzmlinfo;
+            obj.filenames = filenames;
+            for i = 1:length(filenames)
+                obj.history.add(['Ionoptika file: ', filenames{i}]);
+            end
+            
         end        
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -122,35 +120,11 @@ classdef ChiIonoptikaFile < ChiAbstractFileFormat
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
-                err = MException(['CHI:',mfilename,':InputError'], ...
+                err = MException(['CHI:',mfilename,':IOError'], ...
                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
                 throw(err);
             end
             obj = ChiIonoptikaFile.open(varargin{:});
-        end
-            
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function yesno = checkmagicnumbers(filename)
-            yesno = true;   % Assume true for now
-%             yesno = false;
-%             
-%             fid = fopen(filename);
-%             if (fid == -1)
-%                 return;
-%             end
-%             
-%             status = fseek(fid, 0, 'bof');
-%             if (status == -1)
-%                 return;
-%             end
-%             detector_flag = fread(fid, 1, '*int32');
-% 
-%             switch detector_flag
-%                 case 1408
-%                     yesno = true;
-%                 case 1034 
-%                     yesno = true;
-%             end
         end
             
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

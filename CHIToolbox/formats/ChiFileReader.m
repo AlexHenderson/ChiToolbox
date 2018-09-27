@@ -48,7 +48,22 @@ classdef ChiFileReader
             rootpath = thispath;
             tb = getSubclasses(rootclass,rootpath); 
             subclasses = tb.names;
-            subclasses = subclasses(2:end);
+            
+            % Remove spurious classes
+            for i = length(subclasses):-1:1
+                if  strcmpi(subclasses{i},'ChiAbstractFileFormat')
+                    % Not really a format
+                    subclasses(i) = [];
+                end
+                if  strcmpi(subclasses{i},'ChiSPCFile')
+                    % This relies on ChiThermoFile
+                    subclasses(i) = [];
+                end
+                if  strcmpi(subclasses{i},'ChiGRAMSFile')
+                    % This relies on ChiThermoFile
+                    subclasses(i) = [];
+                end
+            end
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -85,14 +85,7 @@ classdef ChiMetadataSheet < handle
         end            
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function read(this,filenames)
-%             if ~nargout
-%                 stacktrace = dbstack;
-%                 functionname = stacktrace.name;
-%                 err = MException(['CHI:',mfilename,':InputError'], ...
-%                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
-%                 throw(err);
-%             end
+        function open(this,filenames)
             
             if exist('filenames', 'var')
                 [pathstr,name,ext] = fileparts(filenames) ; %#ok<ASGLU>
@@ -131,19 +124,9 @@ classdef ChiMetadataSheet < handle
         end                    
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function open(this,varargin)
-            this.read(varargin{:});
+        function read(this,varargin)
+            this.open(varargin{:});
         end
-%         function obj = open(varargin)
-%             if ~nargout
-%                 stacktrace = dbstack;
-%                 functionname = stacktrace.name;
-%                 err = MException(['CHI:',mfilename,':InputError'], ...
-%                     'Nowhere to put the output. Try something like: myfile = %s(filename);',functionname);
-%                 throw(err);
-%             end
-%             obj = ChiMetadataSheet.read(varargin{:});
-%         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 %         function duplicate = clone(this)

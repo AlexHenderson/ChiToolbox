@@ -69,8 +69,10 @@ if isempty(this.xvals)
     this.xvals = varargin{1}.xvals;
     this.data = varargin{1}.data;
     this.reversex = varargin{1}.reversex;
-    this.xlabel = varargin{1}.xlabel;
-    this.ylabel = varargin{1}.ylabel;
+    this.xlabelname = varargin{1}.xlabelname;
+    this.xlabelunit = varargin{1}.xlabelunit;
+    this.ylabelname = varargin{1}.ylabelname;
+    this.ylabelunit = varargin{1}.ylabelunit;
 else
     newspectrum = varargin{1}.clone();
 
@@ -143,8 +145,10 @@ if isempty(this.xvals)
     this.xvals = varargin{1}.xvals;
     this.data = varargin{1}.data;
     this.reversex = varargin{1}.reversex;
-    this.xlabel = varargin{1}.xlabel;
-    this.ylabel = varargin{1}.ylabel;
+    this.xlabelname = varargin{1}.xlabelname;
+    this.xlabelunit = varargin{1}.xlabelunit;
+    this.ylabelname = varargin{1}.ylabelname;
+    this.ylabelunit = varargin{1}.ylabelunit;
     if ~isempty(varargin{1}.classmembership)
         this.classmembership = varargin{1}.classmembership.clone();
     end

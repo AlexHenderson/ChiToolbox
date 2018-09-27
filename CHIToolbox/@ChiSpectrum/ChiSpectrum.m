@@ -7,16 +7,16 @@ classdef ChiSpectrum < ChiAbstractSpectrum
     
     % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     properties
-        xvals           % Abscissa as a row vector
-        data            % Contents of object as a 2D matrix, spectra in rows
+        xvals            % Abscissa as a row vector
+        data             % Contents of object as a 2D matrix, spectra in rows
         reversex = false % Should abscissa be plotted in decreasing order
         xlabelname = ''; % Text for abscissa label on plots
         xlabelunit = ''; % Text for the abscissa label unit on plots
         ylabelname = ''; % Text for ordinate label on plots
         ylabelunit = ''; % Text for the ordinate label unit on plots
-        classmembership = []; % An instance of ChiClassMembership
-        filenames = {}; % Name of file opened, if appropriate
-        history = ChiLogger(); % Log of data processing steps
+        classmembership = [];   % An instance of ChiClassMembership
+        filenames = {};         % Name of file opened, if appropriate
+        history = ChiLogger();  % Log of data processing steps
     end
     
     properties (Dependent = true)
@@ -24,38 +24,60 @@ classdef ChiSpectrum < ChiAbstractSpectrum
     
     methods
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function this = ChiSpectrum(xvals,data,reversex,xlabelname,xlabelunit,ylabelname,ylabelunit)
+        function this = ChiSpectrum(xvals,data,reversex,xlabelname,xlabelunit,ylabelname,ylabelunit,classmembership,filenames,history)
             % Create an instance of ChiSpectrum with given parameters
             
             if (nargin > 0) % Support calling with 0 arguments
+                
+                
+                if exist('xvals','var')
+                    this.xvals = xvals;
+                end
+                if exist('data','var')
+                    this.data = data;
+                end
                 
                 if (length(xvals) ~= length(data))
                     err = MException(['CHI:',mfilename,':DimensionalityError'], ...
                         'x and y data are different lengths');
                     throw(err);
-                end                    
+                end
                 
-                this.xvals = xvals;
-                this.data = data;
-                this.reversex = 0;
-                this.xlabelname = '';
-                this.xlabelunit = '';
-                this.ylabelname = '';                
-                this.ylabelunit = '';                
-                this.history = ChiLogger();
+                if exist('reversex','var')
+                    this.reversex = reversex;
+                end
+                if exist('xlabelname','var')
+                    this.xlabelname = xlabelname;
+                end
+                if exist('xlabelunit','var')
+                    this.xlabelunit = xlabelunit;
+                end
+                if exist('ylabelname','var')
+                    this.ylabelname = ylabelname;                
+                end
+                if exist('ylabelunit','var')
+                    this.ylabelunit = ylabelunit;
+                end
+                if exist('classmembership','var')
+                    if isa(classmembership,'ChiClassMembership')
+                        this.classmembership = classmembership.clone();
+                    end
+                end
+                if exist('filenames','var')
+                    this.filenames = filenames;
+                end
+                if exist('history','var')
+                    if isa(history,'ChiLogger')
+                        this.history = history.clone();
+                    end
+                end
                 
                 % Force to row vectors
-                this.xvals = ChiForceToRow(this.xvals);
-                this.data = ChiForceToRow(this.data);
-                
-                if (nargin > 2)
-                    this.reversex = reversex;
-                    if (nargin > 3)
-                        this.xlabelname = xlabelname;
-                        this.xlabelunit = xlabelunit;
-                        this.ylabelname = ylabelname;
-                        this.ylabelunit = ylabelunit;
-                    end
+                if ~isempty(this.xvals)
+                    this.xvals = ChiForceToRow(this.xvals);
+                end
+                if ~isempty(this.data)
+                    this.data = ChiForceToRow(this.data);
                 end
                 
                 % TODO: Could check that xvals is always increasing and not
@@ -64,10 +86,12 @@ classdef ChiSpectrum < ChiAbstractSpectrum
                 
                 % Check the abscissa is increasing, 
                 % otherwise flip xvals and data
-                if (this.xvals(1) > this.xvals(end))
-                    this.xvals = fliplr(this.xvals);
-                    this.data = fliplr(this.data);
-                    this.reversex = true;
+                if ~isempty(this.xvals) && ~isempty(this.data)
+                    if (this.xvals(1) > this.xvals(end))
+                        this.xvals = fliplr(this.xvals);
+                        this.data = fliplr(this.data);
+                        this.reversex = true;
+                    end
                 end
             end 
             
@@ -84,9 +108,7 @@ classdef ChiSpectrum < ChiAbstractSpectrum
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function output = clone(this)
             % Make a copy of this spectrum
-            output = ChiSpectrum(this.xvals,this.data,this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.xlabelunit);
-            output.filenames = this.filenames;
-            output.history = this.history.clone();
+            output = ChiSpectrum(this.xvals,this.data,this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit,this.classmembership,this.filenames,this.history);
         end        
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

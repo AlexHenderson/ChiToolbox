@@ -21,8 +21,8 @@ classdef test_ChiImage < matlab.unittest.TestCase
 
             this.xvals=1:dims(3);
 
-            % ChiImage(xvals,data,reversex,xlabel,ylabel,xpixels,ypixels,masked,mask,filename)
-            this.im = ChiImage(this.xvals,this.yvals,false,'','',dims(2),dims(1));
+%             ChiImage(xvals,data,xpixels,ypixels,reversex,xlabelname,xlabelunit,ylabelname,ylabelunit,masked,mask,filenames)
+            this.im = ChiImage(this.xvals,this.yvals,dims(2),dims(1),false);
             
         end
     end    

@@ -36,9 +36,9 @@ setappdata(0,'UseNativeSystemDialogs',false);
 [filenames, pathname] = uigetfile(filetypes, 'Select file(s)...', 'MultiSelect', 'on');
 
 if (isfloat(filenames) && (filenames == 0))
-    disp('Error: No filenames selected');
-    filenames = 0;
-    return;
+    err = MException(['CHI:',mfilename,':IOError'], ...
+        'No filenames selected.');
+    throw(err);
 end
 
 if iscell(filenames)

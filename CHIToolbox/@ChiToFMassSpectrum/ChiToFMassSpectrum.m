@@ -68,6 +68,9 @@ classdef ChiToFMassSpectrum < ChiSpectrum & ChiToFMSCharacter
                         superClassArgs{5} = s.xlabelunit;
                         superClassArgs{6} = s.ylabelname;
                         superClassArgs{7} = s.ylabelunit;
+                        superClassArgs{8} = s.classmembership;
+                        superClassArgs{9} = s.filenames;
+                        superClassArgs{10} = s.history;
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
                             'Input not understood.');
@@ -84,7 +87,7 @@ classdef ChiToFMassSpectrum < ChiSpectrum & ChiToFMSCharacter
                     superClassArgs{5} = 'amu';
                     superClassArgs{6} = 'intensity';
                     superClassArgs{7} = 'counts';
-                case 5
+                case 7
                     superClassArgs = varargin;
                 otherwise
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')

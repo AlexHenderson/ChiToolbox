@@ -52,7 +52,7 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
     properties  
         xvals;      % Abscissa as a row vector
         data;       % Contents of object as a 2D matrix, spectra in rows
-        reversex;   % Should abscissa be plotted in decreasing order
+        reversex = false;   % Should abscissa be plotted in decreasing order
         xlabelname = ''; % Text for abscissa label on plots
         xlabelunit = ''; % Text for the abscissa label unit on plots
         ylabelname = ''; % Text for ordinate label on plots
@@ -161,6 +161,10 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                     throw(err);
             end
         
+            if ~isempty(this.xvals)
+                this.xvals = ChiForceToRow(this.xvals);
+            end
+            
             dims = size(this.data);
             if (length(dims) == 3)
                 % 3d data so need to reshape

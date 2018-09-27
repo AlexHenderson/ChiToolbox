@@ -11,7 +11,7 @@ classdef ChiImage < ChiAbstractImage
         data;       % Contents of object as a 2D matrix, spectra in rows
         xpixels;    % Number of pixels in the x-direction (width)
         ypixels;    % Number of pixels in the y-direction (height)
-        reversex;   % Should abscissa be plotted in decreasing order
+        reversex = false;   % Should abscissa be plotted in decreasing order
         xlabelname = ''; % Text for abscissa label on plots
         xlabelunit = ''; % Text for the abscissa label unit on plots
         ylabelname = ''; % Text for ordinate label on plots

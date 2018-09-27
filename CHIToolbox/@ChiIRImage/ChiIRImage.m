@@ -78,7 +78,7 @@ classdef ChiIRImage < ChiImage & ChiIRCharacter
                         throw(err);
                     end
                 case 4
-                    superClassArgs{5} = false;         % reversex = ascending
+                    superClassArgs{5} = true;         % reversex = ascending
                     superClassArgs{6} = 'wavenumber';   % xlabelname
                     superClassArgs{7} = 'cm^{-1}';      % xlabelunit
                     superClassArgs{8} = 'absorbance';   % ylabelname

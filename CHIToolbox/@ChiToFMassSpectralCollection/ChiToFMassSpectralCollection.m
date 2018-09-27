@@ -64,6 +64,8 @@ classdef ChiToFMassSpectralCollection < ChiSpectralCollection & ChiToFMSCharacte
                             throw(err);
                         end
                     end
+                case 2
+                    superClassArgs = varargin;
                 otherwise
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
             end

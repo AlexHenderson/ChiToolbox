@@ -62,7 +62,7 @@ function metadata = loadMetadata(filename)
     end
     
     %% Get settings
-    [dummy,dummy,rawSettings] = xlsread(filename, 'settings'); %#ok<ASGLU>
+    [dummy,dummy,rawSettings] = xlsread(filename, 'settings');
 
     if strcmp(rawSettings{1,1}, 'Version')
         version = rawSettings{2,1};
@@ -112,6 +112,17 @@ function metadata = loadMetadata(filename)
                 metadata.owner = owner;
             case 'Path to data files: '
                 dataPath = rawData{row,2};
+                
+                % Handle cases where relative paths are used
+                if strcmpi(dataPath,'.')
+                    metadatafilepath = GetFullPath(filename);
+                    dataPath = fileparts(metadatafilepath);
+                end
+                if strcmpi(dataPath,'..')
+                    metadatafilepath = GetFullPath(filename);
+                    dataPath = fileparts(fileparts(metadatafilepath));
+                end
+                
                 metadata.dataPath = dataPath;
             case 'Filename'
                 % This marks the end of the header section

@@ -1,6 +1,6 @@
 function normed_data = sumnorm(spectra)
 
-% SUMNORM  Sum normalisation
+% sumnorm  Sum normalisation
 % usage:
 %     normed_data = sumnorm(spectra);
 %
@@ -29,15 +29,13 @@ function normed_data = sumnorm(spectra)
 %   Initial implementation
 
 
-% New version 2015
-
 sparseinput = false;
 if issparse(spectra)
     sparseinput = true;
 end
 
 % Sum the rows (spectra)
-s = sum(spectra);
+s = sum(spectra,2);
 
 % Remove zeros that will cause a divide by zero error later. This isn't a
 % problem since the only scenario whereby we can have positive values
@@ -50,10 +48,10 @@ is = 1 ./ s;
 
 % Generate a diagonal matrix. No point storing the zeros since this may
 % cause problems with RAM
-dis = spdiags(is,0,length(is),length(is));
+multiplier = spdiags(is,0,length(is),length(is));
 
 % Calculate the normalised outcome
-normed_data = spectra' * dis;
+normed_data = multiplier * spectra;
 
 if sparseinput
     normed_data = sparse(normed_data);

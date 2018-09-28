@@ -1,6 +1,6 @@
 function obj = vectornorm(varargin)
 
-% vectornorm  Vector normalisation of these spectra. 
+% vectornorm  Vector normalisation of the data. 
 %
 % Syntax
 %   vectornorm();
@@ -14,11 +14,11 @@ function obj = vectornorm(varargin)
 %   performs the normalisation of the clone. The original object is not
 %   modified.
 %
-% Copyright (c) 2017-2018, Alex Henderson.
+% Copyright (c) 2017, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiImage.
+%   sumnorm.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -27,6 +27,7 @@ function obj = vectornorm(varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
+% Version 1.1, September 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -34,7 +35,6 @@ function obj = vectornorm(varargin)
 this = varargin{1};
 
 if nargout
-    % We are expecting to generate a modified clone of this object
     obj = this.clone();
     % Not a great approach, but quite generic. 
     % Prevents errors if the function name changes. 

@@ -73,3 +73,14 @@ vn_data = data;
 if is3D
     vn_data = reshape(vn_data,dims(1),dims(2),dims(3));
 end
+
+%% Notes
+% This is vector normalisation of each pixel in a hyperspectral image,
+% independent of any other pixel. 
+
+%% Explanation
+% If the L2Norm is 0 we can set it to 1. This is because the only way in
+% which we can get a value of 0 for the L2norm is if all the values that
+% are involved in its generation are 0. Therefore we would be dividing 0 by
+% 0. Dividing 0 by 1 gives, effectively, the same result, but without the
+% error.

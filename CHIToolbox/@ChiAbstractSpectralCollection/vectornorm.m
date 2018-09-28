@@ -1,13 +1,13 @@
-function varargout = vectornorm(this)
+function obj = vectornorm(varargin)
 
-% vectornorm  Vector normalisation of this spectrum. 
+% vectornorm  Vector normalisation of the data. 
 %
 % Syntax
 %   vectornorm();
 %   normalised = vectornorm();
 %
 % Description
-%   vectornorm() expresses the spectrum as a unit length vector. This
+%   vectornorm() expresses each spectrum as a unit length vector. This
 %   version modifies the original object.
 %
 %   normalised = vectornorm() first creates a clone of the object, then
@@ -18,7 +18,7 @@ function varargout = vectornorm(this)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiSpectrum.
+%   sumnorm.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -27,18 +27,22 @@ function varargout = vectornorm(this)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2017
+% Version 1.1, September 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-if (nargout > 0)
-    % We are expecting to generate a modified clone of this object
-    varargout{1} = clone(this);
-    varargout{1}.data = utilities.vectornorm(varargout{1}.data);
-    varargout{1}.history.add('vector normalised');    
+this = varargin{1};
+
+if nargout
+    obj = this.clone();
+    % Not a great approach, but quite generic. 
+    % Prevents errors if the function name changes. 
+    command = [mfilename, '(obj,varargin{2:end});'];
+    eval(command);  
 else
-    % We are expecting to modified this object in situ
+    % We are expecting to modify this object in situ
+    
     this.data = utilities.vectornorm(this.data);
     this.history.add('vector normalised');
 end

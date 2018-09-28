@@ -206,17 +206,17 @@ end
 if plotinfo.functionplot
     switch plotinfo.appliedfunction
         case 'mean'
-            plot(ax,this.xvals,mean(this.data),varargin{:});
+            plot(ax,this.xvals,ChiMean(this.data),varargin{:});
         case 'sum'
-            plot(ax,this.xvals,sum(this.data),varargin{:});
+            plot(ax,this.xvals,ChiSum(this.data),varargin{:});
         case 'median'
-            plot(ax,this.xvals,median(this.data),varargin{:});
+            plot(ax,this.xvals,ChiMedian(this.data),varargin{:});
         case 'std'
             % Plot the mean with the standard deviation plotted as a shaded
             % overlay. 
             colours = get(gca,'colororder');
 %             shadedErrorBar(this.xvals,mean(this.data),std(this.data),{'Color',colours(1,:)});
-            shadedErrorBar(ax,this.xvals,this.data,{@mean,@std},'lineprops',{'color',colours(1,:)});
+            shadedErrorBar(ax,this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)});
             
         otherwise
             % ToDo: Correct the error code
@@ -255,19 +255,19 @@ if plotinfo.functionplot
     switch plotinfo.appliedfunction
         case 'mean'
             % Plot the mean of the entire data set
-            plot(ax,this.xvals,mean(this.data),varargin{:});
+            plot(ax,this.xvals,ChiMean(this.data),varargin{:});
         case 'sum'
             % Plot the sum of the entire data set
-            plot(ax,this.xvals,sum(this.data),varargin{:});
+            plot(ax,this.xvals,ChiSum(this.data),varargin{:});
         case 'median'
             % Plot the sum of the entire data set
-            plot(ax,this.xvals,median(this.data),varargin{:});
+            plot(ax,this.xvals,ChiMedian(this.data),varargin{:});
         case 'std'
             % Plot the mean with the standard deviation plotted as a shaded
             % overlay. 
             colours = get(gca,'colororder');
 %             shadedErrorBar(this.xvals,mean(this.data),std(this.data),{'Color',colours(1,:)},1);
-            shadedErrorBar(ax,this.xvals,this.data,{@mean,@std},'lineprops',{'color',colours(1,:)});
+            shadedErrorBar(ax,this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)});
         otherwise
             % ToDo: Correct the error code
             err = MException('CHI:ChiToolbox:UnknownInput', ...
@@ -323,19 +323,19 @@ for i = 1:this.classmembership.numuniquelabels
     if plotinfo.functionplot
         switch plotinfo.appliedfunction
             case 'mean'
-                figurehandle = plot(ax,this.xvals,mean(spectra),varargin{:});
+                figurehandle = plot(ax,this.xvals,ChiMean(spectra),varargin{:});
                 legendHandles(i) = figurehandle(1);
             case 'sum'
-                figurehandle = plot(ax,this.xvals,sum(spectra),varargin{:});
+                figurehandle = plot(ax,this.xvals,ChiSum(spectra),varargin{:});
                 legendHandles(i) = figurehandle(1);
             case 'median'
-                figurehandle = plot(ax,this.xvals,median(spectra),varargin{:});
+                figurehandle = plot(ax,this.xvals,ChiMedian(spectra),varargin{:});
                 legendHandles(i) = figurehandle(1);
             case 'std'
                 % Each class is averaged and plotted with a different colour.
                 % The standard deviation is plotted as a shaded overlay.
                 colour = colours(c,:);
-                figurehandle = shadedErrorBar(ax,this.xvals,spectra,{@mean,@std},'lineprops',{'color',colour});
+                figurehandle = shadedErrorBar(ax,this.xvals,spectra,{@ChiMean,@ChiStd},'lineprops',{'color',colour});
                 legendHandles(i) = figurehandle.mainLine;
                 if (c == numcolours)
                     c = 1;  % Reset colours to the beginning
@@ -366,7 +366,7 @@ hold(ax,'off');
 
 % Manage the legend. This is the colours of the lines, which is the same as
 % uniquelabels
-if isnumeric(this.classmembership.uniquelabels)
+if (isnumeric(this.classmembership.uniquelabels) || islogical(this.classmembership.uniquelabels))
     legend(legendHandles,cellstr(num2str(this.classmembership.uniquelabels)),'Location','best','Interpreter','none');
 else
     legend(legendHandles,this.classmembership.uniquelabels,'Location','best','Interpreter','none');

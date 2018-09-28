@@ -19,7 +19,7 @@ function varargout = removewax(this,varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   removeco removerange ChiSpectrum.
+%   removeco removediamond removerange ChiSpectrum.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

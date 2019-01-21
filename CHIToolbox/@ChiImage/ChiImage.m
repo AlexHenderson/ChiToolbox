@@ -39,7 +39,7 @@ classdef ChiImage < ChiAbstractImage
     methods
     % =====================================================================
         % Constructor
-        function this = ChiImage(xvals,data,xpixels,ypixels,reversex,xlabelname,xlabelunit,ylabelname,ylabelunit,masked,mask,filenames)
+        function this = ChiImage(xvals,data,xpixels,ypixels,reversex,xlabelname,xlabelunit,ylabelname,ylabelunit,masked,mask,filenames,logger)
             % Create an instance of ChiImage with given parameters
             
             this.spectrumclassname = 'ChiSpectrum';

@@ -38,6 +38,10 @@ function display(varargin) %#ok<DISPLAY>
 % co-locate the feature. 
 
     plot(varargin{1});
+    if (length(varargin) > 1) 
+        title(varargin{2})
+    end
+    
 %     plot(this,varargin{:});
     
 end

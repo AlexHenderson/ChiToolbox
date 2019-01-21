@@ -3,10 +3,10 @@ function output = areaidx(this,lowidx,highidx)
 % areaidx  The area under a linear baseline
 %
 % Syntax
-%   areavalues = areaidx(lowidx, highidx);
+%   values = areaidx(lowidx, highidx);
 %
 % Description
-%   areavalues = areaidx(lowidx, highidx) calculates the area under each
+%   values = areaidx(lowidx, highidx) calculates the area under each
 %   spectrum between the index limits provided in lowidx and highidx. A
 %   linear baseline is removed.
 %
@@ -14,7 +14,7 @@ function output = areaidx(this,lowidx,highidx)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiSpectralCollection.area
+%   area
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -25,6 +25,7 @@ function output = areaidx(this,lowidx,highidx)
 
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
+
 
     % Swap if 'from' is higher than 'to'
     [lowidx,highidx] = ChiForceIncreasing(lowidx,highidx);

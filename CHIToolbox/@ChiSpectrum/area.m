@@ -3,18 +3,18 @@ function output = area(this,lowx,highx)
 % area  The area under a linear baseline
 %
 % Syntax
-%   areavalue = area(lowx, highx);
+%   value = area(lowx, highx);
 %
 % Description
-%   areavalue = area(lowx, highx) calculates the area under the spectrum of
-%   each pixel between the limits provided in lowx and highx in x-axis
-%   units. A linear baseline is removed.
+%   value = area(lowx, highx) calculates the area under the spectrum
+%   between the limits provided in lowx and highx in x-axis units. A linear
+%   baseline is removed.
 %
 % Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiSpectrum.areaidx
+%   areaidx
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -25,6 +25,7 @@ function output = area(this,lowx,highx)
 
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
+
 
     lowidx = indexat(this, lowx);
     highidx = indexat(this, highx);

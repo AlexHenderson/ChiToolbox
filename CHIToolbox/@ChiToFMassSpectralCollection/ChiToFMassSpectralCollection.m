@@ -1,11 +1,10 @@
-classdef ChiToFMassSpectralCollection < ChiSpectralCollection & ChiToFMSCharacter
+classdef ChiToFMassSpectralCollection < ChiMassSpectralCollection & ChiToFMSCharacter
     
 % ChiToFMassSpectralCollection  Storage class for time-of-flight mass spectra
 % Copyright (c) 2017 Alex Henderson (alex.henderson@manchester.ac.uk)
     
     % =====================================================================
     properties (Dependent)
-        mass
     end
     
     % =====================================================================
@@ -70,7 +69,7 @@ classdef ChiToFMassSpectralCollection < ChiSpectralCollection & ChiToFMSCharacte
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
             end
             
-            this@ChiSpectralCollection(superClassArgs{:});
+            this@ChiMassSpectralCollection(superClassArgs{:});
             this@ChiToFMSCharacter();
             
             this.spectrumclassname = 'ChiToFMassSpectrum';
@@ -117,25 +116,6 @@ classdef ChiToFMassSpectralCollection < ChiSpectralCollection & ChiToFMSCharacte
         end
 
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function mass = get.mass(this)
-            mass = this.xvals;
-        end
-        
-        %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function set.mass(this,x)
-            if (length(x) ~= length(this.data))
-                err = MException(['CHI:',mfilename,':OutOfRange'], ...
-                    'mass and data are different lengths.');
-                throw(err);
-            end
-            if (x(1) > x(end))
-                x = flip(x);                
-            end
-            this.xvals = x;
-        end
-        
-        %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        
         
     end % methods
 

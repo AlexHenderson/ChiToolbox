@@ -1,4 +1,4 @@
-classdef ChiToFMassSpectrum < ChiSpectrum & ChiToFMSCharacter
+classdef ChiToFMassSpectrum < ChiMassSpectrum & ChiToFMSCharacter
 
 % ChiToFMassSpectrum  A time-of-flight mass spectrum. 
 %
@@ -44,7 +44,6 @@ classdef ChiToFMassSpectrum < ChiSpectrum & ChiToFMSCharacter
 
 
     properties (Dependent)
-        mass
     end
     
     % =====================================================================
@@ -93,7 +92,7 @@ classdef ChiToFMassSpectrum < ChiSpectrum & ChiToFMSCharacter
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
             end
             
-            this@ChiSpectrum(superClassArgs{:});
+            this@ChiMassSpectrum(superClassArgs{:});
             this@ChiToFMSCharacter();
             
             this.ontologyinfo = ChiOntologyInformation();
@@ -129,26 +128,8 @@ classdef ChiToFMassSpectrum < ChiSpectrum & ChiToFMSCharacter
             obj.history = this.history.clone();
             obj.history.add('Cloned');
         end
-        
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function mass = get.mass(this)
-            mass = this.xvals;
-        end
         
-        %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function set.mass(this,m)
-            if (length(m) ~= length(this.data))
-                err = MException(['CHI:',mfilename,':OutOfRange'], ...
-                    'Mass and data are different lengths.');
-                throw(err);
-            end
-            if (m(1) > m(end))
-                m = flip(m);                
-            end
-            this.xvals = m;
-        end
-        
-        %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     end
     
 end

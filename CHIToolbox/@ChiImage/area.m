@@ -3,19 +3,18 @@ function output = area(this,lowx,highx)
 % area  The area under a linear baseline
 %
 % Syntax
-%   areapicture = area(lowx, highx);
+%   picture = area(lowx, highx);
 %
 % Description
-%   areapicture = area(lowx, highx) calculates the area under the spectrum
-%   of each pixel between the limits provided in lowx and highx in x-axis
-%   units. A linear baseline is removed. A ChiPicture is produced in
-%   areapicture.
+%   picture = area(lowx, highx) calculates the area under the spectrum of
+%   each pixel between the limits provided in lowx and highx in x-axis
+%   units. A linear baseline is removed. picture is a ChiPicture.
 %
 % Copyright (c) 2017-2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiImage.areaidx ChiPicture.
+%   areaidx ChiPicture.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -26,6 +25,7 @@ function output = area(this,lowx,highx)
 
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
+
 
     lowidx = indexat(this, lowx);
     highidx = indexat(this, highx);

@@ -1,20 +1,20 @@
-function output = area(this,lowx,highx)
+function output = areaidx(varargin)
 
-% area  The area under a linear baseline
+% areaidx  The area above a zero intensity baseline
 %
 % Syntax
-%   values = area(lowx, highx);
+%   values = areaidx(lowidx, highidx);
 %
 % Description
-%   values = area(lowx, highx) calculates the area under each spectrum
-%   between the limits provided in lowx and highx in x-axis units. A linear
+%   values = areaidx(lowidx, highidx) calculates the area under each
+%   spectrum between the index limits provided in lowidx and highidx. No
 %   baseline is removed.
-%
-% Copyright (c) 2017-2018, Alex Henderson.
+% 
+% Copyright (c) 2017-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   areaidx
+%   peakarea peakareaidx area
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -27,9 +27,6 @@ function output = area(this,lowx,highx)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-    lowidx = indexat(this, lowx);
-    highidx = indexat(this, highx);
+output = areaidx@ChiMassSpecCharacter(varargin{:});
 
-    this.history.add(['measured area from ', num2str(lowx), ' to ', num2str(highx), ' x-axis units']);
-    output = this.areaidx(lowidx,highidx);
-end
+end % function areaidx

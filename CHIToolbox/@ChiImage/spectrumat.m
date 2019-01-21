@@ -28,8 +28,8 @@ function spectrum = spectrumat(this,xpos,ypos)
             spectrumdata = zeros(1,this.channels());
         end
     else
-        y = reshape(this.data,this.ypixels,this.xpixels,[]);
-        spectrumdata = squeeze(y(ypos,xpos,:));
+        pos = sub2ind([this.ypixels,this.xpixels],ypos,xpos);
+        spectrumdata = full(squeeze(this.data(pos,:)));
     end
 
     spectrumclass = str2func(this.spectrumclassname);

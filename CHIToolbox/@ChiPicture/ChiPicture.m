@@ -9,6 +9,7 @@ classdef ChiPicture < handle
         %% Basic properties
         properties
             data;       % Contents of object as a 2D matrix
+            bimodal = false;
             history;
         end
     
@@ -116,20 +117,19 @@ classdef ChiPicture < handle
         function output = clone(this)
             % Make a copy of this picture
             output = ChiPicture(this.data,this.xpixels,this.ypixels);
+            output.bimodal = this.bimodal;
             output.history = this.history.clone();
         end
         
         %% xpixels : Width of image
         function xpixels = get.xpixels(this)
             % xpixels : Width of image
-            
             xpixels = this.xpixels;
         end
         
         %% ypixels : Height of image
         function ypixels = get.ypixels(this)
             % ypixels : Height of image
-            
             ypixels = this.ypixels;
         end
         

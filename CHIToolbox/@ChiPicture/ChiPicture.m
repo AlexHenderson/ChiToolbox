@@ -32,6 +32,11 @@ classdef ChiPicture < handle
 
             if (nargin > 0) % Support calling with 0 arguments
                 this.history = ChiLogger();
+                
+                if nargin
+                    data = full(data);
+                end
+                
                 switch (nargin)
                     case 1
                         % Only have the data
@@ -78,8 +83,8 @@ classdef ChiPicture < handle
                                 throw(err);
                         end
                     case 3
-                        % We should have everything we need. Double check we've
-                        % been told the correct information. 
+                        % We should have everything we need. Double check
+                        % we've been told the correct information.
                         if (numel(data) ~= (xpixels*ypixels))
                             % We've been given the wrong information
                             % regarding the number of data points. 

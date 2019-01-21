@@ -37,5 +37,8 @@ function display(this,varargin) %#ok<DISPLAY>
 % co-locate the feature. 
 
     plot(this,varargin{:});
+    if length(varargin)  %#ok<ISMT>
+        title(varargin{1})
+    end
     
 end

@@ -1,4 +1,4 @@
-classdef ChiSpectralPCAOutcome < handle
+classdef ChiSpectralPCAOutcome < ChiHandle
 % ChiSpectralPCAOutcome
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 

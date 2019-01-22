@@ -1,4 +1,4 @@
-classdef (Abstract) ChiAbstractFileFormat < handle
+classdef (Abstract) ChiAbstractFileFormat < ChiHandle
 
 % ChiAbstractFileFormat  The base level for all file format readers
 %

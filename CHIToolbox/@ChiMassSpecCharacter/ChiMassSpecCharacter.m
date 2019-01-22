@@ -1,4 +1,4 @@
-classdef ChiMassSpecCharacter < handle
+classdef ChiMassSpecCharacter < ChiHandle
 
 % ChiMassSpecCharacter  Features specific to mass spectral data
 %

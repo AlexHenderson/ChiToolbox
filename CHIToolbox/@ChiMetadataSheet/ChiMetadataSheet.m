@@ -1,4 +1,4 @@
-classdef ChiMetadataSheet < handle
+classdef ChiMetadataSheet < ChiHandle
 
 % ChiMetadataSheet  Metadata Excel file reader
 

@@ -1,4 +1,4 @@
-classdef (Abstract) ChiAbstractSpectralCollection < handle
+classdef (Abstract) ChiAbstractSpectralCollection < ChiHandle
 % ChiAbstractSpectralCollection  Abstract class to define collections of spectra
 % Copyright (c) 2017 Alex Henderson (alex.henderson@manchester.ac.uk)
 

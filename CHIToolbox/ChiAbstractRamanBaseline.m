@@ -1,4 +1,4 @@
-classdef ChiAbstractRamanBaseline < handle
+classdef ChiAbstractRamanBaseline < ChiHandle
 
 % ChiAbstractRamanBaseline  An abstract base class for all methods of subtracting Raman baselines
     

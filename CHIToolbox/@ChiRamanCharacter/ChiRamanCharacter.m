@@ -1,4 +1,4 @@
-classdef ChiRamanCharacter < handle
+classdef ChiRamanCharacter < ChiHandle
 
 % ChiRamanCharacter  Features specific to Raman data
 %

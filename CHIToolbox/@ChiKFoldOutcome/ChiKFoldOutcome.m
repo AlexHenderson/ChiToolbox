@@ -1,4 +1,4 @@
-classdef ChiKFoldOutcome < handle
+classdef ChiKFoldOutcome < ChiHandle
     %ChiKFoldOutcome Summary of this class goes here
     %   Detailed explanation goes here
     

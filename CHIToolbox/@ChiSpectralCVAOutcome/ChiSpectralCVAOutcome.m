@@ -1,4 +1,4 @@
-classdef ChiSpectralCVAOutcome < handle
+classdef ChiSpectralCVAOutcome < ChiHandle
 % ChiSpectralCVAOutcome
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
@@ -10,7 +10,7 @@ classdef ChiSpectralCVAOutcome < handle
         eigenvectors;
         eigenvalues;        
         pcs;        % 95% cumulative explained variance
-        pca; % ChiSpectralPCAOutcome
+        pca;        % ChiSpectralPCAOutcome
         history;
     end
     

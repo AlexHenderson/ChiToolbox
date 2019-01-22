@@ -1,4 +1,4 @@
-classdef ChiClassMembership < handle
+classdef ChiClassMembership < ChiHandle
 
 % ChiClassMembership Creates a class membership list for categorical variables
 %

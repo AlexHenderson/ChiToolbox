@@ -1,4 +1,4 @@
-classdef (Abstract) ChiAbstractSpectrum < handle
+classdef (Abstract) ChiAbstractSpectrum < ChiHandle
 % ChiAbstractSpectrum  Abstract class to define spectral characteristics
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
     

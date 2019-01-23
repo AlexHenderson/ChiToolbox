@@ -22,7 +22,7 @@ Follow [@ChiToolbox](https://twitter.com/ChiToolbox) on Twitter for notification
 - [Credits](https://bitbucket.org/AlexHenderson/chitoolbox/wiki/Credits)
 
 ## Licence
-The ChiToolbox is copyright (c) 2014-2018 Alex Henderson   
+The ChiToolbox is copyright (c) 2014-2019 Alex Henderson   
 It is released under the GNU GPL 3.0 licence, a copy of which is included in the file collection, but which may also be found at [https://www.gnu.org/licenses/gpl-3.0.en.html](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 The licences of the included files, detailed in the [Credits section](Credits.md), are equally or more liberal in nature.  

@@ -86,7 +86,7 @@ if strcmpi(this.imzmlproperties.instrument, 'Ionoptika J105')
         % Wish to generate: C:\MyData\stub.imzml
         % Therefore remove the last one/two extensions and append .imzml
         expr = '^(.+)\.\d{4}_\d{3}_\d{3}.*';
-        [start_idx, end_idx, extents, matches, tokens] = regexp(this.filename, expr); %#ok<ASGLU>
+        [start_idx, end_idx, extents, matches, tokens] = regexp(this.filenames{1}, expr); %#ok<ASGLU>
         stub = tokens{1,1}{1,1};
         filename = [stub,'.imzml'];
     end

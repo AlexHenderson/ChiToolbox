@@ -130,7 +130,7 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
                     superClassArgs{6} = 'absorbance';
                     superClassArgs{7} = '';
                 otherwise
-                    utilities.warningnobacktrace('Not all parameters were interpreted. ')
+%                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
             end
             
             this@ChiSpectralCollection(superClassArgs{:});

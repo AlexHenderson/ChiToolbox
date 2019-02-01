@@ -11,11 +11,11 @@ classdef ChiFileReader
 %
 %   This class can read a range of different filetypes.
 %
-% Copyright (c) 2018, Alex Henderson.
+% Copyright (c) 2018-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiSpectrum ChiSpectralCollection ChiImage.
+%   ChiSpectrum ChiSpectralCollection ChiImage ChiMetadataSheet.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -24,7 +24,7 @@ classdef ChiFileReader
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 2.0, September 2018
+% Version 3.0, February 2019
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
     
@@ -32,6 +32,9 @@ classdef ChiFileReader
 % First we collect a list of all classes that inherit from
 % ChiAbstractFileFormat. Each of these has some static functions. We call
 % these functions to build a list of readable file types. 
+
+% We also include the option to load a metadata Excel spreadsheet that
+% includes the data filenames. 
 
 % All the methods here are static. That way we can identify the correct
 % filetype and dispatch to the appropriate reader without having to
@@ -115,8 +118,12 @@ classdef ChiFileReader
                 keys = filtermap.keys';
                 values = filtermap.values';
                 
+                % Add facility to open MetadaSheet files
+                keys = vertcat(keys,'MetadataSheets (*.xls;*.xlsx)');
+                values = vertcat(values,'*.xls;*.xlsx');
+                
                 filtercellarray = horzcat(values,keys);
-                for i = 1:filtermap.Count
+                for i = 1:length(keys)
                     if i == 1
                         % First pass through, no semicolon
                         readableextensions = values{i};

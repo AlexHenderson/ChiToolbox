@@ -1,10 +1,11 @@
-function obj = ChiFile(filenames)
+function [varargout] = ChiFile(filenames)
 
 % ChiFile  Opens a range of different filetypes
 %
 % Syntax
 %   myfile = ChiFile();
 %   myfile = ChiFile(filename);
+%   [myfile,metadata] = ChiFile(____);
 %
 % Description
 %   myfile = ChiFile() opens a dialog box to request a filename from the
@@ -12,13 +13,20 @@ function obj = ChiFile(filenames)
 % 
 %   myfile = ChiFile(filename) opens the filename provided as a char
 %   string.
+% 
+%   [myfile,metadata] = ChiFile(____) returns a ChiMetadataSheet object if
+%   a MetaDataSheet was used as input. 
 %
+% Notes  
 %   This class can read a range of different filetypes.
 %   Only a single file can be opened using this method. If you require
 %   multiple files (say to create a ChiSpectralCollection) you should use
 %   the appropriate reader for that file type. 
+% 
+%   If a Metadata Excel spreadsheet is used as input, the filenames and
+%   data location from that file will be used to inform the data reader.
 %
-% Copyright (c) 2018, Alex Henderson.
+% Copyright (c) 2018-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -40,6 +48,9 @@ function obj = ChiFile(filenames)
 % ChiAbstractFileFormat. Each of these has some static functions. We call
 % these functions to build a list of readable file types. 
     
+% We also include the option to load a metadata Excel spreadsheet that
+% includes the data filenames. 
+
 % Note this is a free function, not a class. 
 
 
@@ -54,7 +65,24 @@ function obj = ChiFile(filenames)
         filenames = cellstr(filenames);
     end
     
+    fromMetadata = false;
+    % If we have a ChiMetadataSheet then extract the data from there
+    [filepath,name,ext] = fileparts(filenames{1}); %#ok<ASGLU>
+    if (strcmpi(ext,'.xls') || strcmpi(ext,'.xlsx'))
+        metadata = ChiMetadataSheet();
+        metadata.open(filenames{1});
+        filenames = metadata.fullfilenames;
+        fromMetadata = true;
+    end
+    
     % Pass filenames on to next stage
     obj = ChiFileReader.read(filenames);
+    varargout{1} = obj;
+    
+    % Attach metadata if appropriate (once it's built...)
+    if fromMetadata
+%         obj.metadata = metadata;
+        varargout{2} = metadata;
+    end
     
 end

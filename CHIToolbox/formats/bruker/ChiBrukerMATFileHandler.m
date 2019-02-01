@@ -1,22 +1,22 @@
-function obj = ChiBrukerFileHandler(varargin)
+function obj = ChiBrukerMATFileHandler(varargin)
 
-% ChiBrukerFileHandler  File format handler for Bruker Opus files
+% ChiBrukerMATFileHandler  File format handler for Bruker Opus MAT files
 % 
 % Imports MAT files exported from Bruker Opus at Diamond Light Source
 %
 % Syntax
-%   brukerData = ChiBrukerFileHandler();
-%   brukerData = ChiBrukerFileHandler(filename);
-%   brukerData = ChiBrukerFileHandler(____,'map',height,width);
+%   brukerData = ChiBrukerMATFileHandler();
+%   brukerData = ChiBrukerMATFileHandler(filename);
+%   brukerData = ChiBrukerMATFileHandler(____,'map',height,width);
 %
 % Description
-%   brukerData = ChiBrukerFileHandler() prompts the user for a Bruker Opus
-%   MATLAB file (*.mat).
+%   brukerData = ChiBrukerMATFileHandler() prompts the user for a Bruker
+%   Opus MATLAB file (*.mat).
 % 
-%   brukerData = ChiBrukerFileHandler(filename) opens the file named
+%   brukerData = ChiBrukerMATFileHandler(filename) opens the file named
 %   filename.
 %
-%   brukerData = ChiBrukerFileHandler(____,'map',height,width) opens a
+%   brukerData = ChiBrukerMATFileHandler(____,'map',height,width) opens a
 %   Bruker Opus MATLAB file collected in mapping format. height and width
 %   are the rows and columns of the map. If filename is not provided, the
 %   user is prompted for a location.
@@ -104,4 +104,4 @@ for i = 1:length(filenames)
     obj.history.add(['Bruker Opus MAT file: ', filenames{i}]);
 end
             
-end % function ChiBrukerFileHandler
+end % function ChiBrukerMATFileHandler

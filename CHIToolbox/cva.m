@@ -60,7 +60,7 @@ if (nargin > 2)
             case 'undersample'
                 undersampleRequired = true;
             otherwise
-                warning('Sampling type not understood. Falling back to the default of ''undersample''');
+                utilities.warningnobacktrace('Sampling type not understood. Falling back to the default of ''undersample''');
         end        
         
         % Remove the parameter from the argument list

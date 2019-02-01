@@ -30,6 +30,7 @@ classdef ChiImagePCAOutcome < ChiHandle
         width;          % Number of pixels in the x-direction
         height;         % Number of pixels in the y-direction
         numpcs;         % Number of principal components
+        xlabel          % Composition of the xlabelname and the xlabelunit
     end
     
     methods
@@ -80,6 +81,17 @@ classdef ChiImagePCAOutcome < ChiHandle
             % Calculate number of pixels down the image (y-direction)
             height = this.ypixels;
         end
+        
+        %% xlabel : Generate the x-axis label
+        function xlabel = get.xlabel(this)
+            if isempty(this.xlabelunit)
+                xlabel = this.xlabelname;
+            else
+                xlabel = [this.xlabelname, ' (', this.xlabelunit, ')'];
+            end                
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
     end
     

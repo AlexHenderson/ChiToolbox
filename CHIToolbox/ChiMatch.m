@@ -21,7 +21,7 @@ if ~isa(spectrum,'ChiSpectrum')
     throw(err);
 end
 
-if (image.channels == spectrum.channels)
+if (image.numchannels == spectrum.numchannels)
 
     switch lower(comparison)
         case 'cosine'

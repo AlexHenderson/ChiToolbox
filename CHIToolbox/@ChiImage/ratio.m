@@ -1,6 +1,31 @@
 function output = ratio(this,numerator,denominator)
-% Generate ChiPicture of a ratio of spectral ranges using xvalues
-% Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
+
+% ratio  The ratio of under a linear baseline
+%
+% Syntax
+%   areapicture = area(lowx, highx);
+%
+% Description
+%   areapicture = area(lowx, highx) calculates the area under the spectrum
+%   of each pixel between the limits provided in lowx and highx in x-axis
+%   units. A linear baseline is removed. A ChiPicture is produced in
+%   areapicture.
+%
+% Copyright (c) 2014-2018, Alex Henderson.
+% Licenced under the GNU General Public License (GPL) version 3.
+%
+% See also 
+%   ChiImage.areaidx ChiPicture.
+
+% Contact email: alex.henderson@manchester.ac.uk
+% Licenced under the GNU General Public License (GPL) version 3
+% http://www.gnu.org/copyleft/gpl.html
+% Other licensing options are available, please contact Alex for details
+% If you use this file in your work, please acknowledge the author(s) in
+% your publications. 
+
+% The latest version of this file is available on Bitbucket
+% https://bitbucket.org/AlexHenderson/chitoolbox
 
     if isscalar(numerator)
         % Single x value
@@ -14,7 +39,7 @@ function output = ratio(this,numerator,denominator)
         else
             % Error
             err = MException('CHI:ChiImage:DimensionalityError', ...
-                'Numerator range is not a single value or simple range.');
+                'Numerator range is not a single value, or simple range.');
             throw(err);
         end
     end
@@ -31,11 +56,12 @@ function output = ratio(this,numerator,denominator)
         else
             % Error
             err = MException('CHI:ChiImage:DimensionalityError', ...
-                'Numerator range is not a single value or simple range.');
+                'Numerator range is not a single value, or simple range.');
             throw(err);
         end
     end
 
-    this.history.add(['ratioxvals, ', num2str(numerator), ' / ', num2str(denominator)]);
+    this.history.add(['ratio of xvals, ', num2str(numerator), ' / ', num2str(denominator)]);
     output = ratioidx(this,numeratoridx,denominatoridx);
+    
 end % ratioxvals

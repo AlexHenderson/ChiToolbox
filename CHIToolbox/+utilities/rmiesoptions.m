@@ -1,4 +1,4 @@
-classdef rmiesoptions < handle
+classdef rmiesoptions < ChiHandle
 
 % rmiesoptions  Resonant Mie scattering correction options
 %

@@ -1,6 +1,6 @@
 classdef ChiOpusFile < ChiHandle
 
-% ChiOpusFile  File format handler for Bruker Opus files (*.0)
+% ChiOpusFile  File format handler for Bruker Opus files (*.??? where ??? is a number)
 % 
 % Syntax
 %   myfile = ChiOpusFile();
@@ -18,8 +18,13 @@ classdef ChiOpusFile < ChiHandle
 %   char string, or cell array of char strings.
 %
 % Notes
-%   Multiple raw files (*.0) can be selected. These will be concatenated
-%   into a single ChiSpectralCollection. 
+%   Multiple Opus files can be selected. These will be concatenated into a
+%   single ChiSpectralCollection.
+%   The Open Files dialog only suggests files up to *.10
+%   (.0,.1,.2,.3,.4,.5,.6,.7,.8,.9,.10). If files with extensions higher
+%   than that are required, use the All Files (*.*) filter.
+%   Some Opus files do not contain spectra. If one of these is selected a
+%   warning is issued and the file is ignored. 
 %
 % Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -51,37 +56,44 @@ classdef ChiOpusFile < ChiHandle
             
             truefalse = false;
             
-            % Check extension
+            % Check extension - should be a number
             [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
-            if ~strcmpi(ext,'.0')
+            extnum = str2num(ext(2:end)); %#ok<ST2NM>
+            if (isempty(extnum) || ~isnumeric(extnum))
                 return
             end
             
             % Readability for Opus files
-            if strcmpi(ext,'.0')
-                % Bruker .0 files start with a magic number
-                % 0A 0A FE FE
-                try
-                    fid = fopen(filename,'rb','ieee-le');
-                    x = fread(fid, 1, 'uint8',0,'ieee-le');
-                    if (x ~= 10)
-                        return
-                    end
-                    x = fread(fid, 1, 'uint8',0,'ieee-le');
-                    if (x ~= 10)
-                        return
-                    end
-                    x = fread(fid, 1, 'uint8',0,'ieee-le');
-                    if (x ~= 254)
-                        return
-                    end
-                    x = fread(fid, 1, 'uint8',0,'ieee-le');
-                    if (x ~= 254)
-                        return
-                    end
-                catch
+            % Bruker files start with a magic number
+            % 0A 0A FE FE
+            try
+                fid = fopen(filename,'rb','ieee-le');
+                if (fid == -1)
+                    message = ['File not found: ', utilities.escapestring(filename)];
+                    err = MException(['CHI:',mfilename,':IOError'], ...
+                        message);
+                    throw(err);
+                end
+                    
+                x = fread(fid, 1, 'uint8',0,'ieee-le');
+                if (x ~= 10)
                     return
                 end
+                x = fread(fid, 1, 'uint8',0,'ieee-le');
+                if (x ~= 10)
+                    return
+                end
+                x = fread(fid, 1, 'uint8',0,'ieee-le');
+                if (x ~= 254)
+                    return
+                end
+                x = fread(fid, 1, 'uint8',0,'ieee-le');
+                if (x ~= 254)
+                    return
+                end
+            catch ex
+                truefalse = false;
+                rethrow(ex);
             end
             
             % If we get to here, we consider the file to be readable. 
@@ -90,12 +102,12 @@ classdef ChiOpusFile < ChiHandle
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function extn = getExtension()
-            extn = '*.0';
+            extn = '*.0;*.1;*.2;*.3;*.4;*.5;*.6;*.7;*.8;*.9;*.10';
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function filter = getFiltername()
-            filter = 'Bruker Opus Files (*.0)';
+            filter = 'Bruker Opus Files (*.???) where ??? is a number';
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -122,7 +134,7 @@ classdef ChiOpusFile < ChiHandle
             % Check whether the files are OK for a Bruker Opus reader
             for i = 1:length(filenames) 
                 if ~ChiOpusFile.isreadable(filenames{i})
-                    message = sprintf('Filename %s is not a Bruker Opus file (*.0). ', utilities.pathescape(filenames{i}));
+                    message = sprintf('Filename %s is not a Bruker Opus file (*.???) where ??? is a number. ', utilities.pathescape(filenames{i}));
                     err = MException(['CHI:',mfilename,':InputError'], message);
                     throw(err);
                 end
@@ -146,32 +158,43 @@ classdef ChiOpusFile < ChiHandle
                         
             else
                 % Need to manage multiple files
+                fileisreadable = true(length(filenames),1);
                 for i = 1:length(filenames)
-                    [xvals,data,height,width,currentfilename,acqdate,xlabel,xunit,ylabel,yunit,datatype] = ChiOpusFileHandler(filenames{i}); %#ok<ASGLU>
-                    if (i == 1)
-                        % Workaround for broken ChiSpectralCollection.append
-                        obj = ChiIRSpectralCollection(xvals,data,true,xlabel,xunit,ylabel,yunit);                        
-                    else
-                        switch datatype
-                            case 'spectrum'
-                                obj.append(ChiIRSpectrum(xvals,data,true,xlabel,xunit,ylabel,yunit));
-                            case 'spectralcollection'
-                                obj.append(ChiIRSpectralCollection(xvals,data,true,xlabel,xunit,ylabel,yunit));
-                            case 'image'
-                                % Convert image to spectral collection
-                                obj.append(ChiIRSpectralCollection(xvals,data,true,xlabel,xunit,ylabel,yunit));
-                            otherwise
-                                message = sprintf('Unknown data type (spectrum/collection/image) in %s. ', utilities.pathescape(filenames{i}));
-                                err = MException(['CHI:',mfilename,':InputError'], message);
-                                throw(err);
+                    try
+                        [xvals,data,height,width,currentfilename,acqdate,xlabel,xunit,ylabel,yunit,datatype] = ChiOpusFileHandler(filenames{i}); %#ok<ASGLU>
+                        if (i == 1)
+                            % Workaround for broken ChiSpectralCollection.append
+                            obj = ChiIRSpectralCollection(xvals,data,true,xlabel,xunit,ylabel,yunit);                        
+                        else
+                            switch datatype
+                                case 'spectrum'
+                                    obj.append(ChiIRSpectrum(xvals,data,true,xlabel,xunit,ylabel,yunit));
+                                case 'spectralcollection'
+                                    obj.append(ChiIRSpectralCollection(xvals,data,true,xlabel,xunit,ylabel,yunit));
+                                case 'image'
+                                    % Convert image to spectral collection
+                                    obj.append(ChiIRSpectralCollection(xvals,data,true,xlabel,xunit,ylabel,yunit));
+                                otherwise
+                                    message = sprintf('Unknown data type (spectrum/collection/image) in %s. ', utilities.pathescape(filenames{i}));
+                                    err = MException(['CHI:',mfilename,':InputError'], message);
+                                    throw(err);
+                            end
                         end
+                    catch ex %#ok<NASGU>
+                        utilities.warningnobacktrace(['Cannot read this file: ', filenames{i}, ' Ignoring.']);
+                        fileisreadable(i) = false;
                     end
+
                 end
             end
             
-            obj.filenames = filenames;
+            obj.filenames = filenames(fileisreadable);
             for i = 1:length(filenames)
-                obj.history.add(['Bruker Opus file: ', filenames{i}]);
+                if fileisreadable(i)
+                    obj.history.add(['Bruker Opus file: ', filenames{i}]);
+                else
+                    obj.history.add(['Ignored (could not read) file: ', filenames{i}]);
+                end                    
             end
             
         end        

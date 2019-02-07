@@ -74,11 +74,27 @@ function [varargout] = ChiFile(filenames)
         filenames = metadata.fullfilenames;
         fromMetadata = true;
     end
+
+    % Check the files exist
+    existingfiles = true(length(filenames),1);
+    for i = 1:length(filenames)
+        if ~exist(filenames{i},'file')
+            utilities.warningnobacktrace(['File does not exist: ', filenames{i}, ' Ignoring.']);
+            existingfiles(i) = false;
+        end
+    end
     
-    % Pass filenames on to next stage
+    filenames = filenames(existingfiles);
+    if isempty(filenames)
+        message = 'No files found';
+        err = MException(['CHI:',mfilename,':InputError'], message);
+        throwAsCaller(err);
+    end
+    
+    % Pass on to the next stage
     obj = ChiFileReader.read(filenames);
     varargout{1} = obj;
-    
+        
     % Attach metadata if appropriate (once it's built...)
     if fromMetadata
 %         obj.metadata = metadata;

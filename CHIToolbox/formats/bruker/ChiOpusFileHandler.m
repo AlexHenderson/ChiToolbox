@@ -8,7 +8,7 @@ function [xvals,data,height,width,filenames,acqdate,xlabel,xunit,ylabel,yunit,da
 %
 % Description
 %   brukerData = ChiOpusFileHandler() prompts the user for a Bruker Opus
-%   file (*.0).
+%   file (*.??? where ??? is a number).
 % 
 %   brukerData = ChiOpusFileHandler(filename) opens the file named
 %   filename.
@@ -35,7 +35,9 @@ function [xvals,data,height,width,filenames,acqdate,xlabel,xunit,ylabel,yunit,da
 if ~isempty(varargin)
     filenames = varargin{1};
 else
-    filenames = utilities.getfilename('*.0', 'Bruker Opus Files (*.0)');
+    filter = ChiOpusFile.getExtension();
+    filtername = ChiOpusFile.getFiltername();
+    filenames = utilities.getfilename(filter, filtername);
 end
 
 if ~iscell(filenames)
@@ -69,7 +71,7 @@ catch
         warning('on',warningid);
     catch ex
         err = MException(['CHI:',mfilename,':IOError'], ...
-            'Data appears not to be background referenced.');
+            'File does not contain background referenced spectra.');
         throw(err);
     end
 end

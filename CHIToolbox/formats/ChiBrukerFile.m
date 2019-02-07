@@ -1,9 +1,9 @@
 classdef ChiBrukerFile < ChiAbstractFileFormat
 
-% ChiBrukerFile  File format handler for Bruker Opus files (*.0;*.mat)
+% ChiBrukerFile  File format handler for Bruker Opus files (*.??? or *.mat)
 % 
-% Imports Bruker Opus files either in raw format (*.0), or exported as MAT
-% files.
+% Imports Bruker Opus files either in raw format (*.??? where ??? is a
+% number), or exported as MAT files.
 % 
 % Syntax
 %   myfile = ChiBrukerFile();
@@ -28,9 +28,14 @@ classdef ChiBrukerFile < ChiAbstractFileFormat
 % 
 % Notes
 %   Only a single MAT file can be opened. 
-%   Multiple raw files (*.0) can be selected. These will be concatenated
-%   into a single ChiSpectralCollection. 
-%   Mixtures of *.0 and *.mat files are not allowed. 
+%   Multiple Opus files can be selected. These will be concatenated into a
+%   single ChiSpectralCollection.
+%   The Open Files dialog only suggests files up to *.10
+%   (.0,.1,.2,.3,.4,.5,.6,.7,.8,.9,.10). If files with extensions higher
+%   than that are required, use the All Files (*.*) filter.
+%   Mixtures of Opus and *.mat files are not allowed. 
+%   Some Opus files do not contain spectra. If one of these is selected a
+%   warning is issued and the file is ignored. 
 %
 % Copyright (c) 2017-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -45,7 +50,7 @@ classdef ChiBrukerFile < ChiAbstractFileFormat
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 6.0, January 2019
+% Version 7.0, February 2019
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -59,40 +64,23 @@ classdef ChiBrukerFile < ChiAbstractFileFormat
             
             truefalse = false;
             
-            % Check extension
-            [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
-            if ~(strcmpi(ext,'.mat') || strcmpi(ext,'.0'))
-                return
-            end
-            
             % Readability for Opus files
-            if strcmpi(ext,'.0')
-                % Bruker .0 files start with a magic number
-                % 0A 0A FE FE
-                try
-                    fid = fopen(filename,'rb','ieee-le');
-                    x = fread(fid, 1, 'uint8',0,'ieee-le');
-                    if (x ~= 10)
-                        return
-                    end
-                    x = fread(fid, 1, 'uint8',0,'ieee-le');
-                    if (x ~= 10)
-                        return
-                    end
-                    x = fread(fid, 1, 'uint8',0,'ieee-le');
-                    if (x ~= 254)
-                        return
-                    end
-                    x = fread(fid, 1, 'uint8',0,'ieee-le');
-                    if (x ~= 254)
-                        return
-                    end
-                catch
-                    return
+            try
+                truefalse = ChiOpusFile.isreadable(filename);
+                if truefalse
+                    return;
                 end
+            catch ex
+                rethrow(ex);
             end
             
             % Readability for exported MAT files
+            % Check extension
+            [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
+            if ~strcmpi(ext,'.mat')
+                return
+            end
+            
             if strcmpi(ext,'.mat')
                 % The Bruker Opus MAT files contain an item called AB
                 contents = whos('-file',filename);
@@ -114,12 +102,12 @@ classdef ChiBrukerFile < ChiAbstractFileFormat
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function extn = getExtension()
-            extn = '*.0;*.mat';
+            extn = [ChiOpusFile.getExtension(), ';*.mat'];
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function filter = getFiltername()
-            filter = 'Bruker Opus Files (*.0;*.mat)';
+            filter = 'Bruker Opus Files (*.???;*.mat) [where ??? is a number]';
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -171,18 +159,17 @@ classdef ChiBrukerFile < ChiAbstractFileFormat
                     end
                 end
                 if (matfilecount >= 1)
-                    message = 'Can read either multiple .0 files, or a single MAT file. Combinations are also not allowed.';
+                    message = 'Can read either multiple Opus files, or a single MAT file. Combinations are also not allowed.';
                     err = MException(['CHI:',mfilename,':InputError'], message);
                     throw(err);
                 end
             end
-
             
             [filepath,name,ext] = fileparts(filenames{1}); %#ok<ASGLU>
-            if strcmpi(ext, '.0')
-                obj = ChiOpusFile().read(filenames);
-            else
+            if strcmpi(ext, '.mat')
                 obj = ChiBrukerMATFileHandler(filenames,varargin);
+            else
+                obj = ChiOpusFile().read(filenames);
             end
             
         end        

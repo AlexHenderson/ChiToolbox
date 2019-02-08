@@ -91,7 +91,12 @@ classdef ChiOpusFile < ChiHandle
                 if (x ~= 254)
                     return
                 end
+                fclose(fid);
             catch ex
+                if exists('fid','var')
+                    fclose(fid);
+                    clear fid;
+                end
                 truefalse = false;
                 rethrow(ex);
             end

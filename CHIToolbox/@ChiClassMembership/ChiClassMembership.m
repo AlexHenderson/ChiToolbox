@@ -57,8 +57,23 @@ classdef ChiClassMembership < ChiHandle
                 this.title = title;
                 if (nargin == 2)
                     % We have a list of class labels, one per instance
-                    this.labels = varargin{1};
+                    if ischar(varargin{1})
+                        this.labels = char(varargin{1});
+                    else
+                        this.labels = varargin{1};
+                    end
                     this.labels = ChiForceToColumn(this.labels);
+                    
+                    if islogical(this.labels)
+                        % Replace the logical values with a pseudo-logical
+                        % list of the titles and 'not' titles. 
+                        notTitle = ['(not) ', this.title];
+                        tempLabels = cell(this.numentries,1);
+                        tempLabels(this.labels) = {title};
+                        tempLabels(~this.labels) = {notTitle};
+                        this.labels = tempLabels;
+                    end
+                    
                 else
                     % We must have pairs of labels and their number 
                     % Expecting structure like...  'alice',3, 'bob',6, 'charlie',5;

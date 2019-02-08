@@ -66,6 +66,7 @@ function [varargout] = ChiFile(filenames)
     end
     
     fromMetadata = false;
+    metadata = [];
     % If we have a ChiMetadataSheet then extract the data from there
     [filepath,name,ext] = fileparts(filenames{1}); %#ok<ASGLU>
     if (strcmpi(ext,'.xls') || strcmpi(ext,'.xlsx'))
@@ -97,8 +98,12 @@ function [varargout] = ChiFile(filenames)
         
     % Attach metadata if appropriate (once it's built...)
     if fromMetadata
+        
+        metadata.removefiles(~existingfiles);
+        
 %         obj.metadata = metadata;
         varargout{2} = metadata;
+%         varargout{3} = spectraPerFile;
     end
     
 end

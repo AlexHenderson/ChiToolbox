@@ -77,7 +77,7 @@ end
         end
 
         entries = 1:length(toremove);
-        entries(toremove) = [];
+        entries = entries(toremove);
         entries = num2str(entries);
 
         this.history.add(['Removed files: ', entries]);

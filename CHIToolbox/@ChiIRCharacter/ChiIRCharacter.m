@@ -1,4 +1,4 @@
-classdef ChiIRCharacter < ChiHandle
+classdef ChiIRCharacter < ChiBase
 
 % ChiIRCharacter  Features of IR data
 % Copyright (c) 2017 Alex Henderson (alex.henderson@manchester.ac.uk)

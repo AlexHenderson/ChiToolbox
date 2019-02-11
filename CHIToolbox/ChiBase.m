@@ -1,16 +1,16 @@
-classdef ChiMassSpecCharacter < ChiBase
+classdef ChiBase < ChiHandle & ChiCopyable
 
-% ChiMassSpecCharacter  Features specific to mass spectral data
-%
-% Description
-%   This class is used internally to imbue data with characteristics of
-%   mass spectrometry.
+% ChiBase  simply a base class for handle and copyable objects
 % 
-% Copyright (c) 2018, Alex Henderson.
+% Description
+%   This class only exists to combine ChiHandle and ChiCopyable to make the
+%   inheritence chain easier to maintain.
+% 
+% Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiMassSpectrum ChiMassSpectralCollection ChiMassSpecImage 
+%   ChiHandle ChiCopyable.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -19,16 +19,8 @@ classdef ChiMassSpecCharacter < ChiBase
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, August 2018
+% Version 1.0, February 2019
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
-
-    properties
-        iscentroided = false;
-    end
-    
-    methods
-    end
-    
 end

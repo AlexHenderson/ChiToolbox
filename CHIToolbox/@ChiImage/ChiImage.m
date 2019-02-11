@@ -113,13 +113,6 @@ classdef ChiImage < ChiAbstractImage
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function output = clone(this)
-            % Create a (deep) copy of this image
-            output = ChiImage(this.xvals,this.data,this.xpixels,this.ypixels,this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit,this.masked,this.mask,this.filenames);
-            output.history = this.history.clone();
-        end
-        
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function totalspectrum = get.totalspectrum(this)
             spectrumclass = str2func(this.spectrumclassname);
             totalspectrum = spectrumclass(this.xvals,sum(this.data),this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit);

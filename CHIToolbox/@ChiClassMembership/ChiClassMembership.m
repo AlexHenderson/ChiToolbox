@@ -1,4 +1,4 @@
-classdef ChiClassMembership < ChiHandle
+classdef ChiClassMembership < ChiBase
 
 % ChiClassMembership Creates a class membership list for categorical variables
 %
@@ -113,20 +113,6 @@ classdef ChiClassMembership < ChiHandle
                 end
             end        
         end 
-        
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        %% clone : Make a copy of this image
-        function obj = clone(this)
-            % Make a copy of this image
-            obj = ChiClassMembership();
-            obj.title = this.title;
-            obj.labels = this.labels;
-            if ~isempty(this.history)
-                obj.history = this.history.clone();
-            else
-                obj.history = ChiLogger();                
-            end
-        end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         %% Determine some properties

@@ -1,4 +1,4 @@
-classdef ChiOntologyInformation
+classdef ChiOntologyInformation < ChiBase
     
     properties
         term = [];  % The ontological term

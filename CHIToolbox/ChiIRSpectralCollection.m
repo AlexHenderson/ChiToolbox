@@ -162,30 +162,6 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
         end
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = clone(this)
-            obj = feval(class(this));
-            
-            obj.xvals = this.xvals;
-            obj.data = this.data;
-            obj.reversex = this.reversex;
-            obj.xlabelname = this.xlabelname;
-            obj.xlabelunit = this.xlabelunit;
-            obj.ylabelname = this.ylabelname;
-            obj.ylabelunit = this.ylabelunit;
-            
-            if ~isempty(this.classmembership)
-                obj.classmembership = this.classmembership.clone();
-            end
-            
-            if ~isempty(this.history)
-                obj.history = this.history.clone();
-                obj.history.add('Cloned');
-            else
-                obj.history = ChiLogger();                
-            end
-        end
-
-        %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function wavenumbers = get.wavenumbers(this)
             wavenumbers = this.xvals;
         end

@@ -64,37 +64,6 @@ classdef ChiToFMassSpecImage < ChiMassSpecImage & ChiToFMSCharacter
             
         end            
     
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = clone(this)
-            
-            % ToDo: There's got to be a better way!!
-            % http://undocumentedmatlab.com/blog/general-use-object-copy
-            % see the todo.m list
-            
-            obj = feval(class(this));
-            
-            obj.xvals = this.xvals;
-            obj.data = this.data;
-            obj.xpixels = this.xpixels;
-            obj.ypixels = this.ypixels;
-            obj.reversex = this.reversex;
-            obj.xlabelname = this.xlabelname;
-            obj.xlabelunit = this.xlabelunit;
-            obj.ylabelname = this.ylabelname;
-            obj.ylabelunit = this.ylabelunit;
-            obj.mask = this.mask;
-            obj.masked = this.masked;
-            obj.filenames = this.filenames;
-            
-            obj.history = this.history.clone();
-            obj.history.add('Cloned');
-
-            obj.imzmlproperties = this.imzmlproperties;
-            
-        end
-        
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        
     end
     
 end

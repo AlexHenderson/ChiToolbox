@@ -1,4 +1,5 @@
-classdef ChiSpectralPCAOutcome < ChiHandle
+classdef ChiSpectralPCAOutcome < ChiBase
+    
 % ChiSpectralPCAOutcome
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
@@ -40,16 +41,6 @@ classdef ChiSpectralPCAOutcome < ChiHandle
                 
                 this.xvals = ChiForceToRow(this.xvals);
             end 
-        end
-        
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        % clone : Make a copy of this image
-        function output = clone(this)
-            % Make a copy of this image
-            output = ChiSpectralPCAOutcome(this.scores,this.loadings,this.explained,this.variances,this.xvals,this.xlabelname,this.xlabelunit,this.reversex);
-            output.classmembership = this.classmembership;
-            output.history = this.history;
-            
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

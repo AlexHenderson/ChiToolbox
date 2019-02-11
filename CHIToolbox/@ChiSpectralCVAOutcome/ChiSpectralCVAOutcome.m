@@ -1,4 +1,5 @@
-classdef ChiSpectralCVAOutcome < ChiHandle
+classdef ChiSpectralCVAOutcome < ChiBase
+    
 % ChiSpectralCVAOutcome
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
@@ -39,14 +40,6 @@ classdef ChiSpectralCVAOutcome < ChiHandle
             end 
         end
         
-        %% clone : Make a copy 
-        function output = clone(this)
-            % Make a copy 
-            output = ChiSpectralCVAOutcome(this.scores,this.loadings,this.explained,this.cvs,...
-                                                this.eigenvectors,this.eigenvalues,this.pcs,this.PCAOutcome);
-            output.history = this.history;
-        end
-       
         %% numcvs : Get the number of canonical variates
         function numcvs = get.numcvs(this)
             numcvs = this.cvs;

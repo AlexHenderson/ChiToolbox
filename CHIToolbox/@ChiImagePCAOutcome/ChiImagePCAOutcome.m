@@ -1,4 +1,5 @@
-classdef ChiImagePCAOutcome < ChiHandle
+classdef ChiImagePCAOutcome < ChiBase
+    
 % ChiImagePCAOutcome
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
@@ -61,14 +62,6 @@ classdef ChiImagePCAOutcome < ChiHandle
         function numpcs = get.numpcs(this)
             numpcs = size(this.loadings,2);
         end
-        
-        %% clone : Make a copy of this image
-        function output = clone(this)
-            % Make a copy of this image
-            output = ChiImagePCAOutcome(this.scores,this.loadings,this.explained,this.variances,this.xvals,this.xlabelname,this.xlabelunit,this.reversex,this.xpixels,this.ypixels);
-            output.history = this.history.clone();
-        end
-        
         
         %% width : Calculate number of pixels across the image (x-direction)
         function width = get.width(this)

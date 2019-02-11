@@ -109,26 +109,6 @@ classdef ChiToFMassSpectrum < ChiMassSpectrum & ChiToFMSCharacter
         end
        
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = clone(this)
-            
-            % ToDo: There's got to be a better way!!
-            % http://undocumentedmatlab.com/blog/general-use-object-copy
-            
-            obj = feval(class(this));
-            
-            obj.xvals = this.xvals;
-            obj.data = this.data;
-            obj.reversex = this.reversex;
-            obj.xlabelname = this.xlabelname;
-            obj.xlabelunit = this.xlabelunit;
-            obj.ylabelname = this.ylabelname;
-            obj.ylabelunit = this.ylabelunit;
-            obj.filenames = this.filenames;
-            
-            obj.history = this.history.clone();
-            obj.history.add('Cloned');
-        end
-        %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
     end
     

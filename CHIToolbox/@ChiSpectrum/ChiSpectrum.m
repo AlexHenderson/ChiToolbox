@@ -106,12 +106,6 @@ classdef ChiSpectrum < ChiAbstractSpectrum
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function output = clone(this)
-            % Make a copy of this spectrum
-            output = ChiSpectrum(this.xvals,this.data,this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit,this.classmembership,this.filenames,this.history);
-        end        
-        
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     end % methods
     
 end

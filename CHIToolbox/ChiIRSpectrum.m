@@ -106,32 +106,6 @@ classdef ChiIRSpectrum < ChiSpectrum & ChiIRCharacter
         end
        
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = clone(this)
-            
-            % ToDo: There's got to be a better way!!
-            % http://undocumentedmatlab.com/blog/general-use-object-copy
-            
-            obj = feval(class(this));
-            
-            obj.xvals = this.xvals;
-            obj.data = this.data;
-            obj.reversex = this.reversex;
-            obj.xlabelname = this.xlabelname;
-            obj.xlabelunit = this.xlabelunit;
-            obj.ylabelname = this.ylabelname;
-            obj.ylabelunit = this.ylabelunit;
-            obj.filenames = this.filenames;
-            
-            if ~isempty(this.history)
-                obj.history = this.history.clone();
-                obj.history.add('Cloned');
-            else
-                obj.history = ChiLogger();                
-            end
-            
-        end
-        
-        %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function wavenumbers = get.wavenumbers(this)
             wavenumbers = this.xvals;
         end

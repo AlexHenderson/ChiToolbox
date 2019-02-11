@@ -1,4 +1,4 @@
-classdef ChiOpusFile < ChiHandle
+classdef ChiOpusFile < ChiBase
 
 % ChiOpusFile  File format handler for Bruker Opus files (*.??? where ??? is a number)
 % 

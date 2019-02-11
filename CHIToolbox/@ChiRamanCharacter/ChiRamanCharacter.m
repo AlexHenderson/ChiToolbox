@@ -1,4 +1,4 @@
-classdef ChiRamanCharacter < ChiHandle
+classdef ChiRamanCharacter < ChiBase
 
 % ChiRamanCharacter  Features specific to Raman data
 %
@@ -44,19 +44,6 @@ classdef ChiRamanCharacter < ChiHandle
             this.baseline = ChiRamanAsymmBaseline(this);
         end
 
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = clone(this)
-            % clone  Make a deep copy of this object 
-            % 
-            % Syntax
-            %   obj = clone(this);
-            % 
-            % Description
-            %   obj = clone(this) makes a deep copy of this object
-
-            obj = ChiRamanCharacter();
-            obj.baseline = this.baseline.clone();
-        end
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     end
     

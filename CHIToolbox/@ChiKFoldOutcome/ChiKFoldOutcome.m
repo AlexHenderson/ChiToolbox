@@ -1,4 +1,4 @@
-classdef ChiKFoldOutcome < ChiHandle
+classdef ChiKFoldOutcome < ChiBase
     %ChiKFoldOutcome Summary of this class goes here
     %   Detailed explanation goes here
     
@@ -26,16 +26,9 @@ classdef ChiKFoldOutcome < ChiHandle
             end 
         end
         
-        %% clone : Make a copy 
-        function output = clone(this)
-            % Make a copy 
-            output = ChiKFoldOutcome(this.folds);
-            output.history = this.history;
-        end
-        
     end
     
-    methods
+    methods % get and set
         
         %% numfolds : Number of folds
         function numfolds = get.numfolds(this)

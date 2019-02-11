@@ -1,4 +1,4 @@
-classdef (Abstract) ChiAbstractImage < ChiHandle
+classdef (Abstract) ChiAbstractImage < ChiBase
     
 % ChiAbstractImage  Abstract class to define spatial characteristics
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
@@ -86,12 +86,6 @@ classdef (Abstract) ChiAbstractImage < ChiHandle
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    end
-    
-    % =====================================================================
-    methods (Abstract)
-    % =====================================================================
-        clone(this);
     end
     
 end

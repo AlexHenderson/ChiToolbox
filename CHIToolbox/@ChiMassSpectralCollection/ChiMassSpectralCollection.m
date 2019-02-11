@@ -118,34 +118,6 @@ classdef ChiMassSpectralCollection < ChiSpectralCollection & ChiMassSpecCharacte
         end
        
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = clone(this)
-            
-            % ToDo: There's got to be a better way!!
-            % http://undocumentedmatlab.com/blog/general-use-object-copy
-            % see the todo.m list
-            
-            obj = feval(class(this));
-            
-            obj.xvals = this.xvals;
-            obj.data = this.data;
-            obj.reversex = this.reversex;
-            obj.xlabelname = this.xlabelname;
-            obj.xlabelunit = this.xlabelunit;
-            obj.ylabelname = this.xlabelname;
-            obj.ylabelunit = this.ylabelunit;
-
-            if ~isempty(this.classmembership)
-                obj.classmembership = this.classmembership.clone();
-            end
-
-            obj.filenames = this.filenames;
-            
-            obj.history = this.history.clone();
-            obj.history.add('Cloned');
-            
-        end
-        
-        %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function mass = get.mass(this)
             mass = this.xvals;
         end

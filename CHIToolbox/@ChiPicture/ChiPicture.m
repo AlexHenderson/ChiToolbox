@@ -1,4 +1,5 @@
-classdef ChiPicture < ChiHandle
+classdef ChiPicture < ChiBase
+    
 % ChiPicture Storage class for 2D images (not hyperspectral images)
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
     
@@ -116,14 +117,6 @@ classdef ChiPicture < ChiHandle
                         throw(err);
                 end
             end
-        end
-        
-        %% clone : Make a copy of this picture
-        function output = clone(this)
-            % Make a copy of this picture
-            output = ChiPicture(this.data,this.xpixels,this.ypixels);
-            output.bimodal = this.bimodal;
-            output.history = this.history.clone();
         end
         
         %% xpixels : Width of image

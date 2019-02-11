@@ -1,4 +1,4 @@
-classdef ChiLogger < ChiHandle
+classdef ChiLogger < ChiBase
 
 % ChiLogger  Records changes to objects
 % Copyright (c) 2017 Alex Henderson (alex.henderson@manchester.ac.uk)
@@ -17,7 +17,10 @@ classdef ChiLogger < ChiHandle
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function obj = clone(this)
             obj = feval(class(this));
+            % Overwrite default log entry
             obj.log = this.log;
+            % Append date stamp for cloning operation
+            obj.log = vertcat(obj.log, ['Cloned: ', datestr(now)]);
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

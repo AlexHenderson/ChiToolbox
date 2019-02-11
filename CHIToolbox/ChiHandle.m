@@ -3,7 +3,7 @@ classdef ChiHandle < handle
 % ChiHandle  Wrapper for built-in handle class.
 %
 % Description
-%   The built-in, abstract handle class is used to denote that a subclass
+%   The built-in, abstract, handle class is used to denote that a subclass
 %   should be passed by reference. Unfortunately this populates the help
 %   information, presented by the doc function, with a collection of
 %   internal parameters. These should be transparent to the end-user.
@@ -20,7 +20,7 @@ classdef ChiHandle < handle
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   handle
+%   handle ChiCopyable ChiBase
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

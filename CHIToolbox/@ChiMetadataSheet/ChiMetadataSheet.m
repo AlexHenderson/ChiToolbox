@@ -1,4 +1,4 @@
-classdef ChiMetadataSheet < ChiHandle
+classdef ChiMetadataSheet < ChiBase
 
 % ChiMetadataSheet  Metadata Excel file reader
 
@@ -53,37 +53,6 @@ classdef ChiMetadataSheet < ChiHandle
             end
         end
         
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function x = clone(this)
-            x = feval(class(this));
- 
-            x.title = this.title;
-            x.owner = this.owner;
-            x.version = this.version;
-            x.datapath = this.datapath;
-            x.filenames = this.filenames;
-            x.acquisitiondate = this.acquisitiondate;
-            x.metadatafile = this.metadatafile;
-            x.filter = this.filter;
-            x.numparameters = this.numparameters;
-            x.membershipnames = this.membershipnames;
-            x.parametertypes = this.parametertypes;
-            x.safemembershipnames = this.safemembershipnames;
-            
-            x.classmemberships = cell(this.numparameters,1);
-            for i = 1:this.numparameters
-                % Deep copy required
-                x.classmemberships{i} = this.classmemberships{i}.clone();
-            end
-            
-            if ~isempty(this.history)
-                x.history = this.history.clone();
-            else
-                x.history = ChiLogger();                
-            end
-            
-        end            
-
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function open(this,filenames)
             

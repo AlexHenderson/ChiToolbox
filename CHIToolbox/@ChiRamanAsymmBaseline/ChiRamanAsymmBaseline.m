@@ -78,15 +78,6 @@ classdef ChiRamanAsymmBaseline < ChiAbstractRamanBaseline
         end
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = clone(this)
-            
-            obj = feval(class(this), this.parent);
-            obj.lambda = this.lambda;
-            obj.asymm = this.asymm;
-            obj.penalty = this.penalty;
-        end
-        
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     end
     
 end

@@ -142,16 +142,6 @@ classdef ChiImage < ChiAbstractImage
         end        
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function xpixels = get.xpixels(this)
-            xpixels = this.xpixels;
-        end
-        
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function ypixels = get.ypixels(this)
-            ypixels = this.ypixels;
-        end
-        
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
     end % methods
 end % class ChiImage 

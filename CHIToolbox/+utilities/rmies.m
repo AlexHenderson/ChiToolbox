@@ -73,8 +73,10 @@ else
     correction_options = rmiesOptions.exportv1();
 
     if isempty(reference)
+        disp(['Spectrum 1 Iteration 1  ', datestr(now)]);
         [this.xvals,this.data] = RMieS_EMSC_v5(this.xvals, this.data, correction_options);
     else
+        disp(['Spectrum 1 Iteration 1  ', datestr(now)]);
         [this.xvals,this.data] = RMieS_EMSC_v5(this.xvals, this.data, correction_options, reference.xvals, reference.data);
     end
     

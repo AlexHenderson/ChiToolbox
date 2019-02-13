@@ -85,7 +85,11 @@ else
     if isempty(reference)
         this.history.add('    Internal reference (Matrigel)');
     else
-        this.history.add(['    External reference: ', reference.filename]);
+        if isempty(reference.filenames)
+            this.history.add('    External reference: user supplied');
+        else
+            this.history.add(['    External reference: ', reference.filenames{1}]);
+        end
     end
     
     props = properties(rmiesOptions);

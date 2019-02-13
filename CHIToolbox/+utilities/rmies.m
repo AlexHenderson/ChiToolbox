@@ -59,7 +59,7 @@ else
     
     if ~isempty(varargin)
         % Is an options object supplied?
-        argposition = find(cellfun(@(x) isa(x, 'rmiesoptions'), varargin));
+        argposition = find(cellfun(@(x) isa(x, 'utilities.rmiesoptions'), varargin));
         if argposition
             rmiesOptions = varargin{argposition};
         end

@@ -146,6 +146,7 @@ classdef ChiOpusFile < ChiBase
             end
             
             % Open the file(s)
+            fileisreadable = true(length(filenames),1);
             if (length(filenames) == 1)
                 [xvals,data,height,width,currentfilename,acqdate,xlabel,xunit,ylabel,yunit,datatype] = ChiOpusFileHandler(filenames{1}); %#ok<ASGLU>
                 switch datatype
@@ -163,7 +164,6 @@ classdef ChiOpusFile < ChiBase
                         
             else
                 % Need to manage multiple files
-                fileisreadable = true(length(filenames),1);
                 for i = 1:length(filenames)
                     try
                         [xvals,data,height,width,currentfilename,acqdate,xlabel,xunit,ylabel,yunit,datatype] = ChiOpusFileHandler(filenames{i}); %#ok<ASGLU>

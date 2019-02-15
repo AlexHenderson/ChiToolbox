@@ -47,6 +47,7 @@ classdef ChiCopyable < handle
     methods
         
         function obj = clone(this)
+        % Create a deep copy of this object.
             obj = feval(class(this));
             thismeta = metaclass(this);
             for i = 1:length(thismeta.PropertyList)

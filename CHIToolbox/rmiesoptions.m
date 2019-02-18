@@ -32,11 +32,11 @@ classdef rmiesoptions < ChiBase
 %   readme.md file on the Github repository
 %   https://github.com/GardnerLabUoM/RMieS/blob/master/README.md
 %
-% Copyright (c) 2014-2018, Alex Henderson.
+% Copyright (c) 2014-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   RMieS_EMSC_v5.
+%   RMieS_EMSC_v5 ChiIRCharacter.rmies
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -45,31 +45,32 @@ classdef rmiesoptions < ChiBase
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 2.0, March 2018
+% Version 2.0, February 2019
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
     properties
-        % See below for information on these defaults
-        desired_res = 0;
-        lower_wavenumber = 1000;
-        upper_wavenumber = 4000;
-        iterations = 1;
-        mie_theory = 2;
-        numpcs = 8;
-        lower_diam = 2;
-        upper_diam = 8;
-        lower_ri = 1.1;
-        upper_ri = 1.5;
-        spacings = 10;
-        orthogonalisation = 1;
-        reference = 1;
+        desired_res = 0;            % Desired resolution (default = 0, keeps original resolution)
+        lower_wavenumber = 1000;    % Lower wavenumber range (default = 1000)
+        upper_wavenumber = 4000;    % Upper wavenumber range (default = 4000) 
+        iterations = 1;             % Number of iterations (default = 1)
+        mie_theory = 2;             % Mie theory option; 1 = smooth, 2 = RMieS (default = 2)
+        numpcs = 8;                 % Number of principal components used (default = 8)
+        lower_diam = 2;             % Lower range for scattering particle diameter / um (default = 2)
+        upper_diam = 8;             % Upper range for scattering particle diameter / um (default = 8)
+        lower_ri = 1.1;             % Lower range for average refractive index (default = 1.1)
+        upper_ri = 1.5;             % Upper range for average refractive index (default = 1.5)
+        spacings = 10;              % Number of values for each scattering parameter (default = 10)
+        orthogonalisation = 1;      % Orthogonalisation; 0 = no, 1 = yes (default = 1)
+        reference = 1;              % Which reference spectrum; 1 = Matrigel, 2 = Simulated (default = 1)
         
-        % These two were not in Paul Bassan's original version
-        optionsversion = 2;
-        savehistory = 0;
+        savehistory = 0;            % Store iteration history (default = false)
     end
+    
+    properties (Hidden)
+        optionsversion = 2;         % 1 = Bassan version, 2 = Chi version
+    end        
     
     methods
         function this = rmiesoptions(varargin)
@@ -99,11 +100,10 @@ classdef rmiesoptions < ChiBase
                         this.savehistory = 1;
                     else
                         if(isa(varargin{1},'rmiesoptions'))
-                            % We have received one of these classes
-                            % TODO
+                            this = varargin{1}.clone();
                         else
                             err = MException('RMieS:InputError', ...
-                                'Input neither a vector nor an options class');
+                                'Input neither a vector nor a rmiesoptions class');
                             throw(err);
                         end
                     end
@@ -115,10 +115,10 @@ classdef rmiesoptions < ChiBase
                             'Options should be in pairs');
                         throw(err);
                     else
-                        % We must have parameters in pairs
-                        unused = ones(nargin,1);
-                        varargin = reshape(varargin,[],2);
-                        for argnum = 1:nargin
+                        numentries = nargin/2;
+                        unused = ones(numentries,1);
+                        varargin = reshape(varargin,2,[])';
+                        for argnum = 1:numentries
                             switch (varargin{argnum,1})
                                 case 'desired_res'
                                     this.desired_res = varargin{argnum,2};
@@ -159,14 +159,13 @@ classdef rmiesoptions < ChiBase
                                 case 'reference'
                                     this.reference = varargin{argnum,2};
                                     unused(argnum) = 0;
-                            end
-                            % Make sure we understood everything
-                            unused = reshape(unused,[],2);
-                            problems = find(unused(:,1));
-                            if(~empty(problems))
-                                message = ['Could not understand the following entries: ', num2str(problems)];
-                                err = MException('RMieS:InputError', message);
-                                throw(err);
+                                case 'savehistory'
+                                    this.savehistory = varargin{argnum,2};
+                                    unused(argnum) = 0;
+                                otherwise
+                                    message = ['Could not understand parameter: ', varargin{argnum,1}];
+                                    err = MException('RMieS:InputError', message);
+                                    throw(err);
                             end
                         end
                     end

@@ -1,6 +1,6 @@
 function obj = trans2abs(this)
 
-% trans2abs  Convert data from transmittance units to absobance units
+% trans2abs  Converts data from transmittance units to absobance units
 %
 % Syntax
 %   trans2abs();

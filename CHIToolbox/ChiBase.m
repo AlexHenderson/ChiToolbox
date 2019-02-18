@@ -1,6 +1,6 @@
 classdef ChiBase < ChiHandle & ChiCopyable
 
-% ChiBase  simply a base class for handle and copyable objects
+% ChiBase  Simply a base class for handle and copyable objects
 % 
 % Description
 %   This class only exists to combine ChiHandle and ChiCopyable to make the

@@ -148,16 +148,20 @@ classdef ChiFileReader
         function obj = read(filenames)
             % Reads the filename(s) provided
             readers = ChiFileReader.findReader(filenames);
+            
             if isempty(readers)
+                % No volunteers for this file type
                 err = MException(['CHI:',mfilename,':InputError'], ...
                     'Sorry, cannot read this file type.');
                 throw(err);
             else
                 if (length(readers) > 1)
+                    % Too many readers can handle this file type
                     err = MException(['CHI:',mfilename,':InputError'], ...
-                        'Multiple file readers are available. Please use the specific reader. ');
+                        'Multiple file readers are available. Please use the specific reader.');
                     throw(err);
                 else
+                    % Request that the appropriate reader manages the file
                     commandline = [readers{1}, '.read(filenames);'];
                     obj = eval(commandline);
                 end

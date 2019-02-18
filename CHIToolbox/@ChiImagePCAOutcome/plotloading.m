@@ -16,7 +16,7 @@ function plotloading(this,pc,varargin)
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   bar function for more details. 
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -34,6 +34,7 @@ function plotloading(this,pc,varargin)
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/Chitoolbox
 
+
 %% Do we need a new figure?
 needfig = false;
 argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));
@@ -44,7 +45,6 @@ else
     % No 'nofig' found so create a new figure
     needfig = true;
 end
-
 
     titlestub = 'Loading on principal component ';
     ylabelstub = 'loading on PC ';

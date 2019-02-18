@@ -29,9 +29,9 @@ function tightxaxis(desiredaxes)
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
-
 % Taken from
 % https://uk.mathworks.com/matlabcentral/answers/295700-how-to-use-the-tight-function-for-just-one-axis
+
 
     if ~exist('desiredaxes','var')
         desiredaxes = gca;

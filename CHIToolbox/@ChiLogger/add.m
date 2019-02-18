@@ -1,10 +1,6 @@
 function add(this,content)
 
 % add  Adds an entry to the log
-% Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
-
-
-% add  Adds an entry to the log
 %     
 % Syntax
 %   add(text) appends text to the log. text can be a single string of

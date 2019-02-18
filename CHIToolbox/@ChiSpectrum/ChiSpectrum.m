@@ -2,8 +2,6 @@ classdef ChiSpectrum < ChiAbstractSpectrum
 % ChiSpectrum Storage class for a single spectrum
 % Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
     
-    % matlab.mixin.Copyable only for >R2011a
-    % Want compatibility with R2009a
     
     % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     properties

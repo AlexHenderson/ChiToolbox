@@ -29,6 +29,8 @@ function [MieEMSCmodel, PCnumber] = make_ME_EMSCmodel(referenceSpectrum, pureAbs
     %                     Column number 3 - end: loadings from PCA on Mie extinction curves 
     %  PCnumber         - Number of principal components in the Mie meta-model, if not specified as input (int)
 
+import me_emsc.*
+    
 	%% Create meta model (100 extinction curves)
 	[MieExtinctionCurves] = make_MieExtinction_curves(pureAbsorbanceSpectrum, wn, alpha0, gamma); 
 

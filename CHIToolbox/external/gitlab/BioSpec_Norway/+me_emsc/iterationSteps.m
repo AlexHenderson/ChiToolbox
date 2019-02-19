@@ -3,6 +3,8 @@ function [correctedSpectraForIteration, residualsFromIteration, ...
                                                         EMSCScaleModel, maxIterationNumber, weights, wn, alpha0, gamma, ...
                                                         options, PCnumber )
 
+import me_emsc.*
+                                                    
     RMSE = zeros(1, options.maxIterationNumber);
     for iterationNumber = 2 : maxIterationNumber   
         % Scale the reference spectrum in each iteration

@@ -22,6 +22,9 @@ function [ExtinctionCurves]=make_MieExtinction_curves(absorbanceSpectrum, wn, al
     %  Output: 
     %  ExtinctionCurves     - Matrix containing the Mie extinction curves (matrix, each row corresponds to one curve)
     
+import me_emsc.*
+    
+    
     % Imaginary part of the refractive index 
     RefIndexABS = absorbanceSpectrum';
     

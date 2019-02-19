@@ -69,7 +69,7 @@ options.plotResults = true;
 % Change maximum number of iterations (default 45): 
 % If maximum number of iteration is reached for a spectrum, the correction terminates, 
 % and a warning is raised. 
-options.maxIterationNumber = 15;
+options.maxIterationNumber = 100;
 
 % Set a fixed number of iterations (defualt false): 
 % All spectra will be corrected for the specified fixed number of iterations. 

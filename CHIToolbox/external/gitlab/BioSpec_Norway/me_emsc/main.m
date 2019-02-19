@@ -39,6 +39,7 @@ load 'data/measuredSpectra.mat'; % Measured spectrum for correction
 
 %% Set options 
 options.mode = 'PreRun';  % Choose between: 'PreRun' and 'Correction'   
+options.mode = 'Correction';  % Choose between: 'PreRun' and 'Correction'   
 % Mode 'PreRun' is used for optimizing the input parameters. Use only a selection of 10-20 spectra for the pre run. 
 % Mode 'Correction' is used for running the Mie correction on the whole
 % data set.

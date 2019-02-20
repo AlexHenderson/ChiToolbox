@@ -30,6 +30,10 @@ function[correctedSpectra, residuals, EMSCparameters, numberOfIterations, option
     %                       EMSC parameters are given in the order described in the ME_EMSCsolver function
     %  numberOfIterations - Number of iteration for each spectrum, row vector 
 
+
+import me_emsc.*
+    
+    
     %% Initialization with default options
     % Default options for the corrections 
     options_default.maxIterationNumber = 45; % Int: Maximal number of iterations 

@@ -4,20 +4,24 @@ function overlay(varargin)
 %
 % Syntax
 %   overlay(other);
-%   overlay(other,parameters);
+%   overlay(other,'auto');
+%   overlay(____,'legend1',legend1text','legend2',legend2text');
 %
 % Description
 %   overlay(other) creates a plot of this data with data from other
 %   overlaid. other can be any Chi data type. 
 % 
-%   overlay(other,parameters) allows the user to customise the output plot
-%   using standard plotting options.
+%   overlay(other,'auto') autoscales the y-axis.
+% 
+%   overlay(____,'legend1',legend1text','legend2',legend2text') generates a
+%   legend for the plot where legend1text applies to the left axis and
+%   legend2text applies to the right axis. 
 % 
 % Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   plot legend
+%   plot plotyy legend
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -33,10 +37,74 @@ function overlay(varargin)
 this = varargin{1};
 that = varargin{2};
 
-this.plot();
-hold on;
-that.plot('nofig',varargin{3:end});
+%% Gather user input
+auto = false;
+argposition = find(cellfun(@(x) strcmpi(x, 'auto') , varargin));
+if argposition
+    auto = true;
+end
 
+legendtext = {};
+argposition = find(cellfun(@(x) strcmpi(x, 'legend1') , varargin));
+if argposition
+    legendtext(1) = varargin(argposition+1);
+    varargin(argposition+1) = [];
+    varargin(argposition) = [];
+end
+argposition = find(cellfun(@(x) strcmpi(x, 'legend2') , varargin));
+if argposition
+    legendtext(2) = varargin(argposition+1);
+    varargin(argposition+1) = [];
+    varargin(argposition) = [];
+end
+
+%% Generate the figure
+figure;
+[ax,h1,h2] = plotyy(this.xvals,this.data, that.xvals,that.data); %#ok<ASGLU>
+
+%% Make x-axis tight
+minx = min(this.xvals(1),that.xvals(1));
+maxx = max(this.xvals(end),that.xvals(end));
+xlim(ax(1), [minx, maxx])
+xlim(ax(2), [minx, maxx])
+
+%% Reverse axis if this is reversed
+if this.reversex
+    set(ax(1),'XDir','reverse');
+    set(ax(2),'XDir','reverse');
+end
+
+%% Autoscale y-axis if requested
+if auto
+    ylim(ax(1),'auto')
+    ylim(ax(2),'auto')
+end
+
+%% Add axis labels
+if ~isempty(this.xlabel)
+    set(get(gca,'XLabel'),'String',this.xlabel);
+end
+
+if isempty(this.ylabel)
+    ylab = 'arbitrary units';
+else
+    ylab = this.ylabel;
+end
+ax(1).YLabel.String = ylab;
+
+if isempty(that.ylabel)
+    ylab = 'arbitrary units';
+else
+    ylab = that.ylabel;
+end
+ax(2).YLabel.String = ylab;
+
+%% Add a legend if requested
+if ~isempty(legendtext)
+    legend(ax(1),legendtext,'Location','best');
+end
+
+%% Warnings if data may be mismatched
 if ~strcmpi(class(this),class(that))
     utilities.warningnobacktrace('These data sets may be incompatible.')
 end

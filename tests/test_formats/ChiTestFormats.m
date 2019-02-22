@@ -1,5 +1,7 @@
 function results = ChiTestFormats()
 
+clc;
+
 import matlab.unittest.TestSuite
 
 filename = mfilename('fullpath');

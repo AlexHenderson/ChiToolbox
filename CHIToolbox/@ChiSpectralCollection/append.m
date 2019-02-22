@@ -1,4 +1,4 @@
-function append(this,varargin)
+function obj = append(this,varargin)
 
 % append  Appends data to this ChiSpectralCollection. 
 %
@@ -39,27 +39,61 @@ function append(this,varargin)
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
-if (nargin == 2)
-    % We only have a single entry, so check if it is a spectrum or a
-    % spectral collection
 
-    if isa(varargin{1},'ChiSpectrum')
-        % Append this spectrum
-        appendspectrum(this,varargin{:});
-    end
-
-    if isa(varargin{1},'ChiSpectralCollection')
-        % Append this spectralcollection
-        this = appendcollection(this,varargin{:});        
-    end
-
+if nargout
+    obj = this.clone();
+    % Not a great approach, but quite generic. 
+    % Prevents errors if the function name changes. 
+    command = [mfilename, '(obj,varargin{:});'];
+    eval(command);  
 else
-    % We must have a raw data set, so convert to a ChiSpectrum and re-run
-    newspectrum = ChiSpectrum(varargin{:});
-    this.append(newspectrum);
-end
+    % Appending to self
+    if (nargin == 2)
+        % We only have a single entry, so check if it is a spectrum, or a
+        % spectral collection
+
+        % Check whether we are appending appropriate types of data
+        ok = false;
+        if strcmpi(class(this), class(varargin{1}))
+            ok = true;
+        else
+            if strcmpi(class(this), varargin{1}.spectralcollectionclassname)
+                ok = true;
+            end
+        end
+        if ~ok
+            err = MException(['CHI:',mfilename,':InputError'], ...
+                ['Data type mis-match: ', ...
+                class(this), ' and ', class(varargin{1})]);
+            throw(err);
+        end
+
+        if isa(varargin{1},'ChiSpectrum')
+            % Append this spectrum
+            appendspectrum(this,varargin{1});
+        end
+
+        if isa(varargin{1},'ChiSpectralCollection')
+            % Append this spectralcollection
+            appendcollection(this,varargin{1});        
+        end
+
+    else
+        % We must have a raw data set, so convert to a Chi object of the
+        % same type as this and re-run
+        utilities.warningnobacktrace('Assuming appended data is of appropriate type');
+        if isvector(varargin{2})
+            % We have a vector of data
+            newdata = feval(this.spectrumclassname,varargin{:});
+        else
+            % We have a matrix of data
+            newdata = feval(class(this),varargin{:});
+        end
+        this.append(newdata);
+    end
 
 end
+end % function: append
 
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function this = appendspectrum(this,varargin)

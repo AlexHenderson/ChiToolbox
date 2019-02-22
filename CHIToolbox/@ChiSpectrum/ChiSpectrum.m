@@ -93,6 +93,8 @@ classdef ChiSpectrum < ChiAbstractSpectrum
                 end
             end 
             
+            this.spectralcollectionclassname = 'ChiSpectralCollection';
+            
             this.ontologyinfo = ChiOntologyInformation();
             this.ontologyinfo.term = 'spectrum';
             this.ontologyinfo.description = ['A plot of a measured ' ...

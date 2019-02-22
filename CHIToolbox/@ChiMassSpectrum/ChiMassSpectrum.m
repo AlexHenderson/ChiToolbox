@@ -96,6 +96,8 @@ classdef ChiMassSpectrum < ChiSpectrum & ChiMassSpecCharacter
             this@ChiSpectrum(superClassArgs{:});
             this@ChiMassSpecCharacter();
             
+            this.spectralcollectionclassname = 'ChiMassSpectralCollection';
+            
             this.ontologyinfo = ChiOntologyInformation();
             this.ontologyinfo.term = 'mass spectrum';
             this.ontologyinfo.description = ['A plot of the relative ' ...

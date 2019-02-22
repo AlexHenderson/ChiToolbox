@@ -95,6 +95,8 @@ classdef ChiToFMassSpectrum < ChiMassSpectrum & ChiToFMSCharacter
             this@ChiMassSpectrum(superClassArgs{:});
             this@ChiToFMSCharacter();
             
+            this.spectralcollectionclassname = 'ChiToFMassSpectralCollection';
+
             this.ontologyinfo = ChiOntologyInformation();
             this.ontologyinfo.term = 'time-of-flight mass spectrum';
             this.ontologyinfo.description = 'A plot of relative abundance (%) vs. mass-to-charge ratio obtained from a mass spectrometry experiment where the mass-to-charge ratio is determined from the time they take to reach a detector.';

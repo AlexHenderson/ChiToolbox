@@ -15,6 +15,7 @@ classdef (Abstract) ChiAbstractSpectrum < ChiBase
     
     properties
         numspectra = 1; % Number of rows of data
+        spectralcollectionclassname;  % The name of the class if multiple spectra are combined
     end
     
     properties

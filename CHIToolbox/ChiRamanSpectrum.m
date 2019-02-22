@@ -89,6 +89,8 @@ classdef ChiRamanSpectrum < ChiSpectrum & ChiRamanCharacter
             this@ChiSpectrum(superClassArgs{:});
             this@ChiRamanCharacter();
             
+            this.spectralcollectionclassname = 'ChiRamanSpectralCollection';
+
             this.ontologyinfo = ChiOntologyInformation();
             this.ontologyinfo.term = 'Raman spectrum';
             this.ontologyinfo.description = ['A plot of intensity vs. ' ...

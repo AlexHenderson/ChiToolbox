@@ -89,6 +89,8 @@ classdef ChiIRSpectrum < ChiSpectrum & ChiIRCharacter
             this@ChiSpectrum(superClassArgs{:});
             this@ChiIRCharacter();
             
+            this.spectralcollectionclassname = 'ChiIRSpectralCollection';
+
             this.ontologyinfo = ChiOntologyInformation();
             this.ontologyinfo.term = 'infrared spectrum';
             this.ontologyinfo.description = ['A plot of absorbance or ' ...

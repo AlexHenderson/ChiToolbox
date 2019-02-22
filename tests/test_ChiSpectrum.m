@@ -40,33 +40,41 @@ classdef test_ChiSpectrum < matlab.unittest.TestCase
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function test_keeprangeidx(this)
             expected = ChiSpectrum([3,4,5,6],[13,14,15,16]);
-            sub = this.spectrum.keeprangeidx(3,6);
-            expected.history = sub.history.clone();
-            this.verifyEqual(sub, expected);
+            known = this.spectrum.keeprangeidx(3,6);
+            % Remove history since this adds a 'Cloned' statement
+            known.history = [];
+            expected.history = [];
+            this.verifyEqual(known, expected);
         end
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function test_keeprange(this)
             expected = ChiSpectrum([3,4,5,6],[13,14,15,16]);
-            sub = this.spectrum.keeprange(3,6);
-            expected.history = sub.history.clone();
-            this.verifyEqual(sub, expected);
+            known = this.spectrum.keeprange(3,6);
+            % Remove history since this adds a 'Cloned' statement
+            known.history = [];
+            expected.history = [];
+            this.verifyEqual(known, expected);
         end
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function test_removerangeidx(this)
             expected = ChiSpectrum([1,2,7,8,9,10],[11,12,17,18,19,20]);
-            remo = this.spectrum.removerangeidx(3,6);
-            expected.history = remo.history.clone();
-            this.verifyEqual(remo, expected);
+            known = this.spectrum.removerangeidx(3,6);
+            % Remove history since this adds a 'Cloned' statement
+            known.history = [];
+            expected.history = [];
+            this.verifyEqual(known, expected);
         end
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function test_removerange(this)
             expected = ChiSpectrum([1,2,7,8,9,10],[11,12,17,18,19,20]);
-            remo = this.spectrum.removerange(3,6);
-            expected.history = remo.history.clone();
-            this.verifyEqual(remo, expected);
+            known = this.spectrum.removerange(3,6);
+            % Remove history since this adds a 'Cloned' statement
+            known.history = [];
+            expected.history = [];
+            this.verifyEqual(known, expected);
         end
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

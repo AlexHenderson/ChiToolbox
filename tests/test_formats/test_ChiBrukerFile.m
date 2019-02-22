@@ -30,25 +30,25 @@ classdef test_ChiBrukerFile < matlab.unittest.TestCase
     methods (Test)
         
       % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function test_displayimage(this)
-            if ~isempty(this.filenameimage)
-                this.testimage.display;
-            end
-        end
+%         function test_displayimage(this)
+%             if ~isempty(this.filenameimage)
+%                 this.testimage.display;
+%             end
+%         end
    
       % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function test_displayspectrum(this)
-            if ~isempty(this.filenamespectrum)
-                this.testspectrum.display;
-            end
-        end
+%         function test_displayspectrum(this)
+%             if ~isempty(this.filenamespectrum)
+%                 this.testspectrum.display;
+%             end
+%         end
    
       % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function test_displayspectra(this)
-            if ~isempty(this.filenamespectra)
-                this.testspectra.display;
-            end
-        end
+%         function test_displayspectra(this)
+%             if ~isempty(this.filenamespectra)
+%                 this.testspectra.display;
+%             end
+%         end
       % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function test_checkfilenames(this)
             if ~isempty(this.filenameimage)

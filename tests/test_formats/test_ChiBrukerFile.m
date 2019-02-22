@@ -22,7 +22,7 @@ classdef test_ChiBrukerFile < matlab.unittest.TestCase
             end
 %             this.testimage = ChiBrukerFile.open(this.filenameimage);            
             this.testspectrum = ChiBrukerFile.open(this.filenamespectrum);            
-            this.testspectra = ChiBrukerFile.open(this.filenamespectra);            
+%             this.testspectra = ChiBrukerFile.open(this.filenamespectra);            
         end
     end    
     
@@ -59,9 +59,21 @@ classdef test_ChiBrukerFile < matlab.unittest.TestCase
                 this.verifyTrue(iscell(this.testspectrum.filenames));
                 this.verifyTrue(length(this.testspectrum.filenames) == 1);
             end
-            if ~isempty(this.filenamespectra)
-                this.verifyTrue(iscell(this.testspectra.filenames));
-                this.verifyTrue(length(this.testspectra.filenames) == 1);
+%             if ~isempty(this.filenamespectra)
+%                 this.verifyTrue(iscell(this.testspectra.filenames));
+%                 this.verifyTrue(length(this.testspectra.filenames) == 1);
+%             end
+        end
+      % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function test_multiplematfiles(this)
+
+            this.verifyError(@temp,'CHI:ChiBrukerFile:InputError');
+            
+            function temp()
+                filenames = {...
+                    'D:\Data_FTIR\James\Bruker MAT Files\k562_dmso_t20_r1.mat'; ...
+                    'D:\Data_FTIR\James\Bruker MAT Files\k562_PL63_t20_r3.mat'};
+                x = ChiBrukerFile.open(filenames);             %#ok<NASGU>
             end
         end
       % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

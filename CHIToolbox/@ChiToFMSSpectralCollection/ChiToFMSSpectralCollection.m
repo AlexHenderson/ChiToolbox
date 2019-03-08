@@ -1,6 +1,6 @@
-classdef ChiToFMassSpectralCollection < ChiMassSpectralCollection & ChiToFMSCharacter
+classdef ChiToFMSSpectralCollection < ChiMSSpectralCollection & ChiToFMSCharacter
     
-% ChiToFMassSpectralCollection  Storage class for time-of-flight mass spectra
+% ChiToFMSSpectralCollection  Storage class for time-of-flight mass spectra
 % Copyright (c) 2017 Alex Henderson (alex.henderson@manchester.ac.uk)
     
     % =====================================================================
@@ -11,7 +11,7 @@ classdef ChiToFMassSpectralCollection < ChiMassSpectralCollection & ChiToFMSChar
     methods
     % =====================================================================
 
-        function this = ChiToFMassSpectralCollection(varargin)
+        function this = ChiToFMSSpectralCollection(varargin)
           
             superClassArgs = varargin;
             
@@ -21,20 +21,22 @@ classdef ChiToFMassSpectralCollection < ChiMassSpectralCollection & ChiToFMSChar
                     % Do nothing, this is an empty class
                 case 1
                     if isa(varargin{1},'ChiSpectrum')
-                        s = varargin{1};
-                        superClassArgs{1} = s.xvals;
-                        superClassArgs{2} = s.data;
-                        superClassArgs{3} = s.reversex;
-                        superClassArgs{4} = s.xlabelname;
-                        superClassArgs{5} = s.xlabelunit;
-                        superClassArgs{6} = s.ylabelname;
-                        superClassArgs{7} = s.ylabelunit;
-                        if ~isempty(s.history)
-                            superClassArgs{8} = s.history.clone();
-                            superClassArgs{8}.add('Created from a ChiSpectrum');
-                        else
-                            superClassArgs{8} = ChiLogger();                
-                        end
+                        this.copypropertiesfrom(varargin{1});
+                        
+%                         s = varargin{1};
+%                         superClassArgs{1} = s.xvals;
+%                         superClassArgs{2} = s.data;
+%                         superClassArgs{3} = s.reversex;
+%                         superClassArgs{4} = s.xlabelname;
+%                         superClassArgs{5} = s.xlabelunit;
+%                         superClassArgs{6} = s.ylabelname;
+%                         superClassArgs{7} = s.ylabelunit;
+%                         if ~isempty(s.history)
+%                             superClassArgs{8} = s.history.clone();
+%                             superClassArgs{8}.add('Created from a ChiSpectrum');
+%                         else
+%                             superClassArgs{8} = ChiLogger();                
+%                         end
                         
                     else
                         if isa(varargin{1},'ChiSpectralCollection')
@@ -69,10 +71,8 @@ classdef ChiToFMassSpectralCollection < ChiMassSpectralCollection & ChiToFMSChar
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
             end
             
-            this@ChiMassSpectralCollection(superClassArgs{:});
+            this@ChiMSSpectralCollection(superClassArgs{:});
             this@ChiToFMSCharacter();
-            
-            this.spectrumclassname = 'ChiToFMassSpectrum';
             
             this.ontologyinfo = ChiOntologyInformation();
             this.ontologyinfo.term = 'time-of-flight mass spectrum';
@@ -95,4 +95,4 @@ classdef ChiToFMassSpectralCollection < ChiMassSpectralCollection & ChiToFMSChar
         
     end % methods
 
-end % class ChiToFMassSpectralCollection 
+end % class ChiToFMSSpectralCollection 

@@ -264,6 +264,9 @@ function [metadata,safeParameterName,filterName,rawData] = buildNumericFilter(pa
     % Add 'is' to the end of the variable
     filterName = [safeParameterName, '_is_'];
     
+    rawData = cellfun(@num2str,rawData,'UniformOutput',false);
+    rawData = cellfun(@str2num,rawData,'UniformOutput',false);
+
     rawData = cell2mat(rawData);
     if ischar(rawData)
         rawData = str2num(rawData); %#ok<ST2NM>

@@ -1,18 +1,19 @@
-function excel2sqlite(filename)
+function [dbfilename,xlsfilename] = excel2sqlite(xlsfilename)
 
 % excel2sqlite  Copy metadata from a MetadataRecordSheet Excel file to a SQLite file
 %
 % Syntax
-%   excel2sqlite();
-%   excel2sqlite(filename);
+%   dbfilename = excel2sqlite();
+%   dbfilename = excel2sqlite(filename);
 %
 % Description
-%   excel2sqlite() opens a dialog box to request a Microsoft Excel file
+%   dbfilename = excel2sqlite() opens a dialog box to request a Microsoft Excel file
 %   from the user. This file must be in the MetadataRecordSheet layout. The
 %   contents of the file is transferred to a SQLite database file of the
-%   same name where the file extension has been changed to .sqlite
+%   same name where the file extension has been changed to .sqlite. The
+%   name of this file is returned in dbfilename.
 % 
-%   excel2sqlite(filename) uses the filename provided. 
+%   dbfilename = excel2sqlite(filename) uses the filename provided. 
 %
 % Copyright (c) 2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -33,19 +34,19 @@ function excel2sqlite(filename)
 try
 
     % Get input filename, if not provided
-    if ~exist('filename', 'var')
-        filename = utilities.getfilename('*.xls?', 'Microsoft Excel Files (*.xls,*.xlsx)');
-        filename = filename{1};
+    if ~exist('xlsfilename', 'var')
+        xlsfilename = utilities.getfilename('*.xls?', 'Microsoft Excel Files (*.xls,*.xlsx)');
+        xlsfilename = xlsfilename{1};
     end
 
     % Determine the output filename
-    [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
-    sqlfilename = fullfile(pathstr,[name,'.sqlite']);
+    [pathstr,name,ext] = fileparts(xlsfilename); %#ok<ASGLU>
+    dbfilename = fullfile(pathstr,[name,'.sqlite']);
 
     %% Copy metadata to a backup file if already present
-    if (exist(sqlfilename, 'file') == 2)
+    if (exist(dbfilename, 'file') == 2)
         backupsqlfilename = fullfile(pathstr,[name,'.sqlite.bak']);
-        [status,msg,msgID] = movefile(sqlfilename,backupsqlfilename); %#ok<ASGLU>
+        [status,msg,msgID] = movefile(dbfilename,backupsqlfilename); %#ok<ASGLU>
         if ~status
             err = MException(['CHI:',mfilename,':InputError'], ...
                 ['Error: ', msg]);
@@ -54,13 +55,13 @@ try
     end
 
     %% Check the format of the filename provided
-    [status,sheets] = xlsfinfo(filename);
+    [status,sheets] = xlsfinfo(xlsfilename);
     if isempty(status)
         error(['Cannot read this type of metadata file. ', sheets]);
     end
 
     %% Get settings sheet
-    [dummy,dummy,rawSettings] = xlsread(filename, 'settings'); %#ok<ASGLU>
+    [dummy,dummy,rawSettings] = xlsread(xlsfilename, 'settings'); %#ok<ASGLU>
 
     if strcmp(rawSettings{1,1}, 'Version')
         version = rawSettings{2,1};
@@ -70,7 +71,7 @@ try
     end
 
     %% Get Metadata Record Sheet
-    [num,txt,rawSheetData] = xlsread(filename, sheets{1});
+    [num,txt,rawSheetData] = xlsread(xlsfilename, sheets{1});
 
     % Excel 'remembers' deleted rows. xlsread imports these as NaNs.
     % However they're not converted to numbers or text. Therefore we can
@@ -103,6 +104,9 @@ try
                 owner = rawSheetData{row,2};
             case 'Path to data files: '
                 dataPath = rawSheetData{row,2};
+                if isnan(dataPath)
+                    dataPath = '.';
+                end
             case 'Filename'
                 % This marks the end of the header section
                 parameterName = rawSheetData(row, 4:end);     % cell array
@@ -120,17 +124,20 @@ try
     %% SQLite specific
 
     % Create the database on disc
-    metadataDB = sql_object(sqlfilename);
+    metadataDB = sql_object(dbfilename);
 
     % Begin transaction
     metadataDB.Begin;   
 
+    % Change the default management of NULL values
+    metadataDB.NullAsNaN = 1;
+    
     % Create a table for the metadata sheet overarching information
-    createHeadersStr = 'CREATE TABLE headers (version REAL, title TEXT, owner TEXT, datapath TEXT, numvariables INTEGER, numobservations INTEGER)';
+    createHeadersStr = 'CREATE TABLE headers (version REAL, title TEXT, owner TEXT, datapath TEXT, numvariables INTEGER, numspectra INTEGER)';
     metadataDB.exec(createHeadersStr);
     
     % Insert the header values
-    insertHeadersStr = sprintf('INSERT INTO headers (version,title,owner,datapath,numvariables,numobservations) values (%f,"%s","%s","%s",%d,%d)', version, title, owner, dataPath, numVariables, numObservations);
+    insertHeadersStr = sprintf('INSERT INTO headers (version,title,owner,datapath,numvariables,numspectra) values (%f,"%s","%s","%s",%d,%d)', version, title, owner, dataPath, numVariables, numObservations);
     metadataDB.exec(insertHeadersStr);
 
     % Generate some useful aliases
@@ -140,8 +147,10 @@ try
     
     % Create a table for the actual metadata
     createDataStr = 'CREATE TABLE metadata ("idx" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"filename" TEXT, "acquired" TEXT';
+    params = {};
     for i = 1:numVariables
-        createDataStr = horzcat(createDataStr, comma, dquote, parameterName{i}, dquote); %#ok<AGROW>
+        createDataStr = horzcat(createDataStr, comma, dquote, '%s', dquote); %#ok<AGROW>
+        params = vertcat(params,parameterName{i}); %#ok<AGROW>
         switch lower(parameterType{i}(1))
             case 'c' % for Category
                 createDataStr = horzcat(createDataStr,space,'TEXT'); %#ok<AGROW>
@@ -154,26 +163,30 @@ try
         end   
     end
     createDataStr = horzcat(createDataStr, ')');
-    metadataDB.exec(createDataStr);
+    metadataDB.exec(createDataStr,params{:});
 
     % Insert the actual metadata
     for row = 1:numObservations
         % If the acquisition date is not available, make it a NULL
         acqdate = acquisitionDate{row}; 
-        if (any(isnan(acqdate)) || isempty(acqdate))
-            acqdate = 'NULL';
-        end
+%         if (any(isnan(acqdate)) || isempty(acqdate))
+%             acqdate = 'NULL';
+%         end
 
-        insertDataStr = sprintf('INSERT INTO metadata VALUES(%d,"%s","%s"', row, filenames{row}, acqdate);
+        insertDataStr = 'INSERT INTO metadata VALUES(%d,"%s","%s"';
+        params = {row; filenames{row}; acqdate};
+        
         for col = 1:numVariables
             value = rawSheetData{row,col};
             switch lower(parameterType{col}(1))
                 case 'c' % for Category
-                    insertDataStr = horzcat(insertDataStr,comma,dquote, num2str(value), dquote); %#ok<AGROW>
+                    insertDataStr = horzcat(insertDataStr,comma,dquote, '%s', dquote); %#ok<AGROW>
+                    params = vertcat(params,num2str(value)); %#ok<AGROW>
                 case 'n' % for Numeric
-                    insertDataStr = horzcat(insertDataStr,comma, num2str(value,'%.8g')); %#ok<AGROW>
+                    insertDataStr = horzcat(insertDataStr,comma,dquote, '%s', dquote); %#ok<AGROW>
+                    params = vertcat(params, num2str(value,'%.8g')); %#ok<AGROW>
                 case 't' % for True/False
-                    % Manage possibility taht the user has decided to go
+                    % Manage possibility that the user has decided to go
                     % with t/f or y/n
                     if ischar(value)
                         switch lower(value(1))
@@ -189,21 +202,26 @@ try
                                 value = true;
                         end
                     end
-                    insertDataStr = horzcat(insertDataStr,comma, num2str(logical(value))); %#ok<AGROW>
+                    insertDataStr = horzcat(insertDataStr,comma,dquote, '%s', dquote); %#ok<AGROW>
+                    params = vertcat(params, num2str(logical(value))); %#ok<AGROW>
                 otherwise
-                    insertDataStr = horzcat(insertDataStr,comma,dquote, num2str(value), dquote); %#ok<AGROW>
+                    insertDataStr = horzcat(insertDataStr,comma,dquote, '%s', dquote); %#ok<AGROW>
+                    params = vertcat(params, num2str(value)); %#ok<AGROW>
             end   
         end    
         insertDataStr = horzcat(insertDataStr, ')'); %#ok<AGROW>
-        metadataDB.exec(insertDataStr);
+        metadataDB.exec(insertDataStr,params{:});
+
     end
 
-    % All done so commit the transaction and close the database
+    % Commit the transaction
     metadataDB.Commit();
+    
+    % All done so close the database
     delete(metadataDB);
 
 catch ex
-    % Should probably rolback any changes to the database, although this
+    % Should probably rollback any changes to the database, although this
     % may be automatic
     metadataDB.Rollback();
     % Report the error

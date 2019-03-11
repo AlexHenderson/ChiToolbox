@@ -35,7 +35,7 @@ function imzml(varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 % 
 % See also 
-%   ChiToFMassSpecimage.
+%   ChiToFMSImage.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

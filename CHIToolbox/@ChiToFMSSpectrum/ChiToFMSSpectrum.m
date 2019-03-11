@@ -1,19 +1,19 @@
-classdef ChiToFMassSpectrum < ChiMassSpectrum & ChiToFMSCharacter
+classdef ChiToFMSSpectrum < ChiMSSpectrum & ChiToFMSCharacter
 
-% ChiToFMassSpectrum  A time-of-flight mass spectrum. 
+% ChiToFMSSpectrum  A time-of-flight mass spectrum. 
 %
 % Syntax
-%   tofmassspectrum = ChiToFMassSpectrum(mass,data);
-%   tofmassspectrum = ChiToFMassSpectrum(mass,data,reversex);
-%   tofmassspectrum = ChiToFMassSpectrum(mass,data,reversex,xlabel,xunit,ylabel,yunit);
-%   tofmassspectrum = ChiToFMassSpectrum(ChiSpectrum);
+%   tofmassspectrum = ChiToFMSSpectrum(mass,data);
+%   tofmassspectrum = ChiToFMSSpectrum(mass,data,reversex);
+%   tofmassspectrum = ChiToFMSSpectrum(mass,data,reversex,xlabel,xunit,ylabel,yunit);
+%   tofmassspectrum = ChiToFMSSpectrum(ChiSpectrum);
 %
 % Description
-%   tofmassspectrum = ChiToFMassSpectrum(mass,data) creates a
-%   time-of-flight mass spectrum object using default values for reversex,
-%   xlabel/unit and ylabel/unit.
+%   tofmassspectrum = ChiToFMSSpectrum(mass,data) creates a time-of-flight
+%   mass spectrum object using default values for reversex, xlabel/unit and
+%   ylabel/unit.
 %
-%   tofmassspectrum = ChiToFMassSpectrum(ChiSpectrum) creates a tof-ms
+%   tofmassspectrum = ChiToFMSSpectrum(ChiSpectrum) creates a tof-ms
 %   spectrum object from a ChiSpectrum object using default values for
 %   reversex, xlabel/unit and ylabel/unit. No check is made to determine if
 %   the ChiSpectrum object contains valid tof-ms data.
@@ -49,7 +49,7 @@ classdef ChiToFMassSpectrum < ChiMassSpectrum & ChiToFMSCharacter
     % =====================================================================
     methods
     % =====================================================================
-        function this = ChiToFMassSpectrum(varargin)
+        function this = ChiToFMSSpectrum(varargin)
           
             superClassArgs = varargin;
             
@@ -92,11 +92,9 @@ classdef ChiToFMassSpectrum < ChiMassSpectrum & ChiToFMSCharacter
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
             end
             
-            this@ChiMassSpectrum(superClassArgs{:});
+            this@ChiMSSpectrum(superClassArgs{:});
             this@ChiToFMSCharacter();
             
-            this.spectralcollectionclassname = 'ChiToFMassSpectralCollection';
-
             this.ontologyinfo = ChiOntologyInformation();
             this.ontologyinfo.term = 'time-of-flight mass spectrum';
             this.ontologyinfo.description = 'A plot of relative abundance (%) vs. mass-to-charge ratio obtained from a mass spectrometry experiment where the mass-to-charge ratio is determined from the time they take to reach a detector.';

@@ -1,20 +1,20 @@
-function output = area(varargin)
+function output = areaidx(varargin)
 
-% area  The area above a zero intensity baseline
+% areaidx  The area above a zero intensity baseline
 %
 % Syntax
-%   picture = area(lowx, highx);
+%   value = areaidx(lowidx, highidx);
 %
 % Description
-%   picture = area(lowx, highx) calculates the area under each spectrum
-%   between the limits provided in lowx and highx in x-axis units. No
-%   baseline is removed. picture is a ChiPicture.
-%
+%   value = areaidx(lowidx, highidx) calculates the area under the spectrum
+%   between the index limits provided in lowidx and highidx. No baseline is
+%   removed.
+% 
 % Copyright (c) 2017-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   peakarea peakareaidx areaidx
+%   peakarea peakareaidx area
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -27,6 +27,6 @@ function output = area(varargin)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-output = area@ChiMassSpecCharacter(varargin{:});
+output = areaidx@ChiMSCharacter(varargin{:});
 
-end % function area
+end % function areaidx

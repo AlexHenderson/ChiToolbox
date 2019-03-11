@@ -1,6 +1,6 @@
-classdef ChiMassSpecCharacter < ChiBase
+classdef ChiMSCharacter < ChiBase
 
-% ChiMassSpecCharacter  Features specific to mass spectral data
+% ChiMSCharacter  Features specific to mass spectral data
 %
 % Description
 %   This class is used internally to imbue data with characteristics of
@@ -10,7 +10,7 @@ classdef ChiMassSpecCharacter < ChiBase
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiMassSpectrum ChiMassSpectralCollection ChiMassSpecImage 
+%   ChiMSSpectrum ChiMSSpectralCollection ChiMSImage 
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

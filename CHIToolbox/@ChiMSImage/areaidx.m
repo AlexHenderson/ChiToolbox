@@ -28,6 +28,6 @@ function output = areaidx(varargin)
 
 
 % Point to correct method of area measurement
-output = areaidx@ChiMassSpecCharacter(varargin{:});
+output = areaidx@ChiMSCharacter(varargin{:});
 
 end % function areaidx

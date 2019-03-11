@@ -1,22 +1,21 @@
-classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
+classdef ChiMSSpectralCollection < ChiSpectralCollection & ChiMSCharacter
     
-% ChiMassSpecImage  A mass spectral image.
+% ChiMSSpectralCollection  A collection of mass spectra.
 %
 % Syntax
-%   massspecimage = ChiMassSpecImage(mass,data,xpixels,ypixels);
-%   massspecimage = ChiMassSpecImage(mass,data,xpixels,ypixels,reversex);
-%   massspecimage = ChiMassSpecImage(mass,data,xpixels,ypixels,reversex,xlabel,xunit,ylabel,yunit);
-%   massspecimage = ChiMassSpecImage(ChiImage);
+%   massspecdata = ChiMSSpectralCollection(mass,data);
+%   massspecdata = ChiMSSpectralCollection(mass,data,reversex);
+%   massspecdata = ChiMSSpectralCollection(mass,data,reversex,xlabel,xunit,ylabel,yunit);
+%   massspecdata = ChiMSSpectralCollection(ChiSpectralCollection);
 %
 % Description
-%   massspecimage = ChiMassSpecImage(mass,data,xpixels,ypixels) creates a
-%   mass spectral image object using default values for reversex, xlabel
-%   and ylabel.
+%   massspecdata = ChiMSSpectralCollection(mass,data) creates a mass
+%   spectral collection using default values.
 %
-%   massspecimage = ChiMassSpecImage(ChiImage) creates a mass spectral
-%   image object from a ChiImage object using default values for reversex,
-%   xlabel and ylabel. No check is made to determine if the ChiImage object
-%   contains valid ms data.
+%   massspecdata = ChiMSSpectralCollection(ChiSpectralCollection) creates a
+%   mass spectral collection from a ChiSpectralCollection using default
+%   values. No check is made to determine if the ChiSpectralCollection
+%   contains valid mass spectral data.
 % 
 %   Default values are: 
 %       reversex = false (mass is plotted in ascending order)
@@ -29,7 +28,7 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiImage ChiMassSpectralCollection ChiSpectralCollection.
+%   ChiMSSpectrum ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -38,15 +37,11 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.1, January 2018
+% Version 1.0, August 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-    properties
-        imzmlproperties
-    end
-    
     properties (Dependent)
         mass
     end
@@ -54,7 +49,7 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
     % =====================================================================
     methods
     % =====================================================================
-        function this = ChiMassSpecImage(varargin)
+        function this = ChiMSSpectralCollection(varargin)
           
             superClassArgs = varargin;
             
@@ -63,42 +58,38 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
                 case 0
                     % Do nothing, this is an empty class
                 case 1
-                    if isa(varargin{1},'ChiImage')
+                    if isa(varargin{1},'ChiSpectralCollection')
                         input = varargin{1};
                         superClassArgs{1} = input.xvals;
                         superClassArgs{2} = input.data;
-                        superClassArgs{3} = input.xpixels;
-                        superClassArgs{4} = input.ypixels;
-                        superClassArgs{5} = input.reversex;
-                        superClassArgs{6} = input.xlabelname;
-                        superClassArgs{7} = input.xlabelunit;
-                        superClassArgs{8} = input.ylabelname;
-                        superClassArgs{9} = input.ylabelunit;
-                        superClassArgs{10} = input.mask;
-                        superClassArgs{11} = input.masked;
-                        superClassArgs{12} = input.filenames;
-                        superClassArgs{13} = input.history.clone();
+                        superClassArgs{3} = input.reversex;
+                        superClassArgs{4} = input.xlabelname;
+                        superClassArgs{5} = input.xlabelunit;
+                        superClassArgs{6} = input.ylabelname;
+                        superClassArgs{7} = input.ylabelunit;
+                        superClassArgs{8} = input.classmembership;
+                        superClassArgs{9} = input.filenames;
+%                         superClassArgs{9} = input.filenames;
+%                         superClassArgs{10} = input.history.clone();
                     else
                         err = MException(['CHI:',mfilename,':InputError'], ...
                             'Input not understood.');
                         throw(err);
                     end
-                case 4
-                    superClassArgs{5} = false;          % reversex = ascending
-                    superClassArgs{6} = 'm/z';          % xlabelname
-                    superClassArgs{7} = 'amu';          % xlabelunit
-                    superClassArgs{8} = 'intensity';    % ylabelname
-                    superClassArgs{9} = 'counts';       % ylabelunit
-                case 5
-                    superClassArgs{6} = 'm/z';          % xlabelname
-                    superClassArgs{7} = 'amu';          % xlabelunit
-                    superClassArgs{8} = 'intensity';    % ylabelname
-                    superClassArgs{9} = 'counts';       % ylabelunit
+                case 2
+                    superClassArgs{3} = false;          % reversex = ascending
+                    superClassArgs{4} = 'm/z';          % xlabelname
+                    superClassArgs{5} = 'amu';          % xlabelunit
+                    superClassArgs{6} = 'intensity';    % ylabelname
+                    superClassArgs{7} = 'counts';       % ylabelunit
+                case 3
+                    superClassArgs{4} = 'm/z';          % xlabelname
+                    superClassArgs{5} = 'amu';          % xlabelunit
+                    superClassArgs{6} = 'intensity';    % ylabelname
+                    superClassArgs{7} = 'counts';       % ylabelunit
+                case 7
+                    superClassArgs = varargin;
                 case 9
-                    superClassArgs = varargin;
-                case 12
-                    superClassArgs = varargin;
-                case 13
                     superClassArgs = varargin;
                 otherwise
                     utilities.warningnobacktrace('Not all parameters were interpreted. ')
@@ -106,10 +97,8 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
             
             % ToDo: Need to manage the additional fields in the base class
             
-            this@ChiImage(superClassArgs{:});
-            
-            this.spectrumclassname = 'ChiMassSpectrum';
-            this.spectralcollectionclassname = 'ChiMassSpectralCollection';
+            this@ChiSpectralCollection(superClassArgs{:});
+            this@ChiMSCharacter();
             
             % As close as we can get  
             this.ontologyinfo = ChiOntologyInformation();
@@ -119,7 +108,11 @@ classdef ChiMassSpecImage < ChiImage & ChiMassSpecCharacter
                 'function of the mass-to-charge ratio (m/z).']; 
             this.ontologyinfo.uri = 'http://purl.obolibrary.org/obo/MS_1000294';            
             this.ontologyinfo.isaccurate = false;
-            
+
+            if (~isempty(varargin) && isa(varargin{1},'ChiSpectralCollection'))
+                this.history = varargin{1}.history.clone();
+                this.history.add(['Generated from a ', class(varargin{1}), '.']);
+            end
         end
        
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

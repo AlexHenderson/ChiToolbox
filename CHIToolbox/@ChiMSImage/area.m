@@ -3,12 +3,12 @@ function output = area(varargin)
 % area  The area above a zero intensity baseline
 %
 % Syntax
-%   value = area(lowx, highx);
+%   picture = area(lowx, highx);
 %
 % Description
-%   value = area(lowx, highx) calculates the area under the spectrum
+%   picture = area(lowx, highx) calculates the area under each spectrum
 %   between the limits provided in lowx and highx in x-axis units. No
-%   baseline is removed.
+%   baseline is removed. picture is a ChiPicture.
 %
 % Copyright (c) 2017-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -27,6 +27,6 @@ function output = area(varargin)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-output = area@ChiMassSpecCharacter(varargin{:});
+output = area@ChiMSCharacter(varargin{:});
 
 end % function area

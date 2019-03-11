@@ -1,20 +1,20 @@
-classdef ChiMassSpectrum < ChiSpectrum & ChiMassSpecCharacter
+classdef ChiMSSpectrum < ChiSpectrum & ChiMSCharacter
     
-% ChiMassSpectrum  A mass spectrum.
+% ChiMSSpectrum  A mass spectrum.
 %
 % Syntax
-%   massspectrum = ChiMassSpectrum(mass,data);
-%   massspectrum = ChiMassSpectrum(mass,data,reversex);
-%   massspectrum = ChiMassSpectrum(mass,data,reversex,xlabel,xunit,ylabel,yunit);
-%   massspectrum = ChiMassSpectrum(ChiSpectrum);
+%   massspectrum = ChiMSSpectrum(mass,data);
+%   massspectrum = ChiMSSpectrum(mass,data,reversex);
+%   massspectrum = ChiMSSpectrum(mass,data,reversex,xlabel,xunit,ylabel,yunit);
+%   massspectrum = ChiMSSpectrum(ChiSpectrum);
 %
 % Description
-%   massspectrum = ChiMassSpectrum(mass,data) creates a mass spectrum using
+%   massspectrum = ChiMSSpectrum(mass,data) creates a mass spectrum using
 %   default values.
 %
-%   massspectrum = ChiMassSpectrum(ChiSpectrum) creates a mass spectrum
-%   from a ChiSpectrum using default values. No check is made to determine
-%   if the ChiSpectrum contains valid mass spectral data.
+%   massspectrum = ChiMSSpectrum(ChiSpectrum) creates a mass spectrum from
+%   a ChiSpectrum using default values. No check is made to determine if
+%   the ChiSpectrum contains valid mass spectral data.
 % 
 %   Default values are: 
 %       reversex = false (mass is plotted in ascending order)
@@ -27,7 +27,7 @@ classdef ChiMassSpectrum < ChiSpectrum & ChiMassSpecCharacter
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiMassImage ChiMassSpectralCollection ChiSpectrum.
+%   ChiMSImage ChiMSSpectralCollection ChiSpectrum.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -48,7 +48,7 @@ classdef ChiMassSpectrum < ChiSpectrum & ChiMassSpecCharacter
     % =====================================================================
     methods
     % =====================================================================
-        function this = ChiMassSpectrum(varargin)
+        function this = ChiMSSpectrum(varargin)
           
             superClassArgs = varargin;
             
@@ -94,9 +94,7 @@ classdef ChiMassSpectrum < ChiSpectrum & ChiMassSpecCharacter
             % ToDo: Need to manage the additional fields in the base class
             
             this@ChiSpectrum(superClassArgs{:});
-            this@ChiMassSpecCharacter();
-            
-            this.spectralcollectionclassname = 'ChiMassSpectralCollection';
+            this@ChiMSCharacter();
             
             this.ontologyinfo = ChiOntologyInformation();
             this.ontologyinfo.term = 'mass spectrum';

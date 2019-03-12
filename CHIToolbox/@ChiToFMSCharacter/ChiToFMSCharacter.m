@@ -1,6 +1,6 @@
-classdef ChiToFMSCharacter < ChiMassSpecCharacter
+classdef ChiToFMSCharacter < ChiMSCharacter
 
-% ChiToFCharacter  Features specific to time-of-flight mass spectral data
+% ChiToFMSCharacter  Features specific to time-of-flight mass spectral data
 %
 % Description
 %   This class is used internally to imbue data with characteristics of
@@ -10,7 +10,8 @@ classdef ChiToFMSCharacter < ChiMassSpecCharacter
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiToFMassSpectrum ChiToFMassSpectralCollection ChiToFMassSpecImage 
+%   ChiToFMSSpectrum ChiToFMSSpectralCollection ChiToFMSImage
+%   ChiMSCharacter.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

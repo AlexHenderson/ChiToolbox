@@ -50,13 +50,13 @@ error(nargoutchk(0,2,nargout))
 if nargin>2 %uer specified DEFAULTLEVEL
   dataType = class(im);
   switch dataType
-    case 'uint8','uint16','int16'
+    case {'uint8','uint16','int16'}
       if defaultLevel<intmin(dataType) | defaultLevel>intmax(dataType)
         error(['Specified DEFAULTLEVEL outside class range for ' dataType])
       elseif defaultLevel<min(im(:)) | defaultLevel>max(im(:))
         error('Specified DEFAULTLEVEL outside data range for IM')
       end
-    case 'double','single'
+    case {'double','single'}
       %okay, do nothing
     otherwise
       error(['Unsupport image type ' dataType])

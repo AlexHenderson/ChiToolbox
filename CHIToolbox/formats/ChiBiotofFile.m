@@ -12,7 +12,7 @@ classdef ChiBiotofFile < ChiAbstractFileFormat
 % 
 %   myfile = ChiBiotofFile.open() opens a dialog box to request filenames
 %   from the user. The selected files are opened and concatenated into a
-%   ChiToFMassSpectrum, ChiToFMassSpectralCollection or ChiImage as appropriate.
+%   ChiToFMSSpectrum, ChiToFMSSpectralCollection or ChiMSImage as appropriate.
 % 
 %   myfile = ChiBiotofFile.open(filenames) opens the filenames provided in
 %   a cell array of strings.
@@ -20,17 +20,17 @@ classdef ChiBiotofFile < ChiAbstractFileFormat
 %   This class can read one or more Biotof spectral files (*.dat) or a
 %   single Biotof image file (*.xyt). The file format has the capacity to
 %   hold different types of information. If a single file containing a
-%   spectrum is selected, then myfile is a ChiToFMassSpectrum. If multiple
+%   spectrum is selected, then myfile is a ChiToFMSSpectrum. If multiple
 %   spectral files are selected, then myfile is a
-%   ChiToFMassSpectralCollection. If a single file containing an image is
-%   selected, then myfile is a ChiImage. If multiple image files are
+%   ChiToFMSSpectralCollection. If a single file containing an image is
+%   selected, then myfile is a ChiMSImage. If multiple image files are
 %   selected, only first is read.
 %
 % Copyright (c) 2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiToFMassSpectrum ChiToFMassSpectralCollection ChiSpectrum ChiSpectralCollection ChiImage.
+%   ChiToFMSSpectrum ChiToFMSSpectralCollection ChiMSImage.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -115,14 +115,14 @@ classdef ChiBiotofFile < ChiAbstractFileFormat
                 % We have one or more spectra rather than an image
                 % Check to see if we have a single spectrum or a profile
                 if (numel(data) == numel(mass))
-                    obj = ChiToFMassSpectrum(mass,data);
+                    obj = ChiToFMSSpectrum(mass,data);
                 else
-                    obj = ChiToFMassSpectralCollection(mass,data);
+                    obj = ChiToFMSSpectralCollection(mass,data);
                 end               
             else
                 % We read Biotof images at nominal mass, so they are no
                 % longer ToF-SIMS images
-                obj = ChiMassSpecImage(mass,data,width,height);
+                obj = ChiMSImage(mass,data,width,height);
                 obj.imzmlproperties = imzmlinfo;
             end
             

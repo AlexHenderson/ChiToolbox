@@ -111,14 +111,37 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
 
                             if ~isempty(s.history)
                                 superClassArgs{9} = s.history.clone();
-                                superClassArgs{9}.add('Created from a ChiSpectralCollection');
+                                type = class(varargin{1});
+                                superClassArgs{9}.add(['Created from a ', type]);
                             else
                                 superClassArgs{9} = ChiLogger();                
                             end
                         else
-                            err = MException(['CHI:',mfilename,':InputError'], ...
-                                'Input not understood.');
-                            throw(err);
+                            if isa(varargin{1},'ChiImage')
+                                s = varargin{1};
+                                superClassArgs{1} = s.xvals;
+                                superClassArgs{2} = s.data;
+                                superClassArgs{3} = s.reversex;
+                                superClassArgs{4} = s.xlabelname;
+                                superClassArgs{5} = s.xlabelunit;
+                                superClassArgs{6} = s.ylabelname;
+                                superClassArgs{7} = s.ylabelunit;
+%                                 if ~isempty(s.classmembership)
+%                                     superClassArgs{8} = s.classmembership.clone();
+%                                 end
+
+                                if ~isempty(s.history)
+                                    superClassArgs{9} = s.history.clone();
+                                    type = class(varargin{1});
+                                    superClassArgs{9}.add(['Created from a ', type]);
+                                else
+                                    superClassArgs{9} = ChiLogger();                
+                                end
+                            else
+                                err = MException(['CHI:',mfilename,':InputError'], ...
+                                    'Input not understood.');
+                                throw(err);
+                            end
                         end
                     end
                 case 2

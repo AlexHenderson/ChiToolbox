@@ -14,7 +14,7 @@ classdef ChiPicture < ChiBase
             history;
         end
     
-        properties (SetAccess = protected)
+        properties
             xpixels;    % Number of pixels in the x-direction (width)
             ypixels;    % Number of pixels in the y-direction (height)
         end          

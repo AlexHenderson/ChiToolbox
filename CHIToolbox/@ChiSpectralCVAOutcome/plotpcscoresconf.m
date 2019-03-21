@@ -8,27 +8,28 @@ function plotpcscoresconf(this,pcx,pcy,varargin)
 %   plotpcscoresconf(____,'nofig');
 %
 % Description
-%   plotpcscoresconf(pcx,pcy) creates a 2-D scatter plot of principal component
-%   scores. pcx is the principal component number to plot on the x-axis,
-%   while pcy is the principal component number to plot on the y-axis.
-%   Ellipses are drawn for all classes at 95% conficence. A new figure
-%   window is created.
+%   plotpcscoresconf(pcx,pcy) creates a 2-D scatter plot of principal
+%   component scores. pcx is the principal component number to plot on the
+%   x-axis, while pcy is the principal component number to plot on the
+%   y-axis. Ellipses are drawn for all classes at 95% conficence. A new
+%   figure window is created.
 %
-%   plotpcscoresconf(pcx,pcy,percentconf) Principal component scores are plotted
-%   with ellipses at percentconf. A new figure window is created.
+%   plotpcscoresconf(pcx,pcy,percentconf) Principal component scores are
+%   plotted with ellipses at percentconf. A new figure window is created.
 %
 %   plotpcscoresconf(____,'nofig') plots the scores in the currently active
 %   figure window, or creates a new figure if none is available.
 %
 %   Other parameters can be applied to customise the plot. See the MATLAB
-%   scatter, or gscatter, functions for more details. 
+%   scatter, or utilities.gscatter, functions for more details. 
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   scatter gscatter plotscores plotloadings plotexplainedvariance
-%   plotcumexplainedvariance ChiSpectralPCAOutcome ChiSpectralCollection.
+%   scatter plotscores plotloadings plotexplainedvariance
+%   utilities.gscatter plotcumexplainedvariance ChiSpectralPCAOutcome
+%   ChiSpectralCollection.
 
 
 % Contact email: alex.henderson@manchester.ac.uk
@@ -38,7 +39,6 @@ function plotpcscoresconf(this,pcx,pcy,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 

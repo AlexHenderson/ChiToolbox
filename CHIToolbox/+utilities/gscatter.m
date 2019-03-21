@@ -73,8 +73,9 @@ if length(x) ~= length(group)
 end
 
 %% Some defaults
-symbol = '.';
-markersize = 15;
+marker = '.';
+sizedata = 6;
+sizedatadefined = false;
 showlegend = true;
 
 %% Parse command line

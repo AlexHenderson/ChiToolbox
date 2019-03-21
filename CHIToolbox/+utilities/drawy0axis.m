@@ -13,7 +13,7 @@ function drawy0axis(axis)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   drawx0axis, draw00axes, plot scatter, gscatter.
+%   drawx0axis, draw00axes, plot, scatter, utilities.gscatter.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

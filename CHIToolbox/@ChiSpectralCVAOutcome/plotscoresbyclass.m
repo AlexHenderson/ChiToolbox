@@ -11,15 +11,15 @@ function plotscoresbyclass(this,cvx,cvy,varargin)
 %   while cvy is the canonical variate to plot on the y-axis. A new figure
 %   window is created for each class in addition to the overall plot.
 %
-%   Other parameters can be applied to customise the plot. See the MATLAB
-%   gscatter function for more details. 
+%   Other parameters can be applied to customise the plot. See the 
+%   utilities.gscatter function for more details. 
 %
-% Copyright (c) 2018, Alex Henderson.
+% Copyright (c) 2018-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   plotscores gscatter plotloadings plotexplainedvariance plotpcloadings
-%   plotpcexplainedvariance plotpccumexplainedvariance
+%   plotscores plotloadings plotexplainedvariance plotpcloadings
+%   plotpcexplainedvariance plotpccumexplainedvariance utilities.gscatter
 %   ChiSpectralPCAOutcome ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
@@ -29,7 +29,6 @@ function plotscoresbyclass(this,cvx,cvy,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -62,9 +61,20 @@ if (this.numcvs > 1)
     windowtitle = [windowtitlestub, num2str(cvx), ' and ' num2str(cvy)];
     figure('Name',windowtitle,'NumberTitle','off');
     colours = get(gca,'colororder');
+
+    numcolours = size(colours,1);
+    if (this.pca.classmembership.numuniquelabels > numcolours)
+        utilities.warningnobacktrace('There are more groups than colours, the colours will be recycled');
+        while (this.pca.classmembership.numuniquelabels > size(colours,1))
+            colours = vertcat(colours,colours); %#ok<AGROW>
+        end
+    end
+    
+% Defaults
+    
     decplaces = 3;
     
-    nan.inst.gscatter(this.scores(:,cvx), this.scores(:,cvy), this.pca.classmembership.labels, colours, '.',varargin{:});
+    utilities.gscatter(this.scores(:,cvx),this.scores(:,cvy),this.pca.classmembership.labels,'colours',colours,'nofig',varargin{:});
     xlabel([axislabelstub, num2str(cvx), ' (', num2str(this.explained(cvx),decplaces), '%)']);
     ylabel([axislabelstub, num2str(cvy), ' (', num2str(this.explained(cvy),decplaces), '%)']);
     title([titlestub, num2str(cvx), ' and ', num2str(cvy), ' (',num2str(this.pcs), ' pcs)']);
@@ -83,7 +93,7 @@ if (this.numcvs > 1)
         thisclass = (this.pca.classmembership.labelids == i);
 
         % Produce the plot for this class
-        nan.inst.gscatter(this.scores(thisclass,cvx), this.scores(thisclass,cvy), this.pca.classmembership.labels(thisclass), colours(i,:), '.', varargin{:});
+        utilities.gscatter(this.scores(thisclass,cvx),this.scores(thisclass,cvy),this.pca.classmembership.labels(thisclass),'colours',colours(i,:),'nofig',varargin{:});
         
         % Change limits to match the overall figure for consistency
         xlim(limits(1:2));

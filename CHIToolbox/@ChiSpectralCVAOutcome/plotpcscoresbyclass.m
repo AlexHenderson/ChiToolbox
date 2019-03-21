@@ -12,15 +12,15 @@ function plotpcscoresbyclass(varargin)
 %   figure window is created for each class in addition to the overall
 %   plot.
 %
-%   Other parameters can be applied to customise the plot. See the MATLAB
-%   gscatter function for more details. 
+%   Other parameters can be applied to customise the plot. See the
+%   utilities.gscatter function for more details.
 %
-% Copyright (c) 2018, Alex Henderson.
+% Copyright (c) 2018-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   plotscores gscatter plotloadings plotexplainedvariance plotpcloadings
-%   plotpcexplainedvariance plotpccumexplainedvariance
+%   plotscores plotloadings plotexplainedvariance plotpcloadings
+%   plotpcexplainedvariance plotpccumexplainedvariance utilities.gscatter
 %   ChiSpectralPCAOutcome ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
@@ -30,7 +30,6 @@ function plotpcscoresbyclass(varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, September 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 

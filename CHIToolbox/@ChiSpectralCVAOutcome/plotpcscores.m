@@ -16,18 +16,19 @@ function plotpcscores(this,varargin)
 %   figure window, or creates a new figure if none is available.
 %
 %   Other parameters can be applied to customise the plot. See the MATLAB
-%   scatter, or gscatter, functions for more details. 
+%   scatter, or utilities.gscatter, functions for more details. 
 %
 % Notes
 %   If the object has classmembership available, the scores will be plotted
-%   in colours relating to their class using the gscatter function.
+%   in colours relating to their class using the utilities.gscatter
+%   function.
 %
 % Copyright (c) 2017, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   scatter gscatter plotloadings plotexplainedvariance plotpcloadings
-%   plotpcexplainedvariance plotpccumexplainedvariance
+%   scatter plotloadings plotexplainedvariance plotpcloadings
+%   plotpcexplainedvariance plotpccumexplainedvariance utilities.gscatter
 %   ChiSpectralPCAOutcome ChiSpectralCollection.
 
 

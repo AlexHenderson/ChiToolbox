@@ -12,14 +12,14 @@ function plotscoresbyclass(this,pcx,pcy,varargin)
 %   figure window is created for each class in addition to the overall
 %   plot.
 %
-%   Other parameters can be applied to customise the plot. See the MATLAB
-%   gscatter function for more details. 
+%   Other parameters can be applied to customise the plot. See the
+%   utilities.gscatter function for more details. 
 %
 % Copyright (c) 2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   plotscores gscatter plotloadings plotexplainedvariance
+%   plotscores utilities.gscatter plotloadings plotexplainedvariance
 %   ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
@@ -29,7 +29,6 @@ function plotscoresbyclass(this,pcx,pcy,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, September 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -68,9 +67,19 @@ if (this.numpcs > 1)
     windowtitle = [windowtitlestub, num2str(pcx), ' and ' num2str(pcy)];
     figure('Name',windowtitle,'NumberTitle','off');
     colours = get(gca,'colororder');
+    
+    % Check the format of colours
+    numcolours = size(colours,1);
+    if (this.classmembership.numuniquelabels > numcolours)
+        utilities.warningnobacktrace('There are more groups than colours, the colours will be recycled');
+        while (this.classmembership.numuniquelabels > size(colours,1))
+            colours = vertcat(colours,colours); %#ok<AGROW>
+        end
+    end
+    
     decplaces = 3;
     
-    nan.inst.gscatter(this.scores(:,pcx), this.scores(:,pcy), this.classmembership.labels, colours, '.',varargin{:});
+    utilities.gscatter(this.scores(:,pcx), this.scores(:,pcy), this.classmembership.labels, 'colours', colours, 'nofig', varargin{:});
     xlabel([axislabelstub, num2str(pcx), ' (', num2str(this.explained(pcx),decplaces), '%)']);
     ylabel([axislabelstub, num2str(pcy), ' (', num2str(this.explained(pcy),decplaces), '%)']);
     title([titlestub, num2str(pcx), ' and ', num2str(pcy)]);
@@ -89,7 +98,7 @@ if (this.numpcs > 1)
         thisclass = (this.classmembership.labelids == i);
 
         % Produce the plot for this class
-        nan.inst.gscatter(this.scores(thisclass,pcx), this.scores(thisclass,pcy), this.classmembership.labels(thisclass), colours(i,:), '.', varargin{:});
+        utilities.gscatter(this.scores(thisclass,pcx), this.scores(thisclass,pcy), this.classmembership.labels(thisclass), 'colours', colours(i,:), 'nofig', varargin{:});
         
         % Change limits to match the overall figure for consistency
         xlim(limits(1:2));

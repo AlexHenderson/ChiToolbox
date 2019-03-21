@@ -16,17 +16,18 @@ function plotscores(this,pcx,pcy,varargin)
 %   figure window, or creates a new figure if none is available.
 %
 %   Other parameters can be applied to customise the plot. See the MATLAB
-%   scatter, or gscatter, functions for more details. 
+%   scatter, or utilities.gscatter, functions for more details. 
 %
 % Notes
 %   If the object has classmembership available, the scores will be plotted
-%   in colours relating to their class using the gscatter function.
+%   in colours relating to their class using the utilities.gscatter
+%   function.
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   scatter gscatter plotloadings plotexplainedvariance
+%   scatter utilities.gscatter plotloadings plotexplainedvariance
 %   plotcumexplainedvariance ChiSpectralPCAOutcome ChiSpectralCollection.
 
 
@@ -37,7 +38,6 @@ function plotscores(this,pcx,pcy,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/Chitoolbox
 
@@ -46,6 +46,11 @@ windowtitlestub = titlestub;
 axislabelstub = 'score on PC ';
 errorcode = 'Chi:ChiSpectralPCAOutcome';
 errormessagestub = 'Requested principal component is out of range. Max PCs = ';
+
+% Some defaults
+marker = '.';
+sizedata = 6;
+sizedatadefined = false;
 
 if ((pcx > this.numpcs) || (pcx < 1))
     err = MException([errorcode,':OutOfRange'], ...
@@ -64,9 +69,31 @@ if argposition
     varargin(argposition) = [];
 else
     % No 'nofig' found so create a new figure
-    windowtitle = [windowtitlestub, num2str(pcy), ' and ' num2str(pcx)];
+    windowtitle = [windowtitlestub, num2str(pcx), ' and ' num2str(pcy)];
     figure('Name',windowtitle,'NumberTitle','off');
 end    
+
+% sizedata
+argposition = find(cellfun(@(x) strcmpi(x, 'sizedata') , varargin));
+if argposition
+    sizedata = varargin{argposition+1};
+    sizedatadefined = true;
+    varargin(argposition+1) = [];
+    varargin(argposition) = [];
+end
+
+% marker
+argposition = find(cellfun(@(x) ischar(x) , varargin));
+if argposition
+    marker = varargin{argposition};
+    varargin(argposition) = [];
+end
+
+% If the chosen marker is a dot and the size has not been defined, make the
+% dot a bit bigger. 
+if (strcmp(marker, '.') && ~sizedatadefined)
+    sizedata = 15;
+end
 
 % colours = 'bgrcmky';
 colours = get(gca,'colororder');
@@ -74,9 +101,11 @@ axiscolour = 'k';
 decplaces = 3;
 
 if ~isempty(this.classmembership)
-    nan.inst.gscatter(this.scores(:,pcx), this.scores(:,pcy), this.classmembership.labels, colours, '.',varargin{:});
+    utilities.gscatter(this.scores(:,pcx), this.scores(:,pcy), this.classmembership.labels, 'colours', colours, 'sizedata', sizedata, marker, 'nofig', varargin{:});
 else
-    scatter(this.scores(:,pcx), this.scores(:,pcy), '.',varargin{:});
+    scatter(this.scores(:,pcx), this.scores(:,pcy), sizedata .* sizedata, marker, varargin{:});
+%     scatter(this.scores(:,pcx), this.scores(:,pcy),sizedata,marker);
+
 end    
 
 xlabel([axislabelstub, num2str(pcx), ' (', num2str(this.explained(pcx),decplaces), '%)']);
@@ -110,6 +139,17 @@ set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
 axis tight
 hold off;
 
-
+%% Manage data cursor information
+% figurehandle = gcf;
+% cursor = datacursormode(figurehandle);
+% if ~isempty(this.classmembership)
+%     labels = this.classmembership.labels;
+%     if isnumeric(labels)
+%         labels = num2str(labels);
+%     end
+%     plotinfo.linelabels = cellstr(labels);
+% 
+%     set(cursor,'UpdateFcn',{@utilities.datacursor,this,plotinfo});
+% end
 end
 

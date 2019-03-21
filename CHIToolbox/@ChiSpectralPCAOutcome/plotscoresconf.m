@@ -1,4 +1,4 @@
-function plotscoresconf(this,pcx,pcy,percentconf,varargin)
+function plotscoresconf(this,pcx,pcy,varargin)
 
 % plotscoresconf  Plots principal component scores with confidence ellipses. 
 %
@@ -21,15 +21,20 @@ function plotscoresconf(this,pcx,pcy,percentconf,varargin)
 %   figure window, or creates a new figure if none is available.
 %
 %   Other parameters can be applied to customise the plot. See the MATLAB
-%   scatter, or gscatter, functions for more details. 
+%   scatter, or utilities.gscatter, functions for more details. 
 %
-% Copyright (c) 2017-2018, Alex Henderson.
+% Notes
+%   See: 
+%   https://stats.stackexchange.com/questions/217374/real-meaning-of-confidence-ellipse
+%   for a discussion of confidence ellipses. 
+% 
+% Copyright (c) 2017-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   scatter gscatter plotscores plotloadings plotexplainedvariance
-%   plotcumexplainedvariance ChiSpectralPCAOutcome ChiSpectralCollection.
-
+%   scatter utilities.gscatter plotscores plotloadings
+%   plotexplainedvariance plotcumexplainedvariance ChiSpectralPCAOutcome
+%   ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -38,8 +43,6 @@ function plotscoresconf(this,pcx,pcy,percentconf,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 2.0, June 2018, fixed colours
-% Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -78,15 +81,29 @@ else
 end    
 
 % Percentage confidence
-if ~exist('percentconf','var')
+if isnumeric(varargin{1})
+    percentconf = varargin{1};
+    varargin(1) = []; %#ok<NASGU>
+else
     percentconf = 95;
 end
 
-colours = get(gca,'colororder');
+% Defaults
 axiscolour = 'k';
 decplaces = 3;
+colours = get(gca,'colororder');
 
-nan.inst.gscatter(this.scores(:,pcx), this.scores(:,pcy), this.classmembership.labels, colours, '.',varargin{:});
+% Check the format of colours
+numcolours = size(colours,1);
+if (this.classmembership.numuniquelabels > numcolours)
+    utilities.warningnobacktrace('There are more groups than colours, the colours will be recycled');
+    while (this.classmembership.numuniquelabels > size(colours,1))
+        colours = vertcat(colours,colours); %#ok<AGROW>
+    end
+end
+
+% utilities.gscatter(this.scores(:,pcx), this.scores(:,pcy), this.classmembership.labels, 'colours', colours, 'nofig');
+utilities.gscatter(this.scores(:,pcx), this.scores(:,pcy), this.classmembership.labels, 'colours', colours, 'nofig', varargin{:});
 
 %% Draw the confidence ellipses
 if ~exist('error_ellipse', 'file')
@@ -95,21 +112,14 @@ else
     
     % Draw confidence ellipses at the requested level
     hold on;
-    colouridx = 0;
     for i = 1:this.classmembership.numuniquelabels
         thisgroupX = this.scores(this.classmembership.labelids == i, pcx);
         thisgroupY = this.scores(this.classmembership.labelids == i, pcy);
         groupmeanX = mean(thisgroupX);
         groupmeanY = mean(thisgroupY);
         groupcov = cov(thisgroupX, thisgroupY);
-        colouridx = colouridx + 1;
-        if colouridx > length(colours)
-            % Wrap the colours if we run out. More than 7 groups
-            % seems unlikely though. 
-            colouridx = 1;
-        end
         h = error_ellipse('C',groupcov,'mu',[groupmeanX,groupmeanY],'conf',percentconf/100);
-        h.Color = colours(colouridx,:);
+        h.Color = colours(i,:);
         set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
         
     end

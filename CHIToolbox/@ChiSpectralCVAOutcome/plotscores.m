@@ -15,15 +15,15 @@ function plotscores(this,cvx,cvy,varargin)
 %   plotscores(cvx,cvy,'nofig') plots the scores in the currently active
 %   figure window, or creates a new figure if none is available.
 %
-%   Other parameters can be applied to customise the plot. See the MATLAB
-%   gscatter function for more details. 
+%   Other parameters can be applied to customise the plot. See the
+%   utilities.gscatter function for more details.
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   gscatter plotloadings plotexplainedvariance plotpcloadings
-%   plotpcexplainedvariance plotpccumexplainedvariance
+%   plotloadings plotexplainedvariance plotpcloadings
+%   plotpcexplainedvariance plotpccumexplainedvariance utilities.gscatter
 %   ChiSpectralPCAOutcome ChiSpectralCollection.
 
 
@@ -34,7 +34,6 @@ function plotscores(this,cvx,cvy,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -45,7 +44,7 @@ axislabelstub = 'score on CV ';
 errorcode = 'CHI:ChiSpectralCVAOutcome';
 errormessagestub = 'Requested canonical variate is out of range. Max CVs = ';
 
-% If we have more than 1 canonical variate, check taht the required cvs are
+% If we have more than 1 canonical variate, check that the required cvs are
 % in range. 
 if (this.numcvs ~= 1)
     if ((cvx > this.numcvs) || (cvx < 1))
@@ -69,29 +68,32 @@ else
     if (this.numcvs == 1)
         windowtitle = 'Score on canonical variate 1';
     else
-        windowtitle = [windowtitlestub, num2str(cvy), ' and ' num2str(cvx)];
+        windowtitle = [windowtitlestub, num2str(cvx), ' and ' num2str(cvy)];
     end
     figure('Name',windowtitle,'NumberTitle','off');
 end    
 
 % colours = 'bgrcmky';
 colours = get(gca,'colororder');
+
+numcolours = size(colours,1);
+if (this.pca.classmembership.numuniquelabels > numcolours)
+    utilities.warningnobacktrace('There are more groups than colours, the colours will be recycled');
+    while (this.pca.classmembership.numuniquelabels > size(colours,1))
+        colours = vertcat(colours,colours); %#ok<AGROW>
+    end
+end
+
 axiscolour = 'k';
 decplaces = 3;
 
 if (this.numcvs > 1)
-    % We can use a scatter plot
-    nan.inst.gscatter(this.scores(:,cvx), this.scores(:,cvy), this.pca.classmembership.labels, colours, '.',varargin{:});
+    % We can use a grouped scatter plot
+    utilities.gscatter(this.scores(:,cvx), this.scores(:,cvy), this.pca.classmembership.labels, 'colours', colours, 'nofig',varargin{:});
+    
     xlabel([axislabelstub, num2str(cvx), ' (', num2str(this.explained(cvx),decplaces), '%)']);
     ylabel([axislabelstub, num2str(cvy), ' (', num2str(this.explained(cvy),decplaces), '%)']);
     title([titlestub, num2str(cvx), ' and ', num2str(cvy), ' (',num2str(this.pcs), ' pcs)']);
-
-    % if ismatlab()
-    %   legend('Location','Best');
-    % else
-    %   legend();
-    % end      
-    
 else
     % Only a single canonical variate so we can use a box plot
     boxplot(this.scores,this.pca.classmembership.labels, 'jitter', 0.2, 'notch','on', 'orientation','vertical',varargin{:});

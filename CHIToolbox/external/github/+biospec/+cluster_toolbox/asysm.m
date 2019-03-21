@@ -14,7 +14,7 @@ if n==1
     repeat = 1;
     iter=1;
     while repeat && iter<=50
-         z = difsmw(y, lambda, w, d);
+         z = biospec.cluster_toolbox.difsmw(y, lambda, w, d);
          w0 = w;
            w = p * (y > z) + (1 - p) * (y <= z);
            repeat = sum(abs(w - w0)) > 0;
@@ -30,7 +30,7 @@ else
         repeat = 1;
         iter=1;
         while repeat && iter<=50
-             z(:,i) = difsmw(y(:,i), lambda, w, d);
+             z(:,i) = biospec.cluster_toolbox.difsmw(y(:,i), lambda, w, d);
              w0 = w;
                w = p * (y(:,i) > z(:,i)) + (1 - p) * (y(:,i) <= z(:,i));
                repeat = sum(abs(w - w0)) > 0;

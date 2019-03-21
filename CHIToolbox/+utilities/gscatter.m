@@ -5,9 +5,9 @@ function [fig,ax,sct,leg] = gscatter(x,y,group,varargin)
 % Syntax
 %   [fig,ax,sct,leg] = gscatter(x,y,group);
 %   [fig,ax,sct,leg] = gscatter(____, 'colours', colours);
-%   [fig,ax,sct,leg] = gscatter(____, 'symbol', symbol);
-%   [fig,ax,sct,leg] = gscatter(____, 'markersize', markersize);
+%   [fig,ax,sct,leg] = gscatter(____, 'sizedata', sizedata);
 %   [fig,ax,sct,leg] = gscatter(____, 'nofig');
+%   [fig,ax,sct,leg] = gscatter(____, 'marker');
 %   [fig,ax,sct,leg] = gscatter(____, 'sort');
 %   [fig,ax,sct,leg] = gscatter(____, 'nolegend');
 %
@@ -23,16 +23,17 @@ function [fig,ax,sct,leg] = gscatter(x,y,group,varargin)
 %   matrix of colour triplets. By default the current MATLAB colour scheme
 %   is used.
 % 
-%   [____] = gscatter(____, 'symbol',symbol) plots each group using the
-%   supplied symbol. The same symbol is used for each group. See the help
-%   page for scatter to see the possible symbols accepted. Default = '.'
-% 
-%   [____] = gscatter(____, 'markersize',markersize) plots the data at this
-%   point size. Note that MATLAB's scatter function uses the suqare of this
-%   value. Here we follow the format of the plot function. Default = 15.
+%   [____] = gscatter(____, 'sizedata',sizedata) plots the data at this
+%   point size. Note that MATLAB's scatter function uses the square of this
+%   value. Here we follow the format of the plot function. Default = 6.
 % 
 %   [____] = gscatter(____, 'nofig') uses the current figure is avilable,
 %   otherwise a new figure is generated.
+% 
+%   [____] = gscatter(____, 'marker') plots each group using the
+%   supplied marker. The same marker is used for each group. See the help
+%   page for scatter to see the possible markers accepted. Default = '.'
+%   with a sizedata default of 15 to make the dots larger.
 % 
 %   [____] = gscatter(____, 'sort') sorts the group labels before plotting.
 %   The default is to plot each group in the order of appearance.
@@ -115,18 +116,11 @@ if argposition
     varargin(argposition) = [];
 end
 
-% symbol
-argposition = find(cellfun(@(x) strcmpi(x, 'symbol') , varargin));
+% sizedata
+argposition = find(cellfun(@(x) strcmpi(x, 'sizedata') , varargin));
 if argposition
-    symbol = varargin{argposition+1};
-    varargin(argposition+1) = [];
-    varargin(argposition) = [];
-end
-
-% markersize
-argposition = find(cellfun(@(x) strcmpi(x, 'markersize') , varargin));
-if argposition
-    markersize = varargin{argposition+1};
+    sizedata = varargin{argposition+1};
+    sizedatadefined = true;
     varargin(argposition+1) = [];
     varargin(argposition) = [];
 end
@@ -136,6 +130,19 @@ argposition = find(cellfun(@(x) strcmpi(x, 'nolegend') , varargin));
 if argposition
     showlegend = false;
     varargin(argposition) = [];
+end
+
+% marker
+argposition = find(cellfun(@(x) ischar(x) , varargin));
+if argposition
+    marker = varargin{argposition};
+    varargin(argposition) = [];
+end
+
+% If the chosen marker is a dot and the size has not been defined, make the
+% dot a bit bigger. 
+if (strcmp(marker, '.') && ~sizedatadefined)
+    sizedata = 15;
 end
 
 if length(varargin) %#ok<ISMT>
@@ -183,8 +190,8 @@ end
 
 %% Do the plotting
 % scatter uses a marker area in points squared, rather than plot's
-% MarkerSize in points. Therefore, square the markersize.
-markersize = markersize * markersize;
+% sizedata in points. Therefore, square the sizedata.
+sizedata = sizedata * sizedata;
 
 % Cycle through each group, identifying the appropriate points to plot and
 % assigning them a specific colour. 
@@ -207,9 +214,9 @@ for i = 1:length(uniquegroups)
     end
     
     if ischar(colours)
-        sct{i} = scatter(ax,x(idx),y(idx),markersize,colours(i),symbol); %#ok<AGROW>
+        sct{i} = scatter(ax,x(idx),y(idx), sizedata, colours(i), 'Marker',marker); %#ok<AGROW>
     else
-        sct{i} = scatter(ax,x(idx),y(idx),markersize,colours(i,:),symbol); %#ok<AGROW>
+        sct{i} = scatter(ax,x(idx),y(idx), sizedata, colours(i,:), 'Marker',marker); %#ok<AGROW>
     end
     
     % Add subsequent plots to this figure

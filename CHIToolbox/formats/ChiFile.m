@@ -69,12 +69,18 @@ function [varargout] = ChiFile(filenames)
     metadata = [];
     % If we have a ChiMetadataSheet then extract the data from there
     [filepath,name,ext] = fileparts(filenames{1}); %#ok<ASGLU>
-    if (strcmpi(ext,'.xls') || strcmpi(ext,'.xlsx'))
+    if ChiMetadataSheet.isreadable(filenames{1})
         metadata = ChiMetadataSheet();
         metadata.open(filenames{1});
         filenames = metadata.fullfilenames;
         fromMetadata = true;
     end
+%     if (strcmpi(ext,'.xls') || strcmpi(ext,'.xlsx'))
+%         metadata = ChiMetadataSheet();
+%         metadata.open(filenames{1});
+%         filenames = metadata.fullfilenames;
+%         fromMetadata = true;
+%     end
 
     % Check the files exist
     existingfiles = true(length(filenames),1);

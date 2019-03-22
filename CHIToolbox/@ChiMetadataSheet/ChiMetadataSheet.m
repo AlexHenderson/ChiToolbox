@@ -24,6 +24,29 @@ classdef ChiMetadataSheet < ChiBase
         numfiles
     end
     
+    methods (Static)
+        function truefalse = isreadable(filename)
+            if iscell(filename)
+                filename = filename{1};
+            end
+            truefalse = false;
+            
+            % Check extension
+            [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
+            if ~strcmpi(ext(1:4),'.xls')
+                return
+            end
+            
+            % Check we have a Metadata Record Sheet            
+            [num,txt] = xlsread(filename,'A1:A1'); %#ok<ASGLU>
+            if ~strcmpi(txt,'Metadata Record Sheet')
+                return;
+            end
+            
+            truefalse = true;
+        end
+    end
+
     methods
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function this = ChiMetadataSheet(varargin)
@@ -54,17 +77,15 @@ classdef ChiMetadataSheet < ChiBase
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function open(this,filenames)
+        function open(this,filename)
             
-            if exist('filenames', 'var')
-                [pathstr,name,ext] = fileparts(filenames) ; %#ok<ASGLU>
-                if strcmpi(ext(1:4),'.xls')
-                    met = this.metadatareader(filenames);
-                else
+            if exist('filename', 'var')
+                if ~ChiMetadataSheet.isreadable(filename)
                     err = MException(['CHI:',mfilename,':InputError'], ...
-                        'Filename does not appear to be an Excel file (*.xls or *.xlsx).');
+                        'Filename does not appear to be a Metadata Record Sheet.');
                     throw(err);
                 end
+                met = this.metadatareader(filename);
             else
                 met = this.metadatareader();
             end

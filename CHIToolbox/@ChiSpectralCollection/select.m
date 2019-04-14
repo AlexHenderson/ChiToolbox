@@ -28,6 +28,8 @@ function obj = select(this,varargin)
 %   If only a single spectrum is retained, newcollection is still a
 %   ChiSpectralCollection. To convert it to a ChiSpectrum use:
 %     spectrum = collection.spectrumat(1);    
+% 
+%   Any classmembership will be broken by using this function. 
 %
 % Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -92,6 +94,11 @@ function obj = select(this,varargin)
             throw(err);
         end
         
+        
+        %% Warn user about class membership
+        if ~isempty(this.classmembership)
+            utilities.warningnobacktrace('Class membership will be broken by using this function.');
+        end
         
         %% Which spectra should be selected
 

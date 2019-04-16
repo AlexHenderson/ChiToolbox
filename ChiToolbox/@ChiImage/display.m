@@ -20,11 +20,15 @@ if ~isempty(this.data)
     end
     
     % Generate the image
-    imagesc(this.totalimage(),varargin{:});
+    imagesc(this.totalimage());
     if exist('parula.m','file')
         colormap(parula);
     else
         colormap(ChiSequentialColormap());
+    end
+    
+    if length(varargin) %#ok<ISMT>
+        title(varargin{1})
     end
     axis image;
     axis off;

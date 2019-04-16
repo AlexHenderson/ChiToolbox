@@ -58,6 +58,7 @@ function varargout = rmies(this,varargin)
 
 %% Has the user requested the iteration history to be saved? 
 % If so we need to manage its location in the output. 
+rmiesOptions = rmiesoptions();
 iterationHistoryRequested = false;
 if ~isempty(varargin)
     % Is an options object supplied?
@@ -93,20 +94,20 @@ end
 switch nargout
     case 0
         % We wish to scatter-correct this object in-situ
-        this.rmiescalculation(varargin{:});
+        this.rmiescalculation(rmiesOptions,varargin{:});
     case 1
         % We wish to create a new object (a clone) and scatter-correct that
         temp = this.clone();
-        varargout{1} = temp.rmiescalculation(varargin{:});
+        varargout{1} = temp.rmiescalculation(rmiesOptions,varargin{:});
     case 2
         % We wish to create a new object (a clone) and scatter-correct that
         temp = this.clone();
         if iterationHistoryRequested
-            [corrected,iterations] = temp.rmiescalculation(varargin{:});
+            [corrected,iterations] = temp.rmiescalculation(rmiesOptions,varargin{:});
             varargout{1} = corrected;
             varargout{2} = iterations;
         else
-            [varargout{1}] = temp.rmiescalculation(varargin{:});
+            [varargout{1}] = temp.rmiescalculation(rmiesOptions,varargin{:});
         end
     otherwise
         err = MException(['CHI:',mfilename,':IOError'], ...

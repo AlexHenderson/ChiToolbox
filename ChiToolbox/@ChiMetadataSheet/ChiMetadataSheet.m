@@ -33,6 +33,9 @@ classdef ChiMetadataSheet < ChiBase
             
             % Check extension
             [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
+            if (length(ext) < 4)
+                return;
+            end
             if ~strcmpi(ext(1:4),'.xls')
                 return
             end

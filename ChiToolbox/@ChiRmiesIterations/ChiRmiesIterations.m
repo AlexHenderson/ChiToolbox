@@ -79,7 +79,7 @@ classdef ChiRmiesIterations < ChiBase
         
         function initialise(this,numberofiterationsexpected)
         % Used to initialise the number of iterations expected.         
-        this.iteration = cell(numberofiterationsexpected,1);
+            this.iteration = cell(numberofiterationsexpected,1);
         end
         
         function append(this,varargin)

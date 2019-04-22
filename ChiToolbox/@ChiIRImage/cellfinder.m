@@ -84,7 +84,7 @@ function [meancellspectra, cells, info] = cellfinder(this, varargin)
 % your publications. 
 
 % The latest version of this file is available on Bitbucket
-% https://bitbucket.org/gardnerlab/chitoolboxmanchester
+% https://bitbucket.org/AlexHenderson/chitoolboxmanchester/
 
 
 %% step 1: Image thresholding

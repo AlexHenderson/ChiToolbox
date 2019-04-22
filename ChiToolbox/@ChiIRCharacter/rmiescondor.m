@@ -68,7 +68,7 @@ function [jobname,localpath] = rmiescondor(this,username,varargin)
 
 % Version 3.0, March 2019
 % The latest version of this file is available on Bitbucket
-% https://bitbucket.org/gardnerlab/chitoolboxmanchester/
+% https://bitbucket.org/AlexHenderson/chitoolboxmanchester/
 
 
 %% Check input

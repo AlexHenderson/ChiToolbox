@@ -18,7 +18,7 @@ function obj = sumnorm(varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   vectornorm.
+%   vectornorm, featurenorm
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

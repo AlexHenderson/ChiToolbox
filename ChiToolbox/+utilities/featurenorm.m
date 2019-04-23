@@ -1,140 +1,207 @@
-function [scaled_data,error_index] = featurenorm(data,x_values,feature_max,feature_min)
+function scaled_data = featurenorm(chiobj,varargin)
 
-% FEATURESCALEMAXMED Feature scaling, maximum and median
-% usage:
-%   scaled_data = featurescalemaxmed(data,x_values,feature_max);
-%   scaled_data = featurescalemaxmed(data,x_values,feature_max,feature_min);
+% featurenorm  Normalise to a spectral feature
+% 
+% Syntax
+%   scaled_data = featurenorm(chiobject);
+%   scaled_data = featurenorm(____,featureHigh);
+%   scaled_data = featurenorm(____,featureHigh,featureLow);
+%   scaled_data = featurenorm(____,highMethod);
+%   scaled_data = featurenorm(____,highMethod,lowMethod);
 %
-% input:
-%   data - rows of spectra
-%   x_values - vector, within which the feature(s) can be found
-%   feature_max - x value, or a range of x values ([low,high]), that will
-%     be rescaled to intensity 1. Where feature_max is a 2-value vector,
-%     the MAXIMUM intensity within that spectral range will be used. 
-%   feature_min - (optional) x value, or a range of x values ([low,high]),
-%     that will be rescaled to intensity 0. Where feature_max is a 2-value
-%     vector, the MEDIAN intensity within that spectral range will be used.
-%     If not provided then the absolute minimum of each original spectrum
-%     will be defined as zero intensity.
-% output:
-%   scaled_data - feature scaled version of data
-%   error_index - a list of the spectra where the minimum intensity is
-%     higher than the maximum intensity
+% Description
+%   scaled_data = featurenorm(chiobject) scales each spectrum in chiobject
+%   so that the maximum of each spectrum becomes 1 and the minimum of each
+%   spectrum becomes 0. The values between are scaled linearly. 
 %
-%   Where the feature_xxx is a single value, this will be set to 1 across
-%   the data and other values scaled appropriately. Where feature_xxx is a
-%   pair of values (a vector of 2 values, low and high), the MAXIMUM of the
-%   feature_max range and the MEDIAN of the feature_min range will be used
-%   to calculate the feature intensity. The philosophy here is to allow for
-%   the feature_max range to span the expected limits of a peak where we
-%   are interested in the maximum intensity in that range, while the
-%   feature_min range will span a region of noise.
+%   scaled_data = featurenorm(____,featureHigh) uses the scalar value, or
+%   two element vector, featureHigh to determine the maximum value.
+%   highMethod is set to 'max', therefore the maximum value in the spectral
+%   range determined by featureHigh is normalised to 1. The minimum of each
+%   spectrum is set to 0. The values between are scaled linearly.
 %
-%   Where the minimum is higher than the maximum, the spectrum will be set
-%   to a vector of NaN values and the index number of the spectrum reported
-%   as a warning.
+%   scaled_data = featurenorm(____,featureHigh,featureLow) uses the scalar
+%   value, or two element vector, featureLow to determine the minimum
+%   value. lowMethod is set to 'median', therefore the maximum value in the
+%   spectral range determined by featureHigh is normalised to 1. The
+%   minimum of each spectrum is set to the median of the fetureLow range.
+%   The values between are scaled linearly.
+% 
+%   scaled_data = featurenorm(____,highMethod) uses highMethod to determine
+%   the method of determining the high point in the spectra. highMethod can
+%   be 'max', 'median' or 'min'. Therefore if featureHigh is a range of
+%   xvalues the max, median or min value in this range (for each spectrum)
+%   is set to 1. The minimum of each spectrum, or spectral range in
+%   featureLow, is set to 0. The values between are scaled linearly.
 %
-%   Copyright (c) 2015-2016, Alex Henderson 
-%   Contact email: alex.henderson@manchester.ac.uk
-%   Licenced under the GNU General Public License (GPL) version 3
-%   http://www.gnu.org/copyleft/gpl.html
-%   Other licensing options are available, please contact Alex for details
-%   If you use this file in your work, please acknowledge the author(s) in
-%   your publications. 
+%   scaled_data = featurenorm(____,highMethod,lowMethod) uses lowMethod to
+%   determine the method of determining the low point in the spectra.
+%   lowMethod can be 'max', 'median' or 'min'. Therefore if featureLow is a
+%   range of xvalues the max, median or min value in this range (for each
+%   spectrum) is set to 0. The maximum of each spectrum, or spectral range
+%   in featureHigh, is set to 1 using the appropriate highMethod. The
+%   values between are scaled linearly.
+% 
+% Notes
+%   If neither featureHigh nor featureLow are provided, the spectra are
+%   scaled such that the absolute maximum becomes 1 and the absolute
+%   minimum becomes 0.
+%   If no highMethod is provided, the maximum of the featureHigh range is
+%   used.
+%   If no lowMethod or featureLow are provided, the spectral minumum is
+%   used. However, if a featureLow is provided, the median of that range is
+%   used.
+%   The reasoning behind the default selection of max for the featureHigh
+%   and median for the featureLow is that we often wish to find the maximum
+%   intensity of a peak in a spectrum. however the minimum is often a noise
+%   region where the median intensity of a spectral range is more
+%   appropriate.
+% 
+% Copyright (c) 2015-2019, Alex Henderson.
+% Licenced under the GNU General Public License (GPL) version 3.
 %
-%   version 1.2 January 2016
+% See also 
+%   max, median, min, vectornorm, sumnorm
 
-%   version 1.2 January 2016 Alex Henderson
-%   Fixed error when using zero as a feature_min value
-%   version 1.1 January 2016 Alex Henderson
-%   Fixed error whereby the normalisation wasn't right
-%   version 1.0 October 2015 Alex Henderson
-%   initial release
+% Contact email: alex.henderson@manchester.ac.uk
+% Licenced under the GNU General Public License (GPL) version 3
+% http://www.gnu.org/copyleft/gpl.html
+% Other licensing options are available, please contact Alex for details
+% If you use this file in your work, please acknowledge the author(s) in
+% your publications. 
+
+% The latest version of this file is available on Bitbucket
+% https://bitbucket.org/AlexHenderson/chitoolbox
+
 
 %% Get some initial parameters
-[numspectra,numdatapoints] = size(data);
+numdatapoints = chiobj.numchannels;
+data = chiobj.data;
 
-%% Deal with the feature_max parameter
-switch (numel(feature_max))
+highMethod = 'max';
+lowMethod = 'median';
+
+% Check for methods
+argposition = find(cellfun(@(x) ischar(x), varargin));
+switch length(argposition)
+    case 0
+        % No methods provided so use defaults
     case 1
-        % Determine the index value of the required feature
-        [not_required,feature_max_index] = min(abs(x_values - feature_max));
-
-        % Intensity of each spectrum at that feature index value
-        feature_max_intensity = data(:,feature_max_index);
-
+        highMethod = varargin{argposition};
+        varargin(argposition) = [];
     case 2
-        % Ensure that the feature range is ascending
-        feature_max = sort(feature_max);
-        
-        % Determine the index values of the required feature range
-        [not_required,feature_max_index_low] = min(abs(x_values - feature_max(1)));
-        [not_required,feature_max_index_high] = min(abs(x_values - feature_max(2)));
-        
-        % Maximum intensity of each spectrum in the feature index range
-        feature_max_intensity = max(data(:,feature_max_index_low:feature_max_index_high),[],2);
-
+        highMethod = varargin{argposition(1)};
+        lowMethod = varargin{argposition(2)};
+        varargin(argposition(2)) = [];
+        varargin(argposition(1)) = [];
     otherwise
-        error('parameter ''feature_max'' should be either a single value or a vector of two values');
+        err = MException(['CHI:',mfilename,':IOError'], ...
+            'Only highMethod and lowMethod are allowed.');
+        throw(err);
 end
 
-%% Deal with the feature_min parameter
-if (exist('feature_min','var'))
-    switch (numel(feature_min))
+% Now the strings are removed and we can work on the feature positions
+switch length(varargin)
+    case 0
+        % No spectral regions provided so default to max and min of each
+        % spectrum
+    case 1
+        featureHigh = varargin{1};
+    case 2
+        featureHigh = varargin{1};
+        featureLow = varargin{2};
+    otherwise
+        err = MException(['CHI:',mfilename,':IOError'], ...
+            'Only featureHigh and featureLow regions are allowed.');
+        throw(err);
+end
+
+%% Deal with the featureHigh parameter
+if exist('featureHigh','var')
+    featureHigh = ChiForceIncreasing(featureHigh);
+    switch numel(featureHigh)
         case 1
             % Determine the index value of the required feature
-            [not_required,feature_min_index] = min(abs(x_values - feature_min));
+            featureHighIdx = chiobj.indexat(featureHigh);
 
             % Intensity of each spectrum at that feature index value
-            feature_min_intensity = data(:,feature_min_index);
+            featureHighValues = data(:,featureHighIdx);
 
         case 2
-            % Ensure that the feature range is ascending
-            feature_min = sort(feature_min);
-
             % Determine the index values of the required feature range
-            [not_required,feature_min_index_low] = min(abs(x_values - feature_min(1)));
-            [not_required,feature_min_index_high] = min(abs(x_values - feature_min(2)));
+            idx1 = chiobj.indexat(featureHigh(1));
+            idx2 = chiobj.indexat(featureHigh(2));
 
-            % Median intensity of each spectrum in the feature index range
-            feature_min_intensity = median(data(:,feature_min_index_low:feature_min_index_high),2);
+            % Get appropriate intensity of each spectrum in the feature index range
+            switch lower(highMethod)
+                case 'max'
+                    featureHighValues = max(data(:,idx1:idx2),[],2);
+                case 'median'
+                    featureHighValues = median(data(:,idx1:idx2),2);
+                case 'min'
+                    featureHighValues = min(data(:,idx1:idx2),[],2);
+                otherwise
+                    err = MException(['CHI:',mfilename,':IOError'], ...
+                        'Only ''max'', ''min'' or ''median'' are allowed.');
+                    throw(err);
+            end
 
         otherwise
-            error('parameter ''feature_min'' should be either a single value or a vector of two values');
+            err = MException(['CHI:',mfilename,':IOError'], ...
+                'Parameter ''featureHigh'' should be either a single value, or a vector of two values.');
+            throw(err);
     end
 else
-    feature_min_intensity = zeros(numspectra,1);
+    % Default to the maximum intensity value in each spectrum
+    featureHighValues = max(data,[],2);
 end
-    
-% Adjust the intensity of each spectrum (row) such that the feature_max
-% intensity will be 1 and the feature_min intensity will be 0. All other
+
+%% Deal with the featureLow parameter
+if exist('featureLow','var')
+    featureLow = ChiForceIncreasing(featureLow);
+    switch numel(featureLow)
+        case 1
+            % Determine the index value of the required feature
+            featureLowIdx = chiobj.indexat(featureLow);
+
+            % Intensity of each spectrum at that feature index value
+            featureLowValues = data(:,featureLowIdx);
+
+        case 2
+            % Determine the index values of the required feature range
+            idx1 = chiobj.indexat(featureLow(1));
+            idx2 = chiobj.indexat(featureLow(2));
+
+            % Get appropriate intensity of each spectrum in the feature index range
+            switch lower(lowMethod)
+                case 'max'
+                    featureLowValues = max(data(:,idx1:idx2),[],2);
+                case 'median'
+                    featureLowValues = median(data(:,idx1:idx2),2);
+                case 'min'
+                    featureLowValues = min(data(:,idx1:idx2),[],2);
+                otherwise
+                    err = MException(['CHI:',mfilename,':IOError'], ...
+                        'Only ''max'', ''min'' or ''median'' are allowed.');
+                    throw(err);
+            end
+
+        otherwise
+            err = MException(['CHI:',mfilename,':IOError'], ...
+                'Parameter ''featureLow'' should be either a single value, or a vector of two values.');
+            throw(err);
+    end
+else
+    % Default to the minimum intensity value in each spectrum
+    featureLowValues = min(data,[],2);
+end
+
+%% Normalise
+% Adjust the intensity of each spectrum (row) such that the featureHigh
+% intensity will be 1 and the featureLow intensity will be 0. All other
 % spectral points are scaled accordingly.
 
-feature_max_intensity_mat = repmat(feature_max_intensity,1,numdatapoints);
-feature_min_intensity_mat = repmat(feature_min_intensity,1,numdatapoints);
+featureHighValues = repmat(featureHighValues,1,numdatapoints);
+featureLowValues = repmat(featureLowValues,1,numdatapoints);
 
-scaled_data = (data - feature_min_intensity_mat) ./ (feature_max_intensity_mat - feature_min_intensity_mat);
-
-%% Manage the situation where the minimum is higher than the maximum
-% Set the offending spectra to NaNs and report to the user
-
-error_index = feature_max_intensity - feature_min_intensity;
-error_index(error_index > 0) = 0;
-error_index(error_index ~= 0) = 1;
-
-numbadspectra = sum(error_index);
-
-if (numbadspectra > 0)
-    % Set those spectra to NaN
-    NaN_spectra = NaN(numbadspectra,numdatapoints);
-    error_spectra = find(error_index);
-    scaled_data(error_spectra,:) = NaN_spectra;
-    if (sum(error_index) == size(data,1))
-        message = 'All spectra have a feature minimum intensity higher than the feature maximum intensity';
-    else
-        message = 'The following spectra have a feature minimum intensity higher than the feature maximum intensity: ';
-        message = [message,mat2str(error_spectra)];
-    end
-    warning(message);
-    error_index = error_spectra;
-end
+scaled_data = (data - featureLowValues) ./ (featureHighValues - featureLowValues);

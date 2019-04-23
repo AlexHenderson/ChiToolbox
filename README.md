@@ -1,4 +1,4 @@
-# CHIToolbox #
+# ChiToolbox #
 
 ## Centre for Hyperspectral Imaging at the University of Manchester ##
 

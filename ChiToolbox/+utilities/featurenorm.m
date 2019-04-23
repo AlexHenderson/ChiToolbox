@@ -1,4 +1,4 @@
-function [scaled_data,error_index] = featurescalemaxmed(data,x_values,feature_max,feature_min)
+function [scaled_data,error_index] = featurenorm(data,x_values,feature_max,feature_min)
 
 % FEATURESCALEMAXMED Feature scaling, maximum and median
 % usage:

@@ -43,7 +43,7 @@ classdef ChiCopyable < handle
 % https://uk.mathworks.com/help/matlab/ref/matlab.mixin.copyable-class.html
 % https://uk.mathworks.com/matlabcentral/answers/41674-deep-copy-of-handle-object
 
-% Note that ChiLogger overrides this clone function ao that it can record
+% Note that ChiLogger overrides this clone function so that it can record
 % the cloning operation. 
 
     methods

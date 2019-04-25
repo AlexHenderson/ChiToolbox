@@ -39,13 +39,16 @@ classdef ChiLogger < ChiBase
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function obj = clone(this)
         % Creates a deep copy of this object.
+        
+        % This override of ChiCopyable's clone function is left so that teh
+        % object records the cloning event. 
             obj = feval(class(this));
             % Overwrite default log entry
             obj.log = this.log;
             % Append date stamp for cloning operation
             obj.log = vertcat(obj.log, ['Cloned: ', datestr(now)]);
         end
-        
+                
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     end
     

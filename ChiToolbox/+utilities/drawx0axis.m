@@ -30,8 +30,8 @@ axiscolour = 'k';
 
 hold on;
 limits = axis;
-ymax = limits(1,3);
-ymin = limits(1,4);
+ymin = limits(1,3);
+ymax = limits(1,4);
 h = plot([0,0],[ymin,ymax], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
 hold off;    

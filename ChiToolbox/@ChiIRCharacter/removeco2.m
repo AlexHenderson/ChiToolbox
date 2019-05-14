@@ -1,24 +1,24 @@
-function obj = removeco(varargin)
+function obj = removeco2(varargin)
 
-% removeco  Removes the CO region from the spectrum (2250-2450 wavenumbers). 
+% removeco2  Removes the CO2 region from the spectrum. 
 %
 % Syntax
-%   removeco();
-%   modified = removeco();
+%   removeco2();
+%   modified = removeco2();
 %
 % Description
-%   removeco() removes the CO region of the spectrum delimited 2250 and
-%   2450 wavenumbers. This version modifies the original object.
+%   removeco2() removes the CO2 region of the spectrum delimited by 2250
+%   and 2450 wavenumbers. This version modifies the original object.
 %
-%   modified = removeco() first creates a clone of the object, then removes
-%   the CO region of the spectrum from the clone. The original object is
-%   not modified.
+%   modified = removeco2() first creates a clone of the object, then
+%   removes the CO2 region of the spectrum from the clone. The original
+%   object is not modified.
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   removerange ChiRamanSpectrum.
+%   removewax removediamond removerange ChiIRSpectrum.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -27,7 +27,6 @@ function obj = removeco(varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, August 2017
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -40,8 +39,9 @@ function obj = removeco(varargin)
         eval(command);  
     else
         this.removerange(2250,2450);
-        message = 'CO region removed';
+        message = 'CO2 region removed';
         this.history.add(message);
     end
 
-end % function removeco
+
+end % function removeco2

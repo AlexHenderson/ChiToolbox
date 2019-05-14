@@ -24,7 +24,7 @@ function varargout = removediamond(this,varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   removeco removewax removerange ChiSpectrum.
+%   removeco2 removewax removerange ChiSpectrum.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

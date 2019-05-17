@@ -241,7 +241,14 @@ function [metadata,safeParameterName,filterName,rawData] = buildLogicalFilter(pa
         filter_variable = matlab.lang.makeValidName(filterName);
     end        
 
-    rawData = cell2mat(rawData);
+
+    try
+        rawData = cell2mat(rawData);
+    catch ex
+        disp(['Error processing: ', safeParameterName])
+        rethrow(ex);
+    end
+
     if ischar(rawData)
         rawData = str2num(rawData); %#ok<ST2NM>
     end
@@ -261,6 +268,9 @@ function [metadata,safeParameterName,filterName,rawData] = buildNumericFilter(pa
     safeParameterName = strrep(safeParameterName, '.', '_');
     safeParameterName = strrep(safeParameterName, '(', '_');
     safeParameterName = strrep(safeParameterName, ')', '_');
+    safeParameterName = strrep(safeParameterName, '/', '_');
+    safeParameterName = strrep(safeParameterName, '\', '_');
+    safeParameterName = strrep(safeParameterName, '?', '_');
     % Add 'is' to the end of the variable
     filterName = [safeParameterName, '_is_'];
     
@@ -285,6 +295,9 @@ function [metadata,safeParameterName,filterName,rawData] = buildCategoryFilter(p
     safeParameterName = strrep(safeParameterName, '.', '_');
     safeParameterName = strrep(safeParameterName, '(', '_');
     safeParameterName = strrep(safeParameterName, ')', '_');
+    safeParameterName = strrep(safeParameterName, '/', '_');
+    safeParameterName = strrep(safeParameterName, '\', '_');
+    safeParameterName = strrep(safeParameterName, '?', '_');
     for i = 1:length(rawData)
         rawData{i} = strrep(rawData{i}, ' ', '_');
     end
@@ -292,7 +305,12 @@ function [metadata,safeParameterName,filterName,rawData] = buildCategoryFilter(p
     filterName = [safeParameterName, '_is_'];
     
     metadata.filter = generateFilter(rawData, filterName, metadata.filter);
-    eval(['metadata.', safeParameterName, ' = rawData;']);
+    try
+        eval(['metadata.', safeParameterName, ' = rawData;']);
+    catch ex
+        disp(['Error processing: ', safeParameterName])
+        rethrow(ex);
+    end
 
 end % function buildCategoryFilter
 

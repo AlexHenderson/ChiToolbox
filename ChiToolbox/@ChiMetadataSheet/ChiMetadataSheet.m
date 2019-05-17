@@ -108,7 +108,12 @@ classdef ChiMetadataSheet < ChiBase
 
             this.classmemberships = cell(this.numparameters,1);
             for i = 1:this.numparameters
-                this.classmemberships{i} = ChiClassMembership(this.membershipnames{i},met.parameters{i});
+                try 
+                    this.classmemberships{i} = ChiClassMembership(this.membershipnames{i},met.parameters{i});
+                catch ex
+                    disp(['Error processing parameter: ', num2str(i), ' (', this.membershipnames{i}, ')'])
+                    rethrow(ex);
+                end
             end
                     
             this.history = ChiLogger();

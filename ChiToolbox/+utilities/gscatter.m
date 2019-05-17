@@ -229,7 +229,11 @@ hold off;
 
 %% Add legend if requested
 if showlegend
-    leg = legend(uniquegroups,'Location','best');
+    if isnumeric(uniquegroups)
+        leg = legend(num2str(uniquegroups),'Location','best');
+    else
+        leg = legend(uniquegroups,'Location','best', 'Interpreter','none');
+    end
 else
     leg = [];
 end

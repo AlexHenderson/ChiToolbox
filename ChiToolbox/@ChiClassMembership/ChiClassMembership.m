@@ -62,7 +62,12 @@ classdef ChiClassMembership < ChiBase
                     else
                         this.labels = varargin{1};
                     end
-                    this.labels = ChiForceToColumn(this.labels);
+                    try
+                        this.labels = ChiForceToColumn(this.labels);
+                    catch ex
+                        disp(['Error processing: ', title])
+                        rethrow(ex);
+                    end
                     
                     if islogical(this.labels)
                         % Replace the logical values with a pseudo-logical

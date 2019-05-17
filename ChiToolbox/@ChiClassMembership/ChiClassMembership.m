@@ -143,36 +143,13 @@ classdef ChiClassMembership < ChiBase
             % these back to the unsorted list of unique classes. 
 
             % Convert all labels to lowercase and remove leading and trailing whitespace
-            if ~isnumeric(this.labels)
-                tidylabels = lower(strtrim(this.labels));
-            else
-                tidylabels = this.labels;
+            
+            if iscellstr(this.labels)
+                this.labels = lower(strtrim(this.labels));
             end
             
-            % Generate a list of unique labels in the order originally
-            % supplied
-            [uniquestablesortedlabels] = unique(tidylabels, 'rows','stable');
-
-            % Sort the labels
-            [sortedlabels] = sortrows(tidylabels);
-
-            % Find the first and last entry locations
-            [uniquesortedlabels, labelrangefirst] = unique(sortedlabels, 'rows', 'first'); %#ok<ASGLU>
-            [uniquesortedlabels, labelrangelast] = unique(sortedlabels, 'rows', 'last');
-
-            % Count how many occurences of each label there are
-            sortedcounts = (labelrangelast - labelrangefirst) + 1;
-
-            % Map the counts to the original label order
-            output = zeros(length(sortedcounts),1);
-            for i = 1:length(sortedcounts)
-                if ~isnumeric(this.labels)
-                    output(i) = sortedcounts(strcmp(uniquesortedlabels,uniquestablesortedlabels{i}));
-                else
-                    output(i) = sortedcounts(uniquesortedlabels == uniquestablesortedlabels(i));
-                end
-            end
-            
+            [names,counts] = utilities.countclasses(this.labels,'stable'); %#ok<ASGLU>
+            output = counts;            
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

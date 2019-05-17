@@ -6,7 +6,7 @@ metadata = ChiMetadataSheet('../Data/uti_metadata.xlsx');
 data.classmembership = metadata.membership('Bacteria');
 data.plot('grouped','mean')
 
-data.vectornorm.removeco.plot('grouped','mean')
+data.vectornorm.removeco2.plot('grouped','mean')
 
 pcaresult = data.pca();
 pcaresult.plotscores(1,2);

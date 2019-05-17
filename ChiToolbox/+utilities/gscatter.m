@@ -202,13 +202,13 @@ for i = 1:length(uniquegroups)
         idx(strcmp(group, uniquegroups{i})) = true;
     else
         if isnumeric(group)
-            idx(cell2mat(group) == uniquegroups{i}) = true;
+            idx(group == uniquegroups(i)) = true;
         else
             if ischar(group)
-                idx(strcmp(group, uniquegroups{i})) = true;
+                idx(strcmp(group, uniquegroups(i))) = true;
             else
                 if isstring(group)
-                    idx(strcmp(group, uniquegroups{i})) = true;
+                    idx(strcmp(group, uniquegroups(i))) = true;
                 end
             end
         end
@@ -229,7 +229,11 @@ hold off;
 
 %% Add legend if requested
 if showlegend
-    leg = legend(uniquegroups,'Location','best');
+    if isnumeric(uniquegroups)
+        leg = legend(num2str(uniquegroups),'Location','best');
+    else
+        leg = legend(uniquegroups,'Location','best', 'Interpreter','none');
+    end
 else
     leg = [];
 end

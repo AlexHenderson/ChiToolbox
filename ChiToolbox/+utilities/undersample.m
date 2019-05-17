@@ -39,7 +39,7 @@ function [chosen,uniqueNames,chosenClassMasks,counts,originalClassMasks] = under
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   datasample, countclasses.
+%   datasample, utilities.countclasses.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -58,7 +58,7 @@ function [chosen,uniqueNames,chosenClassMasks,counts,originalClassMasks] = under
 % Initial release
 
 
-[uniqueNames,counts,numClasses,ic] = countclasses(classMembership,'stable');
+[uniqueNames,counts,numClasses,ic] = utilities.countclasses(classMembership,'stable');
 
 numValues = size(ic,1);
 [minCount,minClassId] = min(counts);

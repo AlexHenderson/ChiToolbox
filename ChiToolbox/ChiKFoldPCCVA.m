@@ -245,7 +245,7 @@ for k = 1:numFolds
     confusionMatrix = zeros(numUniqueClasses);
     for currentclass = 1:numUniqueClasses
         classresult = foldNearest(testClassIds == currentclass);
-        [classid, counts] = countclasses(classresult,(1:numUniqueClasses)'); %#ok<ASGLU>
+        [classid, counts] = utilities.countclasses(classresult,(1:numUniqueClasses)'); %#ok<ASGLU>
         confusionMatrix(:,currentclass) = counts;
     end
     

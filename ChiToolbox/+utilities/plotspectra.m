@@ -216,7 +216,8 @@ if plotinfo.functionplot
             % overlay. 
             colours = get(gca,'colororder');
 %             shadedErrorBar(this.xvals,mean(this.data),std(this.data),{'Color',colours(1,:)});
-            shadedErrorBar(ax,this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)});
+            % shadedErrorBar doesn't accept an axes variable
+            shadedErrorBar(this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)});
             
         otherwise
             % ToDo: Correct the error code

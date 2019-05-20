@@ -267,7 +267,8 @@ if plotinfo.functionplot
             % overlay. 
             colours = get(gca,'colororder');
 %             shadedErrorBar(this.xvals,mean(this.data),std(this.data),{'Color',colours(1,:)},1);
-            shadedErrorBar(ax,this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)});
+            % shadedErrorBar doesn't accept an axes variable
+            shadedErrorBar(this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)});
         otherwise
             % ToDo: Correct the error code
             err = MException('CHI:ChiToolbox:UnknownInput', ...
@@ -335,7 +336,8 @@ for i = 1:this.classmembership.numuniquelabels
                 % Each class is averaged and plotted with a different colour.
                 % The standard deviation is plotted as a shaded overlay.
                 colour = colours(c,:);
-                figurehandle = shadedErrorBar(ax,this.xvals,spectra,{@ChiMean,@ChiStd},'lineprops',{'color',colour});
+                % shadedErrorBar doesn't accept an axes variable
+                figurehandle = shadedErrorBar(this.xvals,spectra,{@ChiMean,@ChiStd},'lineprops',{'color',colour});
                 legendHandles(i) = figurehandle.mainLine;
                 if (c == numcolours)
                     c = 1;  % Reset colours to the beginning
@@ -389,13 +391,16 @@ else
     if isnumeric(labels)
         labels = num2str(labels);
     end        
+    if islogical(labels)
+        labels = num2str(labels);
+    end        
     plotinfo.linelabels = cell(size(spectrumid));
     plotinfo.observationnumbers = zeros(size(spectrumid));
     start = 1;
     for i = 1:this.classmembership.numuniquelabels
         plotids = spectrumid(this.classmembership.labelids == i);
         stop = start + length(plotids) - 1;
-        plotinfo.linelabels(start:stop) = labels(plotids);
+        plotinfo.linelabels(start:stop) = cellstr(labels(plotids));
         plotinfo.observationnumbers(start:stop) = plotids;
         start = stop + 1;
     end

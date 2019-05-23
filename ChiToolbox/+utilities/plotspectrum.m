@@ -1,4 +1,4 @@
-function plotspectrum(this,varargin)
+function varargout = plotspectrum(this,varargin)
 
 % plotspectrum  Plots a spectrum. 
 %
@@ -6,6 +6,8 @@ function plotspectrum(this,varargin)
 %   plotspectrum();
 %   plotspectrum('nofig');
 %   plotspectrum(____,'axes',desiredaxes);
+%   plotspectrum(____,'title',titletext);
+%   handle = plotspectrum(____);
 %
 % Description
 %   plotspectrum() creates a 2-D line plot of the ChiSpectrum object in a
@@ -17,10 +19,14 @@ function plotspectrum(this,varargin)
 %   plotspectrum(____,'axes',desiredaxes) plots the spectrum in the
 %   desiredaxes. Defaults to gca. 
 % 
+%   plotspectrum(____,'title',titletext) displays titletext as a plot title.
+% 
+%   handle = plotspectrum(____) returns a handle to the figure.
+%
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot function for more details. 
 %
-% Copyright (c) 2017-2018, Alex Henderson.
+% Copyright (c) 2017-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -62,6 +68,16 @@ else
     ax = gca;
 end
 
+%% Do we want to add a title?
+titletext = '';
+argposition = find(cellfun(@(x) strcmpi(x, 'title') , varargin));
+if argposition
+    titletext = varargin{argposition+1};
+    % Remove the parameters from the argument list
+    varargin(argposition+1) = [];
+    varargin(argposition) = [];
+end
+
 %% Do the plotting
 plot(ax,this.xvals,this.data,varargin{:});
 
@@ -82,9 +98,19 @@ else
 end
 set(get(ax,'YLabel'),'String',ylab);
 
+% Add a title if requested
+if ~isempty(titletext)
+    title(titletext)
+end
+
 %% Manage data cursor information
 figurehandle = gcf;
 cursor = datacursormode(figurehandle);
 set(cursor,'UpdateFcn',@utilities.datacursor_6sf);
+
+%% Has the user asked for the figure handle?
+if nargout
+    varargout{1} = gcf();
+end
 
 end % function plotspectrum

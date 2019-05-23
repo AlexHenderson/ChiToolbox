@@ -1,10 +1,12 @@
-function display(this,varargin) %#ok<DISPLAY>
+function varargout = display(varargin) %#ok<DISPLAY>
 
 % display  Plots one, or more, spectra. Multiple spectra are overlaid. 
 %
 % Syntax
 %   display();
 %   display('nofig');
+%   display(____,'title',titletext);
+%   handle = display(____);
 %
 % Description
 %   display() creates a 2-D line plot of the ChiSpectrum object in a new
@@ -13,10 +15,14 @@ function display(this,varargin) %#ok<DISPLAY>
 %   display('nofig') plots the spectrum in the currently active figure
 %   window, or creates a new figure if none is available.
 %
+%   display(____,'title',titletext) displays titletext as a plot title.
+% 
+%   handle = display(____) returns a handle to the figure.
+%
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot function for more details. 
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -36,9 +42,46 @@ function display(this,varargin) %#ok<DISPLAY>
 % Passing the actual plotting functionality off to a separate function to
 % co-locate the feature. 
 
-    plot(this,varargin{:});
-    if length(varargin)  %#ok<ISMT>
-        title(varargin{1})
+
+this = varargin{1};
+if isempty(this.data)
+    err = MException(['CHI:',mfilename,':DisplayError'], ...
+        'No data to display.');
+    throw(err);
+end
+
+% Pass this through to the plot function
+%     % Do we need a new figure?
+%     argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));
+%     if argposition
+%         % Remove the parameter from the argument list
+%         varargin(argposition) = [];
+%     else
+%         % No 'nofig' found so create a new figure
+%         figure;
+%     end
+    
+    % Do we want to add a title?
+    titletext = '';
+    argposition = find(cellfun(@(x) strcmpi(x, 'title') , varargin));
+    if argposition
+        titletext = varargin{argposition+1};
+        % Remove the parameters from the argument list
+        varargin(argposition+1) = [];
+        varargin(argposition) = [];
+    end
+    
+    % Generate the plot
+    plot(varargin{:});
+
+    % Add a title if requested
+    if ~isempty(titletext)
+        title(titletext)
+    end
+    
+    % Has the user asked for the figure handle?
+    if nargout
+        varargout{1} = gcf();
     end
     
 end

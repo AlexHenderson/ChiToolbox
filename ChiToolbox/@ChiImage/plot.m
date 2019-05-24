@@ -1,13 +1,16 @@
-function plot(this,varargin)
+function varargout = plot(this,varargin)
 
 % plot  Plots spectra overlaid. 
 %
 % Syntax
 %   plot();
 %   plot('nofig');
+%   plot(____,'axes',desiredaxes);
 %   plot(____,Function);
 %   plot(____,'grouped',Function);
-%   plot('force',____);
+%   plot(____,'force');
+%   plot(____,'title',titletext);
+%   handle = plot(____);
 %
 % Description
 %   plot() creates a 2-D line plot of the spectra in the ChiImage in a new
@@ -41,10 +44,14 @@ function plot(this,varargin)
 %   such a case, using the 'force' option will ensure the plot function is
 %   attempted, regardless of the consequences.
 % 
+%   plot(____,'title',titletext) displays titletext as a plot title.
+% 
+%   handle = plot(____) returns a handle to the figure.
+% 
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot function for more details. 
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -57,7 +64,6 @@ function plot(this,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -98,7 +104,11 @@ end
 
 if (forced || (this.numpixels < 1001))
     % Not too many spectra, or the user has overridden the warning
-    utilities.plotspectra(this,varargin{:});
+    if nargout
+        varargout{:} = utilities.plotspectra(this,varargin{:});
+    else
+        utilities.plotspectra(this,varargin{:});
+    end
 else
     % If we're asking for the mean, sum, median or std plots then the
     % number of actual plot lines is likely to be quite small, so just go
@@ -110,7 +120,11 @@ else
     if strcmpi(plottype,'normal')
         utilities.warningnobacktrace('This plot will generate %d lines. In order to plot more than 1000 lines, please reissue the command using the ''force'' flag.',this.numpixels);
     else
-        utilities.plotspectra(this,varargin{:});
+        if nargout
+            varargout{:} = utilities.plotspectra(this,varargin{:});
+        else
+            utilities.plotspectra(this,varargin{:});
+        end
     end
     
 end

@@ -22,7 +22,7 @@ function varargout = display(varargin) %#ok<DISPLAY>
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   disp imagesc colormap ChiSequentialColormap.
+%   disp imshow.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -63,16 +63,7 @@ end
     end
     
     % Generate the image
-    imagesc(this.data,varargin{2:end});
-    axis image;
-    axis off;
-
-    % Use a colour vision deficiency aware colormap
-    if exist('parula.m','file')
-        colormap(parula);
-    else
-        colormap(ChiSequentialColormap());
-    end
+    imshow(this.data,'InitialMagnification','fit',varargin{2:end});
 
     % Add a title if requested
     if ~isempty(titletext)
@@ -83,5 +74,5 @@ end
     if nargout
         varargout{1} = gcf();
     end
-    
+
 end

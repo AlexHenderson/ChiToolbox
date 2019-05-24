@@ -1,4 +1,4 @@
-function plotspectra(this,varargin)
+function varargout = plotspectra(this,varargin)
 
 % plotspectra  Plots one or more spectra. Multiple spectra are overlaid. 
 %
@@ -8,6 +8,8 @@ function plotspectra(this,varargin)
 %   plotspectra(____,'byclass');
 %   plotspectra(____,'nofig');
 %   plotspectra(____,'axes',desiredaxes);
+%   plotspectra(____,'title',titletext);
+%   handle = plotspectra(____);
 %
 % Description
 %   plotspectra() creates a 2-D line plot of the ChiSpectrum, or
@@ -37,10 +39,14 @@ function plotspectra(this,varargin)
 %   plotspectra(____,'axes',desiredaxes) plots the spectra in the
 %   desiredaxes. Defaults to gca. 
 % 
+%   plotspectra(____,'title',titletext) displays titletext as a plot title.
+% 
+%   handle = plotspectra(____) returns a handle to the figure.
+%
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot function for more details. 
 %
-% Copyright (c) 2017-2018, Alex Henderson.
+% Copyright (c) 2017-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -53,7 +59,6 @@ function plotspectra(this,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 2.0, August 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -134,6 +139,17 @@ if argposition
     varargin(argposition) = [];
 end
 
+% Do we want to add a title?
+titletext = '';
+argposition = find(cellfun(@(x) strcmpi(x, 'title') , varargin));
+if argposition
+    titletext = varargin{argposition+1};
+    % Remove the parameters from the argument list
+    varargin(argposition+1) = [];
+    varargin(argposition) = [];
+end
+
+
 %% Do the plotting
 if (~isprop(this,'classmembership') || isempty(this.classmembership))
     % No class information
@@ -174,10 +190,20 @@ else
     set(get(gca,'YLabel'),'String',ylab);
 end
 
+% Add a title if requested
+if ~isempty(titletext)
+    title(titletext)
+end
+
 %% Manage data cursor information
 figurehandle = gcf;
 cursor = datacursormode(figurehandle);
 set(cursor,'UpdateFcn',{@utilities.datacursor,this,plotinfo});
+
+%% Has the user asked for the figure handle?
+if nargout
+    varargout{1} = gcf();
+end
 
 end % function plotspectra
 

@@ -1,4 +1,4 @@
-classdef ChiImageFile % < ChiAbstractFileFormat
+classdef ChiImageFile < ChiBase
 
 % ChiImageFile  File format handler for image files (eg JPEG, TIFF,PNG)
 %

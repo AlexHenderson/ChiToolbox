@@ -32,7 +32,7 @@ function obj = removespectra(this,varargin)
             if ~isempty(this.classmembership)
                 this.classmembership.removeentries(list);
             end
-            this.history.add(['removed ', num2str(length(list)), ' spectra']);
+            this.history.add(['removed ', num2str(sum(list)), ' spectra']);
         else
         
             % Did the user provide a list of spectra as a vector?

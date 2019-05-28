@@ -1,4 +1,4 @@
-classdef ChiImageFile % < ChiAbstractFileFormat
+classdef ChiImageFile < ChiBase
 
 % ChiImageFile  File format handler for image files (eg JPEG, TIFF,PNG)
 %
@@ -16,9 +16,9 @@ classdef ChiImageFile % < ChiAbstractFileFormat
 %   myfile = ChiImageFile.open(filename) opens the filename provided.
 %
 %   This class can read a number of image file formats, for example; JPEG,
-%   TIFF, PNG. For a list of available formats, use the imformats function.
-%   Note that this class cannot read hyperspectral images. Use ChiFile for
-%   that purpose.
+%   TIFF, PNG. For a list of available formats, use the MATLAB imformats
+%   function. Note that this class cannot read hyperspectral images. Use
+%   ChiFile for that purpose.
 
 % Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -129,6 +129,7 @@ classdef ChiImageFile % < ChiAbstractFileFormat
     methods (Static)
     % =====================================================================
         function truefalse = isreadable(filename)
+        % Determines whether ChiImageFile can read the given filename
             if iscell(filename)
                 filename = filename{1};
             end
@@ -144,7 +145,7 @@ classdef ChiImageFile % < ChiAbstractFileFormat
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function filter = getFilter()
-
+        % Generates a list of the readable file types
             formats = imformats;
             filter = {length(formats),2};
             for i = 1:length(formats)
@@ -170,6 +171,8 @@ classdef ChiImageFile % < ChiAbstractFileFormat
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function obj = open(filenames)
+            % Opens the file provided
+            
             % Do we have somewhere to put the data?
             if ~nargout
                 stacktrace = dbstack;
@@ -212,6 +215,7 @@ classdef ChiImageFile % < ChiAbstractFileFormat
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function obj = read(varargin)
+            % Reads the file provided
             if ~nargout
                 stacktrace = dbstack;
                 functionname = stacktrace.name;
@@ -224,6 +228,7 @@ classdef ChiImageFile % < ChiAbstractFileFormat
             
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function name = className()
+            % Determines the name of this class
             name = mfilename('class');
         end
     

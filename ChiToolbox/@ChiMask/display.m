@@ -1,6 +1,6 @@
 function varargout = display(varargin) %#ok<DISPLAY>
 
-% display  Generates an image of the data
+% display  Generates an image of the data, or a list of parameters, as appropriate
 %
 % Syntax
 %   display();
@@ -22,7 +22,7 @@ function varargout = display(varargin) %#ok<DISPLAY>
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   disp imagesc imshow colormap ChiSequentialColormap.
+%   disp imshow.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -42,15 +42,14 @@ if isempty(this.data)
     throw(err);
 end
 
-if this.grey
-    this.imshow(varargin{2:end});
+if (this.dims == 2)
+    if nargout
+        varargout{:} = this.imshow(varargin{2:end});
+    else
+        this.imshow(varargin{2:end});
+    end
 else
-    this.imagesc(varargin{2:end});
-    
-
-% Has the user asked for the figure handle?
-if nargout
-    varargout{1} = gcf();
+    disp(this)
 end
-    
+
 end

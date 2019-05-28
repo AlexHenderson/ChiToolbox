@@ -11,6 +11,7 @@ classdef ChiPicture < ChiBase
         properties
             data;       % Contents of object as a 2D matrix
             bimodal = false;
+            grey = false;
             history;
         end
     

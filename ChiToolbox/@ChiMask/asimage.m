@@ -1,6 +1,6 @@
 function output = asimage(this)
 
-% asimage  Takes the cube root of the data.
+% asimage  The mask as a 2D array.
 %
 % Syntax
 %   output = asimage();

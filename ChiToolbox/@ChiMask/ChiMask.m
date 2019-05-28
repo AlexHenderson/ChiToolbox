@@ -43,7 +43,7 @@ classdef ChiMask < ChiBase
     end
     
     properties (Dependent = true)
-        dims
+        dims        % Dimensionality of mask: 1, 2 or 3
         xpixels     % Number of pixels in the x-direction (width) for a 2D or 3D image, or 1 for a vector
         ypixels     % Length of a vector mask, or the number of pixels in the y-direction (height) for a 2D/3D image
         data        % Alias of mask

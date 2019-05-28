@@ -1,6 +1,6 @@
 function output = ashypercube(this)
 
-% ashypercube  Takes the cube root of the data.
+% ashypercube  The mask as a 3D array.
 %
 % Syntax
 %   output = ashypercube();

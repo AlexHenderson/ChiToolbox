@@ -1,6 +1,6 @@
 function output = asvector(this)
 
-% asvector  Takes the cube root of the data.
+% asvector  The mask as a column vector.
 %
 % Syntax
 %   output = asvector();

@@ -1,6 +1,6 @@
 function varargout = display(varargin) %#ok<DISPLAY>
 
-% display  Generates an image of the data or a list of parameters as appropriate
+% display  Generates an image of the data, or a list of parameters, as appropriate
 %
 % Syntax
 %   display();

@@ -47,6 +47,8 @@ classdef ChiMask < ChiBase
         xpixels     % Number of pixels in the x-direction (width) for a 2D or 3D image, or 1 for a vector
         ypixels     % Length of a vector mask, or the number of pixels in the y-direction (height) for a 2D/3D image
         data        % Alias of mask
+        numtrue     % Number of true values in the mask
+        numfalse    % Number of false values in the mask
     end
     
     methods
@@ -144,6 +146,16 @@ classdef ChiMask < ChiBase
     % =====================================================================
         function data = get.data(this)
             data = this.mask;
+        end
+    
+    % =====================================================================
+        function numtrue = get.numtrue(this)
+            numtrue = sum(this.mask);
+        end
+    
+    % =====================================================================
+        function numfalse = get.numfalse(this)
+            numfalse = sum(~this.mask);
         end
     
     % =====================================================================

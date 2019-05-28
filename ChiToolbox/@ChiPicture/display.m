@@ -22,7 +22,7 @@ function varargout = display(varargin) %#ok<DISPLAY>
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   disp imagesc colormap ChiSequentialColormap.
+%   disp imagesc imshow colormap ChiSequentialColormap.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -42,46 +42,15 @@ if isempty(this.data)
     throw(err);
 end
 
-    %% Do we need a new figure?
-    argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));
-    if argposition
-        % Remove the parameter from the argument list
-        varargin(argposition) = [];
-    else
-        % No 'nofig' found so create a new figure
-        figure;
-    end
-
-    % Do we want to add a title?
-    titletext = '';
-    argposition = find(cellfun(@(x) strcmpi(x, 'title') , varargin));
-    if argposition
-        titletext = varargin{argposition+1};
-        % Remove the parameters from the argument list
-        varargin(argposition+1) = [];
-        varargin(argposition) = [];
-    end
+if this.grey
+    this.imshow(varargin{2:end});
+else
+    this.imagesc(varargin{2:end});
     
-    % Generate the image
-    imagesc(this.data,varargin{2:end});
-    axis image;
-    axis off;
 
-    % Use a colour vision deficiency aware colormap
-    if exist('parula.m','file')
-        colormap(parula);
-    else
-        colormap(ChiSequentialColormap());
-    end
-
-    % Add a title if requested
-    if ~isempty(titletext)
-        title(titletext)
-    end
-    
-    % Has the user asked for the figure handle?
-    if nargout
-        varargout{1} = gcf();
-    end
+% Has the user asked for the figure handle?
+if nargout
+    varargout{1} = gcf();
+end
     
 end

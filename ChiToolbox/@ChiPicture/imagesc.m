@@ -1,4 +1,4 @@
-function imagesc(varargin)
+function varargout = imagesc(varargin)
 
 % imagesc  Displays the data as an image that uses the full range of colors in the colormap
 %
@@ -40,8 +40,36 @@ function imagesc(varargin)
 
     this = varargin{1};
     
-    imagesc(this.data,varargin{2:end});
+    % Do we need a new figure?
+    argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));
+    if argposition
+        % Remove the parameter from the argument list
+        varargin(argposition) = [];
+    else
+        % No 'nofig' found so create a new figure
+        figure;
+    end
+
+    % Do we want to add a title?
+    titletext = '';
+    argposition = find(cellfun(@(x) strcmpi(x, 'title') , varargin));
+    if argposition
+        titletext = varargin{argposition+1};
+        % Remove the parameters from the argument list
+        varargin(argposition+1) = [];
+        varargin(argposition) = [];
+    end    
     
+    % Generate the figure
+    if nargout
+        varargout{:} = imagesc(this.data,varargin{2:end});
+    else
+        imagesc(this.data,varargin{2:end});
+    end
+    axis image;
+    axis off;
+    
+    % Use an appropriate colormap
     if this.bimodal
         colormap(ChiBimodalColormap());
     else        
@@ -51,6 +79,15 @@ function imagesc(varargin)
             colormap(ChiSequentialColormap());
         end
     end
-    axis image;
-    axis off;
+    
+    % Add a title if requested
+    if ~isempty(titletext)
+        title(titletext)
+    end
+    
+    % Has the user asked for the figure handle?
+    if nargout
+        varargout{1} = gcf();
+    end
+    
 end        

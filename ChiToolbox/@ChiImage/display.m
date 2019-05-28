@@ -42,15 +42,16 @@ if isempty(this.data)
     throw(err);
 end
 
-    % Do we need a new figure?
-    argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));
-    if argposition
-        % Remove the parameter from the argument list
-        varargin(argposition) = [];
-    else
-        % No 'nofig' found so create a new figure
-        figure;
-    end
+%  Do not create a figure since this will be done in ChiPicture.display()
+%     % Do we need a new figure?
+%     argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));
+%     if argposition
+%         % Remove the parameter from the argument list
+%         varargin(argposition) = [];
+%     else
+%         % No 'nofig' found so create a new figure
+%         figure;
+%     end
     
     % Do we want to add a title?
     titletext = '';

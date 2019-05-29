@@ -31,7 +31,7 @@ function area = measureareaidx(this,fromidx,toidx)
 
 
     % Swap if 'fromidx' is higher than 'toidx'
-    [fromidx,toidx] = ChiForceIncreasing(fromidx,toidx);
+    [fromidx,toidx] = utilities.forceincreasing(fromidx,toidx);
 
     % Determine minimum intensity in spectral range
     minvalue = min(this.data(:,fromidx:toidx),[],2);

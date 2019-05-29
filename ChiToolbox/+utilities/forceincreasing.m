@@ -16,7 +16,7 @@ function [a,b] = forceincreasing(a,b)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   forcedecreasing.
+%   forcedecreasing swap.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -29,8 +29,14 @@ function [a,b] = forceincreasing(a,b)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
+    if isvector(a) && ~isscalar(a) && (length(a) ~= 2)
+        err = MException(['CHI:',mfilename,':IOError'], ...
+            'Can only work with pairs of scalars, or a 2-element vector.');
+        throw(err);
+    end
+    
     if (length(a) == 2)
-        [a(1),a(2)] = forceincreasing(a(1),a(2));
+        [a(1),a(2)] = utilities.forceincreasing(a(1),a(2));
     end
 
     if ~exist('b','var')
@@ -38,7 +44,7 @@ function [a,b] = forceincreasing(a,b)
     end
 
     if (a > b)
-        [a,b] = ChiSwap(a,b);
+        [a,b] = utilities.swap(a,b);
     end
 
 end

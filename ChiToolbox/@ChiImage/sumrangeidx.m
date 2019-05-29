@@ -21,7 +21,7 @@ function output = sumrangeidx(this,fromidx,toidx)
     end            
 
     % Swap if 'from' is higher than 'to'
-    [fromidx,toidx] = ChiForceIncreasing(fromidx,toidx);
+    [fromidx,toidx] = utilities.forceincreasing(fromidx,toidx);
 
     rowsums = sum(this.data(:,fromidx:toidx),2);
 

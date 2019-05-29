@@ -48,7 +48,7 @@ function summed = rangesumidx(this,fromidx,toidx)
     end            
 
     % Swap if 'from' is higher than 'to'
-    [fromidx,toidx] = ChiForceIncreasing(fromidx,toidx);
+    [fromidx,toidx] = utilities.forceincreasing(fromidx,toidx);
 
     summed = sum(this.data(:,fromidx:toidx),2);
 

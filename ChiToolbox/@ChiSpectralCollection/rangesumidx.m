@@ -15,7 +15,7 @@ function thesum = rangesumidx(this,fromidx,toidx)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   rangesum measurearea measureareaidx ChiSpectralCollection.
+%   rangesum rangemedian rangemean measurearea measureareaidx ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

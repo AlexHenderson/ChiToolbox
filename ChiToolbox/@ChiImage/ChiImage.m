@@ -64,7 +64,7 @@ classdef ChiImage < ChiAbstractImage
                 this.history = ChiLogger();
                 
                 % Force to row vector
-                this.xvals = ChiForceToRow(this.xvals);
+                this.xvals = utilities.force2row(this.xvals);
                 
                 if (nargin > 2)
                     this.xpixels = xpixels;

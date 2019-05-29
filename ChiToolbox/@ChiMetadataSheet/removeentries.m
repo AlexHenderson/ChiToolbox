@@ -32,7 +32,7 @@ function obj = removeentries(this,varargin)
             throw(err);
         end
         
-        list = ChiForceToColumn(list);
+        list = utilities.force2col(list);
         
         if islogical(list)
             templist = transpose(1:this.numfiles);

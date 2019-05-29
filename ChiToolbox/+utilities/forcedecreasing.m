@@ -16,7 +16,7 @@ function [a,b] = forcedecreasing(a,b)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   forceincreasing swap.
+%   forceincreasing  force2col force2row swap.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

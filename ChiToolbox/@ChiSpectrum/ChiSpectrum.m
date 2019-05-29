@@ -72,10 +72,10 @@ classdef ChiSpectrum < ChiAbstractSpectrum
                 
                 % Force to row vectors
                 if ~isempty(this.xvals)
-                    this.xvals = ChiForceToRow(this.xvals);
+                    this.xvals = utilities.force2row(this.xvals);
                 end
                 if ~isempty(this.data)
-                    this.data = ChiForceToRow(this.data);
+                    this.data = utilities.force2row(this.data);
                 end
                 
                 % TODO: Could check that xvals is always increasing and not

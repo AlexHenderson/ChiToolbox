@@ -63,7 +63,7 @@ classdef ChiClassMembership < ChiBase
                         this.labels = varargin{1};
                     end
                     try
-                        this.labels = ChiForceToColumn(this.labels);
+                        this.labels = utilities.force2col(this.labels);
                     catch ex
                         disp(['Error processing: ', title])
                         rethrow(ex);

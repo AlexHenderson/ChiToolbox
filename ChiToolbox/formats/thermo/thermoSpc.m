@@ -132,7 +132,7 @@ if (xvals(end) < xvals(1))
     data = fliplr(data);
 end
 
-xvals = ChiForceToRow(xvals);
+xvals = utilities.force2row(xvals);
 
 end
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

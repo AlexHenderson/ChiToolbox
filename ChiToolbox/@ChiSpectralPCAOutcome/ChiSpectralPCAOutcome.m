@@ -39,7 +39,7 @@ classdef ChiSpectralPCAOutcome < ChiBase
                 this.xlabelunit = xlabelunit;
                 this.reversex = reversex;
                 
-                this.xvals = ChiForceToRow(this.xvals);
+                this.xvals = utilities.force2row(this.xvals);
             end 
         end
         

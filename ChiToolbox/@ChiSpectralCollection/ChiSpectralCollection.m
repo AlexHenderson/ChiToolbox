@@ -162,7 +162,7 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
             end
         
             if ~isempty(this.xvals)
-                this.xvals = ChiForceToRow(this.xvals);
+                this.xvals = utilities.force2row(this.xvals);
             end
             
             dims = size(this.data);

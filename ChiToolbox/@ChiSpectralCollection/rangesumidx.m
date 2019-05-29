@@ -1,14 +1,14 @@
-function summed = rangesumidx(this,fromidx,toidx)
+function thesum = rangesumidx(this,fromidx,toidx)
 
-% rangesumidx  Calculates the sum of the spectral region. 
+% rangesumidx  Calculates the sum of a spectral region. 
 %
 % Syntax
-%   summed = rangesumidx(fromidx,toidx);
+%   thesum = rangesumidx(fromidx,toidx);
 %
 % Description
-%   summed = rangesumidx(fromidx,toidx) calculates the sum of the spectra
+%   thesum = rangesumidx(fromidx,toidx) calculates the sum of the spectra
 %   between fromidx and toidx inclusive. The parameters fromidx and toidx
-%   are index values (not in xaxis units). It returns a column vector of
+%   are index values (not in xaxis units). thesum is a column vector of
 %   summed intensities.
 %
 % Copyright (c) 2017, Alex Henderson.
@@ -50,6 +50,6 @@ function summed = rangesumidx(this,fromidx,toidx)
     % Swap if 'from' is higher than 'to'
     [fromidx,toidx] = utilities.forceincreasing(fromidx,toidx);
 
-    summed = sum(this.data(:,fromidx:toidx),2);
+    thesum = sum(this.data(:,fromidx:toidx),2);
 
 end        

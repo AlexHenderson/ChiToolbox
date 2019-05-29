@@ -1,6 +1,6 @@
 function thesum = rangesum(this,from,to)
 
-% rangesum  Calculates the sum of the spectral region. 
+% rangesum  Calculates the sum of a spectral region. 
 %
 % Syntax
 %   thesum = rangesum(from,to);
@@ -8,7 +8,7 @@ function thesum = rangesum(this,from,to)
 % Description
 %   thesum = rangesum(from,to) calculates the sum of the spectra between
 %   from and to inclusive. The parameters from and to are in xaxis units.
-%   It returns a column vector of summed intensities.
+%   thesum is a column vector of summed intensities.
 %
 % Copyright (c) 2017, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.

@@ -1,4 +1,4 @@
-function ChiPointAndClick(input, favwave)
+function click(input, favwave)
 
 % filename='E:\SIMS data\Biotof data\2D (XYT)\2BDSISO.XYT';
 % lowmass=0;

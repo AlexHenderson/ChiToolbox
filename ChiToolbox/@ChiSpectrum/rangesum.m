@@ -10,7 +10,7 @@ function thesum = rangesum(this,from,to)
 %   from and to inclusive. The parameters from and to are in xaxis units.
 %   It returns a scalar summed intensity.
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2014-2017, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 

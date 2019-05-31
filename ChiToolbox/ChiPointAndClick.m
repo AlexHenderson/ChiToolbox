@@ -20,7 +20,7 @@ figurehandle = figure;
     if ~exist('favwave','var')
         input.totalimage.imagesc();colormap('hot');
     else
-        input.sumrange(favwave).imagesc();colormap('hot');
+        input.rangesum(favwave).imagesc();colormap('hot');
     end
 
 mousebutton = 1;    

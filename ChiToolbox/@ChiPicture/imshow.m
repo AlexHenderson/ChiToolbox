@@ -60,6 +60,17 @@ else
     figure;
 end
 
+%% Get required axes
+argposition = find(cellfun(@(x) strcmpi(x, 'axes') , varargin));
+if argposition
+    % Remove the parameters from the argument list
+    ax = varargin{argposition+1};
+    varargin(argposition + 1) = [];
+    varargin(argposition) = [];
+else
+    ax = gca;
+end
+
 %% Do we want to add a title?
 titletext = '';
 argposition = find(cellfun(@(x) strcmpi(x, 'title') , varargin));
@@ -71,11 +82,11 @@ if argposition
 end
 
 %% Generate the image
-imshow(this.data,'InitialMagnification','fit',varargin{2:end});
+imshow(ax,this.data,'InitialMagnification','fit',varargin{2:end});
 
 %% Add a title if requested
 if ~isempty(titletext)
-    title(titletext)
+    title(ax,titletext)
 end
 
 %% Has the user asked for the figure handle?

@@ -14,14 +14,15 @@ end
 figurehandle = figure;
 
     spectrumhandle = subplot(2,1,2);
-    input.totalspectrum.plot();
+    input.totalspectrum.plot('nofig');
 
     imagehandle = subplot(2,1,1);
     if ~exist('favwave','var')
-        input.totalimage.imagesc();colormap('hot');
+        input.totalimage.imagesc('nofig');
     else
-        input.rangesum(favwave).imagesc();colormap('hot');
+        input.rangesum(favwave).imagesc('nofig');
     end
+    title('Press any key to return to MATLAB');
 
 mousebutton = 1;    
 while (mousebutton == 1)
@@ -35,7 +36,7 @@ while (mousebutton == 1)
             if ((xlocation > 0) && (xlocation < input.xpixels)...
                     &&(ylocation > 0) && (ylocation < input.ypixels))
                 subplot(2,1,2)
-                input.spectrumat(xlocation,ylocation).plot();
+                input.spectrumat(xlocation,ylocation).plot('nofig');
             end
             title(['x=', num2str(xlocation),' y=', num2str(ylocation)]);
             axes(imagehandle);

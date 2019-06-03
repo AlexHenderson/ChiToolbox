@@ -1,4 +1,4 @@
-function [xpos,ypos] = clickon(this, initialxval)
+function varargout = clickon(this, initialxval)
 
 % clickon  Interactive examination of a hyperspectral data set
 %
@@ -120,5 +120,11 @@ while (button == leftmousebutton)
     end    
 end
 
+%% Report mouse coordinates, if requested. 
+if nargout
+    varargout{1} = xpos;
+    varargout{2} = ypos;
+end
+        
 end % function
 

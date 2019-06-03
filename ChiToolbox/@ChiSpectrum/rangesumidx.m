@@ -8,10 +8,10 @@ function summed = rangesumidx(this,fromidx,toidx)
 % Description
 %   summed = rangesumidx(fromidx,toidx) calculates the sum of the spectrum
 %   between fromidx and toidx inclusive. The parameters fromidx and toidx
-%   are index values (not in xaxis units). It returns a scalarof the summed
-%   intensity.
+%   are index values (not in xaxis units). It returns a scalar of the
+%   summed intensity.
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2014-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -24,7 +24,6 @@ function summed = rangesumidx(this,fromidx,toidx)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -36,19 +35,19 @@ function summed = rangesumidx(this,fromidx,toidx)
 
     % Check for out-of-range values
     if (fromidx > this.channels) || (toidx > this.channels)
-        err = MException('CHI:ChiSpectrum:OutOfRange', ...
+        err = MException(['CHI:',mfilename,':OutOfRange'], ...
             ['Requested range is too high. Max  = ', num2str(this.channels), '.']);
         throw(err);
     end            
 
     if (fromidx < 1) || (toidx < 1)
-        err = MException('CHI:ChiSpectrum:OutOfRange', ...
+        err = MException(['CHI:',mfilename,':OutOfRange'], ...
             'Requested range is invalid');
         throw(err);
     end            
 
     % Swap if 'from' is higher than 'to'
-    [fromidx,toidx] = ChiForceIncreasing(fromidx,toidx);
+    [fromidx,toidx] = utilities.forceincreasing(fromidx,toidx);
 
     summed = sum(this.data(:,fromidx:toidx),2);
 

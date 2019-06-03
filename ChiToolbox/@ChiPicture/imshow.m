@@ -4,22 +4,32 @@ function varargout = imshow(varargin)
 %
 % Syntax
 %   imshow();
-%   imshow(Name,Value);
+%   imshow('nofig');
+%   imshow(____,'axes',desiredaxes);
+%   imshow(____,'title',titletext);
 %   handle = imshow(____);
 %
 % Description
 %   imshow() displays the image in a figure window.
 % 
-%   imshow(Name,Value) applies the Name/Value pairs to the figure image.
-%   See the help for MATLAB's help on imshow for more details.
+%   imshow('nofig') displays the image in the currently active figure
+%   window, or creates a new figure if none is available.
 %
+%   imshow(____,'axes',desiredaxes) displays the image in the desiredaxes.
+%   Defaults to gca.
+% 
+%   imshow(____,'title',titletext) displays titletext as an image title.
+% 
 %   handle = imshow(____) returns a handle to this figure.
+% 
+%   Other parameters can be applied to customise the image. See the MATLAB
+%   imshow function for more details. 
 % 
 % Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   display.
+%   display imagesc gca.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -50,6 +60,17 @@ else
     figure;
 end
 
+%% Get required axes
+argposition = find(cellfun(@(x) strcmpi(x, 'axes') , varargin));
+if argposition
+    % Remove the parameters from the argument list
+    ax = varargin{argposition+1};
+    varargin(argposition + 1) = [];
+    varargin(argposition) = [];
+else
+    ax = gca;
+end
+
 %% Do we want to add a title?
 titletext = '';
 argposition = find(cellfun(@(x) strcmpi(x, 'title') , varargin));
@@ -61,11 +82,11 @@ if argposition
 end
 
 %% Generate the image
-imshow(this.data,'InitialMagnification','fit',varargin{2:end});
+imshow(ax,this.data,'InitialMagnification','fit',varargin{2:end});
 
 %% Add a title if requested
 if ~isempty(titletext)
-    title(titletext)
+    title(ax,titletext)
 end
 
 %% Has the user asked for the figure handle?

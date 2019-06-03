@@ -28,7 +28,7 @@ function output = areaidx(this,lowidx,highidx)
 
 
     % Swap if 'from' is higher than 'to'
-    [lowidx,highidx] = ChiForceIncreasing(lowidx,highidx);
+    [lowidx,highidx] = utilities.forceincreasing(lowidx,highidx);
 
     minvalue = min(this.data(:,lowidx:highidx),[],2);
     shifteddata = this.data - repmat(minvalue,1,size(this.data, 2));

@@ -156,7 +156,7 @@ ax = gca;
 %% Check the format of colours
 numcolours = 0; 
 if ischar(colours)
-    colours = ChiForceToColumn(colours);
+    colours = utilities.force2col(colours);
     numcolours = length(colours);
     if (length(uniquegroups) > numcolours)
         utilities.warningnobacktrace('There are more groups than colours, the colours will be recycled');

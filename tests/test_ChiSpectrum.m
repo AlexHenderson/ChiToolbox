@@ -28,13 +28,13 @@ classdef test_ChiSpectrum < matlab.unittest.TestCase
         end
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function test_sumrangeidx(this)
-            this.verifyEqual(this.spectrum.sumrangeidx(3,6), 58);
+        function test_rangesumidx(this)
+            this.verifyEqual(this.spectrum.rangesumidx(3,6), 58);
         end
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function test_sumrange(this)
-            this.verifyEqual(this.spectrum.sumrange(6,3), 58);
+        function test_rangesum(this)
+            this.verifyEqual(this.spectrum.rangesum(6,3), 58);
         end
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

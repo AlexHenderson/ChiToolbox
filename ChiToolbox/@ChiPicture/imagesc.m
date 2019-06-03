@@ -4,17 +4,27 @@ function varargout = imagesc(varargin)
 %
 % Syntax
 %   imagesc();
-%   imagesc(Name,Value);
+%   imagesc('nofig');
+%   imagesc(____,'axes',desiredaxes);
+%   imagesc(____,'title',titletext);
 %   handle = imagesc(____);
 %
 % Description
 %   imagesc() displays the data as an image that uses the full range of
 %   colors in the colormap
 % 
-%   imagesc(Name,Value) applies the Name/Value pairs to the image. See the
-%   help for MATLAB's help on imagesc for more details. 
+%   imagesc('nofig') displays the image in the currently active figure
+%   window, or creates a new figure if none is available.
 %
+%   imagesc(____,'axes',desiredaxes) displays the image in the desiredaxes.
+%   Defaults to gca.
+% 
+%   imagesc(____,'title',titletext) displays titletext as an image title.
+% 
 %   handle = imagesc(____) returns a handle to this figure.
+% 
+%   Other parameters can be applied to customise the image. See the MATLAB
+%   imagesc function for more details. 
 % 
 % Notes
 %   If the data is bimodal, the ChiBimodalColormap is used. Otherwise, if
@@ -25,7 +35,7 @@ function varargout = imagesc(varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   imagesc parula ChiBimodalColormap ChiSequentialColormap.
+%   imagesc gca parula ChiBimodalColormap ChiSequentialColormap.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -50,6 +60,17 @@ function varargout = imagesc(varargin)
         figure;
     end
 
+    % Get required axes
+    argposition = find(cellfun(@(x) strcmpi(x, 'axes') , varargin));
+    if argposition
+        % Remove the parameters from the argument list
+        ax = varargin{argposition+1};
+        varargin(argposition + 1) = [];
+        varargin(argposition) = [];
+    else
+        ax = gca;
+    end
+
     % Do we want to add a title?
     titletext = '';
     argposition = find(cellfun(@(x) strcmpi(x, 'title') , varargin));
@@ -62,12 +83,12 @@ function varargout = imagesc(varargin)
     
     % Generate the figure
     if nargout
-        varargout{:} = imagesc(this.data,varargin{2:end});
+        varargout{:} = imagesc(ax,this.data,varargin{2:end});
     else
-        imagesc(this.data,varargin{2:end});
+        imagesc(ax,this.data,varargin{2:end});
     end
-    axis image;
-    axis off;
+    axis(ax,'image');
+    axis(ax,'off');
     
     % Use an appropriate colormap
     if this.bimodal

@@ -27,7 +27,7 @@ function obj = removespectra(this,varargin)
 
         if islogical(list)
             % If the list is logical, we can assume everything is in order. 
-            list = ChiForceToColumn(list);
+            list = utilities.force2col(list);
             this.data(list,:) = [];
             if ~isempty(this.classmembership)
                 this.classmembership.removeentries(list);
@@ -57,7 +57,7 @@ function obj = removespectra(this,varargin)
             end
 
             % If we've got to here we can remove the unwanted spectra
-            list = ChiForceToColumn(list);
+            list = utilities.force2col(list);
             this.data(list,:) = [];
             if ~isempty(this.classmembership)
                 this.classmembership.removeentries(list);

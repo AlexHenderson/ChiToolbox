@@ -54,7 +54,7 @@ classdef ChiImagePCAOutcome < ChiBase
 
                 this.history = ChiLogger();
                 
-                this.xvals = ChiForceToRow(this.xvals);
+                this.xvals = utilities.force2row(this.xvals);
             end 
         end
         

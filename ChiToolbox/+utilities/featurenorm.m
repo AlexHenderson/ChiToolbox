@@ -118,7 +118,7 @@ end
 
 %% Deal with the featureHigh parameter
 if exist('featureHigh','var')
-    featureHigh = ChiForceIncreasing(featureHigh);
+    featureHigh = utilities.forceincreasing(featureHigh);
     switch numel(featureHigh)
         case 1
             % Determine the index value of the required feature
@@ -158,7 +158,7 @@ end
 
 %% Deal with the featureLow parameter
 if exist('featureLow','var')
-    featureLow = ChiForceIncreasing(featureLow);
+    featureLow = utilities.forceincreasing(featureLow);
     switch numel(featureLow)
         case 1
             % Determine the index value of the required feature

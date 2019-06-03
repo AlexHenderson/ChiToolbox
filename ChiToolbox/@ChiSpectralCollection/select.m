@@ -105,7 +105,7 @@ function obj = select(this,varargin)
         % Did the user provide a logical array?
         argposition = find(cellfun(@(x) islogical(x) , varargin));
         if argposition
-            selection = ChiForceToColumn(varargin{argposition});
+            selection = utilities.force2col(varargin{argposition});
             if (length(selection) ~= this.numspectra)
                 err = MException(['CHI:',mfilename,':InputError'], ...
                     'The selected list does not match the number of spectra.');

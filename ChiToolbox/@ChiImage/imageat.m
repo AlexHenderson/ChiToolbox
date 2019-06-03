@@ -3,7 +3,7 @@ function output = imageat(varargin)
 %IMAGEAT Summary of this function goes here
 %   Detailed explanation goes here
 
-    output = sumrange(varargin{:});
+    output = rangesum(varargin{:});
     
 end
 

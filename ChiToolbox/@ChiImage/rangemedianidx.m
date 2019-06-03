@@ -1,21 +1,21 @@
-function thesum = rangesumidx(this,fromidx,toidx)
+function themedian = rangemedianidx(this,fromidx,toidx)
 
-% rangesumidx  Calculates the sum of a spectral region. 
+% rangemedianidx  Calculates the median of a spectral region. 
 %
 % Syntax
-%   thesum = rangesumidx(fromidx,toidx);
+%   themedian = rangemedianidx(fromidx,toidx);
 %
 % Description
-%   thesum = rangesumidx(fromidx,toidx) calculates the sum of the spectra
-%   between fromidx and toidx inclusive. The parameters fromidx and toidx
-%   are index values (not in xaxis units). thesum is a column vector of
-%   summed intensities.
+%   themedian = rangemedianidx(fromidx,toidx) calculates the median of the
+%   spectra between fromidx and toidx inclusive. The parameters fromidx and
+%   toidx are index values (not in xaxis units). themedian is a ChiPicture
+%   of median intensities.
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   rangesum rangemedian rangemean measurearea measureareaidx ChiSpectralCollection.
+%   rangemean rangesum rangemedian measurearea measureareaidx ChiImage ChiPicture.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -24,7 +24,6 @@ function thesum = rangesumidx(this,fromidx,toidx)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -36,13 +35,13 @@ function thesum = rangesumidx(this,fromidx,toidx)
 
     % Check for out-of-range values
     if (fromidx > this.channels) || (toidx > this.channels)
-        err = MException('CHI:ChiSpectralCollection:OutOfRange', ...
+        err = MException(['CHI:',mfilename,':OutOfRange'], ...
             ['Requested range is too high. Max  = ', num2str(this.channels), '.']);
         throw(err);
     end            
 
     if (fromidx < 1) || (toidx < 1)
-        err = MException('CHI:ChiSpectralCollection:OutOfRange', ...
+        err = MException(['CHI:',mfilename,':OutOfRange'], ...
             'Requested range is invalid');
         throw(err);
     end            
@@ -50,6 +49,9 @@ function thesum = rangesumidx(this,fromidx,toidx)
     % Swap if 'from' is higher than 'to'
     [fromidx,toidx] = utilities.forceincreasing(fromidx,toidx);
 
-    thesum = sum(this.data(:,fromidx:toidx),2);
+    themedian = median(this.data(:,fromidx:toidx),2);
+    themedian = ChiPicture(themedian,this.xpixels,this.ypixels);
+    themedian.history.add(['rangemedianidx, from ', num2str(fromidx), ' to ', num2str(toidx)]);
+    this.history.add(['rangemedianidx, from ', num2str(fromidx), ' to ', num2str(toidx)]);
 
 end        

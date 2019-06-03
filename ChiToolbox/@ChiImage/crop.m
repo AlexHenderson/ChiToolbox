@@ -26,9 +26,9 @@ else
     end
 
     % Swap if 'from' is higher than 'to'
-    [lowx,highx] = ChiForceIncreasing(lowx,highx);
+    [lowx,highx] = utilities.forceincreasing(lowx,highx);
     % Swap if 'from' is higher than 'to'
-    [lowy,highy] = ChiForceIncreasing(lowy,highy);
+    [lowy,highy] = utilities.forceincreasing(lowy,highy);
 
     % Check for out of range values
     if (lowx > this.xpixels) || (highx > this.xpixels)

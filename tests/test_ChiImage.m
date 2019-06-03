@@ -133,11 +133,11 @@ classdef test_ChiImage < matlab.unittest.TestCase
         end
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function test_sumrangeidx(this) % x index range
-            % rangethis.image = sumrangeidx.m(this,fromidx,toidx);
+        function test_rangesumidx(this) % x index range
+            % rangethis.image = rangesumidx.m(this,fromidx,toidx);
 
             expected = ChiPicture([288,309,15,36,57,213,234,165,186,132;306,252,33,54,60,231,177,183,204,135;24,255,276,72,78,174,180,201,222,153;267,273,69,75,21,192,198,219,225,96;270,291,87,18,39,195,216,237,168,114;63,84,240,261,282,138,159,90,111,207;81,27,258,279,285,156,102,108,129,210;249,30,51,297,303,99,105,126,147,228;42,48,294,300,246,117,123,144,150,171;45,66,312,243,264,120,141,162,93,189]);
-            predicted = this.im.sumrangeidx(7,9);
+            predicted = this.im.rangesumidx(7,9);
             % Remove history since this adds a 'Cloned' statement
             predicted.history = [];
             expected.history = [];
@@ -145,11 +145,11 @@ classdef test_ChiImage < matlab.unittest.TestCase
         end
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function test_sumrangeidx2(this) % single x index
+        function test_rangesumidx2(this) % single x index
             % rangethis.image = summedrangethis.imagefromindexvals(this,fromidx,toidx);
 
             expected = ChiPicture([94,101,3,10,17,69,76,53,60,42;100,82,9,16,18,75,57,59,66,43;6,83,90,22,24,56,58,65,72,49;87,89,21,23,5,62,64,71,73,30;88,95,27,4,11,63,70,77,54,36;19,26,78,85,92,44,51,28,35,67;25,7,84,91,93,50,32,34,41,68;81,8,15,97,99,31,33,40,47,74;12,14,96,98,80,37,39,46,48,55;13,20,102,79,86,38,45,52,29,61]);
-            predicted = this.im.sumrangeidx(9);
+            predicted = this.im.rangesumidx(9);
             % Remove history since this adds a 'Cloned' statement
             predicted.history = [];
             expected.history = [];

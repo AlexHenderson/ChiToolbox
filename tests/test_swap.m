@@ -1,4 +1,4 @@
-classdef test_ChiSwap < matlab.unittest.TestCase
+classdef test_swap < matlab.unittest.TestCase
 
     
     properties
@@ -8,19 +8,19 @@ classdef test_ChiSwap < matlab.unittest.TestCase
     methods (Test)
 
         function test_differentNumbers(this)
-            [a,b] = ChiSwap(1,2);
+            [a,b] = utilities.swap(1,2);
             this.verifyEqual([a,b], [2,1]);
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function test_sameNumbers(this)
-            [a,b] = ChiSwap(5,5);
+            [a,b] = utilities.swap(5,5);
             this.verifyEqual([a,b], [5,5]);
         end
 
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 %         function test_errorTooManyVariables(this)
-%             this.verifyError(ChiSwap(1, 2, 3), 'MATLAB:TooManyInputs');
+%             this.verifyError(utilities.swap(1, 2, 3), 'MATLAB:TooManyInputs');
 %         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

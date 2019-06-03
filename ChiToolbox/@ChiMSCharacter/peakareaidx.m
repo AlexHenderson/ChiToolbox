@@ -31,7 +31,7 @@ function output = peakareaidx(this,lowidx,highidx)
 
 
     % Swap if 'from' is higher than 'to'
-    [lowidx,highidx] = ChiForceIncreasing(lowidx,highidx);
+    [lowidx,highidx] = utilities.forceincreasing(lowidx,highidx);
 
     % Accommodate data type
     if isa(this, 'ChiAbstractSpectrum')

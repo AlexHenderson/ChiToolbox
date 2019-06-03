@@ -8,7 +8,7 @@ function output = ChiMeasureArea(input,lowx,highx)
 if (isa(input,'ChiSpectrum') || isa(input,'ChiImage'))
 
     % Swap if 'from' is higher than 'to'
-    [lowx,highx] = ChiForceIncreasing(lowx,highx);
+    [lowx,highx] = utilities.forceincreasing(lowx,highx);
     
     lowidx = input.indexat(lowx);
     highidx = input.indexat(highx);

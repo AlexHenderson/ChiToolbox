@@ -53,8 +53,8 @@ function obj = and(this,another)
         eval(command);  
     else
         this.mask = this.mask & another.mask;
-        message = 'Two masks ANDed'; %#ok<NASGU>
-%         this.history.add(message);
+        message = 'Two masks ANDed';
+        this.history.add(message);
     end
     
 end

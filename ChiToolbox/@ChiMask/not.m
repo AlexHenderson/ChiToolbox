@@ -41,8 +41,8 @@ function obj = not(this)
         eval(command);  
     else
         this.mask = ~this.mask;
-        message = 'Got NOTed'; %#ok<NASGU>
-%         this.history.add(message);
-    end
+        message = 'Got NOTed';
+        this.history.add(message);
+end
     
 end

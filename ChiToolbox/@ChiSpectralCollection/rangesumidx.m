@@ -35,9 +35,9 @@ function thesum = rangesumidx(this,fromidx,toidx)
     end
 
     % Check for out-of-range values
-    if (fromidx > this.channels) || (toidx > this.channels)
+    if (fromidx > this.numchannels) || (toidx > this.numchannels)
         err = MException('CHI:ChiSpectralCollection:OutOfRange', ...
-            ['Requested range is too high. Max  = ', num2str(this.channels), '.']);
+            ['Requested range is too high. Max  = ', num2str(this.numchannels), '.']);
         throw(err);
     end            
 

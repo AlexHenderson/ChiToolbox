@@ -25,7 +25,7 @@ function spectrum = spectrumat(this,xpos,ypos)
         this.mask = reshape(this.mask, this.ypixels, this.xpixels);
         if (this.mask(ypos,xpos) == false)
             % This is a pixel we've rejected so return zeros
-            spectrumdata = zeros(1,this.channels());
+            spectrumdata = zeros(1,this.numchannels());
         end
     else
         pos = sub2ind([this.ypixels,this.xpixels],ypos,xpos);

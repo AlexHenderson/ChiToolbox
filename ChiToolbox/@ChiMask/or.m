@@ -53,8 +53,8 @@ function obj = or(this,another)
         eval(command);  
     else
         this.mask = this.mask | another.mask;
-        message = 'Two masks ORed'; %#ok<NASGU>
-%         this.history.add(message);
+        message = 'Two masks ORed';
+        this.history.add(message);
     end
     
 end

@@ -1,21 +1,21 @@
-function themean = rangemeanidx(this,fromidx,toidx)
+function themin = rangeminidx(this,fromidx,toidx)
 
-% rangemeanidx  Calculates the mean of a spectral region. 
+% rangeminidx  Calculates the minimum of a spectral region. 
 %
 % Syntax
-%   themean = rangemeanidx(fromidx,toidx);
+%   themin = rangeminidx(fromidx,toidx);
 %
 % Description
-%   themean = rangemeanidx(fromidx,toidx) calculates the mean of the
+%   themin = rangeminidx(fromidx,toidx) calculates the minimum of the
 %   spectra between fromidx and toidx inclusive. The parameters fromidx and
-%   toidx are index values (not in xaxis units). themean is a column vector
-%   of mean intensities.
+%   toidx are index values (not in xaxis units). themin is a ChiPicture of
+%   minimum intensities.
 %
 % Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   rangemean rangesum rangemedian measurearea measureareaidx ChiSpectralCollection.
+%   rangemin rangesum rangemedian rangemean measurearea measureareaidx ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -49,6 +49,9 @@ function themean = rangemeanidx(this,fromidx,toidx)
     % Swap if 'from' is higher than 'to'
     [fromidx,toidx] = utilities.forceincreasing(fromidx,toidx);
 
-    themean = mean(this.data(:,fromidx:toidx),2);
-
+    themin = min(this.data(:,fromidx:toidx),[],2);
+    themin = ChiPicture(themin,this.xpixels,this.ypixels);
+    themin.history.add(['rangeminidx, from ', num2str(fromidx), ' to ', num2str(toidx)]);
+    this.history.add(['rangeminidx, from ', num2str(fromidx), ' to ', num2str(toidx)]);
+    
 end        

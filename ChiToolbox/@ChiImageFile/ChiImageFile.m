@@ -4,16 +4,13 @@ classdef ChiImageFile < ChiBase
 %
 % Syntax
 %   myfile = ChiImageFile();
-%   myfile = ChiImageFile.open();
-%   myfile = ChiImageFile.open(filename);
+%   myfile = ChiImageFile(filename);
 %
 % Description
-%   myfile = ChiImageFile() creates an empty object.
+%   myfile = ChiImageFile() opens a dialog box to request a filename from
+%   the user. The selected file is opened.
 % 
-%   myfile = ChiImageFile.open() opens a dialog box to request a filename
-%   from the user. The selected file is opened.
-% 
-%   myfile = ChiImageFile.open(filename) opens the filename provided.
+%   myfile = ChiImageFile(filename) opens the filename provided.
 %
 %   This class can read a number of image file formats, for example; JPEG,
 %   TIFF, PNG. For a list of available formats, use the MATLAB imformats
@@ -60,22 +57,45 @@ classdef ChiImageFile < ChiBase
     % =====================================================================
         function this = ChiImageFile(varargin) % data,filenames,history
         % ChiImageFile constructor
-            argposition = find(cellfun(@(x) isnumeric(x) , varargin));
-            if argposition
-                this.data = varargin{argposition};
-                varargin(argposition) = [];
-            end
-            argposition = find(cellfun(@(x) iscellstr(x) , varargin)); %#ok<ISCLSTR>
-            if argposition
-                this.filenames = varargin{argposition};
-                varargin(argposition) = [];
-            end
-            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
-            if argposition
-                this.history = varargin{argposition}.clone;
-                varargin(argposition) = []; %#ok<NASGU>
+        
+            if (nargin == 0)
+                this = ChiImageFile.open();
             else
-                this.history = ChiLogger();
+                if (nargin == 1)
+                    if ischar(varargin{1})
+                        this = ChiImageFile.open(varargin(1));
+                    else
+                        err = MException(['CHI:',mfilename,':IOError'], ...
+                            'A single input must be a filename');
+                        throw(err);
+                    end
+                else
+
+                    argposition = find(cellfun(@(x) isnumeric(x) , varargin));
+                    if argposition
+                        this.data = varargin{argposition};
+                        varargin(argposition) = [];
+                    end
+                    argposition = find(cellfun(@(x) iscellstr(x) , varargin)); %#ok<ISCLSTR>
+                    if argposition
+                        this.filenames = varargin{argposition};
+                        varargin(argposition) = [];
+                    end
+                    argposition = find(cellfun(@(x) ischar(x) , varargin));
+                    if argposition
+                        % Convert to a cell array of char
+                        this.filenames = varargin(argposition);
+                        varargin(argposition) = [];
+                    end
+                    argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+                    if argposition
+                        this.history = varargin{argposition}.clone;
+                        varargin(argposition) = []; %#ok<NASGU>
+                    else
+                        this.history = ChiLogger();
+                    end
+
+                end
             end
         end
 

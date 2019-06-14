@@ -1,14 +1,15 @@
-function themax = rangemax(this,from,to)
+function [themax,position] = rangemax(this,from,to)
 
 % rangemax  Calculates the maximum of a spectral region. 
 %
 % Syntax
-%   themax = rangemax(from,to);
+%   [themax,position] = rangemax(from,to);
 %
 % Description
-%   themax = rangemax(from,to) calculates the maximum of the spectrum
-%   between from and to inclusive. The parameters from and to are in xaxis
-%   units. themax is a scalar of maximum intensity.
+%   [themax,position] = rangemax(from,to) calculates the maximum of the
+%   spectrum between from and to inclusive. The parameters from and to are
+%   in xaxis units. themax and position are scalars of the maximum
+%   intensity and its x-axis value respectively.
 %
 % Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -36,5 +37,7 @@ function themax = rangemax(this,from,to)
     fromidx = indexat(this, from);
     toidx = indexat(this, to);
 %     this.history.add(['rangemax: from ', num2str(from), ' to ', num2str(to)]);
-    themax = rangemaxidx(this,fromidx,toidx);
+    [themax,idx] = rangemaxidx(this,fromidx,toidx);
+    position = this.xvals(idx);
+    
 end        

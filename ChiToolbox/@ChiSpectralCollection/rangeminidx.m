@@ -1,15 +1,15 @@
-function themin = rangeminidx(this,fromidx,toidx)
+function [themin,idx] = rangeminidx(this,fromidx,toidx)
 
 % rangeminidx  Calculates the minimum of a spectral region. 
 %
 % Syntax
-%   themin = rangeminidx(fromidx,toidx);
+%   [themin,idx] = rangeminidx(fromidx,toidx);
 %
 % Description
-%   themin = rangeminidx(fromidx,toidx) calculates the minimum of the
+%   [themin,idx] = rangeminidx(fromidx,toidx) calculates the minimum of the
 %   spectra between fromidx and toidx inclusive. The parameters fromidx and
-%   toidx are index values (not in xaxis units). themin is a column vector
-%   of minimum intensities.
+%   toidx are index values (not in xaxis units). themin and idx are column
+%   vectors of the minimum intensity and its index position respectively.
 %
 % Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -49,6 +49,7 @@ function themin = rangeminidx(this,fromidx,toidx)
     % Swap if 'from' is higher than 'to'
     [fromidx,toidx] = utilities.forceincreasing(fromidx,toidx);
 
-    themin = min(this.data(:,fromidx:toidx),[],2);
+    [themin,idx] = min(this.data(:,fromidx:toidx),[],2);
+    idx = idx + fromidx - 1;
 
 end        

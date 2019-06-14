@@ -1,15 +1,16 @@
-function themax = rangemaxidx(this,fromidx,toidx)
+function [themax,idx] = rangemaxidx(this,fromidx,toidx)
 
 % rangemaxidx  Calculates the maximum of a spectral region. 
 %
 % Syntax
-%   themax = rangemaxidx(fromidx,toidx);
+%   [themax,idx] = rangemaxidx(fromidx,toidx);
 %
 % Description
-%   themax = rangemaxidx(fromidx,toidx) calculates the maximum of the
+%   [themax,idx] = rangemaxidx(fromidx,toidx) calculates the maximum of the
 %   spectra between fromidx and toidx inclusive. The parameters fromidx and
 %   toidx are index values (not in xaxis units). themax is a ChiPicture of
-%   maximum intensities.
+%   maximum intensities.themax and idx are ChiPictures of the maximum
+%   intensity and its index position respectively.
 %
 % Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -49,8 +50,12 @@ function themax = rangemaxidx(this,fromidx,toidx)
     % Swap if 'from' is higher than 'to'
     [fromidx,toidx] = utilities.forceincreasing(fromidx,toidx);
 
-    themax = max(this.data(:,fromidx:toidx),[],2);
+    [themax,idx] = max(this.data(:,fromidx:toidx),[],2);
+    idx = idx + fromidx - 1;
+    
     themax = ChiPicture(themax,this.xpixels,this.ypixels);
+    idx = ChiPicture(idx,this.xpixels,this.ypixels);
+    
     themax.history.add(['rangemaxidx, from ', num2str(fromidx), ' to ', num2str(toidx)]);
     this.history.add(['rangemaxidx, from ', num2str(fromidx), ' to ', num2str(toidx)]);
     

@@ -1,15 +1,16 @@
-function themin = rangeminidx(this,fromidx,toidx)
+function [themin,idx] = rangeminidx(this,fromidx,toidx)
 
 % rangeminidx  Calculates the minimum of a spectral region. 
 %
 % Syntax
-%   themin = rangeminidx(fromidx,toidx);
+%   [themin,idx] = rangeminidx(fromidx,toidx);
 %
 % Description
-%   themin = rangeminidx(fromidx,toidx) calculates the minimum of the
+%   [themin,idx] = rangeminidx(fromidx,toidx) calculates the minimum of the
 %   spectra between fromidx and toidx inclusive. The parameters fromidx and
-%   toidx are index values (not in xaxis units). themin is a ChiPicture of
-%   minimum intensities.
+%   toidx are index values (not in xaxis units). themin and idx are
+%   ChiPictures of the minimum intensity and its index position
+%   respectively.
 %
 % Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -49,8 +50,12 @@ function themin = rangeminidx(this,fromidx,toidx)
     % Swap if 'from' is higher than 'to'
     [fromidx,toidx] = utilities.forceincreasing(fromidx,toidx);
 
-    themin = min(this.data(:,fromidx:toidx),[],2);
+    [themin,idx] = min(this.data(:,fromidx:toidx),[],2);
+    idx = idx + fromidx - 1;
+    
     themin = ChiPicture(themin,this.xpixels,this.ypixels);
+    idx = ChiPicture(idx,this.xpixels,this.ypixels);
+    
     themin.history.add(['rangeminidx, from ', num2str(fromidx), ' to ', num2str(toidx)]);
     this.history.add(['rangeminidx, from ', num2str(fromidx), ' to ', num2str(toidx)]);
     

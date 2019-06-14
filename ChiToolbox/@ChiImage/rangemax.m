@@ -40,6 +40,8 @@ function [themax,position] = rangemax(this,from,to)
     [themax,idx] = rangemaxidx(this,fromidx,toidx);
     
     position = idx.clone;
-    position.data = this.xvals(:,idx.data);
+    data = reshape(idx.data, idx.ypixels*idx.xpixels, 1);
+    values = this.xvals(data)';
+    position.data = reshape(values,idx.ypixels,idx.xpixels);
     
 end        

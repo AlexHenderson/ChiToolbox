@@ -38,5 +38,5 @@ function [themin,position] = rangemin(this,from,to)
     toidx = indexat(this, to);
 %     this.history.add(['rangemin: from ', num2str(from), ' to ', num2str(to)]);
     [themin,idx] = rangeminidx(this,fromidx,toidx);
-    position = this.xvals(:,idx);
+    position = this.xvals(idx');
 end        

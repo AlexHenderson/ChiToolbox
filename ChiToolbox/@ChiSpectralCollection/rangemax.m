@@ -38,6 +38,6 @@ function [themax,position] = rangemax(this,from,to)
     toidx = indexat(this, to);
 %     this.history.add(['rangemax: from ', num2str(from), ' to ', num2str(to)]);
     [themax,idx] = rangemaxidx(this,fromidx,toidx);
-    position = this.xvals(:,idx);
+    position = this.xvals(idx)';
     
 end        

@@ -1,14 +1,15 @@
-function themin = rangemin(this,from,to)
+function [themin,position] = rangemin(this,from,to)
 
 % rangemin  Calculates the minimum of a spectral region. 
 %
 % Syntax
-%   themin = rangemin(from,to);
+%   [themin,position] = rangemin(from,to);
 %
 % Description
-%   themin = rangemin(from,to) calculates the minimum of the spectrum
-%   between from and to inclusive. The parameters from and to are in xaxis
-%   units. themin is a scalar of minimum intensity.
+%   [themin,position] = rangemin(from,to) calculates the minimum of the
+%   spectrum between from and to inclusive. The parameters from and to are
+%   in xaxis units. themin and position are scalars of the minimum
+%   intensity and its x-axis value respectively.
 %
 % Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -36,5 +37,7 @@ function themin = rangemin(this,from,to)
     fromidx = indexat(this, from);
     toidx = indexat(this, to);
 %     this.history.add(['rangemin: from ', num2str(from), ' to ', num2str(to)]);
-    themin = rangeminidx(this,fromidx,toidx);
+    [themin,idx] = rangeminidx(this,fromidx,toidx);
+    position = this.xvals(idx);
+    
 end        

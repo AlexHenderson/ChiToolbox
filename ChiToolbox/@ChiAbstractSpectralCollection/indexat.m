@@ -69,12 +69,20 @@ for i = 1:length(xvalues)
         if ((this.xvals(idx(i)) - xvalues(i)) < 0)
             % The next idx value is higher than the requested xvalue
             idx(i) = idx(i) + 1;
+            % Maximum idx is the length of the data
+            if (idx(i) > this.numchannels)
+                idx(i) = this.numchannels;
+            end
         end
     end
     if lowerThan
         if ((this.xvals(idx(i)) - xvalues(i)) > 0)
             % The previous idx value is lower than the requested xvalue
             idx(i) = idx(i) - 1;
+            % Minimum idx value is 1
+            if (idx(i) < 1)
+                idx(i) = 1;
+            end
         end
     end
 end

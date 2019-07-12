@@ -28,6 +28,15 @@ function masked = applymask(varargin)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
     
+% Do we have somewhere to put the data?
+if ~nargout
+    stacktrace = dbstack;
+    functionname = stacktrace.name;
+    err = MException(['CHI:',mfilename,':IOError'], ...
+        'Nowhere to put the output. Try something like: masked = %s(mask);',functionname);
+    throw(err);
+end
+            
 if (nargin ~= 2)
      err = MException(['CHI:',mfilename,':IOError'], ...
     'No mask was provided.');

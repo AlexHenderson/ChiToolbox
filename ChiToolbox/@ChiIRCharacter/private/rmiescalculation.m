@@ -57,7 +57,7 @@ function varargout = rmiescalculation(this,varargin)
 
 
 % Set some defaults
-rmiesOptions = rmiesoptions();
+% rmiesOptions = rmiesoptions(); % Now this is always passed in
 reference = [];
 
 if ~isempty(varargin)

@@ -64,15 +64,15 @@ function massdata = tof2mass(varargin)
 
     % We have ToFMS data, but need to output a mass spectral dataset
     if isa(this,'ChiSpectrum')
-        massdata = ChiMassSpectrum(this);
+        massdata = ChiMSSpectrum(this);
         massdata = rebintolinear(this,massdata,binwidth,startmass,endmass);
     else
         if isa(this,'ChiSpectralCollection')
-            massdata = ChiMassSpectralCollection(this);
+            massdata = ChiMSSpectralCollection(this);
             massdata = rebintolinear(this,massdata,binwidth,startmass,endmass);
         else        
             if isa(this,'ChiImage')
-                massdata = ChiMassSpecImage(this);
+                massdata = ChiMSImage(this);
                 massdata = rebintolinear(this,massdata,binwidth,startmass,endmass);
             end
         end

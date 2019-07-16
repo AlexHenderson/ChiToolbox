@@ -1,11 +1,11 @@
-function [result] = simsdotproduct(library, unknown)
+function [result] = cosinematch(library, unknown)
 
-% simsdotproduct
+% cosinematch
 %
 % Calculates the dot product of an unknown spectrum against a collection of
 % standard spectra held in a library. 
 %
-% usage: [result] = simsdotproduct(library, unknown);
+% usage: [result] = cosinematch(library, unknown);
 %
 %   - library is a collection of standard spectra in rows
 %   - unknown is the spectrum of the unknown as a row vector
@@ -35,7 +35,9 @@ end
 unknown_mass_channels = size(unknown, 2);
 
 if(library_mass_channels ~= unknown_mass_channels)
-    error('unknown spectrum must be the same length as the library spectra');
+    err = MException(['CHI:',mfilename,':TypeError'], ...
+        'Unknown spectrum must be the same length as the library spectra');
+    throw(err);
 end
 
 library_x_unknown = library .* repmat(unknown, number_of_library_spectra,1);

@@ -101,13 +101,13 @@ disp(['Spectrum 1 Iteration 1  ', datestr(now)]);
 if isempty(reference)
     correctionHistory = [];
     if rmiesOptions.savehistory
-        [correctedX,correctedY,correctionHistory] = RMieS_EMSC_v5(this.xvals, this.data, correction_options);
+        [correctedX,correctedY,correctionHistory,ZRaw] = RMieS_EMSC_v5(this.xvals, this.data, correction_options);
     else
         [correctedX,correctedY] = RMieS_EMSC_v5(this.xvals, this.data, correction_options);
     end
 else
     if rmiesOptions.savehistory
-        [correctedX,correctedY,correctionHistory] = RMieS_EMSC_v5(this.xvals, this.data, correction_options, reference.xvals, reference.data);
+        [correctedX,correctedY,correctionHistory,ZRaw] = RMieS_EMSC_v5(this.xvals, this.data, correction_options, reference.xvals, reference.data);
     else
         [correctedX,correctedY] = RMieS_EMSC_v5(this.xvals, this.data, correction_options, reference.xvals, reference.data);
     end
@@ -125,6 +125,12 @@ if ~isempty(correctionHistory)
         iteration.history.add(log);
         output.append(iteration);
     end
+    
+    % Add the original data to the ChiRmiesIterations object
+    output.original = this.clone();
+    output.original.data = ZRaw.d;
+    output.original.xvals = str2num(ZRaw.v)'; %#ok<ST2NM>
+    
     % Add correction info to the iterations object
     output.history.add(log);
 end

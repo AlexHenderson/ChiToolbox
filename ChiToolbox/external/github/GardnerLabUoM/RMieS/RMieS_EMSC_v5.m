@@ -1,4 +1,4 @@
-function [WN_out,ZCorr,history] = RMieS_EMSC_v5(WN,ZRaw,correction_options,WN_Ref_in,Ref_in)
+function [WN_out,ZCorr,history,ZRaw] = RMieS_EMSC_v5(WN,ZRaw,correction_options,WN_Ref_in,Ref_in)
 
 % RMieS_EMSC_v5 Resonant Mie Scattering Correction
 % 

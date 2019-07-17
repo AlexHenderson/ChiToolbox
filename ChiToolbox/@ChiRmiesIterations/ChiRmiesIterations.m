@@ -38,6 +38,8 @@ classdef ChiRmiesIterations < ChiBase
     properties
         % Cell array of iterations, where each iteration is a ChiIRSpectrum, ChiIRSpectralCollection, or ChiIRImage as appropriate, depending on the data being corrected.
         iteration = {};
+        % The data that the RMieS correction operated upon. 
+        original;
         % ChiLogger object recording the RMieS parameters used in the correction. 
         history;
     end

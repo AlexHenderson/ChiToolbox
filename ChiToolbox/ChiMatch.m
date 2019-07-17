@@ -1,4 +1,4 @@
-function output = ChiMatch(image,spectrum,comparison)
+function output = ChiMatch(library,spectrum,comparison)
 
 %ChiCompare SpectralMatch of inputs
 % Reference: 
@@ -10,32 +10,26 @@ function output = ChiMatch(image,spectrum,comparison)
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
 
-if ~isa(image,'ChiImage')
-    err = MException('CHI:ChiMatch:TypeError', ...
-        'First input should be a ChiImage');
+if ~(isa(library,'ChiImage') || isa(library,'ChiSpectralCollection') || isa(library,'ChiSpectrum'))
+    err = MException(['CHI:',mfilename,':TypeError'], ...
+        'First input should be a ChiSpectrum, a ChiSpectralCollection, or a ChiImage');
     throw(err);
 end
 if ~isa(spectrum,'ChiSpectrum')
-    err = MException('CHI:ChiMatch:TypeError', ...
+    err = MException(['CHI:',mfilename,':TypeError'], ...
         'Second input should be a ChiSpectrum');
     throw(err);
 end
 
-if (image.numchannels == spectrum.numchannels)
+if ~exist('comparison','var')
+    comparison = 'cosine';
+end
+
+if (library.numchannels == spectrum.numchannels)
 
     switch lower(comparison)
         case 'cosine'
-            pixels = image.xpixels * image.ypixels;
-            
-            image_x_spectrum = image.data .* repmat(spectrum.data, pixels,1);
-            sum_image_x_spectrum = sum(image_x_spectrum,2);
-            numerator = sum_image_x_spectrum .* sum_image_x_spectrum;
-
-            sum_of_image_squared = sum(image.data .* image.data, 2);
-            sum_of_spectrum_squared = sum(spectrum.data .* spectrum.data, 2);
-            denominator = sum_of_image_squared .* sum_of_spectrum_squared;
-
-            result = numerator ./ denominator;
+            result = utilities.cosinematch(library.data,spectrum.data);
             
         otherwise
             err = MException('CHI:ChiMatch:ToDo', ...
@@ -44,10 +38,15 @@ if (image.numchannels == spectrum.numchannels)
     end
     
 else
-    err = MException('CHI:ChiMatch:DimensionalityError', ...
+    err = MException(['CHI:',mfilename,':DimensionalityError'], ...
         'Spectral lengths are different');
     throw(err);
 end
     
-output = ChiPicture(result,image.xpixels,image.ypixels);
-output.history.add(['Generated a ', comparison, ' match']');
+if isa(library,'ChiImage')
+    output = ChiPicture(result,library.xpixels,library.ypixels);
+    output.history.add(['Generated a ', comparison, ' match']');
+else
+    % ChiSpectralCollection
+    output = result;    
+end

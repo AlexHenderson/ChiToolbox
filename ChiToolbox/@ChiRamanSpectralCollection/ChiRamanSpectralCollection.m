@@ -1,16 +1,59 @@
 classdef ChiRamanSpectralCollection < ChiSpectralCollection & ChiRamanCharacter
     
-% ChiRamanSpectralCollection Storage class for Raman spectra
-% Copyright (c) 2018 Alex Henderson (alex.henderson@manchester.ac.uk)
-    
-% ToDo: We need a mechanism of adding collections of spectra together. A
-% collection could simply be a single spectrum or ChiSpectrum. We could
-% interpolate these in the same manner as BiotofSpectrum. 
+% ChiRamanSpectralCollection  Storage class for a collection of Raman spectra
+%
+% Syntax
+%   collection = ChiRamanSpectralCollection();
+%   collection = ChiRamanSpectralCollection(Raman_shift,data);
+%   collection = ChiRamanSpectralCollection(Raman_shift,data,reversex);
+%   collection = ChiRamanSpectralCollection(Raman_shift,data,reversex,xlabel,xunit,ylabel,yunit);
+%   collection = ChiRamanSpectralCollection(ChiSpectrum);
+%   collection = ChiRamanSpectralCollection(ChiSpectralCollection);
+% 
+% Description
+%   collection = ChiRamanSpectralCollection() creates an empty Raman
+%   spectral collection.
+%
+%   collection = ChiRamanSpectralCollection(Raman_shift,data) creates an
+%   Raman spectral collection using default values.
+% 
+%   collection = ChiRamanSpectralCollection(Raman_shift,data,reversex) uses
+%   the provided value for reversex.
+% 
+%   collection =
+%   ChiRamanSpectralCollection(Raman_shift,data,reversex,xlabel,xunit,ylabel,yunit)
+%   uses the provided values for xlabel/unit and ylabel/unit.
+% 
+%   collection = ChiRamanSpectralCollection(ChiSpectrum) uses the contents
+%   of the ChiSpectrum to populate the collection.
+% 
+%   collection = ChiRamanSpectralCollection(ChiSpectralCollection) uses the
+%   contents of the ChiSpectralCollection to populate the collection.
+%
+%   Default values are: 
+%       reversex = false (Raman shift values are plotted in ascending order);
+%       xlabel   = 'Raman shift'
+%       xunit    = 'cm^{-1}'
+%       ylabel   = 'intensity'
+%       yunit    = 'counts'
+% 
+% Copyright (c) 2018-2019, Alex Henderson.
+% Licenced under the GNU General Public License (GPL) version 3.
+%
+% See also 
+%   ChiSpectrum ChiSpectralCollection ChiRamanSpectrum ChiRamanImage.
+
+% Contact email: alex.henderson@manchester.ac.uk
+% Licenced under the GNU General Public License (GPL) version 3
+% http://www.gnu.org/copyleft/gpl.html
+% Other licensing options are available, please contact Alex for details
+% If you use this file in your work, please acknowledge the author(s) in
+% your publications. 
+
+% The latest version of this file is available on Bitbucket
+% https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-    % matlab.mixin.Copyable only for >R2011a
-    % Want compatibility with R2009a
-    
     % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     properties (Dependent)
         ramanshift
@@ -38,10 +81,10 @@ classdef ChiRamanSpectralCollection < ChiSpectralCollection & ChiRamanCharacter
                         superClassArgs{6} = s.ylabelname;
                         superClassArgs{7} = s.ylabelunit;
                         if ~isempty(s.history)
-                            superClassArgs{8}.history = s.history.clone();
-                            superClassArgs{8}.history.add('Created from a ChiSpectrum');
+                            superClassArgs{8} = s.history.clone();
+                            superClassArgs{8}.add('Created from a ChiSpectrum');
                         else
-                            superClassArgs{8}.history = ChiLogger();                
+                            superClassArgs{8} = ChiLogger();                
                         end
                         
                     else
@@ -125,5 +168,4 @@ classdef ChiRamanSpectralCollection < ChiSpectralCollection & ChiRamanCharacter
         
     end % methods
 
-end % class ChiImage 
-
+end % class ChiRamanSpectralCollection 

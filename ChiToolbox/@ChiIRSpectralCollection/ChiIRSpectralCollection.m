@@ -37,11 +37,11 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
 %       ylabel   = 'absorbance'
 %       yunit    = ''
 % 
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiSpectrum ChiSpectralCollection ChiToFMassSpectralCollection.
+%   ChiSpectrum ChiSpectralCollection ChiIRSpectrum ChiIRImage.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -50,18 +50,10 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, 2017
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
-% ToDo: We need a mechanism of adding collections of spectra together. A
-% collection could simply be a single spectrum or ChiSpectrum. We could
-% interpolate these in the same manner as BiotofSpectrum. 
 
-
-    % matlab.mixin.Copyable only for >R2011a
-    % Want compatibility with R2009a
-    
     % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     properties (Dependent)
         wavenumbers
@@ -89,10 +81,10 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
                         superClassArgs{6} = s.ylabelname;
                         superClassArgs{7} = s.ylabelunit;
                         if ~isempty(s.history)
-                            superClassArgs{8}.history = s.history.clone();
-                            superClassArgs{8}.history.add('Created from a ChiSpectrum');
+                            superClassArgs{8} = s.history.clone();
+                            superClassArgs{8}.add('Created from a ChiSpectrum');
                         else
-                            superClassArgs{8}.history = ChiLogger();                
+                            superClassArgs{8} = ChiLogger();                
                         end
                         
                     else
@@ -207,5 +199,4 @@ classdef ChiIRSpectralCollection < ChiSpectralCollection & ChiIRCharacter
         
     end % methods
 
-end % class ChiImage 
-
+end % class ChiIRSpectralCollection 

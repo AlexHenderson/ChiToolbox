@@ -37,7 +37,7 @@ classdef ChiRmiesIterations < ChiBase
     % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     properties
         % Cell array of iterations, where each iteration is a ChiIRSpectrum, ChiIRSpectralCollection, or ChiIRImage as appropriate, depending on the data being corrected.
-        iteration = {};
+        iterations = {};
         % The data that the RMieS correction operated upon. 
         original;
         % ChiLogger object recording the RMieS parameters used in the correction. 
@@ -81,7 +81,7 @@ classdef ChiRmiesIterations < ChiBase
         
         function initialise(this,numberofiterationsexpected)
         % Used to initialise the number of iterations expected.         
-            this.iteration = cell(numberofiterationsexpected,1);
+        this.iterations = cell(numberofiterationsexpected,1);
         end
         
         function append(this,varargin)
@@ -92,21 +92,21 @@ classdef ChiRmiesIterations < ChiBase
             % the data into the first available position.
             position = this.numiterations + 1;
             for i = 1:this.numiterations
-                if isempty(this.iteration{i})
+                if isempty(this.iterations{i})
                     position = i;
                     break;
                 end
             end
-            this.iteration(position) = varargin(1);
+            this.iterations(position) = varargin(1);
         end
         
         function numiterations = get.numiterations(this)
         % The number of correction steps performed.
-            numiterations = length(this.iteration);
+            numiterations = length(this.iterations);
         end
         
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
     end % methods
 
-end % class ChiRmiesHistory 
+end % class ChiRmiesIterations 

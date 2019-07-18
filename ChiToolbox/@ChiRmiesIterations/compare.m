@@ -69,7 +69,7 @@ if argposition
         which = varargin{argposition};
     else
         % We have multiple spectra selected, or co-ordinates in an image
-        if isa(this.iteration{1},'ChiImage')
+        if isa(this.iterations{1},'ChiImage')
             % We have an image, so co-ordinates are OK. Work out where
             % they point to in the data matrix. The user supplies (x,y), so
             % need to remember to swap the values to provide y first. 
@@ -87,7 +87,7 @@ else
     % Set a default of the first spectrum and warn the user if appropriate
     if ~which
         which = 1;
-        if ~isa(this.iteration{1},'ChiSpectrum') 
+        if ~isa(this.iterations{1},'ChiSpectrum') 
             utilities.warningnobacktrace('Using first spectrum in collection');
         end
     end
@@ -110,24 +110,24 @@ end
     
 %% Do the comparison    
     numiter = this.numiterations;
-    numchans = this.iteration{1}.numchannels;
+    numchans = this.iterations{1}.numchannels;
 
     % Build a raw space for the iteration results. 
     % The first spectrum will be the original. 
     library = zeros(numiter+1,numchans);
         
-    if isa(this.iteration{1},'ChiSpectrum')
+    if isa(this.iterations{1},'ChiSpectrum')
 
         % Insert the original data into the library
         library(1,:) = this.original.data;
         
         % Populate this library with the iteration spectra
         for i = 1:numiter
-            library(i+1,:) = this.iteration{i}.data;
+            library(i+1,:) = this.iterations{i}.data;
         end
 
         % Extract the data from the last iteration
-        finalspectrum = this.iteration{end}.data;
+        finalspectrum = this.iterations{end}.data;
             
         % Do a cosine match
         result = utilities.cosinematch(library,finalspectrum);
@@ -141,11 +141,11 @@ end
         
         % Populate this library with the iteration spectra
         for i = 1:numiter
-            library(i+1,:) = this.iteration{i}.spectrumat(which).data;
+            library(i+1,:) = this.iterations{i}.spectrumat(which).data;
         end
 
         % Extract the data from the last iteration
-        finalspectrum = this.iteration{end}.spectrumat(which).data;
+        finalspectrum = this.iterations{end}.spectrumat(which).data;
             
         % Do a cosine match
         result = utilities.cosinematch(library,finalspectrum);
@@ -165,14 +165,14 @@ end
         xlabel('RMieS iteration number');
         ylabel('cosine of vector angle');
         titletext = 'Cosine match of each iteration versus the final iteration';
-        if ~isa(this.iteration{1},'ChiSpectrum')
+        if ~isa(this.iterations{1},'ChiSpectrum')
             legend(['spectrum ',num2str(which)],'location','best');
         end
         title(titletext);
     end
     
     % Return results if requested
-    if narargout
+    if nargout
         varargout{1} = output;
     end
     

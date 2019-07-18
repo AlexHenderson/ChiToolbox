@@ -81,10 +81,10 @@ classdef ChiRamanSpectralCollection < ChiSpectralCollection & ChiRamanCharacter
                         superClassArgs{6} = s.ylabelname;
                         superClassArgs{7} = s.ylabelunit;
                         if ~isempty(s.history)
-                            superClassArgs{8}.history = s.history.clone();
-                            superClassArgs{8}.history.add('Created from a ChiSpectrum');
+                            superClassArgs{8} = s.history.clone();
+                            superClassArgs{8}.add('Created from a ChiSpectrum');
                         else
-                            superClassArgs{8}.history = ChiLogger();                
+                            superClassArgs{8} = ChiLogger();                
                         end
                         
                     else

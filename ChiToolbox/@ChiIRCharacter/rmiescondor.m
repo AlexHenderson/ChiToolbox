@@ -148,7 +148,6 @@ for i = 1:length(props)
     log = vertcat(log,historyString); %#ok<AGROW>
 end
 
-
 %% Contort the data into the 'RMieS for Condor' layout
 
 % Generate a job name that will act as the foldername

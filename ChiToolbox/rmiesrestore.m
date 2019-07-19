@@ -146,41 +146,26 @@ while(~finished)
 end    
     
 %% Build the output
+varargout{1} = info.this.clone();
+varargout{1}.xvals = wavenumbers_corr;
+varargout{1}.data = data_corr;
+varargout{1}.history.add(info.log);
+
 switch nargout
     case 0
         utilities.warningnobacktrace('Corrected data will be placed in the ans variable.')
-        % Create a Chi object
-        if (size(data_corr,1) == 1)
-            varargout{1} = ChiIRSpectrum(wavenumbers_corr,data_corr);
-        else
-            varargout{1} = ChiIRSpectralCollection(wavenumbers_corr,data_corr);
-        end
-    case 1
-        % Create a Chi object
-        if (size(data_corr,1) == 1)
-            varargout{1} = ChiIRSpectrum(wavenumbers_corr,data_corr);
-        else
-            varargout{1} = ChiIRSpectralCollection(wavenumbers_corr,data_corr);
-        end
+
     case 2
-        % Create a Chi object
-        if (size(data_corr,1) == 1)
-            varargout{1} = ChiIRSpectrum(wavenumbers_corr,data_corr);
-        else
-            varargout{1} = ChiIRSpectralCollection(wavenumbers_corr,data_corr);
-        end
         % Export iteration history
         iterations = ChiRmiesIterations(numiterations);
         if savehistory
-            if (size(data_corr,1) == 1)
-                % Only corrected a single spectrum
-                for i = 1:numiterations
-                    iterations.append(ChiIRSpectrum(wavenumbers_corr,history_corr(:,i)));
-                end
-            else
-                for i = 1:numiterations
-                    iterations.append(ChiIRSpectralCollection(wavenumbers_corr,history_corr(:,:,i)));
-                end
+            for i = 1:numiterations
+                temp = info.this.clone();
+                temp.xvals = wavenumbers_corr;
+                temp.data = history_corr(:,i);
+                temp.history.add(info.log);
+                temp.history.add(['iteration ',num2str(i)]);
+                iterations.append(temp);
             end
         else
             % Simply replicate the corrected data
@@ -189,58 +174,41 @@ switch nargout
         varargout{2} = iterations;
         
     case 3
-        % Create a Chi object
-        if (size(data_corr,1) == 1)
-            varargout{1} = ChiIRSpectrum(wavenumbers_corr,data_corr);
-        else
-            varargout{1} = ChiIRSpectralCollection(wavenumbers_corr,data_corr);
-        end
         % Export iteration history
         iterations = ChiRmiesIterations(numiterations);
         if savehistory
-            if (size(data_corr,1) == 1)
-                % Only corrected a single spectrum
-                for i = 1:numiterations
-                    iterations.append(ChiIRSpectrum(wavenumbers_corr,history_corr(:,i)));
-                end
-            else
-                for i = 1:numiterations
-                    iterations.append(ChiIRSpectralCollection(wavenumbers_corr,history_corr(:,:,i)));
-                end
+            for i = 1:numiterations
+                temp = info.this.clone();
+                temp.xvals = wavenumbers_corr;
+                temp.data = history_corr(:,i);
+                temp.history.add(info.log);
+                temp.history.add(['iteration ',num2str(i)]);
+                iterations.append(temp);
             end
         else
             % Simply replicate the corrected data
             iterations = ChiRmiesIterations(varargout{1});
         end
         varargout{2} = iterations;
-        
         varargout{3} = filename;
+        
     case 4
-        % Create a Chi object
-        if (size(data_corr,1) == 1)
-            varargout{1} = ChiIRSpectrum(wavenumbers_corr,data_corr);
-        else
-            varargout{1} = ChiIRSpectralCollection(wavenumbers_corr,data_corr);
-        end
         % Export iteration history
         iterations = ChiRmiesIterations(numiterations);
         if savehistory
-            if (size(data_corr,1) == 1)
-                % Only corrected a single spectrum
-                for i = 1:numiterations
-                    iterations.append(ChiIRSpectrum(wavenumbers_corr,history_corr(:,i)));
-                end
-            else
-                for i = 1:numiterations
-                    iterations.append(ChiIRSpectralCollection(wavenumbers_corr,history_corr(:,:,i)));
-                end
+            for i = 1:numiterations
+                temp = info.this.clone();
+                temp.xvals = wavenumbers_corr;
+                temp.data = history_corr(:,i);
+                temp.history.add(info.log);
+                temp.history.add(['iteration ',num2str(i)]);
+                iterations.append(temp);
             end
         else
             % Simply replicate the corrected data
             iterations = ChiRmiesIterations(varargout{1});
         end
         varargout{2} = iterations;
-        
         varargout{3} = filename;
         
         if exist('info','var')
@@ -249,4 +217,7 @@ switch nargout
             utilities.warningnobacktrace('No information was stored with the Condor jobs.');
             varargout{4} = [];
         end
-end        
+        
+end % switch
+
+end % function

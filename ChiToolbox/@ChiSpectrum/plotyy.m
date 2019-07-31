@@ -1,19 +1,19 @@
-function overlay(varargin)
+function plotyy(varargin)
 
-% overlay  Produces a plot with overlaid data.
+% plotyy  Produces a plot with overlaid data.
 %
 % Syntax
-%   overlay(other);
-%   overlay(other,'auto');
-%   overlay(____,'legend1',legend1text','legend2',legend2text');
+%   plotyy(other);
+%   plotyy(other,'auto');
+%   plotyy(____,'legend1',legend1text','legend2',legend2text');
 %
 % Description
-%   overlay(other) creates a plot of this data with data from other
+%   plotyy(other) creates a plot of this data with data from other
 %   overlaid. other can be any Chi data type. 
 % 
-%   overlay(other,'auto') autoscales the y-axis.
+%   plotyy(other,'auto') autoscales the y-axis.
 % 
-%   overlay(____,'legend1',legend1text','legend2',legend2text') generates a
+%   plotyy(____,'legend1',legend1text','legend2',legend2text') generates a
 %   legend for the plot where legend1text applies to the left axis and
 %   legend2text applies to the right axis. 
 % 
@@ -21,7 +21,7 @@ function overlay(varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   plot plotyy legend
+%   plot plotyy overlay legend
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -34,6 +34,16 @@ function overlay(varargin)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
+%% Version check
+% Recommend using overlay, that implements yyaxis, if MATLAB version is
+% recent enough
+v = version('-release');
+v = str2num(v(1:4)); %#ok<ST2NM>
+if (v > 2015)
+    utilities.warningnobacktrace('Using overlay rather than plotyy may produce better results.');
+end
+
+%% Define data
 this = varargin{1};
 that = varargin{2};
 
@@ -55,7 +65,7 @@ argposition = find(cellfun(@(x) strcmpi(x, 'legend2') , varargin));
 if argposition
     legendtext(2) = varargin(argposition+1);
     varargin(argposition+1) = [];
-    varargin(argposition) = [];
+    varargin(argposition) = []; %#ok<NASGU>
 end
 
 %% Generate the figure
@@ -117,4 +127,4 @@ if ~strcmpi(this.ylabel,that.ylabel)
 end
 
 
-end % function overlay
+end % function plotyy

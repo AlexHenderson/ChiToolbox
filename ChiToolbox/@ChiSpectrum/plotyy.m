@@ -52,6 +52,7 @@ auto = false;
 argposition = find(cellfun(@(x) strcmpi(x, 'auto') , varargin));
 if argposition
     auto = true;
+    varargin(argposition) = [];
 end
 
 legendtext = {};

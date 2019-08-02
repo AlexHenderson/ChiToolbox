@@ -1,28 +1,27 @@
-function overlay(varargin)
+function plotyy(varargin)
 
-% overlay  Produces a plot with overlaid data.
+% plotyy  Produces a plot with overlaid data.
 %
 % Syntax
-%   overlay(other);
-%   overlay(____,'legend1',legend1text','legend2',legend2text');
-%   overlay(____,'offset',offset);
+%   plotyy(other);
+%   plotyy(other,'auto');
+%   plotyy(____,'legend1',legend1text','legend2',legend2text');
 %
 % Description
-%   overlay(other) creates a plot of this data with data from other
+%   plotyy(other) creates a plot of this data with data from other
 %   overlaid. other can be any Chi data type. 
 % 
-%   overlay(____,'legend1',legend1text','legend2',legend2text') generates a
+%   plotyy(other,'auto') autoscales the y-axis.
+% 
+%   plotyy(____,'legend1',legend1text','legend2',legend2text') generates a
 %   legend for the plot where legend1text applies to the left axis and
 %   legend2text applies to the right axis. 
-% 
-%   overlay(____,'offset',offset) produces a plot where the spectra are
-%   plotted with the value of offset being added to other.
 % 
 % Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   plot overlay legend plotyy
+%   plot plotyy overlay legend
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -35,24 +34,27 @@ function overlay(varargin)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
+%% Version check
+% Recommend using overlay, that implements yyaxis, if MATLAB version is
+% recent enough
+v = version('-release');
+v = str2num(v(1:4)); %#ok<ST2NM>
+if (v > 2015)
+    utilities.warningnobacktrace('Using overlay rather than plotyy may produce better results.');
+end
+
+%% Define data
 this = varargin{1};
 that = varargin{2};
 
 %% Gather user input
-% auto = false;
-% argposition = find(cellfun(@(x) strcmpi(x, 'auto') , varargin));
-% if argposition
-%     auto = true;
-%     varargin(argposition) = [];
-% end
-% 
-% tight = false;
-% argposition = find(cellfun(@(x) strcmpi(x, 'tight') , varargin));
-% if argposition
-%     tight = true;
-%     varargin(argposition) = [];
-% end
-% 
+auto = false;
+argposition = find(cellfun(@(x) strcmpi(x, 'auto') , varargin));
+if argposition
+    auto = true;
+    varargin(argposition) = [];
+end
+
 legendtext = {};
 argposition = find(cellfun(@(x) strcmpi(x, 'legend1') , varargin));
 if argposition
@@ -64,54 +66,29 @@ argposition = find(cellfun(@(x) strcmpi(x, 'legend2') , varargin));
 if argposition
     legendtext(2) = varargin(argposition+1);
     varargin(argposition+1) = [];
-    varargin(argposition) = [];
-end
-
-% Is an offset requested
-offset = 0;
-argposition = find(cellfun(@(x) strcmpi(x, 'offset') , varargin));
-if argposition
-    offset = varargin{argposition+1};
-    varargin(argposition+1) = [];
     varargin(argposition) = []; %#ok<NASGU>
 end
 
 %% Generate the figure
 figure;
-
-yyaxis left
-plot(this.xvals,this.data);
-
-yyaxis right
-plot(that.xvals,(that.data + offset));
+[ax,h1,h2] = plotyy(this.xvals,this.data, that.xvals,that.data); %#ok<ASGLU>
 
 %% Make x-axis tight
-utilities.tightxaxis(gca);
+minx = min(this.xvals(1),that.xvals(1));
+maxx = max(this.xvals(end),that.xvals(end));
+xlim(ax(1), [minx, maxx])
+xlim(ax(2), [minx, maxx])
 
 %% Reverse axis if this is reversed
 if this.reversex
-    set(gca,'XDir','reverse');
+    set(ax(1),'XDir','reverse');
+    set(ax(2),'XDir','reverse');
 end
 
 %% Autoscale y-axis if requested
-% if auto
-%     ylim(gca,'auto')
-% end
-
-%% Mange scaling if an offset is used
-if offset
-    yyaxis left
-    leftlims = ylim;
-    yyaxis right
-    rightlims = ylim;
-    
-    miny = min(leftlims(1),rightlims(1));
-    maxy = max(leftlims(2),rightlims(2));
-    
-    yyaxis left
-    ylim([miny,maxy]);
-    yyaxis right
-    ylim([miny,maxy]);
+if auto
+    ylim(ax(1),'auto')
+    ylim(ax(2),'auto')
 end
 
 %% Add axis labels
@@ -119,29 +96,23 @@ if ~isempty(this.xlabel)
     set(get(gca,'XLabel'),'String',this.xlabel);
 end
 
-yyaxis left
 if isempty(this.ylabel)
     ylab = 'arbitrary units';
 else
     ylab = this.ylabel;
 end
-set(get(gca,'YLabel'),'String',ylab);
+ax(1).YLabel.String = ylab;
 
-yyaxis right
 if isempty(that.ylabel)
     ylab = 'arbitrary units';
 else
     ylab = that.ylabel;
 end
-if (offset ~= 0)
-    ylab = ([ylab, ' (including an offset of ', num2str(offset) ,')']);
-end
-
-set(get(gca,'YLabel'),'String',ylab);
+ax(2).YLabel.String = ylab;
 
 %% Add a legend if requested
 if ~isempty(legendtext)
-    legend(gca,legendtext,'Location','best');
+    legend(ax(1),legendtext,'Location','best');
 end
 
 %% Warnings if data may be mismatched
@@ -157,4 +128,4 @@ if ~strcmpi(this.ylabel,that.ylabel)
 end
 
 
-end % function overlay
+end % function plotyy

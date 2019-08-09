@@ -98,8 +98,8 @@ end
 % Perform the correction
 correction_options = rmiesOptions.exportv1();
 disp(['Spectrum 1 Iteration 1  ', datestr(now)]);
+correctionHistory = [];
 if isempty(reference)
-    correctionHistory = [];
     if rmiesOptions.savehistory
         [correctedX,correctedY,correctionHistory,ZRaw] = RMieS_EMSC_v5(this.xvals, this.data, correction_options);
     else

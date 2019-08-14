@@ -80,15 +80,17 @@ while (button == leftmousebutton)
     if (button == leftmousebutton)
         switch gca
             case imageaxes
-                xpixel = floor(xlocation);
-                ypixel = floor(ylocation);
+                xpixel = ceil(xlocation - 0.5);
+                ypixel = ceil(ylocation - 0.5);
                 % Only respond if the mouse was over the image
                 if ((xpixel > 0) && (xpixel < this.xpixels) && ...
                     (ypixel > 0) && (ypixel < this.ypixels))
                     
                     % Update the spectrum window with this pixel's spectrum
                     this.spectrumat(xpixel,ypixel).plot('axes',spectrumaxes, 'nofig');
-                    title(spectrumaxes,['x=', num2str(xpixel),' y=', num2str(ypixel)]);
+                    titlestring = ['x=', num2str(xpixel),' y=', num2str(ypixel)];
+                    % titlestring = ['x=', num2str(xpixel),' xloc=', num2str(xlocation),' y=', num2str(ypixel), ' yxloc = ', num2str(ylocation)];
+                    title(spectrumaxes,titlestring);
 
                     % Record values to send to user
                     xpos = xpixel;

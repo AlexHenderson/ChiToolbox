@@ -83,8 +83,8 @@ while (button == leftmousebutton)
                 xpixel = ceil(xlocation - 0.5);
                 ypixel = ceil(ylocation - 0.5);
                 % Only respond if the mouse was over the image
-                if ((xpixel > 0) && (xpixel < this.xpixels) && ...
-                    (ypixel > 0) && (ypixel < this.ypixels))
+                if ((xpixel > 0) && (xpixel <= this.xpixels) && ...
+                    (ypixel > 0) && (ypixel <= this.ypixels))
                     
                     % Update the spectrum window with this pixel's spectrum
                     this.spectrumat(xpixel,ypixel).plot('axes',spectrumaxes, 'nofig');

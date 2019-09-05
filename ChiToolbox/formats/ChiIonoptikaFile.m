@@ -5,21 +5,36 @@ classdef ChiIonoptikaFile < ChiAbstractFileFormat
 % Syntax
 %   myfile = ChiIonoptikaFile();
 %   myfile = ChiIonoptikaFile.open();
+%   myfile = ChiIonoptikaFile.open(filename);
+%   myfile = ChiIonoptikaFile.open(____,'lowmass',lowmassvalue);
+%   myfile = ChiIonoptikaFile.open(____,'highmass',highmassvalue);
+%   myfile = ChiIonoptikaFile.open(____,'combine',numchanstocombine);
 %
 % Description
 %   myfile = ChiIonoptikaFile() creates an empty object.
 % 
-%   myfile = ChiIonoptikaFile.open() opens a dialog box to request filenames
-%   from the user. The selected files are opened and concatenated into a
-%   ChiToFMassSpectrum, ChiSpectralCollection or ChiImage as appropriate.
+%   myfile = ChiIonoptikaFile.open() opens a dialog box to request
+%   filenames from the user.
 % 
-%   This class can read Ionoptika h5 files (Windows version) (*.h5). 
+%   myfile = ChiIonoptikaFile.open(filename) opens the requested filename.
+% 
+%   myfile = ChiIonoptikaFile.open(____,'lowmass',lowmassvalue) crops the
+%   data to a lower mass limit of lowmassvalue, or the closest available
+%   mass channel.
 %
-% Copyright (c) 2017-2018, Alex Henderson.
+%   myfile = ChiIonoptikaFile.open(____,'highmass',highmassvalue) crops the
+%   data to a upper mass limit of highmassvalue, or the closest available
+%   mass channel.
+%
+%   myfile = ChiIonoptikaFile.open(____,'combine',numchanstocombine) sums
+%   together numchanstocombine time channels, thus reducing teh mass
+%   resolution.
+% 
+% Copyright (c) 2017-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiToFMassSpectrum ChiSpectrum ChiSpectralCollection ChiImage.
+%   ChiToFMSImage, ChiFile, ionoptika_h5file
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -28,7 +43,7 @@ classdef ChiIonoptikaFile < ChiAbstractFileFormat
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 3.0, September 2018
+% Version 2.0, September 2019
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
     
@@ -60,7 +75,7 @@ classdef ChiIonoptikaFile < ChiAbstractFileFormat
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = open(filenames)
+        function obj = open(filenames,varargin)
             % Do we have somewhere to put the data?
             if ~nargout
                 stacktrace = dbstack;
@@ -80,9 +95,9 @@ classdef ChiIonoptikaFile < ChiAbstractFileFormat
                 filenames = cellstr(filenames);
             end
             
-            % Check whether the files are OK for a Thermo reader
+            % Check whether the files are OK for this reader
             for i = 1:length(filenames) 
-                if ~ChiThermoFile.isreadable(filenames{i})
+                if ~ChiIonoptikaFile.isreadable(filenames{i})
                     message = sprintf('Filename %s is not an Ionoptika file (*.h5).', utilities.pathescape(filenames{i}));
                     err = MException(['CHI:',mfilename,':InputError'], message);
                     throw(err);
@@ -95,16 +110,16 @@ classdef ChiIonoptikaFile < ChiAbstractFileFormat
                 filenames = filenames(1);
             end
             
-            [mass,data,height,width,layers,filename,x_label,y_label,imzmlinfo] = ionoptika_hd5file(filenames{1}); %#ok<ASGLU>
+            [mass,data,height,width,layers,filename,xlabel,xunit,ylabel,yunit,imzmlinfo] = ionoptika_h5file(filenames{1},varargin{:}); %#ok<ASGLU>
             
             % Work out whether this is a continuum dataset or a mass
             % binned one. Crude method, but...
             mstep1 = mass(2) - mass(1);
             mstep2 = mass(end) - mass(end-1);
             if (mstep1 == mstep2)
-                obj = ChiMassSpecImage(double(mass),double(data),width,height);
+                obj = ChiMSImage(double(mass),double(data),width,height,false,xlabel,xunit,ylabel,yunit);
             else
-                obj = ChiToFMassSpecImage(double(mass),double(data),width,height);
+                obj = ChiToFMSImage(double(mass),double(data),width,height,false,xlabel,xunit,ylabel,yunit);
             end
 
             obj.imzmlproperties = imzmlinfo;

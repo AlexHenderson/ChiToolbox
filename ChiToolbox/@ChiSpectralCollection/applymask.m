@@ -78,7 +78,7 @@ mask = varargin{2};
             
             % Remove the appropriate filenames if they exist
             if ~isempty(this.filenames)
-                masked.filenames = this.filenames(masked.mask);
+                masked.filenames = this.filenames(mask.mask);
             end
             
             % Remove the appropriate classmemberships if they exist

@@ -136,9 +136,8 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                         this.classmembership = varargin{8}.clone();
                     end
                     if ~isempty(varargin{9})
-                        this.filenames = varargin{9};
+                        this.history = varargin{9}.clone();
                     end
-                    this.history = ChiLogger();                
                 case 10
                     this.xvals = varargin{1};
                     this.data = varargin{2};
@@ -151,9 +150,8 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                         this.classmembership = varargin{8}.clone();
                     end
                     if ~isempty(varargin{9})
-                        this.filenames = varargin{9};
+                        this.history = varargin{9}.clone;
                     end
-                    this.history = varargin{10}.clone();
                 otherwise
                     disp(nargin)
                     err = MException('CHI:ChiSpectralCollection:InputError', ...

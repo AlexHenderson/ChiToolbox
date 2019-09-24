@@ -1,12 +1,12 @@
-function vec = force2col(vec)
+function [vec,rotated] = force2col(vec)
 
 % force2col  Ensures a vector is a column vector.
 %
 % Syntax
-%   vec = force2col(vec);
+%   [vec,rotated] = force2col(vec);
 %
 % Description
-%   vec = force2col(vec) ensures vec is a column vector.
+%   [vec,rotated] = force2col(vec) ensures vec is a column vector.
 %
 % Copyright (c) 2014-2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -32,10 +32,12 @@ if ~isvector(vec)
     throw(err);
 end
 
+rotated = false;
 [rows,cols] = size(vec);
 
 if (cols > rows)
     vec = vec';
+    rotated = true;
 end
 
 end

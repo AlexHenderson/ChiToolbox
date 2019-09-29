@@ -82,7 +82,7 @@ end
 trainmask = [];
 argposition = find(cellfun(@(x) strcmpi(x, 'trainingset') , varargin));
 if argposition
-    trainmask = varargin(argposition + 1);
+    trainmask = varargin{argposition + 1};
     if (length(trainmask) ~= this.numspectra)
         err = MException(['CHI:',mfilename,':InputError'], ...
             'trainmask must be a vector of logical values, the same length as the number of spectra.');

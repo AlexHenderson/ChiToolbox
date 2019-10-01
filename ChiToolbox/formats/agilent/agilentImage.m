@@ -1,4 +1,4 @@
-function [wavenumbers, data, height, width, filename, acqdate] = agilentImage(filename, showImage)
+function [wavenumbers, data, height, width, filename, acqdate] = agilentImage(filename, showImage) %#ok<INUSD>
 
 %   Function: agilentImage
 %   Usage: [wavenumbers, data, height, width, filename, acqdate] = agilentImage();
@@ -74,19 +74,19 @@ bspfilename = fullfile(pathstr,[name '.bsp']);
 if(fid == -1) 
     disp(['reading bsp file: ', bspfilename]);
     error(message); 
-end;
+end
 
 % wavenumbers
     status = fseek(fid, 2228, 'bof');
-    if(status == -1), message = ferror(fid, 'clear'); error(message); end;
+    if(status == -1), message = ferror(fid, 'clear'); error(message); end
     startwavenumber = double(fread(fid, 1, 'int32'));
     
     status = fseek(fid, 2236, 'bof');
-    if(status == -1), message = ferror(fid, 'clear'); error(message); end;
+    if(status == -1), message = ferror(fid, 'clear'); error(message); end
     numberofpoints = double(fread(fid, 1, 'int32'));
     
     status = fseek(fid, 2216, 'bof');
-    if(status == -1), message = ferror(fid, 'clear'); error(message); end;
+    if(status == -1), message = ferror(fid, 'clear'); error(message); end
     wavenumberstep = fread(fid, 1, 'double');
     
     % some validation
@@ -105,7 +105,7 @@ end;
 % date
     % Longest date is: Wednesday, September 30, 2011 00:00:00
     status = fseek(fid, 0, 'bof');
-    if(status == -1), message = ferror(fid, 'clear'); error(message); end;
+    if(status == -1), message = ferror(fid, 'clear'); error(message); end
 
     str = fread(fid, inf, '*char')';
     expr = 'Time Stamp.{44}\w+, (\w+) (\d\d), (\d\d\d\d) (\d\d):(\d\d):(\d\d)';
@@ -146,7 +146,7 @@ end;
           month='12'; %#ok<NASGU>
        otherwise
           month='99'; %#ok<NASGU>
-    end;
+    end
 
     acqdate = [day, ' ', monthword, ' ', year, ', ', hours, ':', minutes,':',seconds];
     
@@ -161,7 +161,7 @@ datfilename = fullfile(pathstr,[name '.dat']);
 if(fid == -1) 
     disp(['reading dat file: ', datfilename]);
     error(message); 
-end;
+end
 
 data = double(fread(fid, inf, '*float32'));
 fclose(fid);

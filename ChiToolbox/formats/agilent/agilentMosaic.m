@@ -117,9 +117,9 @@ end
     if(status == -1), message = ferror(fid, 'clear'); error(message); end
     wavenumberstep = fread(fid, 1, 'double');
     
-    startwavenumber = 466;
-    numberofpoints = 1505;
-    wavenumberstep = 1.98;
+%     startwavenumber = 466;
+%     numberofpoints = 1505;
+%     wavenumberstep = 1.98;
     
     
     

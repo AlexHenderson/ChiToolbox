@@ -32,7 +32,7 @@ classdef ChiAgilentFile < ChiAbstractFileFormat
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 5.0, September 2018
+% Version 6.0, September 2019
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 

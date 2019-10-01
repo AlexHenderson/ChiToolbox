@@ -46,7 +46,7 @@ classdef ChiAgilentFile < ChiAbstractFileFormat
             truefalse = false;
             % Check extension
             [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
-            if ~(strcmpi(ext,'.dms') || strcmpi(ext,'.seq'))
+            if ~(strcmpi(ext,'.dmt') || strcmpi(ext,'.dms') || strcmpi(ext,'.seq'))
                 return
             end
             % ToDo: Check internal magic numbers
@@ -55,12 +55,12 @@ classdef ChiAgilentFile < ChiAbstractFileFormat
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function extn = getExtension()
-            extn = '*.dms;*.seq';
+            extn = '*.dmt;*.seq';
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function filter = getFiltername()
-            filter = 'Agilent Image Files (*.dms,*.seq)';
+            filter = 'Agilent Image Files (*.dmt,*.seq)';
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -87,7 +87,7 @@ classdef ChiAgilentFile < ChiAbstractFileFormat
             % Check whether the files are OK for an Agilent reader
             for i = 1:length(filenames) 
                 if ~ChiAgilentFile.isreadable(filenames{i})
-                    message = sprintf('Filename %s is not an Agilent file (*.dms/*.seq).', utilities.pathescape(filenames{i}));
+                    message = sprintf('Filename %s is not an Agilent file (*.dmt/*.seq).', utilities.pathescape(filenames{i}));
                     err = MException(['CHI:',mfilename,':InputError'], message);
                     throw(err);
                 end

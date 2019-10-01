@@ -7,11 +7,11 @@ function [wavenumbers, data, height, width, filename, acqdate] = agilentMosaic(f
 %   [wavenumbers, data, height, width, filename, acqdate] = agilentMosaic(filename, keepme);
 %
 % Purpose:
-%   Extracts the spectra from an Agilent (formerly Varian) .dmt/.dms/.dmd
+%   Extracts the spectra from an Agilent (formerly Varian) .dmt/.dmd
 %   file combination. 
 %
 %  input:
-%   'filename' string containing the full path to the .dms file (optional)
+%   'filename' string containing the full path to the .dmt file (optional)
 %   'keepme' vector of wavenumber values in pairs indicating the limits of regions to retain (optional)
 % 
 %  output:
@@ -19,7 +19,7 @@ function [wavenumbers, data, height, width, filename, acqdate] = agilentMosaic(f
 %   'data' is a 3D cube of the data in the file ((fpaSize x X) x (fpaSize x Y) x wavenumbers)
 %   'height' is height in pixels of the entire mosaic
 %   'width' is width in pixels of the entire mosaic
-%   'filename' is a string containing the full path to the .dms file
+%   'filename' is a string containing the full path to the .dmt file
 %   'acqdate' is a string containing the date and time of acquisition
 %
 %                     *******Caution******* 
@@ -27,7 +27,7 @@ function [wavenumbers, data, height, width, filename, acqdate] = agilentMosaic(f
 %   within the file may vary. Always check the output to make sure it is
 %   sensible. If you have a file that doesn't work, please contact Alex.
 %
-%   Copyright (c) 2011 - 2017, Alex Henderson 
+%   Copyright (c) 2011 - 2019, Alex Henderson 
 %   Contact email: alex.henderson@manchester.ac.uk
 %   Licenced under the GNU General Public License (GPL) version 3
 %   http://www.gnu.org/copyleft/gpl.html
@@ -35,10 +35,13 @@ function [wavenumbers, data, height, width, filename, acqdate] = agilentMosaic(f
 %   If you use this file in your work, please acknowledge the author(s) in
 %   your publications. 
 %
-%       version 7.0, June 2017
+%       version 8.0, September 2019
 %   The latest version of this file is available on Bitbucket
 %   https://bitbucket.org/AlexHenderson/agilent-file-formats
 
+%       version 8.0, September 2019 Alex Henderson. Changed input to
+%       request .dmt file rather than .dms file since the dms file was
+%       never used anyway.
 %       version 7.0, June 2017 Alex Henderson. Changed order of height and
 %       width outputs
 %       version 6.2, June 2017 Alex Henderson. Removed automatic plotting
@@ -75,7 +78,7 @@ function [wavenumbers, data, height, width, filename, acqdate] = agilentMosaic(f
 % Get the filename if not supplied
 %
 if (exist('filename', 'var') == 0)
-    filename=getfilename('*.dms', 'Agilent Mosaic Files (*.dms)');
+    filename=getfilename('*.dmt', 'Agilent Mosaic Files (*.dmt)');
 
     if (isfloat(filename) && (filename==0))
         return;
@@ -87,11 +90,10 @@ end
 %% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % Extract the wavenumbers and date from the dmt file
 %
-[pathstr, name, ext] = fileparts(filename); 
+[pathstr, name, ext] = fileparts(filename);  %#ok<ASGLU>
 
 % The Agilent software stores all files with mixed case filenames except the
-% dmt file which is all lowercase. Therefore we build this from the dms
-% filename. 
+% dmt file which is all lowercase. 
 name = lower(name);
 
 dmtfilename = fullfile(pathstr,[name '.dmt']);
@@ -100,20 +102,27 @@ dmtfilename = fullfile(pathstr,[name '.dmt']);
 if(fid == -1) 
     disp(['reading dmt file: ', dmtfilename]);
     error(message); 
-end;
+end
 
 % wavenumbers
     status = fseek(fid, 2228, 'bof');
-    if(status == -1), message = ferror(fid, 'clear'); error(message); end;
+    if(status == -1), message = ferror(fid, 'clear'); error(message); end
     startwavenumber = double(fread(fid, 1, 'int32'));
     
     status = fseek(fid, 2236, 'bof');
-    if(status == -1), message = ferror(fid, 'clear'); error(message); end;
+    if(status == -1), message = ferror(fid, 'clear'); error(message); end
     numberofpoints = double(fread(fid, 1, 'int32'));
     
     status = fseek(fid, 2216, 'bof');
-    if(status == -1), message = ferror(fid, 'clear'); error(message); end;
+    if(status == -1), message = ferror(fid, 'clear'); error(message); end
     wavenumberstep = fread(fid, 1, 'double');
+    
+    startwavenumber = 466;
+    numberofpoints = 1505;
+    wavenumberstep = 1.98;
+    
+    
+    
     
     % some validation
         if(startwavenumber < 0)
@@ -131,12 +140,12 @@ end;
 % date
     % Longest date is: Wednesday, September 30, 2011 00:00:00
     status = fseek(fid, 0, 'bof');
-    if(status == -1), message = ferror(fid, 'clear'); error(message); end;
+    if(status == -1), message = ferror(fid, 'clear'); error(message); end
 
     str = fread(fid, inf, '*char')';
     expr = 'Time Stamp.{44}\w+, (\w+) (\d\d), (\d\d\d\d) (\d\d):(\d\d):(\d\d)';
 
-    [start_idx, end_idx, extents, matches, tokens, names, splits] = regexp(str, expr);
+    [start_idx, end_idx, extents, matches, tokens, names, splits] = regexp(str, expr); %#ok<ASGLU>
 
     monthword=tokens{1,1}{1};
     day=tokens{1,1}{2};
@@ -147,9 +156,9 @@ end;
     
     switch monthword
        case 'January'
-          month='01';
+          month='01'; %#ok<*NASGU>
        case 'February'
-          month='02';
+          month='02'; 
        case 'March'
           month='03';
        case 'April'
@@ -172,7 +181,7 @@ end;
           month='12';
        otherwise
           month='99';
-    end;
+    end
 
     acqdate = [day, ' ', monthword, ' ', year, ', ', hours, ':', minutes,':',seconds];
     
@@ -181,7 +190,7 @@ fclose(fid);
 %% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % Determine the mosaic dimensions
 %
-[pathstr, name, ext] = fileparts(filename); 
+[pathstr, name, ext] = fileparts(filename);  %#ok<ASGLU>
 tiles_in_x_dir = xtiles(fullfile(pathstr,name));
 tiles_in_y_dir = ytiles(fullfile(pathstr,name));
 
@@ -232,7 +241,7 @@ data=zeros(fpaSize*tiles_in_y_dir, fpaSize*tiles_in_x_dir, length(wavenumbers));
 %% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % Read each .dmd file
 %
-[pathstr, name, ext] = fileparts(filename); 
+[pathstr, name, ext] = fileparts(filename);  %#ok<ASGLU>
 
 for y = 1:tiles_in_y_dir
     for x = 1:tiles_in_x_dir
@@ -243,7 +252,7 @@ for y = 1:tiles_in_y_dir
         if(fid == -1) 
             disp(['reading dmd file: ', tempfilename]);
             error(message); 
-        end;
+        end
 
         status = fseek(fid,255*4,'bof');
         if (status == -1)
@@ -265,7 +274,7 @@ for y = 1:tiles_in_y_dir
         
         % rotate the image to match the spectrometer's output
         tempdata=permute(tempdata,[2,1,3]);
-        tempdata=flipdim(tempdata,1);
+        tempdata=flipdim(tempdata,1); %#ok<DFLIPDIM>
         
         % insert this tile into the image
         data((1+((y-1)*fpaSize)) : (y*fpaSize), (1+((x-1)*fpaSize)) : (x*fpaSize), :) = tempdata;
@@ -274,7 +283,7 @@ end
 clear tempdata;
 
 data=double(data);
-[height, width, datapoints]=size(data);
+[height, width, datapoints]=size(data); %#ok<ASGLU>
 
 %% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % % Plot the data

@@ -35,9 +35,9 @@ classdef ChiImageFile < ChiBase
 
     
     properties
-        data;           % Contents of object as a 3D matrix (RGB)
-        filenames = {}; % Name of the file, if appropriate
-        history;        % Log of data processing steps
+        data;                   % Contents of object as a 3D matrix (RGB)
+        filenames = {};         % Name of the file, if appropriate
+        history = ChiLogger();  % Log of data processing steps
     end
 
     properties (Dependent = true)
@@ -63,11 +63,22 @@ classdef ChiImageFile < ChiBase
             else
                 if (nargin == 1)
                     if ischar(varargin{1})
-                        this = ChiImageFile.open(varargin(1));
+                        this = ChiImageFile.open(varargin{1});
                     else
-                        err = MException(['CHI:',mfilename,':IOError'], ...
-                            'A single input must be a filename');
-                        throw(err);
+                        if isnumeric(varargin{1})
+                            if (length(size(varargin{1})) == 3)
+                                this.data = varargin{1};
+                                this.history.add('Created from a 3D array');
+                            else
+                                err = MException(['CHI:',mfilename,':IOError'], ...
+                                    'A numeric input must have 3 dimensions');
+                                throw(err);
+                            end
+                        else
+                            err = MException(['CHI:',mfilename,':IOError'], ...
+                                'A single input must be a filename, or 3D array');
+                            throw(err);
+                        end
                     end
                 else
 

@@ -14,7 +14,7 @@ classdef ChiImagePCAOutcome < ChiBase
         reversex;
         mask;
         masked = false;
-        history;
+        history = ChiLogger();
     end
     
     properties (Dependent = true)
@@ -36,8 +36,16 @@ classdef ChiImagePCAOutcome < ChiBase
     
     methods
         %% Constructor
-        function this = ChiImagePCAOutcome(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex,xpixels,ypixels)
+        function this = ChiImagePCAOutcome(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex,xpixels,ypixels,varargin)
             % Create an instance of ChiSpectralPCAOutcome with given parameters
+            
+            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+            if argposition
+                this.history = varargin{argposition}.clone;
+                varargin(argposition) = []; %#ok<NASGU>
+            else
+                this.history = ChiLogger();
+            end
             
             if (nargin > 0) % Support calling with 0 arguments
                 
@@ -52,8 +60,6 @@ classdef ChiImagePCAOutcome < ChiBase
                 this.xpixels = xpixels;
                 this.ypixels = ypixels;
 
-                this.history = ChiLogger();
-                
                 this.xvals = utilities.force2row(this.xvals);
             end 
         end

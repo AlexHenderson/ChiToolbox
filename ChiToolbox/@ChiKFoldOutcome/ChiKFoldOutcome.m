@@ -16,12 +16,18 @@ classdef ChiKFoldOutcome < ChiBase
     
     methods
         %% Constructor
-        function this = ChiKFoldOutcome(folds)
+        function this = ChiKFoldOutcome(folds, varargin)
             % Create an instance of ChiSpectralCVAOutcome with given parameters
             
-            this.history = ChiLogger();
+            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+            if argposition
+                this.history = varargin{argposition}.clone;
+                varargin(argposition) = []; %#ok<NASGU>
+            else
+                this.history = ChiLogger();
+            end
+
             if (nargin > 0) % Support calling with 0 arguments
-                
                 this.folds = folds;
             end 
         end

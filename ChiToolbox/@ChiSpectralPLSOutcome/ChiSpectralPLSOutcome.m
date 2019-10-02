@@ -18,7 +18,7 @@ classdef ChiSpectralPLSOutcome < ChiBase
         yblocklabelunit;    % text for abscissa label on y-block plots
         reversex;
         classmembership;    % an instance of ChiClassMembership
-        history;
+        history = ChiLogger();    % Log of data processing steps
     end
     
     properties (Dependent = true)
@@ -35,10 +35,17 @@ classdef ChiSpectralPLSOutcome < ChiBase
                 ncomp,xvals,...
                 xlabelname,xlabelunit,...
                 yblocklabelname,yblocklabelunit,...
-                reversex,classmembership,history)
+                reversex,classmembership,varargin)
             % Create an instance of ChiSpectralPLSOutcome with given parameters
             
-            this.history = ChiLogger();
+            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+            if argposition
+                this.history = varargin{argposition}.clone;
+                varargin(argposition) = []; %#ok<NASGU>
+            else
+                this.history = ChiLogger();
+            end
+            
             if (nargin > 0) % Support calling with 0 arguments
                 
                 this.xscores = xscores;
@@ -55,7 +62,6 @@ classdef ChiSpectralPLSOutcome < ChiBase
                 this.yblocklabelunit = yblocklabelunit;
                 this.reversex = reversex;
                 this.classmembership = classmembership.clone();
-                this.history = history.clone();
                 
                 this.xvals = utilities.force2row(this.xvals);
             end 

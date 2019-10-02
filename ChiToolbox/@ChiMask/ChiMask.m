@@ -62,7 +62,7 @@ classdef ChiMask < ChiBase
         rows = 1;   % Length of a vector mask, or the number of pixels in the y-direction (height) for a 2D/3D image
         cols = 1;   % Number of pixels in the x-direction (width) for a 2D or 3D image, or 1 for a vector
         layers = 1; % Number of depths/layers for a 3D mask, or 1 for a vector or 2D image
-        history;    % Log of data processing steps
+        history = ChiLogger();    % Log of data processing steps
     end
     
     properties (Dependent = true)
@@ -89,6 +89,14 @@ classdef ChiMask < ChiBase
     % =====================================================================
         function this = ChiMask(varargin)
             % ChiMask Construct an instance of this class
+
+            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+            if argposition
+                this.history = varargin{argposition}.clone;
+                varargin(argposition) = []; 
+            else
+                this.history = ChiLogger();
+            end
 
             if ~nargin
                 % Do nothing

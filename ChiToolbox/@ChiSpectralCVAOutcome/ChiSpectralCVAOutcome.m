@@ -12,21 +12,26 @@ classdef ChiSpectralCVAOutcome < ChiBase
         eigenvalues;        
         pcs;        % 95% cumulative explained variance
         pca;        % ChiSpectralPCAOutcome
-        history;
+        history = ChiLogger();    % Log of data processing steps
     end
     
     properties (Dependent = true)
-    %% Calculated properties
         numcvs;  % number of canonical variates
     end
     
     methods
         %% Constructor
         function this = ChiSpectralCVAOutcome(scores,loadings,explained,cvs,...
-                                                eigenvectors,eigenvalues,pcs,PCAOutcome)
+                                                eigenvectors,eigenvalues,pcs,PCAOutcome,varargin)
             % Create an instance of ChiSpectralCVAOutcome with given parameters
             
             this.history = ChiLogger();
+            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+            if argposition
+                this.history = varargin{argposition}.clone;
+                varargin(argposition) = []; %#ok<NASGU>
+            end
+            
             if (nargin > 0) % Support calling with 0 arguments
                 
                 this.scores = scores;

@@ -16,7 +16,7 @@ classdef ChiMetadataSheet < ChiBase
         safemembershipnames
         parametertypes    
         classmemberships
-        history
+        history = ChiLogger();
     end
     
     properties (Dependent = true)
@@ -53,6 +53,15 @@ classdef ChiMetadataSheet < ChiBase
     methods
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function this = ChiMetadataSheet(varargin)
+
+            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+            if argposition
+                this.history = varargin{argposition}.clone;
+                varargin(argposition) = []; 
+            else
+                this.history = ChiLogger();
+            end
+            
             if (nargin > 0) % Support calling with 0 arguments
 
                 this.read(varargin{:});

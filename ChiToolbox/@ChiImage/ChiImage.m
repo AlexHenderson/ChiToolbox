@@ -18,8 +18,8 @@ classdef ChiImage < ChiAbstractImage
         ylabelunit = ''; % Text for the ordinate label unit on plots
         mask;  
         masked = false;
-        filenames = {};  % Name of the file, if appropriate
-        history;    % Log of data processing steps
+        filenames = {};         % Name of the file, if appropriate
+        history = ChiLogger();  % Log of data processing steps
     end
 
     properties (Dependent = true)
@@ -39,8 +39,16 @@ classdef ChiImage < ChiAbstractImage
     methods
     % =====================================================================
         % Constructor
-        function this = ChiImage(xvals,data,xpixels,ypixels,reversex,xlabelname,xlabelunit,ylabelname,ylabelunit,masked,mask,filenames,logger)
+        function this = ChiImage(xvals,data,xpixels,ypixels,reversex,xlabelname,xlabelunit,ylabelname,ylabelunit,masked,mask,filenames,varargin)
             % Create an instance of ChiImage with given parameters
+            
+            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+            if argposition
+                this.history = varargin{argposition}.clone;
+                varargin(argposition) = []; %#ok<NASGU>
+            else
+                this.history = ChiLogger();
+            end
             
             this.spectrumclassname = 'ChiSpectrum';
             this.spectralcollectionclassname = 'ChiSpectralCollection';
@@ -61,7 +69,6 @@ classdef ChiImage < ChiAbstractImage
             if (nargin > 0) % Support calling with 0 arguments
                 this.xvals = xvals;
                 this.data = data;
-                this.history = ChiLogger();
                 
                 % Force to row vector
                 this.xvals = utilities.force2row(this.xvals);
@@ -86,8 +93,8 @@ classdef ChiImage < ChiAbstractImage
                         end
                     end
                 end
-                % Reshape data into a 2D array
                 
+                % Reshape data into a 2D array
                 [dims] = size(this.data);
                 switch (length(dims))
                     case 1

@@ -58,6 +58,14 @@ classdef ChiImageFile < ChiBase
         function this = ChiImageFile(varargin) % data,filenames,history
         % ChiImageFile constructor
         
+            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+            if argposition
+                this.history = varargin{argposition}.clone;
+                varargin(argposition) = []; 
+            else
+                this.history = ChiLogger();
+            end
+
             if (nargin == 0)
                 this = ChiImageFile.open();
             else
@@ -96,14 +104,7 @@ classdef ChiImageFile < ChiBase
                     if argposition
                         % Convert to a cell array of char
                         this.filenames = varargin(argposition);
-                        varargin(argposition) = [];
-                    end
-                    argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
-                    if argposition
-                        this.history = varargin{argposition}.clone;
                         varargin(argposition) = []; %#ok<NASGU>
-                    else
-                        this.history = ChiLogger();
                     end
 
                 end

@@ -22,11 +22,18 @@ classdef ChiSpectrum < ChiAbstractSpectrum
     
     methods
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function this = ChiSpectrum(xvals,data,reversex,xlabelname,xlabelunit,ylabelname,ylabelunit,classmembership,filenames,history)
+        function this = ChiSpectrum(xvals,data,reversex,xlabelname,xlabelunit,ylabelname,ylabelunit,classmembership,filenames,varargin)
             % Create an instance of ChiSpectrum with given parameters
+
+            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+            if argposition
+                this.history = varargin{argposition}.clone;
+                varargin(argposition) = []; %#ok<NASGU>
+            else
+                this.history = ChiLogger();
+            end
             
             if (nargin > 0) % Support calling with 0 arguments
-                
                 
                 if exist('xvals','var')
                     this.xvals = xvals;
@@ -63,11 +70,6 @@ classdef ChiSpectrum < ChiAbstractSpectrum
                 end
                 if exist('filenames','var')
                     this.filenames = filenames;
-                end
-                if exist('history','var')
-                    if isa(history,'ChiLogger')
-                        this.history = history.clone();
-                    end
                 end
                 
                 % Force to row vectors

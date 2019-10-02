@@ -10,7 +10,7 @@ classdef ChiRFPrediction < ChiBase
 %         correctlyclassified;
         elapsed;
         elaspedinseconds;
-        history;                % an instance of ChiLogger
+        history = ChiLogger();  % Log of data processing steps
     end
     
     properties (Dependent = true)
@@ -29,10 +29,17 @@ classdef ChiRFPrediction < ChiBase
                         stdevs, ...
                         classmembership, ...
                         elapsed,...
-                        elaspedinseconds)
+                        elaspedinseconds,varargin)
                     
+            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+            if argposition
+                this.history = varargin{argposition}.clone;
+                varargin(argposition) = []; %#ok<NASGU>
+            else
+                this.history = ChiLogger();
+            end
+            
             if (nargin > 0) % Support calling with 0 arguments
-                
                 this.prediction = prediction;
                 this.scores = scores;
                 this.stdevs = stdevs;
@@ -40,9 +47,7 @@ classdef ChiRFPrediction < ChiBase
 %                 this.correctlyclassified = correctlyclassified;
                 this.elapsed = elapsed;
                 this.elaspedinseconds = elaspedinseconds;
-                
             end 
-            this.history = ChiLogger();
         end
         
         %% percentcc

@@ -54,6 +54,14 @@ classdef ChiRmiesIterations < ChiBase
         function this = ChiRmiesIterations(varargin)
         % Generates a ChiRmiesIterations object
             
+            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+            if argposition
+                this.history = varargin{argposition}.clone;
+                varargin(argposition) = []; 
+            else
+                this.history = ChiLogger();
+            end
+            
             if (nargin == 0)
                 utilities.warningnobacktrace('It is more efficient to initialise the ChiRmiesIterations variable with the number of iterations expected.');
             else
@@ -74,16 +82,16 @@ classdef ChiRmiesIterations < ChiBase
                 end
             end
             
-            this.history = ChiLogger();
-            
         end                    
           
         
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function initialise(this,numberofiterationsexpected)
         % Used to initialise the number of iterations expected.         
         this.iterations = cell(numberofiterationsexpected,1);
         end
         
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function append(this,varargin)
         % Appends this corrected version to the iteration property. 
             
@@ -100,6 +108,7 @@ classdef ChiRmiesIterations < ChiBase
             this.iterations(position) = varargin(1);
         end
         
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function numiterations = get.numiterations(this)
         % The number of correction steps performed.
             numiterations = length(this.iterations);

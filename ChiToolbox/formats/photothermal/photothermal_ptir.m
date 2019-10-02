@@ -1,4 +1,4 @@
-function [xvals,data,height,width,filename,xlabel,xunit,ylabel,yunit,datatype] = photothermal_ptir(filename)
+function [measurements] = photothermal_ptir(filename)
 
 % Help not written yet
     
@@ -45,45 +45,65 @@ end
 
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % Define some defaults
-height = 1; %#ok<NASGU>
-width = 1; %#ok<NASGU>
+% height = 1;
+% width = 1;
 
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % Read the file
 
-% fileinfo = h5info(filename);
+fileinfo = h5info(filename);
 
-datatype = h5readatt(filename,'/Measurement_000','Label'); % Hyperspectral Measurement
+[numgroups,dummy] = size(fileinfo.Groups); %#ok<ASGLU>
 
-xvals = h5read(filename,'/Measurement_000/Spectroscopic_Values');
-xvals = double(xvals);
+measurements = {}; 
 
-xy = h5read(filename,'/Measurement_000/Position_Indices');
-if ~isscalar(xy)
-    width = xy(1,end) + 1;
-    height = xy(2,end) + 1;
-end
+for group = 1:numgroups
+    groupname = fileinfo.Groups(group).Name;
+    
+    % Test first 6 characters since the Measurement groups have different
+    % names
+    switch groupname(1:6)
+        case '/Measu'   % /Measurement_000 Spectral or hyperspectral measurement
+            [measurement.xvals,measurement.data, ...
+                measurement.height,measurement.width, ...
+                measurement.filename, ...
+                measurement.xlabel,measurement.xunit, ...
+                measurement.ylabel,measurement.yunit, ...
+                measurement.datatype,measurement.measurementlabel] ...
+                    = photothermal_ptir_measurement(filename, groupname);
 
-data = h5read(filename,'/Measurement_000/Channel_000/Raw_Data');
-data = data';
-data = reshape(data,width,height,[]);
-data = rot90(data);
-data = double(data);
-data = squeeze(data);
+            measurements{end+1,1} = measurement; %#ok<AGROW>
 
-xlabel = 'wavenumber';
-xunits = h5readatt(filename,'/Measurement_000/Spectroscopic_Values','units');
-xunit = '';
-if iscell(xunits)
-    if (xunits{1} == 'c' && ...
-        xunits{2} == 'm' && ...
-        xunits{3} == '?' && ...
-        xunits{4} == '¹')
-        xunit = 'cm^{-1}';
+        case '/Heigh'   % /Heightmap_000 Single wavenumber image
+            datasets = fileinfo.Groups(group).Datasets;
+            for d = 1:size(datasets,1)
+                name = datasets(d).Name;
+                data = h5read(filename,[groupname,'/',name]);
+                pic = ChiPicture(data);
+                try
+                    wavenumber = h5readatt(filename,[groupname,'/',name],'IRWavenumber');
+                catch
+                    wavenumber = 'unknown';
+                end
+                pic.history.add(['Filename: ', filename]);
+                pic.history.add(['Heightmap: ', name]);
+                pic.history.add(['Wavenumber: ', wavenumber]);
+                measurements{end+1,1} = pic; %#ok<AGROW>
+            end
+        case '/Image'   % /Images Camera (visible) image
+            datasets = fileinfo.Groups(group).Datasets;
+            for d = 1:size(datasets,1)
+                name = datasets(d).Name;
+                data = h5read(filename,[groupname,'/',name]);
+                data = permute(data,[3,2,1]);
+                data = data(:,:,1:3);
+                im = ChiImageFile(data);
+                im.filenames{1} = filename;
+                im.history.add(['Filename: ', filename]);
+                im.history.add(['Image: ', name]);
+                measurements{end+1,1} = im; %#ok<AGROW>
+            end
+        case '/Views'   % /Views Internal Photothermal parameters, probably screen info
+        otherwise
     end
 end
-
-ylabel = h5readatt(filename,'/Measurement_000/Channel_000','Label');
-yunit = h5readatt(filename,'/Measurement_000/Channel_000/Raw_Data','units');
-
-%  x = ChiIRImage(xvals,data,height,width,true,xlabel,xunit,ylabel,yunit);

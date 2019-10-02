@@ -13,25 +13,19 @@ classdef ChiPhotothermalFile < ChiAbstractFileFormat
 %   myfile = ChiPhotothermalFile.open() opens a dialog box to request
 %   filenames from the user. The selected files are opened and concatenated
 %   into a ChiSpectrum, ChiSpectralCollection or ChiImage as appropriate.
+%   If multiple files, or any file contains multipe measurements, a cell
+%   array of Chi* objects is returned. 
 % 
 %   myfile = ChiPhotothermalFile.open(filenames) opens the filenames
-%   provided in a cell array of strings.
+%   provided in a cell array of strings. If multiple files, or any file
+%   contains multipe measurements, a cell array of Chi* objects is
+%   returned.
 %
 % Notes
-%   Temporarily this class will read an IR image of raw data. If an edited
-%   file is opened (one where the image was copied into a new workspace)
-%   only the first spectrum will be opened. Currently Raman data is not
-%   supported (nor a range of other options!)
-% 
 %   This class can read Photothermal files (*.ptir). The file format has
-%   the capacity to hold different types of information. If a single file
-%   containing a single spectrum is selected, then myfile is a ChiSpectrum.
-%   If a single file containing multiple spectra is selected, then myfile
-%   is a ChiSpectralCollection. If a single file containing an image is
-%   selected, then myfile is a ChiImage. If multiple files are selected,
-%   then these are combined into a ChiSpectralCollection. If any of these
-%   contain images, the pixels are unfolded and combined into a
-%   ChiSpectralCollection.
+%   the capacity to hold different types of information (IR or Raman). If
+%   multiple files are opened, or if any of the files contains multiple
+%   measurements, a cell array of Chi* objects is returned. 
 %
 % Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -46,7 +40,7 @@ classdef ChiPhotothermalFile < ChiAbstractFileFormat
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, August 2019
+% Version 2.0, September 2019
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
     
@@ -78,7 +72,7 @@ classdef ChiPhotothermalFile < ChiAbstractFileFormat
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = open(filenames)
+        function output = open(filenames)
             % Do we have somewhere to put the data?
             if ~nargout
                 stacktrace = dbstack;
@@ -106,51 +100,134 @@ classdef ChiPhotothermalFile < ChiAbstractFileFormat
                     throw(err);
                 end
             end
+
+            % Define somewhere to put the output. This is a cell array with
+            % the first column being the filenames. Then, each subsequent
+            % column contains the various data sets within each file. A
+            % single file can contain one or more image, spectrum, camera
+            % picture, single wavenumber image. These can be in IR, Raman
+            % or an IR background.             
+            output = {};
             
             % Open the file(s)
-            if (length(filenames) == 1)
-                [xvals,data,height,width,filename,xlabel,xunit,ylabel,yunit,datatype] = photothermal_ptir(filenames{1}); %#ok<ASGLU>
-                if ((height == 1) && (width == 1))
-                    % We have one or more spectra rather than an image
-                    % Check to see if we have a single spectrum or a profile
-                    if (numel(data) == numel(xvals))
-                        obj = ChiIRSpectrum(xvals,data,true,xlabel,xunit,ylabel,yunit);
-                    else
-                        obj = ChiIRSpectralCollection(xvals,data,true,xlabel,xunit,ylabel,yunit);
-                    end               
-                else
-                    obj = ChiIRImage(xvals,data,height,width,true,xlabel,xunit,ylabel,yunit);
-                end
-            else
-                % Need to manage multiple files
-                for i = 1:length(filenames)
-                    [xvals,data,height,width,filename,xlabel,xunit,ylabel,yunit,datatype] = photothermal_ptir(filenames{1}); %#ok<ASGLU>
+            % Identify if the data format is an image, a spectrum or a
+            % spectral collection, then work out whether we have IR or
+            % Raman data. If it's a camera image, or a single wavenumber IR
+            % image, we just push that straight through to the output cell
+            % array.
+            for i = 1:length(filenames)
+                % First record the filename on a new row (column 1)
+                output{end+1,1} = filenames{i}; %#ok<AGROW>
+                filecontents = photothermal_ptir(filenames{i});
+                for j = 1:length(filecontents)
+                    fc = filecontents{j};
                     
-                    if (i == 1)
-                        % Workaround for broken ChiSpectralCollection.append
-                        obj = ChiIRSpectralCollection(xvals,data,true,xlabel,xunit,ylabel,yunit);
+                    % Identify the first available slot in this row. We
+                    % need this since there may be a previous file with
+                    % multiple data sets and therefore the current row will
+                    % contain a series of empty cells. 
+                    freeslot = utilities.findemptycell(output,i);
+                    
+                    % If the contents is a Heatmap, or Camera object,
+                    % simply store the output. Otherwise generate a Chi
+                    % object of the correct type and store that. 
+                    if (isa(fc,'ChiPicture') || isa(fc,'ChiImageFile'))
+                        output{i,freeslot} = fc; 
                     else
-                        if ((height == 1) && (width == 1))
-                            % We have one or more spectra rather than an image
-                            % Check to see if we have a single spectrum or a profile
-                            if (numel(data) == numel(xvals))
-                                obj.append(ChiIRSpectrum(xvals,data,true,xlabel,xunit,ylabel,yunit));
-                            else
-                                obj.append(ChiIRSpectralCollection(xvals,data,true,xlabel,xunit,ylabel,yunit));
-                            end               
+                        if (ndims(fc.data) == 3)
+                            % We have an image
+                            switch fc.datatype
+                                case 'Infrared'
+                                    % We have IR data
+                                    reversex = true;
+                                    obj = ChiIRImage(fc.xvals,fc.data, ...
+                                    fc.width,fc.height,reversex, ...
+                                    fc.xlabel,fc.xunit,fc.ylabel,fc.yunit);
+                                case 'Background'
+                                    % We have IR data
+                                    reversex = true;
+                                    obj = ChiIRImage(fc.xvals,fc.data, ...
+                                    fc.width,fc.height,reversex, ...
+                                    fc.xlabel,fc.xunit,fc.ylabel,fc.yunit);
+                                case 'Raman'
+                                    % We have Raman data
+                                    reversex = (fc.xvals(end) < fc.xvals(1));
+                                    obj = ChiRamanImage(fc.xvals,fc.data, ...
+                                    fc.width,fc.height,reversex, ...
+                                    fc.xlabel,fc.xunit,fc.ylabel,fc.yunit);
+                                otherwise
+                                    message = ['Unrecognised data type: ',fc.datatype];
+                                    err = MException(['CHI:',mfilename,':InputError'], message);
+                                    throw(err);
+                            end
                         else
-                            % An image
-                            obj.append(ChiIRSpectralCollection(xvals,data,true,xlabel,xunit,ylabel,yunit));
+                            if isvector(fc.data)
+                                % We have a spectrum
+                                switch fc.datatype
+                                    case 'Infrared'
+                                        % We have IR data
+                                        reversex = true;
+                                        obj = ChiIRSpectrum(fc.xvals,fc.data, ...
+                                        reversex, ...
+                                        fc.xlabel,fc.xunit,fc.ylabel,fc.yunit);
+                                    case 'Background'
+                                        % We have IR data
+                                        reversex = true;
+                                        obj = ChiIRSpectrum(fc.xvals,fc.data, ...
+                                        reversex, ...
+                                        fc.xlabel,fc.xunit,fc.ylabel,fc.yunit);
+                                    case 'Raman'
+                                        % We have Raman data
+                                        reversex = (fc.xvals(end) < fc.xvals(1));
+                                        obj = ChiRamanSpectrum(fc.xvals,fc.data, ...
+                                        reversex, ...
+                                        fc.xlabel,fc.xunit,fc.ylabel,fc.yunit);
+                                    otherwise
+                                        % Not sure of the data type
+                                        message = ['Unrecognised data type: ',fc.datatype];
+                                        err = MException(['CHI:',mfilename,':InputError'], message);
+                                        throw(err);
+                                end
+                            else
+                                % We have a spectral collection
+                                switch fc.ylabel(1)
+                                    case 'Infrared'
+                                        % We have IR data
+                                        reversex = true;
+                                        obj = ChiIRSpectralCollection(fc.xvals,fc.data, ...
+                                        reversex, ...
+                                        fc.xlabel,fc.xunit,fc.ylabel,fc.yunit);
+                                    case 'Background'
+                                        % We have IR data
+                                        reversex = true;
+                                        obj = ChiIRSpectralCollection(fc.xvals,fc.data, ...
+                                        reversex, ...
+                                        fc.xlabel,fc.xunit,fc.ylabel,fc.yunit);
+                                    case 'Raman'
+                                        % We have Raman data
+                                        reversex = (fc.xvals(end) < fc.xvals(1));
+                                        obj = ChiRamanSpectralCollection(fc.xvals,fc.data, ...
+                                        reversex, ...
+                                        fc.xlabel,fc.xunit,fc.ylabel,fc.yunit);
+                                    otherwise
+                                        % Not sure of the data type
+                                        message = ['Unrecognised data type: ',fc.datatype];
+                                        err = MException(['CHI:',mfilename,':InputError'], message);
+                                        throw(err);
+                                end
+                            end
                         end
+                        obj.filenames = filenames(i);
+                        obj.history.add(['Photothermal file: ', filenames{i}]);
+                        obj.history.add(['Data label: ', fc.measurementlabel]);
+                        output{i,freeslot} = obj;
                     end
                 end
             end
-            
-            obj.filenames = filenames;
-            for i = 1:length(filenames)
-                obj.history.add(['Photothermal file: ', filenames{i}]);
-            end
-            
+%             [rows,cols] = size(output); % Actually never happens since we store the filename
+%             if (rows == cols == 1)
+%                 output = output{1};
+%             end
         end        
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -174,3 +251,4 @@ classdef ChiPhotothermalFile < ChiAbstractFileFormat
     end
     
 end
+

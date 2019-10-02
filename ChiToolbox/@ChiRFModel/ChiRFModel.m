@@ -78,7 +78,13 @@ classdef ChiRFModel < ChiBase
        
         %% numtrees
         function numtrees = get.numtrees(this)
-            numtrees = this.model.NumTrees;
+            if isa(this.model,'CompactTreeBagger')
+                numtrees = this.model.NumTrees;
+            else
+                 if isa(this.model,'classreg.learning.classif.CompactClassificationEnsemble')
+                    numtrees = this.model.NumTrained;
+                 end
+            end
         end
         
     end

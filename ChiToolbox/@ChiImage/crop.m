@@ -44,14 +44,14 @@ else
 
     % Remove the pixels
     if ~this.masked
-        this.data = reshape(this.data, this.xpixels, this.ypixels, []);
+        this.data = reshape(this.data, this.ypixels, this.xpixels, []);
         this.data = this.data(lowy:highy, lowx:highx, :);
         [dims] = size(this.data);
         this.xpixels = dims(2);
         this.ypixels = dims(1);
         this.data = reshape(this.data, this.ypixels * this.xpixels, []);
     else
-        this.mask = reshape(this.mask, this.xpixels, this.ypixels, []);
+        this.mask = reshape(this.mask, this.ypixels, this.xpixels, []);
         this.mask = this.mask(lowy:highy, lowx:highx);
         if all(all(this.mask))
             % All pixels in this cropped region are unmasked in the

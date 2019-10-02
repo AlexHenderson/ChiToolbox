@@ -35,9 +35,13 @@ if exist('content','var')
             if ischar(content)
                 this.log = vertcat(this.log,{content});
             else
-                err = MException(['CHI:',mfilename,':TypeError'], ...
-                    'Unable to append this history log.');
-                throw(err);
+                if isvector(content)
+                    this.log = vertcat(this.log, num2str(content));
+                else
+                    err = MException(['CHI:',mfilename,':TypeError'], ...
+                        'Unable to append this history log item.');
+                    throw(err);
+                end
             end
         end
     end

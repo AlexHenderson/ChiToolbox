@@ -88,6 +88,8 @@ else
             this.classmembership.labels = this.classmembership.labels(chosen,:);
             this.data = this.data(chosen,:);
             this.classmembership.history.add('undersampled')
+            this.classmembership.history.add('chosen spectra are:')
+            this.classmembership.history.add(num2str(chosen));
             this.history.add('undersampled')
         otherwise
             err = MException(['CHI:',mfilename,':IOError'], ...

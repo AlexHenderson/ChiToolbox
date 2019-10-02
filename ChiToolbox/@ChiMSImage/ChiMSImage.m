@@ -108,6 +108,9 @@ classdef ChiMSImage < ChiImage & ChiMSCharacter
             
             this@ChiImage(superClassArgs{:});
             
+            this.spectrumclassname = 'ChiMSSpectrum';
+            this.spectralcollectionclassname = 'ChiMSSpectralCollection';
+
             % As close as we can get  
             this.ontologyinfo = ChiOntologyInformation();
             this.ontologyinfo.term = 'mass spectrum';

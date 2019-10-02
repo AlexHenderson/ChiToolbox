@@ -37,7 +37,7 @@ setappdata(0,'UseNativeSystemDialogs',false);
 
 if (isfloat(filenames) && (filenames == 0))
     err = MException(['CHI:',mfilename,':IOError'], ...
-        'No filenames selected.');
+        'No filename(s) selected.');
     throw(err);
 end
 

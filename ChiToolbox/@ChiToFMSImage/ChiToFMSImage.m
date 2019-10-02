@@ -51,6 +51,9 @@ classdef ChiToFMSImage < ChiMSImage & ChiToFMSCharacter
             % Pass everything through to the superclasses
             this@ChiMSImage(varargin{:});
             this@ChiToFMSCharacter();
+            
+            this.spectrumclassname = 'ChiToFMSSpectrum';
+            this.spectralcollectionclassname = 'ChiToFMSSpectralCollection';
 
             % As close as we can get
             this.ontologyinfo = ChiOntologyInformation();

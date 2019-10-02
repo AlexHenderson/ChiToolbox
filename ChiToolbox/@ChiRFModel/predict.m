@@ -60,8 +60,14 @@ classifyme = varargin{2}; % ChiSpectralCollection
 %% Predict
 predictiontimer = tic();
 
-[pred,scores,stdevs] = predict(this.model,classifyme.data);
-pred = str2num(cell2mat(pred)); %#ok<ST2NM>
+if isa(this.model,'TreeBagger')
+	[pred,scores,stdevs] = predict(this.model,classifyme.data);
+	pred = str2num(cell2mat(pred)); %#ok<ST2NM>
+else	% fitcensemble
+	[pred,scores] = predict(this.model,classifyme.data);
+	stdevs = zeros(size(scores));
+end
+	
 
 [predictiontime,predictionsec] = tock(predictiontimer);
 

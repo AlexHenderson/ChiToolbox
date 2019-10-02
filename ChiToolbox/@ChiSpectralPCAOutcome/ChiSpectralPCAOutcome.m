@@ -13,7 +13,7 @@ classdef ChiSpectralPCAOutcome < ChiBase
         xlabelunit; % text for abscissa label on plots
         reversex;
         classmembership; % an instance of ChiClassMembership
-        history;
+        history = ChiLogger();    % Log of data processing steps
     end
     
     properties (Dependent = true)
@@ -24,10 +24,17 @@ classdef ChiSpectralPCAOutcome < ChiBase
     
     methods
         %% Constructor
-        function this = ChiSpectralPCAOutcome(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex)
+        function this = ChiSpectralPCAOutcome(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex,varargin)
             % Create an instance of ChiSpectralPCAOutcome with given parameters
             
-            this.history = cell(1);
+            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+            if argposition
+                this.history = varargin{argposition}.clone;
+                varargin(argposition) = []; %#ok<NASGU>
+            else
+                this.history = ChiLogger();
+            end
+            
             if (nargin > 0) % Support calling with 0 arguments
                 
                 this.scores = scores;

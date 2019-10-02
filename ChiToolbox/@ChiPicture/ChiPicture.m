@@ -12,7 +12,7 @@ classdef ChiPicture < ChiBase
             data;       % Contents of object as a 2D matrix
             bimodal = false;
             grey = false;
-            history;
+            history = ChiLogger();  % Log of data processing steps
         end
     
         properties
@@ -23,7 +23,7 @@ classdef ChiPicture < ChiBase
     %% Methods
     methods        
         %% Constructor
-        function this = ChiPicture(data,xpixels,ypixels)
+        function this = ChiPicture(data,xpixels,ypixels,varargin)
             % Create an instance of ChiPicture with given parameters
             
             % TODO: Rehash this to check the options regarding the
@@ -32,8 +32,15 @@ classdef ChiPicture < ChiBase
             % by accident with a divisible number of x/y pixels. What we
             % have here isn't too bad, but needs refactored. 
 
-            if (nargin > 0) % Support calling with 0 arguments
+            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+            if argposition
+                this.history = varargin{argposition}.clone;
+                varargin(argposition) = []; %#ok<NASGU>
+            else
                 this.history = ChiLogger();
+            end
+            
+            if (nargin > 0) % Support calling with 0 arguments
                 
                 if nargin
                     data = full(data);

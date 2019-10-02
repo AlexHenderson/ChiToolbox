@@ -13,7 +13,7 @@ classdef ChiRFModel < ChiBase
         classmembership;        % an instance of ChiClassMembership
         elapsed;
         elaspedinseconds;
-        history;                % an instance of ChiLogger
+        history = ChiLogger();  % Log of data processing steps
     end
     
     properties (Dependent = true)
@@ -37,10 +37,17 @@ classdef ChiRFModel < ChiBase
                         correctlyclassified, ...
                         classmembership, ...
                         elapsed,...
-                        elaspedinseconds)
+                        elaspedinseconds, varargin)
                     
+            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+            if argposition
+                this.history = varargin{argposition}.clone;
+                varargin(argposition) = []; %#ok<NASGU>
+            else
+                this.history = ChiLogger();
+            end
+            
             if (nargin > 0) % Support calling with 0 arguments
-                
                 this.trainmask = trainmask;
                 this.testmask = testmask;
                 this.model = model;
@@ -51,9 +58,7 @@ classdef ChiRFModel < ChiBase
                 this.classmembership = classmembership;
                 this.elapsed = elapsed;
                 this.elaspedinseconds = elaspedinseconds;
-                
             end 
-            this.history = ChiLogger();
         end
         
         %% percentcc

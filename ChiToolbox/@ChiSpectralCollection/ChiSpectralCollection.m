@@ -57,9 +57,9 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
         xlabelunit = ''; % Text for the abscissa label unit on plots
         ylabelname = ''; % Text for ordinate label on plots
         ylabelunit = ''; % Text for the ordinate label unit on plots
-        classmembership % An instance of ChiClassMembership
+        classmembership; % An instance of ChiClassMembership
         filenames = {};   % Cell array of filenames if opened from a list of files
-        history     % Log of data processing steps
+        history = ChiLogger();     % Log of data processing steps
     end
 
     % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -72,10 +72,17 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
         % Constructor
         
         function this = ChiSpectralCollection(varargin)
+
+            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+            if argposition
+                this.history = varargin{argposition}.clone;
+                varargin(argposition) = []; 
+            else
+                this.history = ChiLogger();
+            end
             
             switch nargin
                 case 0
-                    this.history = ChiLogger();
                 case 1
                     if isa(varargin{1},'ChiSpectrum')
                         s = varargin{1};
@@ -90,8 +97,6 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                         if ~isempty(s.history)
                             this.history = s.history.clone();
                             this.history.add(['Generated from a ', class(s), '. Filename: ', s.filenames]);                        
-                        else
-                            this.history = ChiLogger();                
                         end
                     else
                         if isa(varargin{1},'ChiSpectralCollection')
@@ -105,7 +110,6 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                 case 2
                     this.xvals = varargin{1};
                     this.data = varargin{2};
-                    this.history = ChiLogger();
                 case 7
                     this.xvals = varargin{1};
                     this.data = varargin{2};
@@ -114,7 +118,6 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                     this.xlabelunit = varargin{5};
                     this.ylabelname = varargin{6};
                     this.ylabelunit = varargin{7};
-                    this.history = ChiLogger();                
                 case 8
                     this.xvals = varargin{1};
                     this.data = varargin{2};
@@ -123,7 +126,6 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                     this.xlabelunit = varargin{5};
                     this.ylabelname = varargin{6};
                     this.ylabelunit = varargin{7};
-                    this.history = varargin{8}.clone();                    
                 case 9
                     this.xvals = varargin{1};
                     this.data = varargin{2};
@@ -135,9 +137,6 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                     if ~isempty(varargin{8})
                         this.classmembership = varargin{8}.clone();
                     end
-                    if ~isempty(varargin{9})
-                        this.history = varargin{9}.clone();
-                    end
                 case 10
                     this.xvals = varargin{1};
                     this.data = varargin{2};
@@ -148,9 +147,6 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                     this.ylabelunit = varargin{7};
                     if ~isempty(varargin{8})
                         this.classmembership = varargin{8}.clone();
-                    end
-                    if ~isempty(varargin{9})
-                        this.history = varargin{9}.clone;
                     end
                 otherwise
                     disp(nargin)

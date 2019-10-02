@@ -33,7 +33,7 @@ classdef ChiClassMembership < ChiBase
     properties
         title@char;
         labels;
-        history
+        history = ChiLogger();  % Log of data processing steps
     end
     
     %% Calculated properties
@@ -51,7 +51,13 @@ classdef ChiClassMembership < ChiBase
         %% Constructor
         function this = ChiClassMembership(title,varargin)
             
-            this.history = ChiLogger();
+            argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
+            if argposition
+                this.history = varargin{argposition}.clone;
+                varargin(argposition) = []; 
+            else
+                this.history = ChiLogger();
+            end
             
             if (nargin > 0) % Support calling with 0 arguments
                 this.title = title;

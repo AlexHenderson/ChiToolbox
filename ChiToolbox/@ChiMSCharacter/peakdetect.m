@@ -137,7 +137,7 @@ else
     end
     
     if (length(varargin) > 1)
-        utilities.warningnobacktrace(['Parameter '', num2str(varargin{2}), '' not understood']);
+        utilities.warningnobacktrace(['Parameter ', num2str(varargin{2}), ' not understood']);
     end
     
     %% Identify some data to peak detect
@@ -305,7 +305,7 @@ else
         datapeaks(:,i) = sum(this.data(:,peaktable(i,begincol):peaktable(i,endcol)),2);
     end
     this.data = datapeaks;
-    this.xvals = peaktable(:,centroidcol)';
+    this.xvals = this.xvals(peaktable(:,centroidcol));
     this.iscentroided = true;
     
 end

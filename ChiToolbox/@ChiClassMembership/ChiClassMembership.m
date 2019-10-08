@@ -20,7 +20,7 @@ classdef ChiClassMembership < ChiBase
 %       classes = ChiClassMembership('people', 'alice',3, 'bob',6, 'charlie',5);
 %       classes = ChiClassMembership('id_numbers', 205,3, 192,6, 227,5);
 %
-%   Copyright (c) 2017, Alex Henderson 
+%   Copyright (c) 2017-2019, Alex Henderson 
 %   Contact email: alex.henderson@manchester.ac.uk
 %   Licenced under the GNU General Public License (GPL) version 3
 %   http://www.gnu.org/copyleft/gpl.html
@@ -31,18 +31,19 @@ classdef ChiClassMembership < ChiBase
 % Version 1.0 June 2017
 
     properties
-        title@char;
-        labels;
+        title@char;             % Name of this ClassMembership
+        labels;                 % Class labels of each instance
         history = ChiLogger();  % Log of data processing steps
     end
     
     %% Calculated properties
     properties (Dependent = true)
-        uniquelabels;
-        numuniquelabels;
-        labelids;       % index values of unique labels
-        labelcounts;    % how many of each label are there        
-        numentries;
+        uniquelabels;   % Names of the unique labels
+        numuniquelabels;% Number of unique class labels
+        labelids;       % Index values of unique class labels in the same order as uniquelabels
+        labelcounts;    % Number of instances of each class label
+        numentries;     % Number of instances (should be the same as the number of spectra)
+        numclasses;     % Number of unique classes
     end
     
     %% Methods

@@ -5,14 +5,17 @@ classdef ChiMLModel < ChiBase
     properties
         trainmask;
         testmask;
+        algorithm;
         model;
         prediction;
         scores;
         stdevs;
         correctlyclassified;
-        classmembership;        % an instance of ChiClassMembership
-        elapsed;
-        elaspedinseconds;
+        classmembership;        % An instance of ChiClassMembership
+        elapsed;                % Time taken to generate the model (string)
+        elaspedinseconds;       % Time taken to generate the model in seconds
+        predictiontime;         % Time taken to predict the test data (string)
+        predictionsec;          % Time taken to generate the test data in seconds
         history = ChiLogger();  % Log of data processing steps
     end
     
@@ -30,6 +33,7 @@ classdef ChiMLModel < ChiBase
         function this = ChiMLModel(...
                         trainmask, ...
                         testmask, ...
+                        algorithm, ...
                         model, ...
                         prediction, ...
                         scores, ...
@@ -37,7 +41,10 @@ classdef ChiMLModel < ChiBase
                         correctlyclassified, ...
                         classmembership, ...
                         elapsed,...
-                        elaspedinseconds, varargin)
+                        elaspedinseconds,...
+                        predictiontime,...
+                        predictionsec,...
+                        varargin)
                     
             argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
             if argposition
@@ -50,6 +57,7 @@ classdef ChiMLModel < ChiBase
             if (nargin > 0) % Support calling with 0 arguments
                 this.trainmask = trainmask;
                 this.testmask = testmask;
+                this.algorithm = algorithm;
                 this.model = model;
                 this.prediction = prediction;
                 this.scores = scores;
@@ -58,6 +66,8 @@ classdef ChiMLModel < ChiBase
                 this.classmembership = classmembership;
                 this.elapsed = elapsed;
                 this.elaspedinseconds = elaspedinseconds;
+                this.predictiontime = predictiontime;
+                this.predictionsec = predictionsec;
             end 
         end
         

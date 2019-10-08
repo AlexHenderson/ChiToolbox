@@ -66,10 +66,12 @@ end
 
 %% Define this object
 this = varargin{1};
+varargin(1) = [];
 
 %% Defaults
 useparallel = -1;   % auto configure
 numtrees = 500;
+alg = 'fitcensemble';
 
 %% User requested parameters
 argposition = find(cellfun(@(x) strcmpi(x, 'trees') , varargin));
@@ -108,6 +110,17 @@ if argposition
     end
     varargin(argposition) = [];
 end
+
+argposition = find(cellfun(@(x) strcmpi(x, 'treebagger') , varargin));
+if argposition
+    algorithm = 'Random Forest (TreeBagger)';
+    alg = 'treebagger';
+    varargin(argposition) = [];
+else
+    algorithm = 'Random Forest (fitcensemble)';
+end
+
+% Additional arguments are passed directly to the algorithm
 
 %% Determine whether to automatically use the parallel pool
 % Need to balance the benefits of using the parallel pool with the time
@@ -161,13 +174,29 @@ else
 end
 
 %% Perform random forest
-model = TreeBagger(numtrees,this.data(trainmask,:),trainlabels,'Options',paroptions);
+switch alg
+    case 'treebagger'
+        model = TreeBagger(numtrees,this.data(trainmask,:),trainlabels,'Options',paroptions, varargin{:});
+    case 'fitcensemble'
+        model = fitcensemble(this.data(trainmask,:),trainlabels, 'Method','Bag', 'NumLearningCycles',numtrees, varargin{:});
+    otherwise
+        err = MException(['CHI:',mfilename,':InputError'], ...
+            ['Unrecognised algorithm: ', alg]);
+        throw(err);
+end
 modelCompact = model.compact();
 
 %% Assess model performance
 predictiontimer = tic();
-[prediction,scores,stdevs] = predict(modelCompact,this.data(testmask,:));
-prediction = str2num(cell2mat(prediction)); %#ok<ST2NM>
+switch alg
+    case 'treebagger'
+        [prediction,scores,stdevs] = predict(modelCompact,this.data(testmask,:));
+        prediction = str2num(cell2mat(prediction)); %#ok<ST2NM>
+    case 'fitcensemble'
+        [prediction,scores] = predict(modelCompact,this.data(testmask,:));
+        stdevs = [];
+end
+        
 correctlyclassified = (prediction == testlabels);
 [predictiontime,predictionsec] = tock(predictiontimer);
 
@@ -180,19 +209,10 @@ end
 [elapsed,elaspedinseconds] = tock(modeltimer);
 
 %% Write output
-
-% predictionobj = ChiRFPrediction(...
-%                         prediction, ...
-%                         scores, ...
-%                         stdevs, ...
-%                         classmembership, ...
-%                         correctlyclassified, ...
-%                         predictiontime,...
-%                         predictionsec);
-
 result = ChiMLModel(...
                     trainmask, ...
                     testmask, ...
+                    algorithm, ...
                     modelCompact, ...
                     prediction, ...
                     scores, ...
@@ -200,6 +220,9 @@ result = ChiMLModel(...
                     correctlyclassified, ...
                     this.classmembership.clone(), ...
                     elapsed,...
-                    elaspedinseconds);
+                    elaspedinseconds,...
+                    predictiontime,...
+                    predictionsec...
+                    );
 
 end

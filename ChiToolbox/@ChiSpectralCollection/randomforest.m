@@ -1,31 +1,36 @@
-function result = randomforest(varargin)
+function model = randomforest(varargin)
 
 % randomforest  Random forest classification. 
 %
 % Syntax
-%   result = randomforest();
-%   result = randomforest(____, 'trees',numtrees);
-%   result = randomforest(____, 'parallel');
-%   result = randomforest(____, 'trainingset', trainmask);
+%   model = randomforest();
+%   model = randomforest(____, 'treebagger');
+%   model = randomforest(____, 'trees',numtrees);
+%   model = randomforest(____, 'parallel');
+%   model = randomforest(____, 'trainingset', trainmask);
 %
 % Description
-%   result = randomforest() performs a random forest (RF) classification on
-%   the data. 500 trees are used to build the RF model. If the Parallel
-%   Computing Toolbox is available and the data are large, then calculation
-%   will utilise parallel processing. Results are returned in a
-%   ChiMLModel object.
+%   model = randomforest() performs a random forest (RF) classification on
+%   the data. 500 trees are used to build the RF model. If the algorithm is
+%   'treebagger', the Parallel Computing Toolbox is available and the data
+%   are large, then calculation will utilise parallel processing. model is
+%   a ChiMLModel object.
 % 
-%   result = randomforest(____, 'trees',numtrees) generates a RF model with
+%   model = randomforest(____, 'treebagger') uses the TreeBagger algorithm
+%   rather than fitcensemble. 
+% 
+%   model = randomforest(____, 'trees',numtrees) generates a RF model with
 %   numtrees trees. 
 %
-%   result = randomforest(____, 'parallel') uses a parallel pool with the
-%   default number of worker threads. Requires the Parallel Computing
-%   Toolbox. 
+%   model = randomforest(____, 'parallel') uses a parallel pool with the
+%   default number of worker threads. 
 %   If the number of trees * the number of spectra is greated than 5
 %   million, and a parallel pool is available, it will be used by default
 %   to speed up processing.
-%
-%   result = randomforest(____, 'trainingset', trainmask) uses the true
+%   Requires the Parallel Computing Toolbox. Only valid for TreeBagger
+%   algorithm, ignored otherwise.
+% 
+%   model = randomforest(____, 'trainingset', trainmask) uses the true
 %   values in trainmask to select the training data for the random forest
 %   calculation. Any false values will denote test data. trainmask is a
 %   column vector of logicals that is the same size as the data to be
@@ -44,7 +49,7 @@ function result = randomforest(varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   TreeBagger parpool ChiSpectralCollection.balance
+%   fitcensemble TreeBagger adaboost ChiMLModel parpool ChiSpectralCollection.balance
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -58,7 +63,7 @@ function result = randomforest(varargin)
 
 
 %% Do we have the machine learning toolbox
-if ~exist('TreeBagger','file')
+if ~exist('fitcensemble','file')
     err = MException(['CHI:',mfilename,':InputError'], ...
         'The Statistics and Machine Learning Toolbox is required for this function.');
     throw(err);
@@ -176,15 +181,15 @@ end
 %% Perform random forest
 switch alg
     case 'treebagger'
-        model = TreeBagger(numtrees,this.data(trainmask,:),trainlabels,'Options',paroptions, varargin{:});
+        internalmodel = TreeBagger(numtrees,this.data(trainmask,:),trainlabels,'Options',paroptions, varargin{:});
     case 'fitcensemble'
-        model = fitcensemble(this.data(trainmask,:),trainlabels, 'Method','Bag', 'NumLearningCycles',numtrees, varargin{:});
+        internalmodel = fitcensemble(this.data(trainmask,:),trainlabels, 'Method','Bag', 'NumLearningCycles',numtrees, varargin{:});
     otherwise
         err = MException(['CHI:',mfilename,':InputError'], ...
             ['Unrecognised algorithm: ', alg]);
         throw(err);
 end
-modelCompact = model.compact();
+modelCompact = internalmodel.compact();
 
 %% Assess model performance
 predictiontimer = tic();
@@ -209,7 +214,7 @@ end
 [elapsed,elaspedinseconds] = tock(modeltimer);
 
 %% Write output
-result = ChiMLModel(...
+model = ChiMLModel(...
                     trainmask, ...
                     testmask, ...
                     algorithm, ...

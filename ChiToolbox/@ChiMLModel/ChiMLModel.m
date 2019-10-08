@@ -1,6 +1,6 @@
-classdef ChiRFModel < ChiBase
-% ChiRFModel
-%   Copyright (c) 2018 Alex Henderson (alex.henderson@manchester.ac.uk)
+classdef ChiMLModel < ChiBase
+% ChiMLModel
+%   Copyright (c) 2018-2019 Alex Henderson (alex.henderson@manchester.ac.uk)
 
     properties
         trainmask;
@@ -27,7 +27,7 @@ classdef ChiRFModel < ChiBase
     
     methods
         %% Constructor
-        function this = ChiRFModel(...
+        function this = ChiMLModel(...
                         trainmask, ...
                         testmask, ...
                         model, ...

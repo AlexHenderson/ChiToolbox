@@ -1,21 +1,21 @@
-function obj = power(varargin)
+function obj = minus(varargin)
 
-% power  Raises the data to the given power
+% minus  Subtracts a scalar value from the data.
 %
 % Syntax
-%   power(level);
-%   obj = power(level);
+%   minus(val);
+%   obj = minus(val);
 %
 % Description
-%   power(level) raises the data to the given power. 
+%   minus(val) subtracts the scalar value val from the data
 % 
-%   obj = power(level) clones the object before raising the power. 
+%   obj = minus(val) clones the object before subtracting val. 
 %
-% Copyright (c) 2018-2019, Alex Henderson.
+% Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   plus minus times divideby negate sqrt cubert quadrt nthroot 
+%   plus times divideby negate sqrt cubert quadrt nthroot power
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -30,22 +30,21 @@ function obj = power(varargin)
 
 if (nargin ~= 2)
     err = MException(['CHI:', mfilename, ':InputError'], ...
-        'Exponent missing.');
+        'Subtraction factor missing.');
     throw(err);
 end
 
 if ~isnumeric(varargin{2})
     err = MException(['CHI:', mfilename, ':InputError'], ...
-        'Exponent must be a numeric scalar value.');
+        'Subtraction factor must be a numeric scalar value.');
     throw(err);
 end
 
 if ~isscalar(varargin{2})
     err = MException(['CHI:', mfilename, ':InputError'], ...
-        'Exponent must be a scalar value.');
+        'Subtraction factor must be a scalar value.');
     throw(err);
 end
-
 
 this = varargin{1};
 val = varargin{2};
@@ -55,9 +54,9 @@ if nargout
     command = [mfilename, '(obj,varargin{2:end});'];
     eval(command);  
 else
-    this.data = power(this.data,val);
-    message = ['Raise to power ', num2str(val)];
+    this.data = this.data - val;
+    message = ['Subtracted ', num2str(val), ' from data'];
     this.history.add(message);
 end
 
-end % function
+end

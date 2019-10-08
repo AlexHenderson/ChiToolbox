@@ -1,21 +1,21 @@
-function obj = power(varargin)
+function obj = mpower(varargin)
 
-% power  Raises the data to the given power
+% mpower  Raises the data to the given power
 %
 % Syntax
-%   power(level);
-%   obj = power(level);
+%   mpower(level);
+%   obj = mpower(level);
 %
 % Description
-%   power(level) raises the data to the given power. 
+%   mpower(level) raises the data to the given power. 
 % 
-%   obj = power(level) clones the object before raising the power. 
+%   obj = mpower(level) clones the object before raising the power. 
 %
-% Copyright (c) 2018-2019, Alex Henderson.
+% Copyright (c) 2019, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   plus minus times divideby negate sqrt cubert quadrt nthroot 
+%   plus minus times divideby negate sqrt cubert quadrt nthroot power
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

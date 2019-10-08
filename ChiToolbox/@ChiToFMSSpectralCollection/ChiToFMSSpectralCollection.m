@@ -21,22 +21,20 @@ classdef ChiToFMSSpectralCollection < ChiMSSpectralCollection & ChiToFMSCharacte
                     % Do nothing, this is an empty class
                 case 1
                     if isa(varargin{1},'ChiSpectrum')
-                        this.copypropertiesfrom(varargin{1});
-                        
-%                         s = varargin{1};
-%                         superClassArgs{1} = s.xvals;
-%                         superClassArgs{2} = s.data;
-%                         superClassArgs{3} = s.reversex;
-%                         superClassArgs{4} = s.xlabelname;
-%                         superClassArgs{5} = s.xlabelunit;
-%                         superClassArgs{6} = s.ylabelname;
-%                         superClassArgs{7} = s.ylabelunit;
-%                         if ~isempty(s.history)
-%                             superClassArgs{8} = s.history.clone();
-%                             superClassArgs{8}.add('Created from a ChiSpectrum');
-%                         else
-%                             superClassArgs{8} = ChiLogger();                
-%                         end
+                        s = varargin{1};
+                        superClassArgs{1} = s.xvals;
+                        superClassArgs{2} = s.data;
+                        superClassArgs{3} = s.reversex;
+                        superClassArgs{4} = s.xlabelname;
+                        superClassArgs{5} = s.xlabelunit;
+                        superClassArgs{6} = s.ylabelname;
+                        superClassArgs{7} = s.ylabelunit;
+                        if ~isempty(s.history)
+                            superClassArgs{8} = s.history.clone();
+                            superClassArgs{8}.add('Created from a ChiSpectrum');
+                        else
+                            superClassArgs{8} = ChiLogger();                
+                        end
                         
                     else
                         if isa(varargin{1},'ChiSpectralCollection')
@@ -60,9 +58,27 @@ classdef ChiToFMSSpectralCollection < ChiMSSpectralCollection & ChiToFMSCharacte
                                 superClassArgs{9} = ChiLogger();                
                             end
                         else
-                            err = MException(['CHI:',mfilename,':InputError'], ...
-                                'Input not understood.');
-                            throw(err);
+                            if isa(varargin{1},'ChiImage')
+                                s = varargin{1};
+                                superClassArgs{1} = s.xvals;
+                                superClassArgs{2} = s.data;
+                                superClassArgs{3} = s.reversex;
+                                superClassArgs{4} = s.xlabelname;
+                                superClassArgs{5} = s.xlabelunit;
+                                superClassArgs{6} = s.ylabelname;
+                                superClassArgs{7} = s.ylabelunit;
+
+                                if ~isempty(s.history)
+                                    superClassArgs{9} = s.history.clone();
+                                    superClassArgs{9}.add('Created from a ChiSpectralCollection');
+                                else
+                                    superClassArgs{9} = ChiLogger();                
+                                end
+                            else
+                                err = MException(['CHI:',mfilename,':InputError'], ...
+                                    'Input not understood.');
+                                throw(err);
+                            end
                         end
                     end
                 case 2

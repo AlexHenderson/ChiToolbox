@@ -161,6 +161,8 @@ end
     axis(ax,'tight');
     xlabel(this.iterations{1}.xlabel);
     ylabeltext = this.iterations{1}.ylabel;
-    ylabel([ylabeltext, ' (including an offset)']);
+    if (offset ~= 0)
+        ylabel([ylabeltext, ' (including an offset of ', num2str(offset) ,')']);
+    end
     title('Effect of increasing iterations');
 end

@@ -1,4 +1,4 @@
-function varargout = plot(this,varargin)
+function varargout = plot(varargin)
 
 % plot  Plots the spectrum. 
 %
@@ -16,7 +16,7 @@ function varargout = plot(this,varargin)
 %   plot('nofig') plots the spectrum in the currently active figure window,
 %   or creates a new figure if none is available.
 %
-%   plotspectrum(____,'axes',desiredaxes) plots the spectrum in the
+%   plot(____,'axes',desiredaxes) plots the spectrum in the
 %   desiredaxes. Defaults to gca. 
 % 
 %   plot(____,'title',titletext) displays titletext as a plot title.
@@ -47,9 +47,9 @@ function varargout = plot(this,varargin)
 
 
     if nargout
-        varargout{:} = utilities.plotspectrum(this,varargin{:});
+        varargout{:} = utilities.plotspectrum(varargin{:});
     else
-        utilities.plotspectrum(this,varargin{:});
+        utilities.plotspectrum(varargin{:});
     end
     
 end

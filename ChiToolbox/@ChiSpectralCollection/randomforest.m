@@ -81,7 +81,7 @@ alg = 'fitcensemble';
 %% User requested parameters
 argposition = find(cellfun(@(x) strcmpi(x, 'trees') , varargin));
 if argposition
-    numtrees = varargin(argposition + 1);
+    numtrees = varargin{argposition + 1};
     varargin(argposition + 1) = [];
     varargin(argposition) = [];
 end

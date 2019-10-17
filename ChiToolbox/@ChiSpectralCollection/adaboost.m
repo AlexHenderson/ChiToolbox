@@ -81,7 +81,7 @@ numiterations = 500;
 %% User requested parameters
 argposition = find(cellfun(@(x) strcmpi(x, 'iterations') , varargin));
 if argposition
-    numiterations = varargin(argposition + 1);
+    numiterations = varargin{argposition + 1};
     varargin(argposition + 1) = [];
     varargin(argposition) = [];
 end

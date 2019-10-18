@@ -80,10 +80,20 @@ end
 figure;
 
 yyaxis left
-plot(this.xvals,this.data);
+if (isprop(this,'iscentroided') && this.iscentroided)
+    [stickx,sticky] = utilities.stickify(this.xvals,this.data);
+    plot(stickx,sticky);
+else    
+    plot(this.xvals,this.data);
+end
 
 yyaxis right
-plot(that.xvals,(that.data + offset));
+if (isprop(that,'iscentroided') && that.iscentroided)
+    [stickx,sticky] = utilities.stickify(that.xvals,that.data);
+    plot(stickx,(sticky + offset));
+else    
+    plot(that.xvals,(that.data + offset));
+end
 
 %% Make x-axis tight
 utilities.tightxaxis(gca);

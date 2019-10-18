@@ -130,7 +130,7 @@ end
 %% Determine whether to automatically use the parallel pool
 % Need to balance the benefits of using the parallel pool with the time
 % taken to start it up and wind it down. 
-if useparallel == -1
+if ((useparallel == -1) && strcmpi(alg, 'treebagger'))
     % User did not specify use of the pool
     if ((numtrees * this.numspectra) > 5000000)
         % Data seems quite large
@@ -171,7 +171,7 @@ testmask = ~trainmask;
 testlabels = this.classmembership.labelids(testmask);
 
 %% Open parallel pool
-if useparallel
+if (useparallel && strcmpi(alg, 'treebagger'))
     poolobj = parpool;
     paroptions = statset('UseParallel',true);
 else
@@ -191,29 +191,16 @@ switch alg
 end
 modelCompact = internalmodel.compact();
 
-%% Assess model performance
-predictiontimer = tic();
-switch alg
-    case 'treebagger'
-        [prediction,scores,stdevs] = predict(modelCompact,this.data(testmask,:));
-        prediction = str2num(cell2mat(prediction)); %#ok<ST2NM>
-    case 'fitcensemble'
-        [prediction,scores] = predict(modelCompact,this.data(testmask,:));
-        stdevs = [];
-end
-        
-correctlyclassified = (prediction == testlabels);
-[predictiontime,predictionsec] = tock(predictiontimer);
+%% Create output so that we can predict the test data using the model built above
+prediction = [];
+scores = [];
+stdevs = [];
+correctlyclassified = [];
+elapsed = [];
+elaspedinseconds = [];
+predictiontime = [];
+predictionsec = [];
 
-%% Close parallel pool
-if useparallel
-    delete(poolobj);
-end
-
-%% Stop timer
-[elapsed,elaspedinseconds] = tock(modeltimer);
-
-%% Write output
 model = ChiMLModel(...
                     trainmask, ...
                     testmask, ...
@@ -229,5 +216,45 @@ model = ChiMLModel(...
                     predictiontime,...
                     predictionsec...
                     );
+
+%% Assess model performance
+predictiontimer = tic();
+testdata = this.applymask(testmask);
+
+switch alg
+    case 'treebagger'
+        temp = model.predict(testdata);
+        prediction = temp.labelid;
+        scores = temp.scores;
+        stdevs = temp.stdevs;
+        prediction = str2num(cell2mat(prediction)); %#ok<ST2NM>
+    case 'fitcensemble'
+        temp = model.predict(testdata);
+        prediction = temp.labelid;
+        scores = temp.scores;
+        stdevs = [];
+end
+        
+correctlyclassified = (prediction == testlabels);
+[predictiontime,predictionsec] = tock(predictiontimer);
+
+%% Close parallel pool
+% % Just leave the pool open in case we need it again shortly
+% if (useparallel && strcmpi(alg, 'treebagger'))
+%     delete(poolobj);
+% end
+
+%% Stop timer
+[elapsed,elaspedinseconds] = tock(modeltimer);
+
+%% Update the output
+model.prediction = prediction;
+model.scores = scores;
+model.stdevs = stdevs;
+model.correctlyclassified = correctlyclassified;
+model.elapsed = elapsed;
+model.elaspedinseconds = elaspedinseconds;
+model.predictiontime = predictiontime;
+model.predictionsec = predictionsec;
 
 end

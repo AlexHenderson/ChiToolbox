@@ -165,70 +165,11 @@ classdef ChiClassMembership < ChiBase
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function obj = removeentries(this,varargin)
-            if nargout
-                % New output requested so create a clone and call its version of
-                % this function
-                obj = clone(this);
-                obj.removeids(varargin{:});
-            else
-                % Do we have any entries to remove?
-                if ~(this.numentries)
-                    return
-                end
-                
-                % Is any input provided?
-                if isempty(varargin)
-                    err = MException(['CHI:',mfilename,':InputError'], ...
-                        'No list of entries provided. If all ids are to be removed, use myfile = %s(''all'');',functionname);
-                    throw(err);
-                end
-
-                % Did the user specify 'all'?
-                argposition = find(cellfun(@(x) strcmpi(x, 'all') , varargin));
-                if argposition
-                    varargin(argposition) = []; %#ok<NASGU>
-                    list = 1:this.numentries;
-                else
-                    list = varargin{1};
-                end
-
-                % Did the user provide a list of spectra as a vector?
-                if ~isvector(list)
-                    err = MException(['CHI:',mfilename,':InputError'], ...
-                        'List of entries should be a vector of numbers, or ''all''.');
-                    throw(err);
-                end
-
-                % Is the vector a list of numbers?
-                if ~isnumeric(list)
-                    err = MException(['CHI:',mfilename,':InputError'], ...
-                        'List of entries should be a vector of numbers, or ''all''.');
-                    throw(err);
-                end
-
-                % Is the list of numbers simply a list of all numbers?
-                if (length(unique(list)) == this.numentries)
-                    err = MException(['CHI:',mfilename,':InputError'], ...
-                        'If all entries are to be removed, use myfile = %s(''all'');',functionname);
-                    throw(err);
-                end
-
-                % Is the list of numbers simply a list of all numbers?
-                if (length(unique(list)) > this.numentries)
-                    err = MException(['CHI:',mfilename,':InputError'], ...
-                        'If all entries are to be removed, use myfile = %s(''all'');',functionname);
-                    throw(err);
-                end
-                
-                % If we've got to here we can remove the unwanted spectra
-                list = ChiForceToColumn(list);
-                this.labels(list,:) = [];
-                this.history.add(['removed ', num2str(length(list)), ' entries']);
-            end
-            
+        function numclasses = get.numclasses(this)
+            numclasses = this.numuniquelabels;
         end
         
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
     end
 end

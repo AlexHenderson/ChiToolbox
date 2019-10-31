@@ -71,7 +71,16 @@ end
 
 %% Generate the figure
 figure;
-[ax,h1,h2] = plotyy(this.xvals,this.data, that.xvals,that.data); %#ok<ASGLU>
+
+trace1 = this.clone;
+trace2 = that.clone;
+if (isprop(trace1,'iscentroided') && trace1.iscentroided)
+    [trace1.xvals,trace1.data] = utilities.stickify(trace1.xvals,trace1.data);
+end
+if (isprop(trace2,'iscentroided') && trace2.iscentroided)
+    [trace2.xvals,trace2.data] = utilities.stickify(trace2.xvals,trace2.data);
+end
+[ax,h1,h2] = plotyy(trace1.xvals,trace1.data, trace2.xvals,trace2.data); %#ok<ASGLU>
 
 %% Make x-axis tight
 minx = min(this.xvals(1),that.xvals(1));

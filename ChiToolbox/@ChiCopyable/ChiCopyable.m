@@ -77,16 +77,20 @@ classdef ChiCopyable < handle
                         % class? If so it will have a clone function we can
                         % call. 
                         commandline = ['isa(this.', name, ', ''ChiHandle'');'];
-                        isahandle = eval(commandline);
-                        if isahandle
+                        isachihandle = eval(commandline);
+                        if isachihandle
                             % Clone the property
                             commandline = ['obj.', name, ' = this.', name, '.clone();'];
                             eval(commandline);
+                        else
+                            % If the property is not an object that inherits
+                            % from ChiHandle (and therefore handle) we can
+                            % simply copy it. 
+                            commandline = ['obj.', name, ' = this.', name, ';'];
+                            eval(commandline);
                         end
                     else
-                        % If the property is not an object that inherits
-                        % from ChiHandle (and therefore handle) we can
-                        % simply copy it. 
+                        % Not an object, so simply copy it
                         commandline = ['obj.', name, ' = this.', name, ';'];
                         eval(commandline);
                     end

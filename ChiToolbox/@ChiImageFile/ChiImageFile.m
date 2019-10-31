@@ -37,6 +37,7 @@ classdef ChiImageFile < ChiBase
     properties
         data;                   % Contents of object as a 3D matrix (RGB)
         filenames = {};         % Name of the file, if appropriate
+        imageinfo;              % Information relating to this image file
         history = ChiLogger();  % Log of data processing steps
     end
 
@@ -237,6 +238,7 @@ classdef ChiImageFile < ChiBase
             if (length(filenames) == 1)
                 im = imread(filenames{1});
                 obj = ChiImageFile(im,filenames);
+                obj.imageinfo = imfinfo(filenames{1});
             else
                 message = 'Can only handle a single file at a time.';
                 err = MException(['CHI:',mfilename,':InputError'], message);

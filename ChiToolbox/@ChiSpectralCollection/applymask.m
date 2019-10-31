@@ -78,12 +78,16 @@ mask = varargin{2};
             
             % Remove the appropriate filenames if they exist
             if ~isempty(this.filenames)
-                masked.filenames = this.filenames(mask.mask);
+                if (length(this.filenames) == this.numspectra)
+                    masked.filenames = this.filenames(mask.mask);
+                else
+                    utilities.warningnobacktrace('Number of filenames does not match number of spectra, so no filenames have been removed.');
+                end
             end
             
             % Remove the appropriate classmemberships if they exist
             if ~isempty(this.classmembership)
-                masked.classmembership.removeentries(mask.mask);
+                masked.classmembership.removeentries(~mask.mask);
             end
 
             % Log what we did

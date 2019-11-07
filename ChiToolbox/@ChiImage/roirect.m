@@ -1,6 +1,6 @@
 function obj = roirect(varargin)
 
-% ROIRECT  Rectangular region of interest (ROI)
+% roirect  Rectangular region of interest (ROI)
 % 
 % Syntax
 %   roirect();
@@ -21,7 +21,7 @@ function obj = roirect(varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   display crop imagesc.
+%   roipoly roifreehand display crop imagesc.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -34,7 +34,6 @@ function obj = roirect(varargin)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 %   Rectangular roi so returns an image
-%   Polygonal roi would return a spectral collection. Not built yet
 
 
 this = varargin{1};
@@ -59,6 +58,13 @@ else
     if ~isempty(shape)
         % The user drew a rectangle so remove all pixels outside it. 
         pixelmask = shape.createMask();
+        
+        mask = ChiMask(pixelmask);
+        if (mask.numtrue == 0)
+            err = MException(['CHI:',mfilename,':IOError'], ...
+            'No region selected.');
+            throw(err);
+        end
 
         % Determine the limits of the rectangle. imroi.getPosition doesn't
         % quite cut it, so rolling my own. 

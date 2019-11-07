@@ -35,7 +35,7 @@ if ~nargout
     stacktrace = dbstack;
     functionname = stacktrace.name;
     err = MException(['CHI:',mfilename,':IOError'], ...
-        'Nowhere to put the output. Try something like: masked = %s(mask);',functionname);
+        'Nowhere to put the output. Try something like: mymask = %s(mask);',mfilename);
     throw(err);
 end
             

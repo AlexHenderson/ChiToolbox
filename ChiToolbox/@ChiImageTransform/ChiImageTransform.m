@@ -51,10 +51,12 @@ classdef ChiImageTransform < ChiBase
 
     
     properties
-        transform; % Information regarding the image transform process as output by the cpselect tool 
+        transform;  % Information regarding the image transform process as output by the cpselect tool 
         staticcontrolpoints; % Points of correspondence in the target image
         movingcontrolpoints; % Points of correspondence in the source image (to be registered)
-        method; % Name of projection used (default = 'affine')
+        method;     % Name of projection used (default = 'affine')
+        xpixels;    % Number of pixels in the x-direction in the transformed object
+        ypixels;    % Number of pixels in the x-direction in the transformed object
     end
     
     methods
@@ -78,6 +80,19 @@ classdef ChiImageTransform < ChiBase
                     this.staticcontrolpoints = varargin{2};
                     this.movingcontrolpoints = varargin{3};
                     this.method = varargin{4};
+                case 5
+                    this.transform = varargin{1};
+                    this.staticcontrolpoints = varargin{2};
+                    this.movingcontrolpoints = varargin{3};
+                    this.method = varargin{4};
+                    this.xpixels = varargin{5};
+                case 6
+                    this.transform = varargin{1};
+                    this.staticcontrolpoints = varargin{2};
+                    this.movingcontrolpoints = varargin{3};
+                    this.method = varargin{4};
+                    this.xpixels = varargin{5};
+                    this.ypixels = varargin{6};
                 otherwise
                     error('too many inputs');
             end

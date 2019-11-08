@@ -111,7 +111,7 @@ end
 
 %% Generate transform
 mytform = cp2tform(movingcontrolpoints,staticcontrolpoints,'affine'); %#ok<DCPTF>
-transform = ChiImageTransform(mytform,staticcontrolpoints,movingcontrolpoints,'affine');
+transform = ChiImageTransform(mytform,staticcontrolpoints,movingcontrolpoints,'affine',that.xpixels,that.ypixels);
 
 %% Create registered output
 registered = ChiPicture;

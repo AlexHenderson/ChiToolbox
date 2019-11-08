@@ -36,7 +36,8 @@ try
     cd(pathstr);
     
     % Connect to git repository and update codebase
-    status = system('git pull origin master'); %#ok<NASGU>
+	% Note this is a special user account and password that only allows for read-only commands
+    status = system('git pull https://ChiToolboxManchesterRO:rnHQS7g8hk3PcYqzUcfd@bitbucket.org/AlexHenderson/chitoolboxmanchester.git master'); %#ok<NASGU>
 
     % Since the file and folder structure may have changed, rebuild the path
     disp('Rebuilding MATLAB path');
@@ -55,7 +56,7 @@ catch ME
         case ['CHI:',mfilename,':ResourceError']
             utilities.warningnobacktrace(ME.message);
         otherwise
-            utilities.warningnobacktrace('Could not update ChiToolbox');
+            utilities.warningnobacktrace('Could not update ChiToolboxManchester');
     end    
 end
     

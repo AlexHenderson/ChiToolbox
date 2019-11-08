@@ -1,4 +1,4 @@
-# ChiToolboxManchester #
+# ChiToolbox #
 
 ## Centre for Hyperspectral Imaging at the University of Manchester ##
 ### This fork of the ChiToolbox contains code specific to the University of Manchester

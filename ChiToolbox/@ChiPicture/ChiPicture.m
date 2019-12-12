@@ -1,10 +1,25 @@
 classdef ChiPicture < ChiBase
     
-% ChiPicture Storage class for 2D images (not hyperspectral images)
-% Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
-    
-    % matlab.mixin.Copyable only for >R2011a
-    % Want compatibility with R2009a
+% ChiPicture  Storage class for 2D images (not hyperspectral images)
+%
+% Syntax
+%   pic = ChiPicture(datamatrix);
+%   pic = ChiPicture(datavector,width,height);
+%
+% Description
+%   pic = ChiPicture(datamatrix) creates a 2D image using the information
+%   in the 2D datamatrix.
+%
+%   pic = ChiPicture(datavector,width,height) creates a 2D image using the
+%   information in the vector datavector, the width and the height of the
+%   image.
+%
+% Copyright (c) 2014, Alex Henderson.
+% Licenced under the GNU General Public License (GPL) version 3.
+%
+% See also 
+%   ChiImage ChiSpectralCollection.
+
     
     %% Properties
         %% Basic properties

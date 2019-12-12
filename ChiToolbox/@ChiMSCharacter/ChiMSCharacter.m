@@ -25,10 +25,8 @@ classdef ChiMSCharacter < ChiBase
 
 
     properties
-        iscentroided = false;
-    end
-    
-    methods
+        iscentroided = false; % Has the data been peak detected (centroided), or is it continuous
+        peaktable; % Results from a peak detection exercise
     end
     
 end

@@ -1,4 +1,4 @@
-function varargout = plot(this,varargin)
+function varargout = plot(varargin)
 
 % plot  Plots one or more spectra. Multiple spectra are overlaid. 
 %
@@ -65,9 +65,9 @@ function varargout = plot(this,varargin)
 
 
     if nargout
-        varargout{:} = utilities.plotspectra(this,varargin{:});
+        varargout{:} = utilities.plotspectra(varargin{:});
     else
-        utilities.plotspectra(this,varargin{:});
+        utilities.plotspectra(varargin{:});
     end
     
 end

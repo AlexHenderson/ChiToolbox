@@ -4,10 +4,13 @@ function obj = kmeans(this,k,varargin)
 %
 % Syntax
 %   result = kmeans(k);
+%   result = kmeans(k,'vis');
 %
 % Description
 %   result = kmeans(k) performs k-means clustering on the data using k
 %   clusters. Results are returned in a ChiClusterOutcome object.
+% 
+%   result = kmeans(k,'vis') also displays the outcome.
 % 
 % Notes
 %   This function requires the Statistics and Machine Learning Toolbox. 
@@ -43,11 +46,23 @@ if (nargin < 2)
     throw(err);
 end
 
+%% Visualise?
+vis = false;
+argposition = find(cellfun(@(x) strcmpi(x, 'vis') , varargin));
+if argposition
+    vis = true;
+    varargin(argposition) = [];
+end
+
 %% Perform kmeans
     idx = kmeans(this.data,k,varargin{:});
     
     idx = reshape(idx,this.ypixels,this.xpixels);
     
     obj = ChiClusterOutcome(idx,'kmeans');
+    
+    if vis
+        obj.show;
+    end
     
 end

@@ -28,8 +28,12 @@ function medianspectrum = median(this)
 
     spectrumclass = str2func(this.spectrumclassname);
     medianspectrum = spectrumclass(this.xvals,ChiMedian(this.data),this.reversex,...
-        this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit,...
-        this.classmembership,this.filenames,this.history);
+        this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit);
+
+    if isprop(this,'history')
+        medianspectrum.history = this.history.clone;
+    end
+    
     medianspectrum.history.add('Median of spectral collection');
 
 end

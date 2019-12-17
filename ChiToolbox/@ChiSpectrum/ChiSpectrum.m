@@ -15,6 +15,7 @@ classdef ChiSpectrum < ChiAbstractSpectrum
         classmembership = [];   % An instance of ChiClassMembership
         filenames = {};         % Name of file opened, if appropriate
         history = ChiLogger();  % Log of data processing steps
+        dynamicproperties; % Storage space for instance specific properties
     end
     
     properties (Dependent = true)

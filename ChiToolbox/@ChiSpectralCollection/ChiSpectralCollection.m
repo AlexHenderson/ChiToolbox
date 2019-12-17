@@ -60,6 +60,7 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
         classmembership; % An instance of ChiClassMembership
         filenames = {};   % Cell array of filenames if opened from a list of files
         history = ChiLogger();     % Log of data processing steps
+        dynamicproperties; % Storage space for instance specific properties
     end
 
     % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

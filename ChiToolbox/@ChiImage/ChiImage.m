@@ -20,6 +20,7 @@ classdef ChiImage < ChiAbstractImage
         masked = false;
         filenames = {};         % Name of the file, if appropriate
         history = ChiLogger();  % Log of data processing steps
+        dynamicproperties; % Storage space for instance specific properties
     end
 
     properties (Dependent = true)

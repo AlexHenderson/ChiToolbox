@@ -16,6 +16,7 @@ classdef (Abstract) ChiAbstractImage < ChiBase
         xlabelunit; % Text for the abscissa label unit on plots
         ylabelname; % Text for ordinate label on plots
         ylabelunit; % Text for the ordinate label unit on plots
+        dynamicproperties; % Storage space for instance specific properties
     end          
 
     properties

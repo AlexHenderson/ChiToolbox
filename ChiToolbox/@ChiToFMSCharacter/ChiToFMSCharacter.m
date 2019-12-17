@@ -32,7 +32,4 @@ classdef ChiToFMSCharacter < ChiMSCharacter
 %         constantc       % c in ax^2 + bx + c
     end
     
-    methods
-    end
-    
 end

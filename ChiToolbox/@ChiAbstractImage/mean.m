@@ -28,8 +28,15 @@ function meanspectrum = mean(this)
 
     spectrumclass = str2func(this.spectrumclassname);
     meanspectrum = spectrumclass(this.xvals,ChiMean(this.data),this.reversex,...
-        this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit,...
-        this.classmembership,this.filenames,this.history);
+        this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit);
+    
+    if isprop(this,'filenames')
+        meanspectrum.filenames = this.filenames;
+    end
+    if isprop(this,'history')
+        meanspectrum.history = this.history.clone;
+    end
+    
     meanspectrum.history.add('Mean spectrum of image');
 
 end

@@ -28,8 +28,18 @@ function sumspectrum = sum(this)
 
     spectrumclass = str2func(this.spectrumclassname);
     sumspectrum = spectrumclass(this.xvals,ChiSum(this.data),this.reversex,...
-        this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit,...
-        this.classmembership,this.filenames,this.history);
+        this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit);
+    
+    if isprop(this,'classmembership')
+        sumspectrum.classmembership = this.classmembership.clone;
+    end
+    if isprop(this,'filenames')
+        sumspectrum.filenames = this.filenames;
+    end
+    if isprop(this,'history')
+        sumspectrum.history = this.history.clone;
+    end
+    
     sumspectrum.history.add('Sum spectrum of image');
 
 end

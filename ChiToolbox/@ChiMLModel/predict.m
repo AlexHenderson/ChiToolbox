@@ -106,7 +106,7 @@ if (parallelavailable && useparallel)
 
     % Initiate parallel processing
     parfor i = 1:numcores
-        if isa(m,'TreeBagger')
+        if isa(m,'CompactTreeBagger')
             % Save the stdevs and convert the cell array of numeric strings
             % to actual numbers. DO NOT USE str2double. It's broken.
             [looppred{i},loopscores{i},loopstdevs{i}] = predict(m,loopdata{i});
@@ -125,7 +125,7 @@ if (parallelavailable && useparallel)
         stop = start + numperloop - 1;
         pred(start:stop) = looppred{i};
         scores(start:stop,:) = loopscores{i};
-        if isa(m,'TreeBagger')
+        if isa(m,'CompactTreeBagger')
             stdevs(start:stop,:) = loopstdevs{i};
         end
         start = stop + 1;
@@ -133,14 +133,14 @@ if (parallelavailable && useparallel)
     
     % Now predict the remainder, if there are any
     if (leftoverstart <= unseen.numspectra)
-        if isa(m,'TreeBagger')
+        if isa(m,'CompactTreeBagger')
             [pred(leftoverstart:end),scores(leftoverstart:end,:),stdevs(leftoverstart:end,:)] = predict(this.model,unseen.data(leftoverstart:end,:));
         else
             [pred(leftoverstart:end),scores(leftoverstart:end,:)] = predict(this.model,unseen.data(leftoverstart:end,:));
         end
     end
     
-    if ~isa(m,'TreeBagger')
+    if ~isa(m,'CompactTreeBagger')
         % Create dummy stdevs for fitcensemble which doesn't calculate
         % them. 
         stdevs = zeros(size(scores));
@@ -148,7 +148,7 @@ if (parallelavailable && useparallel)
     
 else
     % No pool required
-    if isa(this.model,'TreeBagger')
+    if isa(this.model,'CompactTreeBagger')
         [pred,scores,stdevs] = predict(this.model,unseen.data);
         pred = str2num(cell2mat(pred)); %#ok<ST2NM>
     else	% fitcensemble

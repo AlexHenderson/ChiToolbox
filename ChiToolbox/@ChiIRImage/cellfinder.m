@@ -147,7 +147,7 @@ switch length(varargin)
         if builtinlimit
             utilities.warningnobacktrace('A built-in spectral range has also been selected. Using supplied limits instead.');
         end
-        [lowlimit, highlimit] = ChiForceIncreasing(varargin{1},varargin{2});
+        [lowlimit, highlimit] = utilities.forceincreasing(varargin{1},varargin{2});
     otherwise
         err = MException(['CHI:',mfilename,':IOError'], ...
             ['User input not recognised: ', utilities.tostring(varargin{1})]);

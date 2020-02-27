@@ -184,6 +184,7 @@ imagedata = zeros(rows, cols, (highmass - lowmass + 1), 'int32');    % 3D array
 %   DetectorResolution = 1; 
 % Fixed now - June 2008    
 % unfixed again since it doesn't appear to work! April 2009
+% re-fixed (?) February 2020 since the PD5000 is 1 ns
 
 switch detector_flag
    case 1408
@@ -192,7 +193,9 @@ switch detector_flag
       detector = 'tdc';
    case 1034
       DetectorResolution = da500_res;
-      DetectorResolution = 2; % this is right no matter what's in the file
+%       DetectorResolution = 2; % this is right no matter what's in the file (DA500)
+        utilities.warningnobacktrace('If the mass range appears to be wrong, please contact Alex');
+      DetectorResolution = 1; % this is right no matter what's in the file (PDA5000)
       detector = 'td';
    otherwise
       error('Unknown detector type - problems reading file')

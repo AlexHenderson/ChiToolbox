@@ -58,8 +58,8 @@ classdef ChiOpusFile < ChiBase
             
             % Check extension - should be a number
             [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
-            extnum = str2num(ext(2:end)); %#ok<ST2NM>
-            if (isempty(extnum) || ~isnumeric(extnum))
+            extnum = str2double(ext(2:end));
+            if (isempty(extnum) || isnan(extnum) || ~isnumeric(extnum))
                 return
             end
             

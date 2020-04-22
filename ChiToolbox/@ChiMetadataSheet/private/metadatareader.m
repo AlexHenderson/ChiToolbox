@@ -113,6 +113,12 @@ function metadata = loadMetadata(filename)
             case 'Path to data files: '
                 dataPath = rawData{row,2};
                 
+                if isnan(dataPath)
+                    % Path is missing, so assume it is the same path as the
+                    % metadata spreadsheet
+                    dataPath = '.';
+                end
+                
                 % Handle cases where relative paths are used
                 if strcmpi(dataPath,'.')
                     metadatafilepath = GetFullPath(filename);
@@ -241,13 +247,58 @@ function [metadata,safeParameterName,filterName,rawData] = buildLogicalFilter(pa
         filter_variable = matlab.lang.makeValidName(filterName);
     end        
 
+    % If data is text, remove leading or trailing whitespace
+    if ischar(rawData{1})
+        rawData = strtrim(rawData);
+    
+        % Ensure we have a maximum of two options
+        % Force to upper case for simplicity
+        [uniquevalues,dummy,ic] = unique(upper(rawData),'stable');
+        if (length(uniquevalues) > 2)
+            % We have more than 2 options T/F and something else
+            error('Column defined as logical, but >2 options present')
+        else
+            % ic is the index values of the unique values. There are a maximum
+            % of 2 unique values so the index values can be 1 or 2. Subtract 1
+            % and we get 0/1.        
+            ic = ic - 1;
+            % Now we need to determine what these refer to and that depends on
+            % the unique values themselves. Just look at the first character.
+            % If the first character of the first unique value is T or Y, then
+            % the index values need to be flipped since ic(1) is currently 0,
+            % ie false.
+            switch (uniquevalues{1}(1))
+                case 'T'
+                    ic = ~ic;
+                case 'Y'
+                    ic = ~ic;
+                case '1'
+                    ic = ~ic;
+                case 'F'
+                    % No need to flip ic since the values of ic correspond to
+                    % false and true
+                case 'N'
+                    % No need to flip ic since the values of ic correspond to
+                    % no and yes
+                case '0'
+                    % No need to flip ic since the values of ic correspond to
+                    % '0' and '1'
+                otherwise
+                    error('Cannot determine whether the logical values refer to TRUE/FALSE or YES/NO')
+            end
 
-    try
-        rawData = cell2mat(rawData);
-    catch ex
-        disp(['Error processing: ', safeParameterName])
-        rethrow(ex);
+            % Now we can map the rawData to these unique index values
+            rawData = ic;
+        end
+        
     end
+
+%     try
+%         rawData = cell2mat(rawData);
+%     catch ex
+%         disp(['Error processing: ', safeParameterName])
+%         rethrow(ex);
+%     end
 
     if ischar(rawData)
         rawData = str2num(rawData); %#ok<ST2NM>

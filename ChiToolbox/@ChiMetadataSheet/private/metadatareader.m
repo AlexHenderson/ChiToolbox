@@ -231,7 +231,8 @@ end % function generateFilter
 function [metadata,safeParameterName,filterName,rawData] = buildLogicalFilter(parameterName, rawData, metadata)
 
     % Replace spaces in parameter names and raw data with underscores
-    safeParameterName = strrep(parameterName, ' ', '_');
+    safeParameterName = strrep(parameterName, '%', 'percent');
+    safeParameterName = strrep(safeParameterName, ' ', '_');
     safeParameterName = strrep(safeParameterName, '.', '_');
     safeParameterName = strrep(safeParameterName, '(', '_');
     safeParameterName = strrep(safeParameterName, ')', '_');
@@ -315,7 +316,8 @@ end % function buildLogicalFilter
 function [metadata,safeParameterName,filterName,rawData] = buildNumericFilter(parameterName, rawData, metadata)
 
     % Replace spaces in parameter names and raw data with underscores
-    safeParameterName = strrep(parameterName, ' ', '_');
+    safeParameterName = strrep(parameterName, '%', 'percent');
+    safeParameterName = strrep(safeParameterName, ' ', '_');
     safeParameterName = strrep(safeParameterName, '.', '_');
     safeParameterName = strrep(safeParameterName, '(', '_');
     safeParameterName = strrep(safeParameterName, ')', '_');
@@ -342,7 +344,8 @@ end % function buildNumericFilter
 function [metadata,safeParameterName,filterName,rawData] = buildCategoryFilter(parameterName, rawData, metadata)
 
     % Replace spaces in parameter names and raw data with underscores
-    safeParameterName = strrep(parameterName, ' ', '_');
+    safeParameterName = strrep(parameterName, '%', 'percent');
+    safeParameterName = strrep(safeParameterName, ' ', '_');
     safeParameterName = strrep(safeParameterName, '.', '_');
     safeParameterName = strrep(safeParameterName, '(', '_');
     safeParameterName = strrep(safeParameterName, ')', '_');

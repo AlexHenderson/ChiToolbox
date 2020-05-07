@@ -15,7 +15,7 @@ function varargout = removediamond(this,varargin)
 %   object is not modified.
 % 
 % Notes
-%   Spectal features due to diamond can occur in ATR-IR analysis using a
+%   Spectral features due to diamond can occur in ATR-IR analysis using a
 %   diamond crystal. See http://beta.lexusindia.in/gb-ada.html 
 %   The spectral region removed here assumes the features to be relatively
 %   weak. The actual absorption range is 1332 to 4000 cm-1. 

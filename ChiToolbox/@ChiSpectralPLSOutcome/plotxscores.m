@@ -9,26 +9,28 @@ function plotxscores(this,compx,compy,varargin)
 % Description
 %   plotxscores(compx,compy) creates a 2-D scatter plot of PLS data block
 %   scores. compx is the PLS component number to plot on the x-axis, while
-%   compy is the PLS component number to plot on the y-axis. A new figure
-%   window is created.
+%   compy is the PLS component number to plot on the y-axis. Note that
+%   these components are all from the X-block (the independent variable
+%   block, rather than the dependent (Y) block). A new figure window is
+%   created.
 %
-%   plotxscores(compx,compy,'nofig') plots the scores in the currently active
-%   figure window, or creates a new figure if none is available.
+%   plotxscores(compx,compy,'nofig') plots the scores in the currently
+%   active figure window, or creates a new figure if none is available.
 %
 %   Other parameters can be applied to customise the plot. See the MATLAB
-%   scatter, or utilities.gscatter, functions for more details. 
+%   scatter function for more details. 
 %
 % Notes
 %   If the object has classmembership available, the scores will be plotted
 %   in colours relating to their class using the utilities.gscatter
 %   function.
 %
-% Copyright (c) 2017-2019, Alex Henderson.
+% Copyright (c) 2020, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   scatter utilities.gscatter plotloadings plotexplainedvariance
-%   plotcumexplainedvariance ChiSpectralPCAOutcome ChiSpectralCollection.
+%   scatter plotloadings plotexplainedvariance plotcumexplainedvariance
+%   ChiSpectralPLSOutcome ChiSpectralCollection.
 
 
 % Contact email: alex.henderson@manchester.ac.uk
@@ -49,9 +51,7 @@ errorcode = 'Chi:ChiSpectralPLSOutcome';
 errormessagestub = 'Requested PLS component is out of range. Max = ';
 
 % Some defaults
-marker = '.';
-sizedata = 6;
-sizedatadefined = false;
+sizedata = [];
 
 if ((compx > this.ncomp) || (compx < 1))
     err = MException([errorcode,':OutOfRange'], ...
@@ -75,51 +75,25 @@ else
 end    
 
 % sizedata
-argposition = find(cellfun(@(x) strcmpi(x, 'sizedata') , varargin));
+argposition = find(cellfun(@(x) isnumeric(x) , varargin));
 if argposition
-    sizedata = varargin{argposition+1};
-    sizedatadefined = true;
-    varargin(argposition+1) = [];
+    sizedata = varargin{argposition};
     varargin(argposition) = [];
-end
-
-% marker
-argposition = find(cellfun(@(x) ischar(x) , varargin));
-if argposition
-    marker = varargin{argposition};
-    varargin(argposition) = [];
-end
-
-% If the chosen marker is a dot and the size has not been defined, make the
-% dot a bit bigger. 
-if (strcmp(marker, '.') && ~sizedatadefined)
-    sizedata = 15;
 end
 
 % colours = 'bgrcmky';
-colours = get(gca,'colororder');
 axiscolour = 'k';
 decplaces = 3;
 
-if ~isempty(this.classmembership)
-    utilities.gscatter(this.xscores(:,compx), this.xscores(:,compy), this.classmembership.labels, 'colours', colours, 'sizedata', sizedata, marker, 'nofig', varargin{:});
-else
-    scatter(this.xscores(:,compx), this.xscores(:,compy), sizedata .* sizedata, marker, varargin{:});
-%     scatter(this.scores(:,compx), this.scores(:,compy),sizedata,marker);
-
+if ~isempty(this.depvar)
+    scatter(this.xscores(:,compx), this.xscores(:,compy), sizedata, this.depvar.labels, varargin{:});
+    c = colorbar;
+    c.Label.String = this.depvar.title;
 end    
 
 xlabel([axislabelstub, num2str(compx), ' (', num2str(this.xexplained(compx),decplaces), '%)']);
 ylabel([axislabelstub, num2str(compy), ' (', num2str(this.xexplained(compy),decplaces), '%)']);
 title([titlestub, num2str(compx), ' and ', num2str(compy)]);
-
-% if ~isempty(this.classmembership)
-%     if ismatlab()
-%       legend('Location','Best');
-%     else
-%       legend();
-%     end      
-% end    
 
 % Draw lines indicating zero x and y
 hold on;

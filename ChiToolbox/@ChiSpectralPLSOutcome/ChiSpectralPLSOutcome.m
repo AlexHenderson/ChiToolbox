@@ -1,30 +1,70 @@
 classdef ChiSpectralPLSOutcome < ChiBase
+
     
-% ChiSpectralPLSOutcome
-%   Copyright (c) 2019 Alex Henderson (alex.henderson@manchester.ac.uk)
+% ChiSpectralPLSOutcome  Class to handle results from a partial least squares (PLS) regression.
+%
+% Syntax
+% 
+%   plsoutcome = ChiSpectralPLSOutcome(xscores,xloadings,...
+%             yscores,yloadings,...
+%             xexplained,yexplained,...
+%             regressioncoeffs,weights,ncomp,...
+%             xvals,...
+%             xlabelname,xlabelunit,...
+%             reversex,...
+%             depvar,...
+%             algorithm);
+%   plsoutcome = ChiSpectralPLSOutcome(____, history);
+%
+% Description
+%   plsoutcome = ChiSpectralPLSOutcome(xscores, xloadings, yscores,
+%   yloadings,xexplained, yexplained, regressioncoeffs, weights, ncomp,
+%   xvals, xlabelname, xlabelunit, reversex, depvar, algorithm) creates a
+%   ChiSpectralPLSOutcome object.
+%
+%   plsoutcome = ChiSpectralPLSOutcome(____,history) includes a history, a
+%   ChiLogger object.
+% 
+% Copyright (c) 2020, Alex Henderson.
+% Licenced under the GNU General Public License (GPL) version 3.
+%
+% See also 
+%   ChiSpectralPCAOutcome.
+
+% Contact email: alex.henderson@manchester.ac.uk
+% Licenced under the GNU General Public License (GPL) version 3
+% http://www.gnu.org/copyleft/gpl.html
+% Other licensing options are available, please contact Alex for details
+% If you use this file in your work, please acknowledge the author(s) in
+% your publications. 
+
+% Version 1.0, May 2020
+% The latest version of this file is available on Bitbucket
+% https://bitbucket.org/AlexHenderson/chitoolbox
+
 
     properties
-        xscores;
-        xloadings;
-        yscores;
-        yloadings;
-        xexplained;
-        yexplained;
-        xvals;
-        ncomp;
-        xlabelname;         % text for abscissa label on x-block plots
-        xlabelunit;         % text for abscissa label on x-block plots
-        yblocklabelname;    % text for abscissa label on y-block plots
-        yblocklabelunit;    % text for abscissa label on y-block plots
-        reversex;
-        classmembership;    % an instance of ChiClassMembership
+        xscores;    % PLS scores on the independent (X) block
+        xloadings;  % PLS loadings on the independent (X) block
+        yscores;    % PLS scores on the dependent (Y) block
+        yloadings;  % PLS loadings on the dependent (Y) block
+        xexplained; % Percentage explained variable in independent (X) block
+        yexplained; % Percentage explained variable in dependent (Y) block
+        regressioncoeffs;   % Coefficients of regression
+        weights;    % PLS weightings
+        ncomp;      % Number of PLS components used to construct the model
+        xvals;      % X-axis values
+        xlabelname; % text for abscissa label on x-block plots
+        xlabelunit; % text for abscissa unit label on x-block plots
+        reversex;   % Flag to indicate the x-axis sholuld be reversed on loadings and weights plots
+        depvar;     % Dependent variable (Y block) as an instance of ChiClassMembership
+        algorithm;  % Char array indicating the algorithm used to perform the PLS calculation
         history = ChiLogger();    % Log of data processing steps
     end
     
     properties (Dependent = true)
         %% Calculated properties
-        xlabel
-        yblocklabel
+        xlabel      % Label for the x-axis on loadings and weights plots
     end
     
     methods
@@ -32,10 +72,13 @@ classdef ChiSpectralPLSOutcome < ChiBase
         function this = ChiSpectralPLSOutcome(xscores,xloadings,...
                 yscores,yloadings,...
                 xexplained,yexplained,...
-                ncomp,xvals,...
+                regressioncoeffs,weights,ncomp,...
+                xvals,...
                 xlabelname,xlabelunit,...
-                yblocklabelname,yblocklabelunit,...
-                reversex,classmembership,varargin)
+                reversex,...
+                depvar,...
+                algorithm,...
+                varargin)
             % Create an instance of ChiSpectralPLSOutcome with given parameters
             
             argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
@@ -54,14 +97,15 @@ classdef ChiSpectralPLSOutcome < ChiBase
                 this.yloadings = yloadings;
                 this.xexplained = xexplained;
                 this.yexplained = yexplained;
+                this.regressioncoeffs = regressioncoeffs;
+                this.weights = weights;
                 this.ncomp = ncomp;
                 this.xvals = xvals;
                 this.xlabelname = xlabelname;
                 this.xlabelunit = xlabelunit;
-                this.yblocklabelname = yblocklabelname;
-                this.yblocklabelunit = yblocklabelunit;
                 this.reversex = reversex;
-                this.classmembership = classmembership.clone();
+                this.depvar = depvar.clone();
+                this.algorithm = algorithm;
                 
                 this.xvals = utilities.force2row(this.xvals);
             end 
@@ -73,15 +117,6 @@ classdef ChiSpectralPLSOutcome < ChiBase
                 xlabel = this.xlabelname;
             else
                 xlabel = [this.xlabelname, ' / ', this.xlabelunit, ''];
-            end                
-        end
-        
-        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function yblocklabel = get.yblocklabel(this)
-            if isempty(this.yblocklabelunit)
-                yblocklabel = this.yblocklabelname;
-            else
-                yblocklabel = [this.yblocklabelname, ' / ', this.yblocklabelunit, ''];
             end                
         end
         

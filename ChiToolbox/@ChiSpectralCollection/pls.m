@@ -84,8 +84,11 @@ end
 % meanX = mean(this.data);
 % meanY = mean(depvar);
 
-X = utilities.meancenter(this.data);        % a matrix
-y = utilities.meancenter(depvar.labels);    % a vector (PLS1)
+% X = utilities.meancenter(this.data);        % a matrix
+% y = utilities.meancenter(depvar.labels);    % a vector (PLS1)
+
+X = this.data;        % a matrix
+y = depvar.labels;    % a vector (PLS1)
 
 % Just use plsregress for now and migrate to an open source version later. 
 

@@ -13,7 +13,7 @@ function plsresult = pls(this,varargin)
 %   x and y blocks) are mean centered internally. By default the current
 %   classmembership is used as the dependent variable (Y block) and ncomp =
 %   10 for the number of pls components to calculate. The output is stored
-%   in a ChiSpectralPLSOutcome object.
+%   in a ChiPLSModel object.
 %
 %   plsresult = pls(____,ncomp) uses ncomp for the number of pls
 %   components to calculate. 
@@ -25,7 +25,7 @@ function plsresult = pls(this,varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   plsregress ChiSpectralPLSOutcome ChiSpectralCollection.
+%   plsregress ChiPLSModel ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

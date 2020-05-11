@@ -25,7 +25,7 @@ function plotweights(this,varargin)
 %
 % See also 
 %   plot bar plotxscores plotexplainedvariance plotcumexplainedvariance
-%   ChiSpectralPLSOutcome ChiSpectralCollection.
+%   ChiPLSModel ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

@@ -27,7 +27,7 @@ function plotexplainedvariance(this,limit,varargin)
 %
 % See also 
 %   plot plotxscores plotweight plotcumexplainedvariance
-%   ChiSpectralPLSOutcome ChiSpectralCollection.
+%   ChiPLSModel ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -51,7 +51,7 @@ else
     figure('Name',windowtitle,'NumberTitle','off');
 end
 
-errorcode = 'Chi:ChiSpectralPLSOutcome';
+errorcode = 'Chi:ChiPLSModel';
 errormessagestub = 'Requested PLS component is out of range. Max components = ';
 
 if exist('limit','var')

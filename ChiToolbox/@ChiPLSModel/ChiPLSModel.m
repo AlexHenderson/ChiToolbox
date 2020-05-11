@@ -1,35 +1,36 @@
-classdef ChiSpectralPLSOutcome < ChiBase
+classdef ChiPLSModel < ChiBase
 
     
-% ChiSpectralPLSOutcome  Class to handle results from a partial least squares (PLS) regression.
+% ChiPLSModel  Class to handle results from a partial least squares (PLS) regression.
 %
 % Syntax
 % 
-%   plsoutcome = ChiSpectralPLSOutcome(xscores,xloadings,...
+%   plsmodel = ChiPLSModel(xscores,xloadings,...
 %             yscores,yloadings,...
 %             xexplained,yexplained,...
-%             regressioncoeffs,weights,ncomp,...
+%             regressioncoeffs,weights,...
+%             ncomp,residuals,...
 %             xvals,...
 %             xlabelname,xlabelunit,...
 %             reversex,...
 %             depvar,...
 %             algorithm);
-%   plsoutcome = ChiSpectralPLSOutcome(____, history);
+%   plsmodel = ChiPLSModel(____, history);
 %
 % Description
-%   plsoutcome = ChiSpectralPLSOutcome(xscores, xloadings, yscores,
+%   plsmodel = ChiPLSModel(xscores, xloadings, yscores,
 %   yloadings,xexplained, yexplained, regressioncoeffs, weights, ncomp,
-%   xvals, xlabelname, xlabelunit, reversex, depvar, algorithm) creates a
-%   ChiSpectralPLSOutcome object.
+%   residuals, xvals, xlabelname, xlabelunit, reversex, depvar, algorithm)
+%   creates a ChiPLSModel object.
 %
-%   plsoutcome = ChiSpectralPLSOutcome(____,history) includes a history, a
+%   plsmodel = ChiPLSModel(____,history) includes a history, a
 %   ChiLogger object.
 % 
 % Copyright (c) 2020, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiSpectralPCAOutcome.
+%   ChiPCAModel.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -53,6 +54,7 @@ classdef ChiSpectralPLSOutcome < ChiBase
         regressioncoeffs;   % Coefficients of regression
         weights;    % PLS weightings
         ncomp;      % Number of PLS components used to construct the model
+        residuals   % Difference between dependent data and predicted dependent data
         xvals;      % X-axis values
         xlabelname; % text for abscissa label on x-block plots
         xlabelunit; % text for abscissa unit label on x-block plots
@@ -69,17 +71,18 @@ classdef ChiSpectralPLSOutcome < ChiBase
     
     methods
         %% Constructor
-        function this = ChiSpectralPLSOutcome(xscores,xloadings,...
+        function this = ChiPLSModel(xscores,xloadings,...
                 yscores,yloadings,...
                 xexplained,yexplained,...
-                regressioncoeffs,weights,ncomp,...
+                regressioncoeffs,weights,...
+                ncomp,residuals,...
                 xvals,...
                 xlabelname,xlabelunit,...
                 reversex,...
                 depvar,...
                 algorithm,...
                 varargin)
-            % Create an instance of ChiSpectralPLSOutcome with given parameters
+            % Create an instance of ChiPLSModel with given parameters
             
             argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
             if argposition
@@ -100,6 +103,7 @@ classdef ChiSpectralPLSOutcome < ChiBase
                 this.regressioncoeffs = regressioncoeffs;
                 this.weights = weights;
                 this.ncomp = ncomp;
+                this.residuals = residuals;
                 this.xvals = xvals;
                 this.xlabelname = xlabelname;
                 this.xlabelunit = xlabelunit;

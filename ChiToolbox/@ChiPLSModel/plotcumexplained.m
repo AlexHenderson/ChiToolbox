@@ -1,4 +1,4 @@
-function plotcumexplainedvariance(this,limit,varargin)
+function plotcumexplained(varargin)
 
 % plotcumexplainedvariance Plots the cumulative percentage explained variance of both the data (X) block and the dependent variable (Y). 
 %
@@ -28,7 +28,7 @@ function plotcumexplainedvariance(this,limit,varargin)
 %
 % See also 
 %   plot plotxscores plotloading plotexplainedvariance
-%   ChiSpectralPLSOutcome ChiSpectralCollection.
+%   ChiPLSModel ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -42,54 +42,9 @@ function plotcumexplainedvariance(this,limit,varargin)
 % https://bitbucket.org/AlexHenderson/Chitoolbox
 
 
-errorcode = 'Chi:ChiSpectralPLSOutcome';
-errormessagestub = 'Requested PLS component is out of range. Max components = ';
+% Just a wrapper...
 
-if exist('limit','var')
-    if ((limit > this.ncomp) || (limit < 1))
-        err = MException([errorcode,':OutOfRange'], ...
-            [errormessagestub, num2str(this.ncomp), '.']);
-        throw(err);
-    end
-end
-
-argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));
-if argposition
-    % Remove the parameter from the argument list
-    varargin(argposition) = [];
-else
-    % No 'nofig' found so create a new figure
-    windowtitle = 'Cumulative percentage explained variance';
-    figure('Name',windowtitle,'NumberTitle','off');
-end
-
-cumxexplained = cumsum(this.xexplained);
-cumyexplained = cumsum(this.yexplained);
-
-if ~exist('limit','var')
-    limit = min(20,length(this.xexplained));
-end
-
-plot(1:limit,cumxexplained(1:limit),'o-',1:limit,cumyexplained(1:limit),'o-',varargin{:});
-
-% Draw line indicating 95% cumulative explained variance
-axiscolour = 'k';
-hold on;
-limits = axis;
-xmin = limits(1,1);
-xmax = limits(1,2);
-plot([xmin,xmax], [95,95], axiscolour);
-hold off;
-
-
-legend({'data block';'dependent variable'},'Location','best')
-xlabel('partial least squares component number');
-ylabel('cumulative percentage explained variance');
-title('Cumulative percentage explained variance');
-
-%% Manage data cursor information
-figurehandle = gcf;
-cursor = datacursormode(figurehandle);
-set(cursor,'UpdateFcn',{@utilities.datacursor_plsexplainedvariance});    
+this = varargin{1};
+this.plotcumexplainedvariance(varargin{2:end})
 
 end

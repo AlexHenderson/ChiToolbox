@@ -30,7 +30,7 @@ function plotxscores(this,compx,compy,varargin)
 %
 % See also 
 %   scatter plotloadings plotexplainedvariance plotcumexplainedvariance
-%   ChiSpectralPLSOutcome ChiSpectralCollection.
+%   ChiPLSModel ChiSpectralCollection.
 
 
 % Contact email: alex.henderson@manchester.ac.uk
@@ -47,7 +47,7 @@ function plotxscores(this,compx,compy,varargin)
 titlestub = 'Data block scores on PLS components ';
 windowtitlestub = titlestub;
 axislabelstub = 'score on PLS ';
-errorcode = 'Chi:ChiSpectralPLSOutcome';
+errorcode = 'Chi:ChiPLSModel';
 errormessagestub = 'Requested PLS component is out of range. Max = ';
 
 % Some defaults
@@ -105,12 +105,16 @@ ymax = limits(1,4);
 
 h = plot([0,0], [0,ymax], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 h = plot([0,0], [0,ymin], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 h = plot([0,xmax], [0,0], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 h = plot([0,xmin], [0,0], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 axis tight
 hold off;
 

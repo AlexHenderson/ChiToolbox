@@ -34,4 +34,5 @@ ymin = limits(1,3);
 ymax = limits(1,4);
 h = plot([0,0],[ymin,ymax], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 hold off;    

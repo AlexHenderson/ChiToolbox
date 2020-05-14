@@ -11,7 +11,7 @@ lineidx = length(event_obj.Target.Parent.Children) - linenumber + 1;
 
 if (lineidx == 2) 
     % This is the 95% cut-off line
-    output_txt = {'95%'};
+    output_txt = {'95% explained variable'};
 else
 
     pos = get(event_obj,'Position');

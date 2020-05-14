@@ -8,7 +8,11 @@ function output_txt = datacursor_6sf(obj,event_obj) %#ok<INUSL>
 
 pos = get(event_obj,'Position');
 output_txt = {['x: ',num2str(pos(1),6)],...
-    ['y: ',num2str(pos(2),4)]};
+     ['y: ',num2str(pos(2),4)]};
+% xlabelprefix = obj.DataSource.Parent.XLabel.String;
+% ylabelprefix = obj.DataSource.Parent.YLabel.String;
+% output_txt = {[xlabelprefix, ': ', num2str(pos(1),6)],...
+%     [ylabelprefix, ': ' ,num2str(pos(2),4)]};
 
 % If there is a Z-coordinate in the position, display it as well
 if length(pos) > 2

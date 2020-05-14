@@ -22,7 +22,7 @@ function varargout = display(varargin) %#ok<DISPLAY>
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   disp imagesc imshow colormap ChiSequentialColormap.
+%   disp imagesc imshow colormap ChiContinuousColormap.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

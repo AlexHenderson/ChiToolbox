@@ -1,22 +1,31 @@
-function plsresult = pls(this,depvar,ncomp)
+function plsresult = pls(this,varargin)
 
-% error('Not working yet');
-
-% pca Principal Components Analysis
+% pls  Partial Least Squares Regression
 %
 % Syntax
-%   pcaresult = pca();
+%   plsresult = pls();
+%   plsresult = pls(____,ncomp);
+%   plsresult = pls(____,depvar);
 %
 % Description
-%   pcaresult = pca() performs principal components analysis on the spectra
-%   in this collection. The data is mean centered internally. The output is
-%   stored in a ChiSpectralPCAOutcome object.
+%   plsresult = pls() performs partial least squares regression on the
+%   spectra in this collection. Uses plsregress internally. The data (both
+%   x and y blocks) are mean centered internally. By default the current
+%   classmembership is used as the dependent variable (Y block) and ncomp =
+%   10 for the number of pls components to calculate. The output is stored
+%   in a ChiPLSModel object.
 %
-% Copyright (c) 2017, Alex Henderson.
+%   plsresult = pls(____,ncomp) uses ncomp for the number of pls
+%   components to calculate. 
+% 
+%   plsresult = pls(____,depvar) uses depvar as the dependent variable (Y
+%   block). depvar is a ChiClassMembership object with numeric labels.
+% 
+% Copyright (c) 2020, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   princomp pca ChiSpectralPCAOutcome ChiSpectralCollection.
+%   plsregress ChiPLSModel ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -25,61 +34,93 @@ function plsresult = pls(this,depvar,ncomp)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2017
+% Version 1.0, May 2020
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-% ToDo: change inputs to accept ncomp without depvar
+% Defaults
+ncomp = 10;
+depvar = [];
 
+% Has a number of components been supplied?
+argposition = find(cellfun(@(x) isscalar(x) , varargin));
+if argposition
+    ncomp = varargin{argposition};
+    varargin(argposition) = [];
+end
 
-yblocklabelname = 'dependent variable';
-yblocklabelunit = '';
+% Has depvar been provided as a ChiClassMembership object
+argposition = find(cellfun(@(x) isa(x, 'ChiClassMembership') , varargin));
+if argposition
+    depvar = varargin{argposition}.clone();
+    varargin(argposition) = []; %#ok<NASGU>
+end
 
-if ~exist('depvar','var')
-    if isnumeric(this.classmembership.labels(1))
-        utilities.warningnobacktrace(['Using class membership "', this.classmembership.title, '" as the dependent variable.']);
-        depvar = this.classmembership.labels;
-        yblocklabelname = this.classmembership.title;
-    else
+if isempty(depvar)
+    % Use the object's classmembership, if available
+    if isempty(this.classmembership)
         err = MException(['CHI:', mfilename,':InputError'], ...
-            'The dependent variable is missing, or not numeric.');
+            'No dependent variable provided, or classmembership available.');
         throw(err);
+    else
+        depvar = this.classmembership.clone();
     end
 end
 
-if ~isvector(depvar)
+% depvar classmembership is available, but is it useful?
+if ~isnumeric(depvar.labels(1))
     err = MException(['CHI:', mfilename,':InputError'], ...
-        'The dependent variable must be a vector.');
+        'The dependent variable is not numeric.');
     throw(err);
-end    
+end
 
-if (length(depvar) ~= this.numspectra)
+if (depvar.numentries ~= this.numspectra)
     err = MException(['CHI:', mfilename,':InputError'], ...
         'The dependent variable must have the same number of elements as there are spectra.');
     throw(err);
 end
 
-if ~exist('ncomp','var')
-    ncomp = 10;
-end
+% meanX = mean(this.data);
+% meanY = mean(depvar);
 
-X = utilities.meancenter(this.data);
-depvar = utilities.meancenter(depvar);
+% X = utilities.meancenter(this.data);        % a matrix
+% y = utilities.meancenter(depvar.labels);    % a vector (PLS1)
 
-[b,R,xscores,xloadings,yloadings,yscores] = JChemometrics_23_2009_518.simpls1(X,depvar,ncomp); %#ok<ASGLU>
+X = this.data;        % a matrix
+y = depvar.labels;    % a vector (PLS1)
 
-xexplained = 100 * sum(xloadings .* xloadings) ./ sum(sum(X .* X));
-yexplained = 100 * sum(yloadings .* yloadings) ./ sum(sum(depvar .* depvar));
+% Just use plsregress for now and migrate to an open source version later. 
 
-plsresult = ChiSpectralPLSOutcome(xscores,xloadings,...
+% Both X and Y are mean centered by plsregress anyway
+[xloadings,yloadings,xscores,yscores,beta,PCTVAR,MSE,stats] = plsregress(X,y,ncomp); %#ok<ASGLU>
+
+% [b,R,xscores,xloadings,yloadings,yscores] = JChemometrics_23_2009_518.simpls1(X,depvar,ncomp); %#ok<ASGLU>
+% [b,R,xscores,xloadings,yloadings,yscores] = JChemometrics_23_2009_518.simpls1Alex(X,depvar,ncomp); %#ok<ASGLU>
+% [b,R,xscores,xloadings,yloadings,yscores] = JChemometrics_23_2009_518.plsr(X,depvar,ncomp); %#ok<ASGLU>
+
+% Convert to percentages
+xexplained = 100 * PCTVAR(1,:);
+yexplained = 100 * PCTVAR(2,:);
+
+weights = stats.W;
+regressioncoeffs = beta;
+y_hat = horzcat(ones(this.numspectra,1), this.data) * regressioncoeffs;
+residuals = y - y_hat;
+
+algorithm = 'plsregress';
+this.history.add('PLS algorithm: plsregress');
+
+plsresult = ChiPLSModel(xscores,xloadings,...
                 yscores,yloadings,...
                 xexplained,yexplained,...
-                ncomp,this.xvals,...
+                regressioncoeffs,weights,...
+                ncomp,residuals,...
+                this.xvals,...
                 this.xlabelname,this.xlabelunit,...
-                yblocklabelname,yblocklabelunit,...
-                this.reversex,this.classmembership,this.history);
+                this.reversex,...
+                depvar,...
+                algorithm,...
+                this.history);
 
-% figure;plot(1:ncomp,cumsum(100*PCTVAR(2,:)),'-bo');
-
-end
+end % function: pls

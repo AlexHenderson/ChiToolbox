@@ -22,7 +22,7 @@ function varargout = display(varargin) %#ok<DISPLAY>
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   disp imagesc colormap ChiSequentialColormap.
+%   disp imagesc colormap ChiContinuousColormap.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -72,7 +72,7 @@ end
     if exist('parula.m','file')
         colormap(parula);
     else
-        colormap(ChiSequentialColormap());
+        colormap(ChiContinuousColormap());
     end
     
     % Add a title if requested

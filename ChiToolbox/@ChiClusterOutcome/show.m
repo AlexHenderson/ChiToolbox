@@ -28,7 +28,7 @@ function varargout = show(varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   imagesc colormap ChiSequentialColormap.
+%   imagesc colormap ChiContinuousColormap.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -94,7 +94,7 @@ end
         if exist('parula.m','file')
             cmap = parula(this.numclusters);
         else
-            cmap = ChiSequentialColormap(this.numclusters);
+            cmap = ChiContinuousColormap(this.numclusters);
         end
     else
         if ischar(cmap)

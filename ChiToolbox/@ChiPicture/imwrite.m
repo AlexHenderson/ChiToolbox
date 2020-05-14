@@ -65,7 +65,7 @@ else
         varargin(argposition) = [];
     else
         % Set colormap to the default - viridis
-        cmap = ChiSequentialColormap(256);
+        cmap = ChiContinuousColormap(256);
     end
 end
 

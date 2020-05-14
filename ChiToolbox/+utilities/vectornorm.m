@@ -1,13 +1,14 @@
-function vn_data = vectornorm(data)
+function [vn_data,vectorlength] = vectornorm(data)
 
 % VECTORNORM Vector normalisation
 % usage:
-%     vn_data = vectornorm(data);
+%     [vn_data,vectorlength] = vectornorm(data);
 %
 % input:
 %     data - rows of spectra
 % output:
 %     vn_data - vector normalised version of data
+%     vectorlength - the vector length of the data before normalisation
 %
 %   The data is normalised such that the vector length in N-d space (where
 %   N is the number of data points in each row) is unity (1).
@@ -69,9 +70,11 @@ else
 end
 
 vn_data = data;
+vectorlength = full(divisor);
 
 if is3D
     vn_data = reshape(vn_data,dims(1),dims(2),dims(3));
+    vectorlength = reshape(vectorlength,dims(1),dims(2));
 end
 
 %% Notes

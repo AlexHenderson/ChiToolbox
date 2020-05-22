@@ -69,7 +69,7 @@ if isempty(depvar)
 end
 
 % depvar classmembership is available, but is it useful?
-if ~isnumeric(depvar.labels{1})
+if ~isnumeric(depvar.labels(1))
     err = MException(['CHI:', mfilename,':InputError'], ...
         'The dependent variable is not numeric.');
     throw(err);

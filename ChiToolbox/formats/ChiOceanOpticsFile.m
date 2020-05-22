@@ -1,36 +1,27 @@
 classdef ChiOceanOpticsFile < ChiAbstractFileFormat
 
-% ChiBiotofFile  File format handler for Biotof spectra and image files
+% ChiOceanOpticsFile  File format handler for Ocean Optics spectra
 %
 % Syntax
-%   myfile = ChiBiotofFile();
-%   myfile = ChiBiotofFile.open();
-%   myfile = ChiBiotofFile.open(filename(s));
+%   myfile = ChiOceanOpticsFile();
+%   myfile = ChiOceanOpticsFile.open();
+%   myfile = ChiOceanOpticsFile.open(filename(s));
 %
 % Description
-%   myfile = ChiBiotofFile() creates an empty object.
+%   myfile = ChiOceanOpticsFile() creates an empty object.
 % 
-%   myfile = ChiBiotofFile.open() opens a dialog box to request filenames
-%   from the user. The selected files are opened and concatenated into a
-%   ChiToFMSSpectrum, ChiToFMSSpectralCollection or ChiMSImage as appropriate.
+%   myfile = ChiOceanOpticsFile.open() opens a dialog box to request
+%   filenames from the user. The selected files are opened and concatenated
+%   into a ChiSpectrum or ChiSpectralCollection.
 % 
-%   myfile = ChiBiotofFile.open(filenames) opens the filenames provided in
-%   a cell array of strings.
+%   myfile = ChiOceanOpticsFile.open(filenames) opens the filenames
+%   provided in a cell array of strings.
 %
-%   This class can read one or more Biotof spectral files (*.dat) or a
-%   single Biotof image file (*.xyt). The file format has the capacity to
-%   hold different types of information. If a single file containing a
-%   spectrum is selected, then myfile is a ChiToFMSSpectrum. If multiple
-%   spectral files are selected, then myfile is a
-%   ChiToFMSSpectralCollection. If a single file containing an image is
-%   selected, then myfile is a ChiMSImage. If multiple image files are
-%   selected, only first is read.
-%
-% Copyright (c) 2018, Alex Henderson.
+% Copyright (c) 2020, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiToFMSSpectrum ChiToFMSSpectralCollection ChiMSImage.
+%   ChiSpectrum ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -39,7 +30,7 @@ classdef ChiOceanOpticsFile < ChiAbstractFileFormat
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 3.0, September 2018
+% Version 1.0, May 2020
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
     
@@ -47,10 +38,15 @@ classdef ChiOceanOpticsFile < ChiAbstractFileFormat
     methods (Static)
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function truefalse = isreadable(filename)
+            
+%             ###########################################################
+            truefalse = false;
+%             return;
+%             ###########################################################
+            
             if iscell(filename)
                 filename = filename{1};
             end
-            truefalse = false;
             % Check extension
             [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
             if ~strcmpi(ext,'.txt')
@@ -83,7 +79,8 @@ classdef ChiOceanOpticsFile < ChiAbstractFileFormat
             
             % If filename(s) are not provided, ask the user
             if ~exist('filenames', 'var')
-                filenames = utilities.getfilenames({ChiOceanOpticsFile.getExtension(), ChiOceanOpticsFile.getFiltername()});
+                filenames = utilities.getfilenames( ...
+                        {'*.txt',  'Ocean Optics Files (*.txt)'});
             end
             
             % Make sure we have a cell array of filenames
@@ -103,24 +100,34 @@ classdef ChiOceanOpticsFile < ChiAbstractFileFormat
             % Open the file(s)
             fileisreadable = true(length(filenames),1);
             
+            % A single file
             if (length(filenames) == 1)
-                [xvals,data,info] = oceanopticstxtfile(filenames{1});
-
-                datatype = 'spectrum';
+                
+                [filepath,name,ext] = fileparts(filenames{1}); %#ok<ASGLU>
                 xlabel = '';
                 xunit = [];
-                ylabel = '';
-                yunit = [];
+                ylabel = 'Intensity';   % Taken from the OceanView 2.0 on-screen display
+                yunit = 'counts';       % Taken from the OceanView 2.0 on-screen display
                 height = 1;
                 width = 1;
-                
-                xaxisinfo = find(strcmpi(info(:,1),'XAxis mode'));
-                if xaxisinfo
-                    xlabel = info{xaxisinfo,2};
-                    if strcmpi(xlabel, 'Wavelengths')   % hack
-                        xlabel = 'wavelength';          % hack
-                        xunit = 'nm';                   % hack
-                    end
+
+                switch ext
+                    case '.txt'
+                        [xvals,data,info] = oceanopticstxtfile(filenames{1});
+                        datatype = 'spectrum';
+
+                        xaxisinfo = find(strcmpi(info(:,1),'XAxis mode'));
+                        if xaxisinfo
+                            xlabel = info{xaxisinfo,2};
+                            if strcmpi(xlabel, 'Wavelengths')   % hack
+                                xlabel = 'wavelength';          % Taken from the OceanView 2.0 on-screen display
+                                xunit = 'nm';                   % Taken from the OceanView 2.0 on-screen display
+                            end
+                        end
+                    otherwise
+                        message = sprintf('Unknown data type (spectrum/collection/image) in %s. ', utilities.pathescape(filenames{i}));
+                        err = MException(['CHI:',mfilename,':InputError'], message);
+                        throw(err);
                 end
                 
                 switch datatype
@@ -128,8 +135,6 @@ classdef ChiOceanOpticsFile < ChiAbstractFileFormat
                         obj = ChiSpectrum(xvals,data,false,xlabel,xunit,ylabel,yunit);
                     case 'spectralcollection'
                         obj = ChiSpectralCollection(xvals,data,false,xlabel,xunit,ylabel,yunit);                        
-                    case 'image'
-                        obj = ChiImage(xvals,data,width,height,false,xlabel,xunit,ylabel,yunit);
                     otherwise
                         message = sprintf('Unknown data type (spectrum/collection/image) in %s. ', utilities.pathescape(filenames{i}));
                         err = MException(['CHI:',mfilename,':InputError'], message);
@@ -145,15 +150,20 @@ classdef ChiOceanOpticsFile < ChiAbstractFileFormat
                         datatype = 'spectrum';
                         xlabel = '';
                         xunit = [];
-                        ylabel = '';
-                        yunit = [];
+                        ylabel = 'Intensity';   % Taken from the OceanView 2.0 on-screen display
+                        yunit = 'counts';       % Taken from the OceanView 2.0 on-screen display
                         height = 1;
                         width = 1;
 
                         xaxisinfo = find(strcmpi(info(:,1),'XAxis mode'));
                         if xaxisinfo
                             xlabel = info{xaxisinfo,2};
+                            if strcmpi(xlabel, 'Wavelengths')   % hack
+                                xlabel = 'wavelength';          % Taken from the OceanView 2.0 on-screen display
+                                xunit = 'nm';                   % Taken from the OceanView 2.0 on-screen display
+                            end
                         end
+                        
                         
                         if (i == 1)
                             % Workaround for broken ChiSpectralCollection.append
@@ -173,13 +183,14 @@ classdef ChiOceanOpticsFile < ChiAbstractFileFormat
                                     throw(err);
                             end
                         end
+                        
                     catch ex %#ok<NASGU>
                         utilities.warningnobacktrace(['Cannot read this file: ', filenames{i}, ' Ignoring.']);
                         fileisreadable(i) = false;
                     end
-
                 end
             end
+            obj.filenames = filenames;
             
         end     % function open
         

@@ -39,6 +39,13 @@ function plsresult = pls(this,varargin)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
+% Do we have the statistics toolbox
+if ~exist('plsregress','file')
+    err = MException(['CHI:',mfilename,':InputError'], ...
+        'The Statistics and Machine Learning Toolbox is required for this function.');
+    throw(err);
+end
+
 % Defaults
 ncomp = 10;
 depvar = [];

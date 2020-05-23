@@ -130,26 +130,32 @@ ymax = limits(1,4);
 
 h = plot([0,0], [0,ymax], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 h = plot([0,0], [0,ymin], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 h = plot([0,xmax], [0,0], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 h = plot([0,xmin], [0,0], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 axis tight
 hold off;
 
 %% Manage data cursor information
-% figurehandle = gcf;
-% cursor = datacursormode(figurehandle);
-% if ~isempty(this.classmembership)
-%     labels = this.classmembership.labels;
-%     if isnumeric(labels)
-%         labels = num2str(labels);
-%     end
-%     plotinfo.linelabels = cellstr(labels);
-% 
-%     set(cursor,'UpdateFcn',{@utilities.datacursor,this,plotinfo});
-% end
+plotinfo = struct;
+plotinfo.xpointlabel = ['PC ', num2str(pcx)];
+plotinfo.ypointlabel = ['PC ', num2str(pcy)];
+plotinfo.xdata = this.scores(:,pcx);
+plotinfo.ydata = this.scores(:,pcy);
+
+if ~isempty(this.classmembership)
+    plotinfo.pointmembershiplabels = this.classmembership.labels;
 end
 
+figurehandle = gcf;
+cursor = datacursormode(figurehandle);
+set(cursor,'UpdateFcn',{@utilities.datacursor_scores_6sf,this,plotinfo});
+    
+end

@@ -137,6 +137,16 @@ classdef ChiClassMembership < ChiBase
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function uniquelabelat = uniquelabelat(this,idx)
+        % Returns the unique label at a given index position
+            if iscell(this.labels)
+                uniquelabelat = this.uniquelabels{idx};
+            else
+                uniquelabelat = this.uniquelabels(idx);
+            end
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         %% Determine some properties
         function output = get.uniquelabels(this)

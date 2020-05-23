@@ -81,9 +81,9 @@ else
 end    
 
 % Percentage confidence
-if isnumeric(varargin{1})
+if (~isempty(varargin) && isnumeric(varargin{1}))
     percentconf = varargin{1};
-    varargin(1) = []; %#ok<NASGU>
+    varargin(1) = []; 
 else
     percentconf = 95;
 end

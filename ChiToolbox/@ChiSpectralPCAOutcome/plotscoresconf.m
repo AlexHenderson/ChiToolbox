@@ -169,6 +169,20 @@ set(h,'HitTest','off'); % Prevent datatips on this line
 axis tight
 hold off;
 
+%% Manage data cursor information
+plotinfo = struct;
+plotinfo.xpointlabel = ['PC ', num2str(pcx)];
+plotinfo.ypointlabel = ['PC ', num2str(pcy)];
+plotinfo.xdata = this.scores(:,pcx);
+plotinfo.ydata = this.scores(:,pcy);
+
+if ~isempty(this.classmembership)
+    plotinfo.pointmembershiplabels = this.classmembership.labels;
+end
+
+figurehandle = gcf;
+cursor = datacursormode(figurehandle);
+set(cursor,'UpdateFcn',{@utilities.datacursor_scores_6sf,this,plotinfo});
 
 end
 

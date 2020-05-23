@@ -68,6 +68,21 @@ if (this.numpcs > 1)
     figure('Name',windowtitle,'NumberTitle','off');
     colours = get(gca,'colororder');
     
+    % Manage data cursor information
+    plotinfo = struct;
+    plotinfo.xpointlabel = ['PC ', num2str(pcx)];
+    plotinfo.ypointlabel = ['PC ', num2str(pcy)];
+    plotinfo.xdata = this.scores(:,pcx);
+    plotinfo.ydata = this.scores(:,pcy);
+
+    if ~isempty(this.classmembership)
+        plotinfo.pointmembershiplabels = this.classmembership.labels;
+    end
+
+    figurehandle = gcf;
+    cursor = datacursormode(figurehandle);
+    set(cursor,'UpdateFcn',{@utilities.datacursor_scores_6sf,this,plotinfo});
+    
     % Check the format of colours
     numcolours = size(colours,1);
     if (this.classmembership.numuniquelabels > numcolours)
@@ -85,6 +100,10 @@ if (this.numpcs > 1)
     title([titlestub, num2str(pcx), ' and ', num2str(pcy)]);
     limits = axis;
     utilities.draw00axes(axis)
+    figurehandle = gcf;
+    cursor = datacursormode(figurehandle);
+    set(cursor,'UpdateFcn',{@utilities.datacursor_scores_6sf,this,plotinfo});
+   
     
     % Now draw separate figures for each class
     % Could put this into a single figure, using subplot, but need to manage
@@ -111,6 +130,9 @@ if (this.numpcs > 1)
         
         % Plot the zero axis lines
         utilities.draw00axes(axis)
+        figurehandle = gcf;
+        cursor = datacursormode(figurehandle);
+        set(cursor,'UpdateFcn',{@utilities.datacursor_scores_6sf,this,plotinfo});
     end
 
 else

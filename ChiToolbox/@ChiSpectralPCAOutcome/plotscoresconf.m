@@ -121,7 +121,7 @@ else
         h = error_ellipse('C',groupcov,'mu',[groupmeanX,groupmeanY],'conf',percentconf/100);
         h.Color = colours(i,:);
         set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-        
+        h.UserData = this.classmembership.uniquelabelat(i);
     end
 %     newtitle = [thetitle, ' (', num2str(percentconf), '% conf)'];
 %     title(newtitle);
@@ -175,6 +175,7 @@ plotinfo.xpointlabel = ['PC ', num2str(pcx)];
 plotinfo.ypointlabel = ['PC ', num2str(pcy)];
 plotinfo.xdata = this.scores(:,pcx);
 plotinfo.ydata = this.scores(:,pcy);
+plotinfo.confidence = percentconf;
 
 if ~isempty(this.classmembership)
     plotinfo.pointmembershiplabels = this.classmembership.labels;

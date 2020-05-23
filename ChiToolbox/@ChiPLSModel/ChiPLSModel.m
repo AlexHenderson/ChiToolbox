@@ -67,6 +67,7 @@ classdef ChiPLSModel < ChiBase
     properties (Dependent = true)
         %% Calculated properties
         xlabel      % Label for the x-axis on loadings and weights plots
+        classmembership      % Dependent variable (Y block) as an instance of ChiClassMembership
     end
     
     methods
@@ -122,6 +123,11 @@ classdef ChiPLSModel < ChiBase
             else
                 xlabel = [this.xlabelname, ' / ', this.xlabelunit, ''];
             end                
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function classmembership = get.classmembership(this)
+            classmembership = this.depvar.clone();                
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

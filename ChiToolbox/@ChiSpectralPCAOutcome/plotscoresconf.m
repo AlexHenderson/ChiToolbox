@@ -156,12 +156,16 @@ ymax = limits(1,4);
 
 h = plot([0,0], [0,ymax], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 h = plot([0,0], [0,ymin], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 h = plot([0,xmax], [0,0], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 h = plot([0,xmin], [0,0], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 axis tight
 hold off;
 

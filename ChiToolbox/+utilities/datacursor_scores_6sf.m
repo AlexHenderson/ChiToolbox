@@ -24,7 +24,7 @@ plotinfo = varargin{2};
 if isa(event_obj.Target, 'matlab.graphics.chart.primitive.Line')
     % We are on a confidence line, not a data point
     output_txt = {['Confidence', formatText(event_obj,[num2str(plotinfo.confidence), '%'])]};
-    if ~isempty(chiobj.classmembership)
+    if isfield(plotinfo,'pointmembershiplabels')
         output_txt{end+1} = ['label', formatText(event_obj,event_obj.Target.UserData)];
     end
 else
@@ -66,7 +66,7 @@ else
     end
 
     % If the data point is labelled, show the label
-    if ~isempty(chiobj.classmembership)
+    if isfield(plotinfo,'pointmembershiplabels')
         output_txt{end+1} = ['label', formatText(event_obj,event_obj.Target.DisplayName)];
 %         output_txt{end+1} = ['label', formatText(event_obj,utilities.tostring(chiobj.classmembership.uniquelabelat(patchidx)))];
     end

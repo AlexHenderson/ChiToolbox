@@ -80,6 +80,22 @@ if (this.numcvs > 1)
     title([titlestub, num2str(cvx), ' and ', num2str(cvy), ' (',num2str(this.pcs), ' pcs)']);
     limits = axis;
     utilities.draw00axes(axis)
+
+    % Manage data cursor information
+    plotinfo = struct;
+    plotinfo.xpointlabel = ['CV ', num2str(cvx)];
+    plotinfo.ypointlabel = ['CV ', num2str(cvy)];
+    plotinfo.xdata = this.scores(:,cvx);
+    plotinfo.ydata = this.scores(:,cvy);
+
+    if ~isempty(this.pca.classmembership)
+        plotinfo.pointmembershiplabels = this.pca.classmembership.labels;
+    end
+    
+    % Set the datacursor for this plot
+    figurehandle = gcf;
+    cursor = datacursormode(figurehandle);
+    set(cursor,'UpdateFcn',{@utilities.datacursor_scores_6sf,this,plotinfo});
     
     % Now draw separate figures for each class
     % Could put this into a single figure, using subplot, but need to manage
@@ -106,6 +122,12 @@ if (this.numcvs > 1)
         
         % Plot the zero axis lines
         utilities.draw00axes(axis)
+        
+        % Set the datacursor for this plot
+        figurehandle = gcf;
+        cursor = datacursormode(figurehandle);
+        set(cursor,'UpdateFcn',{@utilities.datacursor_scores_6sf,this,plotinfo});
+
     end
 
 else

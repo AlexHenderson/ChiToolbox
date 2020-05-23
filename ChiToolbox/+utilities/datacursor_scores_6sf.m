@@ -48,7 +48,7 @@ end
 
 % If the data point is labelled, show the label
 if ~isempty(chiobj.classmembership)
-    output_txt{end+1} = ['label', formatText(event_obj,utilities.tostring(chiobj.classmembership.labelat(patchidx)))];
+    output_txt{end+1} = ['label', formatText(event_obj,utilities.tostring(chiobj.classmembership.uniquelabelat(patchidx)))];
 end
 
 end % function datacursor_scores_6sf

@@ -55,11 +55,22 @@ if argposition
 end
 
 %% Perform kmeans
-    idx = kmeans(this.data,k,varargin{:});
+
+    seed = 'k-means++'; % MATLAB default
     
-    idx = reshape(idx,this.ypixels,this.xpixels);
+    [idx,C,sumd,D] = kmeans(this.data,k,varargin{:}); %#ok<ASGLU>
     
-    obj = ChiClusterOutcome(idx,'kmeans');
+    clusters = reshape(idx,this.ypixels,this.xpixels);
+    
+%     clusters = ChiPicture(idx,this.xpixels,this.ypixels);
+    
+    collectionclass = str2func(this.spectralcollectionclassname);
+    centroids = collectionclass(this);
+    centroids.data = C;
+    centroids.filenames = this.filenames;
+    centroids.history.add('kmeans centroids');
+    
+    obj = ChiClusterOutcome(clusters,centroids,'kmeans',seed);
     
     if vis
         obj.show;

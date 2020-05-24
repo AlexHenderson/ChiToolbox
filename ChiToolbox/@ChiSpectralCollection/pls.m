@@ -12,8 +12,8 @@ function plsresult = pls(this,varargin)
 %   spectra in this collection. Uses plsregress internally. The data (both
 %   x and y blocks) are mean centered internally. By default the current
 %   classmembership is used as the dependent variable (Y block) and ncomp =
-%   10 for the number of pls components to calculate. The output is stored
-%   in a ChiPLSModel object.
+%   numspectra-1 for the number of pls components to calculate. The output
+%   is stored in a ChiPLSModel object.
 %
 %   plsresult = pls(____,ncomp) uses ncomp for the number of pls
 %   components to calculate. 
@@ -39,15 +39,27 @@ function plsresult = pls(this,varargin)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
+% Do we have the statistics toolbox
+if ~exist('plsregress','file')
+    err = MException(['CHI:',mfilename,':InputError'], ...
+        'The Statistics and Machine Learning Toolbox is required for this function.');
+    throw(err);
+end
+
 % Defaults
-ncomp = 10;
+ncomp = this.numspectra - 1;
 depvar = [];
 
 % Has a number of components been supplied?
 argposition = find(cellfun(@(x) isscalar(x) , varargin));
 if argposition
-    ncomp = varargin{argposition};
+    tempncomp = varargin{argposition};
     varargin(argposition) = [];
+    
+    if (tempncomp > ncomp)
+        % Number of components cannot exceed the number of spectra
+        utilities.warningnobacktrace(['Requested number of components greater than number of spectra - 1. Setting ncomp = ', num2str(ncomp), '.']);
+    end        
 end
 
 % Has depvar been provided as a ChiClassMembership object

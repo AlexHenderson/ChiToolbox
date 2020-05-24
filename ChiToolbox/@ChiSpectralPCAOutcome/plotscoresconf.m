@@ -81,9 +81,9 @@ else
 end    
 
 % Percentage confidence
-if isnumeric(varargin{1})
+if (~isempty(varargin) && isnumeric(varargin{1}))
     percentconf = varargin{1};
-    varargin(1) = []; %#ok<NASGU>
+    varargin(1) = []; 
 else
     percentconf = 95;
 end
@@ -121,7 +121,7 @@ else
         h = error_ellipse('C',groupcov,'mu',[groupmeanX,groupmeanY],'conf',percentconf/100);
         h.Color = colours(i,:);
         set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-        
+        h.UserData = this.classmembership.uniquelabelat(i);
     end
 %     newtitle = [thetitle, ' (', num2str(percentconf), '% conf)'];
 %     title(newtitle);
@@ -156,15 +156,34 @@ ymax = limits(1,4);
 
 h = plot([0,0], [0,ymax], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 h = plot([0,0], [0,ymin], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 h = plot([0,xmax], [0,0], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 h = plot([0,xmin], [0,0], axiscolour);
 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(h,'HitTest','off'); % Prevent datatips on this line
 axis tight
 hold off;
 
+%% Manage data cursor information
+plotinfo = struct;
+plotinfo.xpointlabel = ['PC ', num2str(pcx)];
+plotinfo.ypointlabel = ['PC ', num2str(pcy)];
+plotinfo.xdata = this.scores(:,pcx);
+plotinfo.ydata = this.scores(:,pcy);
+plotinfo.confidence = percentconf;
+
+if ~isempty(this.classmembership)
+    plotinfo.pointmembershiplabels = this.classmembership.labels;
+end
+
+figurehandle = gcf;
+cursor = datacursormode(figurehandle);
+set(cursor,'UpdateFcn',{@utilities.datacursor_scores_6sf,this,plotinfo});
 
 end
 

@@ -119,16 +119,23 @@ axis tight
 hold off;
 
 %% Manage data cursor information
-% figurehandle = gcf;
-% cursor = datacursormode(figurehandle);
-% if ~isempty(this.classmembership)
-%     labels = this.classmembership.labels;
-%     if isnumeric(labels)
-%         labels = num2str(labels);
-%     end
-%     plotinfo.linelabels = cellstr(labels);
-% 
-%     set(cursor,'UpdateFcn',{@utilities.datacursor,this,plotinfo});
-% end
+plotinfo = struct;
+plotinfo.xpointlabel = ['PLS ', num2str(compx)];
+plotinfo.ypointlabel = ['PLS ', num2str(compy)];
+plotinfo.xdata = this.xscores(:,compx);
+plotinfo.ydata = this.xscores(:,compy);
+
+if ~isempty(this.classmembership)
+    % Convert numeric labels to char
+    labels = cellfun(@num2str,num2cell(this.classmembership.labels(:)),'uniformoutput',false);
+    % Append the classmembership title
+    labelswithtitle = cellfun(@(s)[s,' ',this.depvar.title],labels,'UniformOutput',false);
+    % Send to datacursor
+    plotinfo.pointmembershiplabels = labelswithtitle;
 end
 
+figurehandle = gcf;
+cursor = datacursormode(figurehandle);
+set(cursor,'UpdateFcn',{@utilities.datacursor_scores_6sf,this,plotinfo});
+
+end % function plotxscores

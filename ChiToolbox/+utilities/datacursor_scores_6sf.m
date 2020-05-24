@@ -67,8 +67,13 @@ else
 
     % If the data point is labelled, show the label
     if isfield(plotinfo,'pointmembershiplabels')
-        output_txt{end+1} = ['label', formatText(event_obj,event_obj.Target.DisplayName)];
-%         output_txt{end+1} = ['label', formatText(event_obj,utilities.tostring(chiobj.classmembership.uniquelabelat(patchidx)))];
+        txt = plotinfo.pointmembershiplabels(matching);
+        if iscell(txt)
+            txt = cell2mat(txt);
+        end
+        if ~isempty(txt)
+            output_txt{end+1} = ['label', formatText(event_obj,txt)];
+        end
     end
 end
 

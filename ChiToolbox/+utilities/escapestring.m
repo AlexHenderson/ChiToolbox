@@ -3,7 +3,7 @@ function output = escapestring(input)
 % escapestring  Replaces single slash (\) with double slash (\\)
 % 
 % Syntax
-%   output = escapestring(input) replaces all occurences of a single
+%   output = escapestring(input) replaces all occurrences of a single
 %   backslash in input with a double backslash. 
 %   
 % Copyright (c) 2019, Alex Henderson.

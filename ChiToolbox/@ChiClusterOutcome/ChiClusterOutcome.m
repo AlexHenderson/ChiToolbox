@@ -32,12 +32,15 @@ classdef ChiClusterOutcome < ChiBase
     
     
     properties
-        clusters    % Outcome of cluster algorithm
+        clusters    % Outcome of cluster algorithm as matrix of cluster numbers
+        centroids   % Centroids of each cluster as a ChiSpectralCollection of the same type as the source
         algorithm   % Name of cluster algorithm employed
+        seed        % Name of algorithm used to generate initial seeds for clusters
     end
 
     properties (Dependent)
         numclusters     % Number of clusters
+        k               % Number of clusters
     end
     
     methods
@@ -46,22 +49,22 @@ classdef ChiClusterOutcome < ChiBase
         % ChiClusterOutcome  Class to manage the outcome of clustering algorithms.
         %
         % Syntax
-        %   outcome = ChiClusterOutcome(clusterdata);
-        %   outcome = ChiClusterOutcome(clusterdata,algorithm);
+        %   outcome = ChiClusterOutcome(clusters,centroids,algorithm,seed);
         %
         % Description
-        %   outcome = ChiClusterOutcome(clusterdata) creates a wrapper for the
-        %   output of a clustering algorithm, for example kmeans. clusterdata
-        %   contains a matrix of the cluster identification number for each pixel. 
+        %   outcome = ChiClusterOutcome(clusters,centroids,algorithm,seed)
+        %   creates a wrapper for the output of a clustering algorithm; for
+        %   example, kmeans. clusters is a ChiPicture representing each
+        %   cluster. centroids is a ChiSpectralCollection of the same type
+        %   as the source data, containing the centroids of each cluster.
+        %   algorithm is the name of the clustering algorithm employed.
+        %   seed is the algorithm for initiating the clustering process.
         %
-        %   outcome = ChiClusterOutcome(clusterdata,algorithm) includes a string
-        %   containing the name of the algorithm employed.
-        %
-        % Copyright (c) 2019, Alex Henderson.
+        % Copyright (c) 2019-2020, Alex Henderson.
         % Licenced under the GNU General Public License (GPL) version 3.
         %
         % See also 
-        %   kmeans
+        %   kmeans ChiSpectralCollection colormap
 
         % Contact email: alex.henderson@manchester.ac.uk
         % Licenced under the GNU General Public License (GPL) version 3
@@ -73,10 +76,12 @@ classdef ChiClusterOutcome < ChiBase
         % The latest version of this file is available on Bitbucket
         % https://bitbucket.org/AlexHenderson/chitoolbox
             
-            % args: clusters,algorithm
+            % args: clusters,centroids,algorithm,seed
             
             % Defaults
+            this.centroids = [];
             this.algorithm = 'unspecified';
+            this.seed = 'unspecified';
 
             % Parse the arguments
             switch nargin
@@ -85,23 +90,36 @@ classdef ChiClusterOutcome < ChiBase
                     this.clusters = varargin{1};
                 case 2
                     this.clusters = varargin{1};
-                    this.algorithm = varargin{2};
+                    this.centroids = varargin{2}.clone;
+                case 3
+                    this.clusters = varargin{1};
+                    this.centroids = varargin{2}.clone;
+                    this.algorithm = varargin{3};
+                case 4
+                    this.clusters = varargin{1};
+                    this.centroids = varargin{2}.clone;
+                    this.algorithm = varargin{3};
+                    this.seed = varargin{4};
                 otherwise
                     err = MException(['CHI:',mfilename,':showError'], ...
                         'No data to show.');
                     throw(err);
             end
                     
-                    
         end
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function numclusters = get.numclusters(this)
             numclusters = max(max(this.clusters));
-        end                
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function k = get.k(this)
+            k = this.numclusters();
+        end
+        
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
     end
     
     
 end
-

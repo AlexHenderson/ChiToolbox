@@ -72,9 +72,23 @@ classdef ChiMSSpectralCollection < ChiSpectralCollection & ChiMSCharacter
 %                         superClassArgs{9} = input.filenames;
 %                         superClassArgs{10} = input.history.clone();
                     else
-                        err = MException(['CHI:',mfilename,':InputError'], ...
-                            'Input not understood.');
-                        throw(err);
+                        if isa(varargin{1},'ChiImage')
+                            input = varargin{1};
+                            superClassArgs{1} = input.xvals;
+                            superClassArgs{2} = input.data;
+                            superClassArgs{3} = input.reversex;
+                            superClassArgs{4} = input.xlabelname;
+                            superClassArgs{5} = input.xlabelunit;
+                            superClassArgs{6} = input.ylabelname;
+                            superClassArgs{7} = input.ylabelunit;
+%                                 if ~isempty(s.classmembership)
+%                                     superClassArgs{8} = s.classmembership.clone();
+%                                 end
+                        else
+                            err = MException(['CHI:',mfilename,':InputError'], ...
+                                'Input not understood.');
+                            throw(err);
+                        end
                     end
                 case 2
                     superClassArgs{3} = false;          % reversex = ascending

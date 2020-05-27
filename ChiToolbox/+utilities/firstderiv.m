@@ -37,7 +37,7 @@ function [deriv,xvals,windowLength,endPoints] = firstderiv(xvals,data,windowLeng
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   sgolay secondderiv.
+%   sgolay smooth secondderiv.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

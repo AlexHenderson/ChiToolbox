@@ -4,7 +4,8 @@ function obj = firstderiv(this,varargin)
 %
 % Syntax
 %   firstderiv(windowLength);
-%   firstderiv(endPoints);
+%   firstderiv(windowLength,endPoints);
+%   deriv = firstderiv(____);
 %
 % Description
 %   firstderiv(windowLength) calculates the first derivative of data
@@ -18,6 +19,9 @@ function obj = firstderiv(this,varargin)
 %   at each end of the output are deleted. endPoints can be either 'same'
 %   (default) or 'valid'.
 % 
+%   deriv = firstderiv(____) clones the data then performs a first
+%   derivative on the clone. The original data is not modified.
+% 
 %   This function calculates a first derivative while performing a
 %   Savitzky-Golay smooth at the same time. data is typically smoothed to
 %   prevent noise in the data from swamping the result. The windowLength
@@ -29,12 +33,13 @@ function obj = firstderiv(this,varargin)
 %   taken not to over-interpret the ends of the data range. For example; if
 %   you have a 7 point smooth you will lose (or have approximated) 3 points
 %   from either end of the data.
+%   Uses Andrew Horchler's sgolayfilt function to compute the filter
 %
 % Copyright (c) 2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   sgolay secondderiv.
+%   sgolay smooth secondderiv.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -66,7 +71,7 @@ else
         this.ylabelunit = [this.ylabelunit, '/', this.xlabelunit];
     end
     
-    message = 'first derivative';
+    message = 'first derivative (Savitzky-Golay)';
     message = [message, ': window length = ', num2str(windowLength)];
     message = [message, ', end points = ', endPoints];
     this.history.add(message);

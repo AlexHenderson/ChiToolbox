@@ -1,31 +1,30 @@
-function [deriv,xvals,windowLength,endPoints] = secondderiv(xvals,data,windowLength,varargin)
+function [result,xvals,windowLength,endPoints] = smooth(xvals,data,windowLength,varargin)
 
-% secondderiv  Calculates the second derivative of the data
+% smooth  Smooths the data using the Savitzky-Golay method
 %
 % Syntax
-%   [deriv,xvals,windowLength,endPoints] = secondderiv(xvals,data,windowLength);
-%   [deriv,xvals,windowLength,endPoints] = secondderiv(xvals,data,windowLength,endPoints);
+%   [smoothed,xvals,windowLength,endPoints] = smooth(xvals,data,windowLength);
+%   [smoothed,xvals,windowLength,endPoints] = smooth(xvals,data,windowLength,endPoints);
 %
 % Description
-%   [deriv,xvals,windowLength,endPoints] =
-%   secondderiv(xvals,data,windowLength) calculates the second derivative
-%   of data using the Savitzky-Golay method with a smoothing window of
+%   [smoothed,xvals,windowLength,endPoints] =
+%   smooth(xvals,data,windowLength) calculates a smoothed version of the
+%   data using the Savitzky-Golay method with a smoothing window of
 %   windowLength. windowLength must be an odd number. (windowLength-1)/2
 %   points at each end of the output are approximated by default (endPoints
 %   = 'same').
 % 
-%   [deriv,xvals,windowLength,endPoints] =
-%   secondderiv(xvals,data,windowLength,endPoints) if endPoints is 'valid'
-%   deriv only contains the valid portion of the data; (windowLength-1)/2
-%   points at each end of the output are deleted. The xvals output is also
-%   cropped in the same manner. endPoints can be either 'same' (default) or
-%   'valid'.
+%   [smoothed,xvals,windowLength,endPoints] =
+%   smooth(xvals,data,windowLength,endPoints) if endPoints is 'valid'
+%   smoothed only contains the valid portion of the data;
+%   (windowLength-1)/2 points at each end of the output are deleted. The
+%   xvals output is also cropped in the same manner. endPoints can be
+%   either 'same' (default) or 'valid'.
 % 
-%   This function calculates a second derivative while performing a
-%   Savitzky-Golay smooth at the same time. data is typically smoothed to
-%   prevent noise in the data from swamping the result. The windowLength
-%   value determines the degree of smoothing - a bigger value means more
-%   smoothing.
+%   This function calculates a smoothed version of the data using the
+%   Savitzky-Golay method. data is typically smoothed to prevent noise in
+%   the data from swamping the result. The windowLength value determines
+%   the degree of smoothing - a bigger value means more smoothing.
 %   Note that smoothing means you lose points from either end of the data.
 %   In this function the 'lost' points are approximated such that the
 %   output has the same dimensions as the input. Care must therefore be
@@ -34,11 +33,11 @@ function [deriv,xvals,windowLength,endPoints] = secondderiv(xvals,data,windowLen
 %   from either end of the data.
 %   Uses Andrew Horchler's sgolayfilt function to compute the filter
 %
-% Copyright (c) 2018, Alex Henderson.
+% Copyright (c) 2020, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   sgolay smooth firstderiv.
+%   sgolay firstderiv secondderiv.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -47,13 +46,9 @@ function [deriv,xvals,windowLength,endPoints] = secondderiv(xvals,data,windowLen
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 2.0, March 2018
+% Version 1.0, May 2020
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
-
-%   (c) Alex Henderson Dec 2007
-%   Modified in 2018 to use Andrew Horchler's sgolayfilt function and
-%   convolution
 
 
 valid = false;
@@ -70,20 +65,18 @@ N = 4;                          % Order of polynomial fit
 F = windowLength;               % Window length
 G = horchler.sgolayfilt(N,F);   % Calculate S-G coefficients
 
-dx = (xvals(end)-xvals(1)) / (length(xvals)-1);
-
 if valid
     dropPoints = (windowLength-1)/2;
     xvals = xvals(dropPoints+1 : (end-dropPoints));
-    deriv = zeros(size(data,1),length(xvals));
+    result = zeros(size(data,1),length(xvals));
 else
-    deriv = zeros(size(data));
+    result = zeros(size(data));
 end
 
 for i = 1:size(data,1)
     if valid
-        deriv(i,:) = (2 / dx.^2) * conv(data(i,:), G(:,3).', endPoints);
+        result(i,:) = conv(data(i,:), G(:,1).', endPoints);
     else
-        deriv(i,:) = (2 / dx.^2) * conv(data(i,:), G(:,3).', endPoints);
+        result(i,:) = conv(data(i,:), G(:,1).', endPoints);
     end
 end

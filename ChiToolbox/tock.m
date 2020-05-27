@@ -1,10 +1,12 @@
-function varargout = tock(tstart)
+function varargout = tock(varargin)
 
 % tock  An augmented version of toc. 
 %
 % Syntax
 %   [elapsed,seconds] = tock();
 %   [elapsed,seconds] = tock(tstart);
+%   [elapsed,seconds] = tock(____,'prepend',prependtext);
+%   [elapsed,seconds] = tock(____,'append',appendtext);
 %
 % Description
 %   [elapsed,seconds] = tock() is essentially the same as the built-in toc function,
@@ -16,7 +18,13 @@ function varargout = tock(tstart)
 %   [elapsed,seconds] = tock(tstart) reports the time elapsed since the
 %   specific tic command that generated tstart.
 %
-% Copyright (c) 2017-2018, Alex Henderson.
+%   [elapsed,seconds] = tock(____,'prepend',prependtext) prepends the
+%   prependtext to the output string.
+% 
+%   [elapsed,seconds] = tock(____,'append',appendtext) appends the
+%   appendtext to the output string.
+% 
+% Copyright (c) 2017-2020, Alex Henderson.
 % Licenced under the GNU Lesser General Public License (LGPL) version 3.
 %
 % See also 
@@ -29,19 +37,42 @@ function varargout = tock(tstart)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 2.0, June 2018
+% Version 3.0, May 2020
 
+
+%% Defaults
+prependtext = 'Elapsed time: ';
+appendtext = '.';
+
+%% Manage arguments
+argposition = find(cellfun(@(x) strcmpi(x, 'prepend') , varargin));
+if argposition
+    prependtext = [varargin{argposition + 1}, ' '];
+    varargin(argposition + 1) = [];
+    varargin(argposition) = [];
+end
+
+argposition = find(cellfun(@(x) strcmpi(x, 'append') , varargin));
+if argposition
+    appendtext = [' ', varargin{argposition + 1}, '.'];
+    varargin(argposition + 1) = [];
+    varargin(argposition) = []; %#ok<NASGU>
+end
+
+%% Other arguments
 if exist('tstart','var')
     toc_output = toc(tstart);
 else
     toc_output = toc();
 end
 
+%% Convert seconds into sensible duration units
 elapsed = durationString(toc_output);
 
+%% Determine outputs
 switch nargout
     case 0
-        disp(['Elapsed time: ', elapsed, '.']);
+        disp([prependtext, elapsed, appendtext]);
     case 1
         varargout{1} = elapsed;
     case 2
@@ -50,5 +81,5 @@ switch nargout
     otherwise
         varargout{1} = elapsed;
         varargout{2} = toc_output;
-        disp(['Elapsed time: ', elapsed, '.']);
+        disp([prependtext, elapsed, appendtext]);
 end

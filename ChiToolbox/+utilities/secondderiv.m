@@ -32,12 +32,13 @@ function [deriv,xvals,windowLength,endPoints] = secondderiv(xvals,data,windowLen
 %   taken not to over-interpret the ends of the data range. For example; if
 %   you have a 7 point smooth you will lose (or have approximated) 3 points
 %   from either end of the data.
+%   Uses Andrew Horchler's sgolayfilt function to compute the filter
 %
 % Copyright (c) 2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   sgolay firstderiv.
+%   sgolay smooth firstderiv.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

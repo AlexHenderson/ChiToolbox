@@ -4,7 +4,8 @@ function obj = secondderiv(this,varargin)
 %
 % Syntax
 %   secondderiv(windowLength);
-%   secondderiv(endPoints);
+%   secondderiv(windowLength,endPoints);
+%   deriv = secondderiv(____);
 %
 % Description
 %   secondderiv(windowLength) calculates the second derivative of data
@@ -18,6 +19,9 @@ function obj = secondderiv(this,varargin)
 %   at each end of the output are deleted. endPoints can be either 'same'
 %   (default) or 'valid'.
 % 
+%   deriv = secondderiv(____) clones the data then performs a second
+%   derivative on the clone. The original data is not modified.
+% 
 %   This function calculates a second derivative while performing a
 %   Savitzky-Golay smooth at the same time. data is typically smoothed to
 %   prevent noise in the data from swamping the result. The windowLength
@@ -29,12 +33,13 @@ function obj = secondderiv(this,varargin)
 %   taken not to over-interpret the ends of the data range. For example; if
 %   you have a 7 point smooth you will lose (or have approximated) 3 points
 %   from either end of the data.
+%   Uses Andrew Horchler's sgolayfilt function to compute the filter
 %
 % Copyright (c) 2018, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   sgolay firstderiv.
+%   sgolay smooth firstderiv.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -66,7 +71,7 @@ else
         this.ylabelunit = [this.ylabelunit, '/(', this.xlabelunit, ')^2'];
     end
 
-    message = 'second derivative';
+    message = 'second derivative (Savitzky-Golay)';
     message = [message, ': window length = ', num2str(windowLength)];
     message = [message, ', end points = ', endPoints];
     this.history.add(message);

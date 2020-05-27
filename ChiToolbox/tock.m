@@ -54,7 +54,7 @@ end
 
 argposition = find(cellfun(@(x) strcmpi(x, 'append') , varargin));
 if argposition
-    appendtext = [' ', varargin{argposition + 1}, '.'];
+    appendtext = ['. ', varargin{argposition + 1}, ''];
     varargin(argposition + 1) = [];
     varargin(argposition) = []; %#ok<NASGU>
 end

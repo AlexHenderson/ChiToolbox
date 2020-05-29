@@ -1,49 +1,43 @@
-function [cmap,previouscolormap] = ChiSequentialColormap(varargin)
+function [cmap,previouscolormap,scheme] = ChiSequentialColormap(varargin)
 
 % ChiSequentialColormap  Produces a colormap generated using Cynthia Brewer's colormap generator
 %
 % Syntax
-%   [cmap,previouscolormap] = ChiSequentialColormap();
+%   [cmap,previouscolormap,scheme] = ChiSequentialColormap();
 %   [____] = ChiSequentialColormap(____, numlevels);
 %   [____] = ChiSequentialColormap(____, colourscheme);
 %   [____] = ChiSequentialColormap(____, 'reverse');
+%   [____] = ChiSequentialColormap(____, 'view');
 %
 % Description
-%   [cmap,previouscolormap] = ChiSequentialColormap() develops a colormap in
-%   cmap that runs from magenta through black to green with 256 levels
-%   and where each is the cube root of the linear value (rootvalue == 3).
-%   previouscolormap is the previous colormap :-)
+%   [cmap,previouscolormap,scheme] = ChiSequentialColormap() exposes Cynthia 
+%   Brewer's colormaps using 'Blues' with 256 levels (white to blue) as a
+%   default. The current colormap is returned in previouscolormap. The name
+%   of the selected colormap is returned in scheme. 
 % 
-%   [____] = ChiSequentialColormap(____, 'levels',numlevels) produces a
-%   colormap with numlevels.
+%   [____] = ChiSequentialColormap(____, numlevels) produces a colormap
+%   with numlevels steps.
 %
-%   [____] = ChiSequentialColormap(____, 'root',rootvalue) uses rootvalue to
-%   determine the nth root.
+%   [____] = ChiSequentialColormap(____, colourscheme) uses Cynthia
+%   Brewer's colormap specified by colourscheme. 
+% 
+%   [____] = ChiSequentialColormap(____, 'reverse') changes the direction
+%   of the colormap. By default the colormap is not reversed. 
+% 
+%   [____] = ChiSequentialColormap(____, 'view') opens a figure to show all
+%   possible colour spaces. When the window is closed, cmap,
+%   previouscolormap and scheme contain the selected options.
 % 
 % Notes
-%   Initially a colormap is produced where there is a linear drop in
-%   magenta, from 1 to 0 at the halfway point, whereupon it continues at 0.
-%   Green is initially 0 until the halfway point then it increases linearly
-%   to 1. Example: 
-%     figure; plot(ChiSequentialColormap('root',1)); axis tight
-%   
-%   For principal components analysis, the main usage of a bimodal
-%   colormap, many of the values are around the midpoint. Therefore, the
-%   images appears very dark. Here we use the cube root of the colormap to
-%   reduce the darkness of the values near the midpoint and therefore
-%   enhance the differences in the data. Now there is no longer a linear
-%   relationship between colour and intensity (principal component score),
-%   but the images are more easily visualised. Example:
-%     figure; plot(ChiSequentialColormap()); axis tight
+%   Cynthia Brewer's website http://colorbrewer2.org/ is a tremendous
+%   resource for developing appropriate colour spaces that can be
+%   configured to be colourblind safe, print friendly and photocopy safe. 
 % 
-%   The choice of magenta and green is to assist those users with red/green
-%   colour visual deficiency, sometimes called colour blindness. 
-% 
-% Copyright (c) 2014-2019, Alex Henderson.
+% Copyright (c) 2020, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   colormap nthroot.
+%   colormap brewermap brewermap_view.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -61,9 +55,21 @@ levels = 256;
 scheme = 'Blues';
 reverse = '';   % Not reversed, '*' means reversed
 
-%% Parse command line
+%% Parse command line to see if we're in interactive mode
 if nargin
-    % Check for reverse text first since this is a string that is not a
+    % Check for 'view' first since this is a different way of operating
+    % this function
+    argposition = find(cellfun(@(x) strcmpi(x, 'view') , varargin));
+    if argposition
+        previouscolormap = colormap;
+        [cmap,scheme] = brewermap_view();
+        return
+    end
+end
+
+%% If not interactive mode, parse command line again
+if nargin
+    % Next check for reverse text since this is a string that is not a
     % colour space
     argposition = find(cellfun(@(x) strcmpi(x, 'reverse') , varargin));
     if argposition
@@ -91,18 +97,25 @@ if nargin
         end
     end
 
-    % Check that the colour scheme is one oferred by Cindy Brewer
+    % If the user provided a reverse colormap, remove the asterisk to check
+    % the colormap exists, then flag it to be reversed later. 
+    if (scheme(1) == '*')
+        scheme = scheme(2:end);
+        reverse = '*';
+    end
+    
+    % Check that the colour scheme is one offered by Cindy Brewer
     schemes = brewermap('list');
-    schemeindex = find(ismember(lower(schemes), lower(scheme)));
+    schemeindex = find(ismember(lower(schemes), lower(scheme)), 1);
     if isempty(schemeindex)
         err = MException(['CHI:',mfilename,':InputError'], ...
-            'Colour scheme not recognised.');
+            'Colour scheme not recognised. \nTo see the options try: \n[cmap,previouscolormap,scheme] = ChiSequentialColormap(''view'');');
         throw(err);
     end
-        
+    
     if ~isempty(varargin)
         err = MException(['CHI:',mfilename,':InputError'], ...
-            'Some parameters wer not interpreted.');
+            'Some parameters were not interpreted.');
         throw(err);
     end
 end

@@ -83,7 +83,7 @@ if nargin
 
     if ~isempty(varargin)
         err = MException(['CHI:',mfilename,':InputError'], ...
-            'Some parameters wer not interpreted.');
+            'Some parameters were not interpreted.');
         throw(err);
     end
 end

@@ -68,6 +68,18 @@ classdef (Abstract) ChiAbstractSpectralCollection < ChiBase
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function result = issparse(this)
+        % Determine whether the data is stored as a sparse matrix
+            result = issparse(this.data);
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function result = isfull(this)
+        % Determine whether the data is stored as a full (dense) matrix
+            result = ~issparse(this.data);
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
     end
     

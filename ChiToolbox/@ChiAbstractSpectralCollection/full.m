@@ -15,7 +15,7 @@ function obj = full(varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   full.
+%   full sparse.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -37,11 +37,18 @@ if nargout
     command = [mfilename, '(obj,varargin{2:end});'];
     eval(command);  
 else
-    % We are expecting to modify this object in situ
-    
-    this.data = full(this.data);
-    message = 'Data made full';
-    this.history.add(message);
+    try
+        this.data = full(this.data);
+        message = 'Data made full';
+        this.history.add(message);
+    catch ex
+        if (strcmp(ex.identifier,'MATLAB:array:SizeLimitExceeded'))
+            disp('Not enough memory available to make data full.');
+            disp('Try truncating the spectra (eg. keeprange) to reduce the number of channels.')
+        end
+        rethrow(ex);
+    end
+        
 end
 
 end

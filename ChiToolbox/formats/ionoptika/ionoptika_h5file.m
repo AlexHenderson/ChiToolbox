@@ -40,7 +40,7 @@ function [mass,data,height,width,layers,filename,xlabel,xunit,ylabel,yunit,imzml
 %   channel. 
 %
 %   [____] = ionoptika_h5file(____,'combine',numchanstocombine) sums
-%   together numchanstocombine time channels, thus reducing teh mass
+%   together numchanstocombine time channels, thus reducing the mass
 %   resolution. 
 % 
 % Notes
@@ -48,7 +48,7 @@ function [mass,data,height,width,layers,filename,xlabel,xunit,ylabel,yunit,imzml
 %   together.
 %   Where a mass limit is out of range, the actual mass limit will be used.
 %   Where combine is used and the value would result in the final channel
-%   of teh output being composed of less than numchanstocombine in the
+%   of the output being composed of less than numchanstocombine in the
 %   original data, the last channel is omitted. 
 %   Depth profiles (z-axis) are not handled yet.     
 %

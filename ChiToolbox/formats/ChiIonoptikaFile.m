@@ -27,7 +27,7 @@ classdef ChiIonoptikaFile < ChiAbstractFileFormat
 %   mass channel.
 %
 %   myfile = ChiIonoptikaFile.open(____,'combine',numchanstocombine) sums
-%   together numchanstocombine time channels, thus reducing teh mass
+%   together numchanstocombine time channels, thus reducing the mass
 %   resolution.
 % 
 % Copyright (c) 2017-2019, Alex Henderson.

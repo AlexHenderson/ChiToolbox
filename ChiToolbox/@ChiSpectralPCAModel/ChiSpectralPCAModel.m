@@ -1,6 +1,6 @@
-classdef ChiSpectralPCAOutcome < ChiBase
+classdef ChiSpectralPCAModel < ChiBase
     
-% ChiSpectralPCAOutcome
+% ChiSpectralPCAModel
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
     properties
@@ -24,7 +24,7 @@ classdef ChiSpectralPCAOutcome < ChiBase
     
     methods
         %% Constructor
-        function this = ChiSpectralPCAOutcome(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex,varargin)
+        function this = ChiSpectralPCAModel(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex,varargin)
             % Create an instance of ChiSpectralPCAOutcome with given parameters
             
             argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));

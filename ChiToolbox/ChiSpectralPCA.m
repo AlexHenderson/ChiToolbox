@@ -2,7 +2,7 @@ function output = ChiSpectralPCA(input)
 
 % ChiSpectralPCA Principal Components Analysis
 % usage:
-%     output = ChiSpectralPCAOutcome;
+%     output = ChiSpectralPCAModel;
 %
 % input:
 %     data - ChiSpectralCollection or ChiImage object
@@ -47,7 +47,7 @@ end
 
 [pcloadings, pcscores, pcvariances, pcexplained] = utilities.chi_pca(input.data); 
 
-output = ChiSpectralPCAOutcome(pcscores,pcloadings,pcexplained,pcvariances,input.xvals,input.xlabelname,input.xlabelunit,input.reversex);
+output = ChiSpectralPCAModel(pcscores,pcloadings,pcexplained,pcvariances,input.xvals,input.xlabelname,input.xlabelunit,input.reversex);
 if ~isempty(input.classmembership)
     output.classmembership = input.classmembership;
 end

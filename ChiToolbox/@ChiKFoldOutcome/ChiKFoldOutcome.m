@@ -17,7 +17,7 @@ classdef ChiKFoldOutcome < ChiBase
     methods
         %% Constructor
         function this = ChiKFoldOutcome(folds, varargin)
-            % Create an instance of ChiSpectralCVAOutcome with given parameters
+            % Create an instance of ChiSpectralCVAModel with given parameters
             
             argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
             if argposition

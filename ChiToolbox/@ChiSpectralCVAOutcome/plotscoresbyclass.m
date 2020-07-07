@@ -20,7 +20,7 @@ function plotscoresbyclass(this,cvx,cvy,varargin)
 % See also 
 %   plotscores plotloadings plotexplainedvariance plotpcloadings
 %   plotpcexplainedvariance plotpccumexplainedvariance utilities.gscatter
-%   ChiSpectralPCAOutcome ChiSpectralCollection.
+%   ChiSpectralPCAModel ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

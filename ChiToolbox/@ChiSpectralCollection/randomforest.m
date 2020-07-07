@@ -181,7 +181,7 @@ end
 %% Perform random forest
 switch alg
     case 'treebagger'
-        internalmodel = TreeBagger(numtrees,this.data(trainmask,:),trainlabels,'Options',paroptions, varargin{:});
+        internalmodel = TreeBagger(numtrees,this.data(trainmask,:),trainlabels,'Options',paroptions, 'OOBPredictorImportance','on', varargin{:});
     case 'fitcensemble'
         internalmodel = fitcensemble(this.data(trainmask,:),trainlabels, 'Method','Bag', 'NumLearningCycles',numtrees, varargin{:});
     otherwise
@@ -201,6 +201,18 @@ elaspedinseconds = [];
 predictiontime = [];
 predictionsec = [];
 
+importances = this.spectrumat(1);
+switch alg
+    case 'treebagger'
+        importances.data = modelCompact.DeltaCriterionDecisionSplit;
+        oobimportances.data = internalmodel.OOBPermutedPredictorDeltaError ;
+    case 'fitcensemble'
+        importances.data = modelCompact.predictorImportance;
+        oobimportances.data = internalmodel.oobPermutedPredictorImportance;
+end
+importances.ylabelname = 'variable importance';
+importances.ylabelunit = '';
+
 model = ChiMLModel(...
                     trainmask, ...
                     testmask, ...
@@ -209,6 +221,8 @@ model = ChiMLModel(...
                     prediction, ...
                     scores, ...
                     stdevs, ...
+                    importances, ...
+                    oobimportances, ...
                     correctlyclassified, ...
                     this.classmembership.clone(), ...
                     elapsed,...
@@ -227,7 +241,7 @@ switch alg
         prediction = temp.labelid;
         scores = temp.scores;
         stdevs = temp.stdevs;
-        prediction = str2num(cell2mat(prediction)); %#ok<ST2NM>
+%         prediction = str2num(cell2mat(prediction)); %#ok<ST2NM>
     case 'fitcensemble'
         temp = model.predict(testdata);
         prediction = temp.labelid;

@@ -33,7 +33,7 @@ function plotscoresconf(this,cvx,cvy,varargin)
 %
 % See also 
 %   scatter utilities.gscatter plotscores plotloadings
-%   plotexplainedvariance plotcumexplainedvariance ChiSpectralPCAOutcome
+%   plotexplainedvariance plotcumexplainedvariance ChiSpectralPCAModel
 %   ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk

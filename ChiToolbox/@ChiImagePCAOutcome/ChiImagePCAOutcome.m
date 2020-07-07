@@ -37,7 +37,7 @@ classdef ChiImagePCAOutcome < ChiBase
     methods
         %% Constructor
         function this = ChiImagePCAOutcome(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex,xpixels,ypixels,varargin)
-            % Create an instance of ChiSpectralPCAOutcome with given parameters
+            % Create an instance of ChiSpectralPCAModel with given parameters
             
             argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
             if argposition

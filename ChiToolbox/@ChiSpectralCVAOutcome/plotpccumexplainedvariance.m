@@ -28,7 +28,7 @@ function plotpccumexplainedvariance(this,varargin)
 %
 % See also 
 %   plot plotscores plotloading plotexplainedvariance plotpcscores
-%   plotpcloading plotpcexplainedvariance ChiSpectralPCAOutcome
+%   plotpcloading plotpcexplainedvariance ChiSpectralPCAModel
 %   ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk

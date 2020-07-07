@@ -20,7 +20,7 @@ function output = pccva(this,varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   princomp pca ChiSpectralCVAOutcome ChiSpectralPCAOutcome ChiSpectralCollection.
+%   princomp pca ChiSpectralCVAOutcome ChiSpectralPCAModel ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

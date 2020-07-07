@@ -25,7 +25,7 @@ classdef ChiSpectralPCAModel < ChiBase
     methods
         %% Constructor
         function this = ChiSpectralPCAModel(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex,varargin)
-            % Create an instance of ChiSpectralPCAOutcome with given parameters
+            % Create an instance of ChiSpectralPCAModel with given parameters
             
             argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
             if argposition

@@ -11,7 +11,7 @@ classdef ChiSpectralCVAOutcome < ChiBase
         eigenvectors;
         eigenvalues;        
         pcs;        % 95% cumulative explained variance
-        pca;        % ChiSpectralPCAOutcome
+        pca;        % ChiSpectralPCAModel
         history = ChiLogger();    % Log of data processing steps
     end
     

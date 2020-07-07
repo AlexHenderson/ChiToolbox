@@ -11,7 +11,7 @@ function output = pccva(this,varargin)
 %   spectra in this collection followed by canonical variates analysis. The
 %   data is mean centered internally. The number of principal components to
 %   use for CVA is the number required to explain 95% of the variance in
-%   the data. The output is stored in a ChiSpectralCVAOutcome object.
+%   the data. The output is stored in a ChiSpectralCVAModel object.
 %
 %   cvaresult = pccva(pcs) performs canonical variates analysis using pcs
 %   principal components.
@@ -20,7 +20,7 @@ function output = pccva(this,varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   princomp pca ChiSpectralCVAOutcome ChiSpectralPCAModel ChiSpectralCollection.
+%   princomp pca ChiSpectralCVAModel ChiSpectralPCAModel ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

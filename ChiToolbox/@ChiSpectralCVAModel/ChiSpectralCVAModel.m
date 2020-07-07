@@ -1,6 +1,6 @@
-classdef ChiSpectralCVAOutcome < ChiBase
+classdef ChiSpectralCVAModel < ChiBase
     
-% ChiSpectralCVAOutcome
+% ChiSpectralCVAModel
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
     properties
@@ -21,9 +21,9 @@ classdef ChiSpectralCVAOutcome < ChiBase
     
     methods
         %% Constructor
-        function this = ChiSpectralCVAOutcome(scores,loadings,explained,cvs,...
+        function this = ChiSpectralCVAModel(scores,loadings,explained,cvs,...
                                                 eigenvectors,eigenvalues,pcs,PCAOutcome,varargin)
-            % Create an instance of ChiSpectralCVAOutcome with given parameters
+            % Create an instance of ChiSpectralCVAModel with given parameters
             
             this.history = ChiLogger();
             argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));

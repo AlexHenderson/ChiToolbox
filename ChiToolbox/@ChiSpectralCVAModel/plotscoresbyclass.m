@@ -36,7 +36,7 @@ function plotscoresbyclass(this,cvx,cvy,varargin)
 titlestub = 'Scores on canonical variates ';
 windowtitlestub = titlestub;
 axislabelstub = 'score on CV ';
-errorcode = 'CHI:ChiSpectralCVAOutcome';
+errorcode = 'CHI:ChiSpectralCVAModel';
 errormessagestub = 'Requested canonical variate is out of range. Max CVs = ';
 
 % If we have more than 1 canonical variate, check that the required cvs are

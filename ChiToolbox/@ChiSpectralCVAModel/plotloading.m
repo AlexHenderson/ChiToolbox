@@ -25,7 +25,7 @@ function plotloading(this,cv,varargin)
 % See also 
 %   plot bar plotscores plotexplainedvariance plotcumexplainedvariance
 %   plotpcscores plotpcloading plotpcexplainedvariance
-%   plotpccumexplainedvariance ChiSpectralCVAOutcome ChiSpectralCollection.
+%   plotpccumexplainedvariance ChiSpectralCVAModel ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -42,7 +42,7 @@ function plotloading(this,cv,varargin)
     titlestub = 'Loading on canonical variate ';
     windowtitlestub = titlestub;
     ylabelstub = 'loading on CV ';
-    errorcode = 'CHI:ChiSpectralCVAOutcome';
+    errorcode = 'CHI:ChiSpectralCVAModel';
     errormessagestub = 'Requested canonical variate is out of range. Max CVs = ';
 
     barplot = false;

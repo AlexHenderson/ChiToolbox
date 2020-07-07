@@ -9,11 +9,12 @@ classdef ChiSpectralPCAModel < ChiBase
         explained;
         variances;
         xvals;
-        xlabelname; % text for abscissa label on plots
-        xlabelunit; % text for abscissa label on plots
+        xlabelname;             % text for abscissa label on plots
+        xlabelunit;             % text for abscissa label on plots
         reversex;
-        classmembership; % an instance of ChiClassMembership
-        history = ChiLogger();    % Log of data processing steps
+        trainingmean;           % mean of the training set (ChiSpectrum)
+        classmembership;        % an instance of ChiClassMembership
+        history = ChiLogger();  % Log of data processing steps
     end
     
     properties (Dependent = true)
@@ -30,9 +31,25 @@ classdef ChiSpectralPCAModel < ChiBase
             argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
             if argposition
                 this.history = varargin{argposition}.clone;
-                varargin(argposition) = []; %#ok<NASGU>
+                varargin(argposition) = [];
             else
                 this.history = ChiLogger();
+            end
+            
+            argposition = find(cellfun(@(x) isa(x,'ChiClassMembership') , varargin));
+            if argposition
+                this.classmembership = varargin{argposition}.clone;
+                varargin(argposition) = [];
+            else
+                this.classmembership = [];
+            end
+            
+            argposition = find(cellfun(@(x) isa(x,'ChiSpectrum') , varargin));
+            if argposition
+                this.trainingmean = varargin{argposition}.clone;
+                varargin(argposition) = []; %#ok<NASGU>
+            else
+                this.trainingmean = [];
             end
             
             if (nargin > 0) % Support calling with 0 arguments

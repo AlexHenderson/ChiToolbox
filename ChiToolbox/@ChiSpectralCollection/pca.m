@@ -1,14 +1,18 @@
-function pcaresult = pca(this)
+function pcaresult = pca(this,varargin)
 
 % pca Principal Components Analysis
 %
 % Syntax
 %   pcaresult = pca();
+%   pcaresult = pca(meanc);
 %
 % Description
 %   pcaresult = pca() performs principal components analysis on the spectra
-%   in this collection. The data is mean centered internally. The output is
-%   stored in a ChiSpectralPCAModel object.
+%   in this collection. The data is mean centered internally (meanc ==
+%   true). The output is stored in a ChiSpectralPCAModel object.
+%
+%   pcaresult = pca(meanc) if meanc is false, the data is not mean
+%   centered prior to analysis.
 %
 % Copyright (c) 2017, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
@@ -28,6 +32,6 @@ function pcaresult = pca(this)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-pcaresult = ChiSpectralPCA(this);
+pcaresult = ChiSpectralPCA(this,varargin{:});
 
 end

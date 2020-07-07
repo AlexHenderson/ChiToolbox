@@ -1,27 +1,35 @@
-function output = ChiSpectralPCA(input)
+function model = ChiSpectralPCA(input,varargin)
 
-% ChiSpectralPCA Principal Components Analysis
-% usage:
-%     output = ChiSpectralPCAModel;
+% ChiSpectralPCA Principal Components Analysis on a ChiSpectralCollection
 %
-% input:
-%     data - ChiSpectralCollection or ChiImage object
-% output:
-%     output - principal component loadings, unique characteristics in the data
-%     pcscores - principal component scores, weighting of each pc
-%     pcexplained - percentage explained variance of each pc
-%     pcaResult - a PcaResult object containing the above outputs
+% Syntax
+%   model = ChiSpectralPCA(obj);
+%   model = ChiSpectralPCA(obj,meanc);
 %
-%   Copyright (c) 2015-2017, Alex Henderson 
-%   Contact email: alex.henderson@manchester.ac.uk
-%   Licenced under the GNU General Public License (GPL) version 3
-%   http://www.gnu.org/copyleft/gpl.html
-%   Other licensing options are available, please contact Alex for details
-%   If you use this file in your work, please acknowledge the author(s) in
-%   your publications. 
+% Description
+%   model = ChiSpectralPCA(obj) performs principal components analysis
+%   ChiSpectralCollection obj. The data is mean centered internally (meanc
+%   == true). The output is stored in a ChiSpectralPCAModel object.
 %
-%   version 3.0 April 2018
+%   model = ChiSpectralPCA(obj,meanc) if meanc is false, the data is not
+%   mean centered prior to analysis.
+%
+% Copyright (c) 2015-2020, Alex Henderson.
+% Licenced under the GNU General Public License (GPL) version 3.
+%
+% See also 
+%   princomp pca ChiSpectralPCAModel ChiSpectralCollection.
 
+% Contact email: alex.henderson@manchester.ac.uk
+% Licenced under the GNU General Public License (GPL) version 3
+% http://www.gnu.org/copyleft/gpl.html
+% Other licensing options are available, please contact Alex for details
+% If you use this file in your work, please acknowledge the author(s) in
+% your publications. 
+
+% Version 4.0, July 2020
+%   version 4.0 July 2020 Alex Henderson
+%     Added option to not mean center
 %   version 3.0 April 2018 Alex Henderson
 %     Centralised the PCA calculations
 %   version 2.0 June 2017 Alex Henderson
@@ -31,25 +39,34 @@ function output = ChiSpectralPCA(input)
 %   version 1.0 June 2015 Alex Henderson
 %   initial release
 
-%   There are a number of different PCA algorithms and implementations.
-%   This function is named pca_clirspec to differentiate it from the other
-%   possibilities. The function is essentially a wrapper round the built-in
-%   princomp and pca functions, but with outputs labelled for consistency.
+% The latest version of this file is available on Bitbucket
+% https://bitbucket.org/AlexHenderson/chitoolbox
 
-
-% ToDo: check the statistics toolbox is available
 
 if ~isa(input,'ChiSpectralCollection')
-    err = MException('CHI:ChiSpectralPCA:InputError', ...
+    err = MException(['CHI:',mfilename,':InputError'], ...
         'A ChiSpectralCollection is required.');
     throw(err);
 end
 
-[pcloadings, pcscores, pcvariances, pcexplained] = utilities.chi_pca(input.data); 
+meanc = true;
+if (nargin > 1)
+    meanc = false;
+end
 
-output = ChiSpectralPCAModel(pcscores,pcloadings,pcexplained,pcvariances,input.xvals,input.xlabelname,input.xlabelunit,input.reversex);
+trainingmean = input.mean;
+
+if ~meanc
+    % Do not meancenter
+    % Set the training mean to zeros since mean not removed. 
+    trainingmean.data = zeros(size(trainingmean.data));
+end    
+
+[pcloadings, pcscores, pcvariances, pcexplained] = utilities.chi_pca(input.data,meanc); 
+
+model = ChiSpectralPCAModel(pcscores,pcloadings,pcexplained,pcvariances,input.xvals,input.xlabelname,input.xlabelunit,input.reversex,trainingmean);
 if ~isempty(input.classmembership)
-    output.classmembership = input.classmembership;
+    model.classmembership = input.classmembership;
 end
 
 

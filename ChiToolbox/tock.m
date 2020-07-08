@@ -43,6 +43,7 @@ function varargout = tock(varargin)
 %% Defaults
 prependtext = 'Elapsed time: ';
 appendtext = '.';
+tstart = [];
 
 %% Manage arguments
 argposition = find(cellfun(@(x) strcmpi(x, 'prepend') , varargin));
@@ -59,8 +60,14 @@ if argposition
     varargin(argposition) = []; %#ok<NASGU>
 end
 
+argposition = find(cellfun(@(x) isnumeric(x) , varargin));
+if argposition
+    tstart = varargin{argposition};
+    varargin(argposition) = []; %#ok<NASGU>
+end
+
 %% Other arguments
-if exist('tstart','var')
+if ~isempty(tstart)
     toc_output = toc(tstart);
 else
     toc_output = toc();

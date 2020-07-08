@@ -20,7 +20,7 @@ function obj = removeentries(this,varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiMetadataSheet
+%   ChiMetadataSheet extractentries
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

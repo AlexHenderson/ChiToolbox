@@ -24,7 +24,7 @@ function obj = append(this,varargin)
 %   of data points, then it is linearly interpolated to match the original
 %   object.
 %
-% Copyright (c) 2019, Alex Henderson.
+% Copyright (c) 2019-2020, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -41,6 +41,13 @@ function obj = append(this,varargin)
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
+
+if ~nargout
+    err = MException(['CHI:',mfilename,':InputError'], ...
+        ['We cannot append to this ChiSpectrum. Create a ChiSpectralCollection of type ''', ...
+        this.spectralcollectionclassname, ''', and append to that.']);
+    throw(err);
+end    
 
 if (nargin == 2)
     % We only have a single entry, so check if it is a spectrum, or a

@@ -22,7 +22,15 @@ function obj = append(this,varargin)
 %   spectral range. If the new addition has a different number of data
 %   points, then it is linearly interpolated to match the original object.
 %
-% Copyright (c) 2017, Alex Henderson.
+%   If this collection has class membership and newaddition does also, the
+%   membership labels are appended. If newaddition has no labels, the
+%   classmembership is listed as 'undefined label'. 
+%
+%   If this collection has filenames and newaddition does also, the
+%   filenames are appended. If newaddition has no filenames, the
+%   filenames are listed as 'undefined filename'. 
+%
+% Copyright (c) 2017-2020, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -107,6 +115,14 @@ if isempty(this.xvals)
     this.xlabelunit = varargin{1}.xlabelunit;
     this.ylabelname = varargin{1}.ylabelname;
     this.ylabelunit = varargin{1}.ylabelunit;
+
+    if ~isempty(varargin{1}.filenames)
+        this.filenames  = varargin{1}.filenames;
+    end
+    
+    if ~isempty(varargin{1}.classmembership)
+        this.classmembership = varargin{1}.classmembership.clone;
+    end
 else
     newspectrum = varargin{1}.clone();
 
@@ -164,9 +180,30 @@ else
         this.data = this.data(:,1:end-1);
     end
 
-    % ToDo: If classmemberhsip exists, it is now invalid as it isn't
-    % the same length as the data
+    % If we already have class labels, append the new class labels
+    if ~isempty(this.classmembership)
+        if ~isempty(newspectrum.classmembership)
+            this.classmembership.labels = vertcat(this.classmembership.labels, newspectrum.classmembership.labels);
+        else
+            % If the newly appended data did not have a class label add 
+            % one, but make it undefined
+            this.classmembership.labels = vertcat(this.classmembership.labels, 'undefined label');
+        end
+    end
+    
+    % If we already have a list of filenames and the newly appended
+    % spectrum has a filename, then append it
+    if ~isempty(this.filenames)
+        if ~isempty(newspectrum.filenames)
+            this.filenames  = vertcat(this.filenames,varargin{1}.filenames);
+        else
+            % If the newly appended spectrum does not have a filename, add
+            % an empty string
+            this.filenames  = vertcat(this.filenames,{''});
+        end            
+    end
 
+    
 end
 end
 
@@ -186,7 +223,9 @@ if isempty(this.xvals)
     if ~isempty(varargin{1}.classmembership)
         this.classmembership = varargin{1}.classmembership.clone();
     end
-    this.filenames  = varargin{1}.filenames;
+    if ~isempty(varargin{1}.filenames)
+        this.filenames  = varargin{1}.filenames;
+    end
     if ~isempty(varargin{1}.history)
         this.history = varargin{1}.history.clone();
     end
@@ -248,9 +287,35 @@ else
         this.xvals = this.xvals(1:end-1);
         this.data = this.data(:,1:end-1);
     end
-
-    % ToDo: If classmemberhsip exists, it it now invalid as it isn't
-    % the same length as the data
+   
+    
+    % If we already have class labels, append the new class labels
+    if ~isempty(this.classmembership)
+        if ~isempty(newcoll.classmembership)
+            this.classmembership.labels = vertcat(this.classmembership.labels, newcoll.classmembership.labels);
+        else
+            % If the newly appended data did not have a class label add 
+            % one per spectrum, but make it undefined
+            newlabels = cell(newcoll.numspectra,1);
+            newlabels(:) = {'undefined label'};
+            this.classmembership.labels = vertcat(this.classmembership.labels, newlabels);
+        end
+    end
+    
+    % If we already have a list of filenames, and the newly appended
+    % collection has filenames, then append them
+    if ~isempty(this.filenames)
+        if ~isempty(newcoll.filenames)
+            this.filenames  = vertcat(this.filenames,newcoll.filenames);
+        else
+            % If the newly appended collection does not have filenames, add
+            % strings to denote that
+            newfilenames = cell(newcoll.numspectra,1);
+            newfilenames(:) = {'undefined filename'};
+            this.filenames  = vertcat(this.filenames,newfilenames);
+        end            
+    end
+    
 end
 
 end

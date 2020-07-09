@@ -1,30 +1,62 @@
 classdef ChiSpectralPCAModel < ChiBase
-    
-% ChiSpectralPCAModel
-%   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
+
+% ChiSpectralPCAModel  Results from a Principal Components Analysis (PCA) experiment.
+%
+% Syntax
+%   model = ChiSpectralPCAModel(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex);
+%   model = ChiSpectralPCAModel(____,history);
+% 
+% Description
+%   model = ChiSpectralPCAModel(scores,loadings,explained,variances,xvals,
+%   xlabelname,xlabelunit,reversex) creates a wrapper for the outcome of a
+%   principal components analysis experiment.
+% 
+%   model = ChiSpectralPCAModel(____,history) includes a ChiLogger history
+%   object recording the data processing history.
+% 
+% Notes
+%   If there are class membership labels available, a better method of
+%   classification is Canonical Variates Analysis which takes the a priori
+%   information into account. See ChiSpectralCVAModel for more information. 
+% 
+% Copyright (c) 2020, Alex Henderson.
+% Licenced under the GNU General Public License (GPL) version 3.
+%
+% See also 
+%   pca ChiPCAPrediction cva ChiSpectralCVAModel randomforest adaboost.
+
+% Contact email: alex.henderson@manchester.ac.uk
+% Licenced under the GNU General Public License (GPL) version 3
+% http://www.gnu.org/copyleft/gpl.html
+% Other licensing options are available, please contact Alex for details
+% If you use this file in your work, please acknowledge the author(s) in
+% your publications. 
+
+% The latest version of this file is available on Bitbucket
+% https://bitbucket.org/AlexHenderson/chitoolbox
+
 
     properties
-        scores;
-        loadings;
-        explained;
-        variances;
-        xvals;
+        scores;                 % principal components scores
+        loadings;               % principal components loadings
+        explained;              % percentage explained variance
+        variances;              % variance of each principal component
+        xvals;                  % spectral x-axis values
         xlabelname;             % text for abscissa label on plots
         xlabelunit;             % text for abscissa label on plots
-        reversex;
+        reversex;               % should loadings be plotted high to low (default = false)
         trainingmean;           % mean of the training set (ChiSpectrum)
         classmembership;        % an instance of ChiClassMembership
-        history = ChiLogger();  % Log of data processing steps
+        history = ChiLogger();  % log of data processing steps
     end
     
     properties (Dependent = true)
-        %% Calculated properties
-        numpcs
-        xlabel
+        numpcs;                 % number of principal components required to explain 95% of the variance in the model
+        xlabel;                 % fully formed x-axis label for loadings plots
     end
     
     methods
-        %% Constructor
+        % Constructor
         function this = ChiSpectralPCAModel(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex,varargin)
             % Create an instance of ChiSpectralPCAModel with given parameters
             

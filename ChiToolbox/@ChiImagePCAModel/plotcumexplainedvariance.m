@@ -27,7 +27,7 @@ function plotcumexplainedvariance(this,limitpcs,varargin)
 %
 % See also 
 %   plot plotscores plotloading plotexplainedvariance
-%   ChiImagePCAOutcome ChiImage.
+%   ChiImagePCAModel ChiImage.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -51,7 +51,7 @@ else
     figure('Name',windowtitle,'NumberTitle','off');
 end
 
-errorcode = 'CHI:ChiImagePCAOutcome';
+errorcode = 'CHI:ChiImagePCAModel';
 errormessagestub = 'Requested principal component is out of range. Max PCs = ';
 
 if exist('limitpcs','var')

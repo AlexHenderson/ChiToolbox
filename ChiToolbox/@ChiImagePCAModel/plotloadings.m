@@ -21,7 +21,7 @@ function plotloadings(this,pc,varargin)
 %
 % See also 
 %   bar imagepc plotexplainedvariance plotcumexplainedvariance
-%   ChiImagePCAOutcome ChiImage.
+%   ChiImagePCAModel ChiImage.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

@@ -2,7 +2,7 @@ function output = ChiImagePCA(input)
 
 % ChiImagePCA Principal Components Analysis
 % usage:
-%     output = ChiImagePCAOutcome;
+%     output = ChiImagePCAModel;
 %
 % input:
 %     data - ChiImage
@@ -45,7 +45,7 @@ end
     
 [pcloadings, pcscores, pcvariances, pcexplained] = utilities.chi_pca(input.data); 
 
-output = ChiImagePCAOutcome(pcscores,pcloadings,pcexplained,pcvariances,input.xvals,input.xlabelname,input.xlabelunit,input.reversex,input.xpixels,input.ypixels);
+output = ChiImagePCAModel(pcscores,pcloadings,pcexplained,pcvariances,input.xvals,input.xlabelname,input.xlabelunit,input.reversex,input.xpixels,input.ypixels);
 if ~isempty(input.filenames)
     output.history.add(['PCA of ', input.filenames{1}]);
 end

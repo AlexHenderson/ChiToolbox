@@ -28,7 +28,7 @@ function handle = imagepc(this,pc,varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiImagePCAOutcome ChiPicture  imagesc
+%   ChiImagePCAModel ChiPicture  imagesc
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -73,7 +73,7 @@ function handle = imagepc(this,pc,varargin)
         end
         
         if (pc > this.numpcs)
-            err = MException('CHI:ChiImagePCAOutcome:OutOfRange', ...
+            err = MException('CHI:ChiImagePCAModel:OutOfRange', ...
                 ['Requested principal component is out of range. Max PCs = ', num2str(this.numpcs), '.']);
             throw(err);
         end

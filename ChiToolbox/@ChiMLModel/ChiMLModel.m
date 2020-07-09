@@ -37,6 +37,8 @@ classdef ChiMLModel < ChiBase
         prediction; % Column vector of class label identifiers containing the prediction for each test spectrum
         scores;     % Score of the prediction for each spectrum and each label
         stdevs;     % Standard deviation of label predictions (TreeBagger only)
+        importances % Estimates of importance of input variables (ChiSpectrum)
+        oobimportances % Out-of-bag, estimates of importance of input variables (ChiSpectrum)
         correctlyclassified;    % Column vector of logical values where true indicates a test spectrum correctly classified
         classmembership;        % An instance of ChiClassMembership
         elapsed;                % Time taken to generate the model (string)
@@ -65,6 +67,8 @@ classdef ChiMLModel < ChiBase
                         prediction, ...
                         scores, ...
                         stdevs, ...
+                        importances, ...
+                        oobimportances, ...
                         correctlyclassified, ...
                         classmembership, ...
                         elapsed,...
@@ -89,8 +93,10 @@ classdef ChiMLModel < ChiBase
                 this.prediction = prediction;
                 this.scores = scores;
                 this.stdevs = stdevs;
+                this.importances = importances.clone;
+                this.oobimportances = oobimportances.clone;
                 this.correctlyclassified = correctlyclassified;
-                this.classmembership = classmembership;
+                this.classmembership = classmembership.clone;
                 this.elapsed = elapsed;
                 this.elaspedinseconds = elaspedinseconds;
                 this.predictiontime = predictiontime;

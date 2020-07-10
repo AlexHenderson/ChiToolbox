@@ -194,6 +194,11 @@ end
 % sizedata in points. Therefore, square the sizedata.
 sizedata = sizedata * sizedata;
 
+% Capture any existing legend content. This allows for legend informtin to
+% be retained when 'hold on' is used. 
+legendbeforeplot = legend;
+priorlegendcontent = legendbeforeplot.String;
+
 % Cycle through each group, identifying the appropriate points to plot and
 % assigning them a specific colour. 
 for i = 1:length(uniquegroups)
@@ -230,10 +235,14 @@ hold off;
 %% Add legend if requested
 if showlegend
     if isnumeric(uniquegroups)
-        leg = legend(num2str(uniquegroups),'Location','best');
-    else
-        leg = legend(uniquegroups,'Location','best', 'Interpreter','none');
+        uniquegroups = num2str(uniquegroups);
     end
+    if ~isempty(priorlegendcontent)
+        legendcontent = horzcat(priorlegendcontent,utilities.force2row(uniquegroups));
+    else
+        legendcontent = uniquegroups;
+    end
+    leg = legend(legendcontent,'Location','best', 'Interpreter','none');
 else
     leg = [];
 end

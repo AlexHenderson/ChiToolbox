@@ -43,7 +43,7 @@ classdef ChiPCAPrediction < ChiBase
     properties
         model;      % PCA model from which the prediction was made
         projectedscores;    % predicted PCA scores of the test set.
-        pcs;        % number of principal compoents used in the prediction
+        pcs;        % number of principal components used in the prediction
         elapsed;    % time in seconds that the prediction took
         distances;  % Mahalanobis distance of each test spectrum to each class
         predictedclass; % a list of label identifiers indicating the outcome of prediction.
@@ -60,6 +60,7 @@ classdef ChiPCAPrediction < ChiBase
         predictedlabel; % predicted class label
         truelabel;      % true class label
         elapsedstr;     % time that the prediction took as a string
+        numpcs;         % number of principal components used in the prediction
     end
     
     methods
@@ -123,7 +124,7 @@ classdef ChiPCAPrediction < ChiBase
        
         %% truelabel
         function truelabel = get.truelabel(this)
-            truelabel = this.model.classmembership.uniquelabels(this.predictedclass);
+            truelabel = this.model.classmembership.uniquelabels(this.trueclass);
         end
        
         %% predictedlabel
@@ -134,6 +135,11 @@ classdef ChiPCAPrediction < ChiBase
         %% elapsedstr
         function elapsedstr = get.elapsedstr(this)
             elapsedstr = durationString(this.elapsed);
+        end
+       
+        %% numpcs
+        function numpcs = get.numpcs(this)
+            numpcs = this.pcs;
         end
        
     end

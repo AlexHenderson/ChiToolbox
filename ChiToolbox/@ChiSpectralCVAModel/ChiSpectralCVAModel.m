@@ -4,25 +4,25 @@ classdef ChiSpectralCVAModel < ChiBase
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
     properties
-        scores;
-        loadings;
-        explained;
-        cvs;
-        eigenvectors;
-        eigenvalues;        
-        pcs;        % 95% cumulative explained variance
-        pca;        % ChiSpectralPCAModel
-        history = ChiLogger();    % Log of data processing steps
+        scores;         % principal components scores
+        loadings;       % principal components loadings
+        explained;      % percentage explained variance
+        cvs;            % number of canonical variates used in the prediction
+        eigenvectors;   % eigenvectors of CVA matrix rotation
+        eigenvalues;    % eigenvalues of CVA matrix rotation
+        pcs;            % number of principal components used in the prediction
+        pca;            % ChiSpectralPCAModel underpinning this CVA model
+        history = ChiLogger();  % log of data processing steps
     end
     
     properties (Dependent = true)
-        numcvs;  % number of canonical variates
+        numcvs;  % number of canonical variates used in the prediction
     end
     
     methods
-        %% Constructor
+        % Constructor
         function this = ChiSpectralCVAModel(scores,loadings,explained,cvs,...
-                                                eigenvectors,eigenvalues,pcs,PCAOutcome,varargin)
+                        eigenvectors,eigenvalues,pcs,PCAModel,varargin)
             % Create an instance of ChiSpectralCVAModel with given parameters
             
             this.history = ChiLogger();
@@ -41,14 +41,16 @@ classdef ChiSpectralCVAModel < ChiBase
                 this.eigenvectors = eigenvectors;
                 this.eigenvalues = eigenvalues;
                 this.pcs = pcs;
-                this.pca = PCAOutcome;
+                this.pca = PCAModel.clone();
             end 
         end
         
-        %% numcvs : Get the number of canonical variates
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function numcvs = get.numcvs(this)
             numcvs = this.cvs;
-        end        
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
     end
     

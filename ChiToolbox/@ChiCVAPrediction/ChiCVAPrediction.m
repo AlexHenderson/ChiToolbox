@@ -21,13 +21,13 @@ classdef ChiCVAPrediction < ChiBase
 % Notes
 %   If there are class membership labels available, a better method of
 %   classification is Canonical Variates Analysis which takes the a priori
-%   information into account. See ChiSpectralCVAModel for more information. 
+%   information into account. See ChiCVAModel for more information. 
 % 
 % Copyright (c) 2020, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   pca ChiSpectralPCAModel cva ChiSpectralCVAModel randomforest adaboost.
+%   pca ChiPCAModel cva ChiCVAModel randomforest adaboost.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

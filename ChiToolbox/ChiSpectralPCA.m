@@ -9,7 +9,7 @@ function model = ChiSpectralPCA(input,varargin)
 % Description
 %   model = ChiSpectralPCA(obj) performs principal components analysis
 %   ChiSpectralCollection obj. The data is mean centered internally (meanc
-%   == true). The output is stored in a ChiSpectralPCAModel object.
+%   == true). The output is stored in a ChiPCAModel object.
 %
 %   model = ChiSpectralPCA(obj,meanc) if meanc is false, the data is not
 %   mean centered prior to analysis.
@@ -18,7 +18,7 @@ function model = ChiSpectralPCA(input,varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   princomp pca ChiSpectralPCAModel ChiSpectralCollection.
+%   princomp pca ChiPCAModel ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -64,7 +64,7 @@ end
 
 [pcloadings, pcscores, pcvariances, pcexplained] = utilities.chi_pca(input.data,meanc); 
 
-model = ChiSpectralPCAModel(pcscores,pcloadings,pcexplained,pcvariances,input.xvals,input.xlabelname,input.xlabelunit,input.reversex,trainingmean);
+model = ChiPCAModel(pcscores,pcloadings,pcexplained,pcvariances,input.xvals,input.xlabelname,input.xlabelunit,input.reversex,trainingmean);
 if ~isempty(input.classmembership)
     model.classmembership = input.classmembership;
 end

@@ -32,7 +32,7 @@ function plotscores(this,cvx,cvy,varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   scatter utilities.gscatter ChiSpectralCVAModel ChiSpectralCollection.
+%   scatter utilities.gscatter ChiCVAModel ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

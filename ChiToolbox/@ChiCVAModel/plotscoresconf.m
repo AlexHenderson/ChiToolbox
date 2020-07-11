@@ -33,7 +33,7 @@ function plotscoresconf(this,cvx,cvy,varargin)
 %
 % See also 
 %   scatter utilities.gscatter plotscores plotloadings
-%   plotexplainedvariance plotcumexplainedvariance ChiSpectralPCAModel
+%   plotexplainedvariance plotcumexplainedvariance ChiPCAModel
 %   ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
@@ -57,7 +57,7 @@ else
 titlestub = 'Scores on canonical variates ';
 windowtitlestub = titlestub;
 axislabelstub = 'score on CV ';
-errorcode = 'CHI:ChiSpectralCVAModel';
+errorcode = 'CHI:ChiCVAModel';
 errormessagestub = 'Requested canonical variate is out of range. Max CVs = ';
 
 if isempty(this.pca.classmembership)

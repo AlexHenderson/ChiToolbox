@@ -1,6 +1,6 @@
-classdef ChiSpectralCVAModel < ChiBase
+classdef ChiCVAModel < ChiBase
     
-% ChiSpectralCVAModel
+% ChiCVAModel
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
     properties
@@ -11,7 +11,7 @@ classdef ChiSpectralCVAModel < ChiBase
         eigenvectors;   % eigenvectors of CVA matrix rotation
         eigenvalues;    % eigenvalues of CVA matrix rotation
         pcs;            % number of principal components used in the prediction
-        pca;            % ChiSpectralPCAModel underpinning this CVA model
+        pca;            % ChiPCAModel underpinning this CVA model
         history = ChiLogger();  % log of data processing steps
     end
     
@@ -21,9 +21,9 @@ classdef ChiSpectralCVAModel < ChiBase
     
     methods
         % Constructor
-        function this = ChiSpectralCVAModel(scores,loadings,explained,cvs,...
+        function this = ChiCVAModel(scores,loadings,explained,cvs,...
                         eigenvectors,eigenvalues,pcs,PCAModel,varargin)
-            % Create an instance of ChiSpectralCVAModel with given parameters
+            % Create an instance of ChiCVAModel with given parameters
             
             this.history = ChiLogger();
             argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));

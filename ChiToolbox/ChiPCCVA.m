@@ -77,6 +77,6 @@ cvscores = pca.scores * (cveigenvectors * diag(cveigenvalues));
 cvexplained = cvpercent_explained_variation;
 
 %% Create a class to hold the output
-model = ChiSpectralCVAModel(cvscores,cvloadings,cvexplained,numcvs,...
+model = ChiCVAModel(cvscores,cvloadings,cvexplained,numcvs,...
                                cveigenvectors,cveigenvalues,pcs,pca);
 

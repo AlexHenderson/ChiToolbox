@@ -33,7 +33,7 @@ function plotscoresconf(this,pcx,pcy,varargin)
 %
 % See also 
 %   scatter utilities.gscatter plotscores plotloadings
-%   plotexplainedvariance plotcumexplainedvariance ChiSpectralPCAModel
+%   plotexplainedvariance plotcumexplainedvariance ChiPCAModel
 %   ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
@@ -50,7 +50,7 @@ function plotscoresconf(this,pcx,pcy,varargin)
 titlestub = 'Scores on principal components ';
 windowtitlestub = titlestub;
 axislabelstub = 'score on PC ';
-errorcode = 'CHI:ChiSpectralPCAModel';
+errorcode = 'CHI:ChiPCAModel';
 errormessagestub = 'Requested principal component is out of range. Max PCs = ';
 
 if isempty(this.classmembership)

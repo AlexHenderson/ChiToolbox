@@ -1,29 +1,29 @@
-classdef ChiSpectralPCAModel < ChiBase
+classdef ChiPCAModel < ChiBase
 
-% ChiSpectralPCAModel  Results from a Principal Components Analysis (PCA) experiment.
+% ChiPCAModel  Results from a Principal Components Analysis (PCA) experiment.
 %
 % Syntax
-%   model = ChiSpectralPCAModel(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex);
-%   model = ChiSpectralPCAModel(____,history);
+%   model = ChiPCAModel(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex);
+%   model = ChiPCAModel(____,history);
 % 
 % Description
-%   model = ChiSpectralPCAModel(scores,loadings,explained,variances,xvals,
+%   model = ChiPCAModel(scores,loadings,explained,variances,xvals,
 %   xlabelname,xlabelunit,reversex) creates a wrapper for the outcome of a
 %   principal components analysis experiment.
 % 
-%   model = ChiSpectralPCAModel(____,history) includes a ChiLogger history
+%   model = ChiPCAModel(____,history) includes a ChiLogger history
 %   object recording the data processing history.
 % 
 % Notes
 %   If there are class membership labels available, a better method of
 %   classification is Canonical Variates Analysis which takes the a priori
-%   information into account. See ChiSpectralCVAModel for more information. 
+%   information into account. See ChiCVAModel for more information. 
 % 
 % Copyright (c) 2020, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   pca ChiPCAPrediction cva ChiSpectralCVAModel randomforest adaboost.
+%   pca ChiPCAPrediction cva ChiCVAModel randomforest adaboost.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -57,8 +57,8 @@ classdef ChiSpectralPCAModel < ChiBase
     
     methods
         % Constructor
-        function this = ChiSpectralPCAModel(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex,varargin)
-            % Create an instance of ChiSpectralPCAModel with given parameters
+        function this = ChiPCAModel(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex,varargin)
+            % Create an instance of ChiPCAModel with given parameters
             
             argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
             if argposition

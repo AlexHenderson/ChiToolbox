@@ -26,7 +26,7 @@ function plotexplainedvariance(this,limitpcs,varargin)
 %
 % See also 
 %   plot plotscores plotloading plotcumexplainedvariance
-%   ChiSpectralPCAModel ChiSpectralCollection.
+%   ChiPCAModel ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -50,7 +50,7 @@ else
     figure('Name',windowtitle,'NumberTitle','off');
 end
 
-errorcode = 'Chi:ChiSpectralPCAModel';
+errorcode = 'Chi:ChiPCAModel';
 errormessagestub = 'Requested principal component is out of range. Max PCs = ';
 
 if exist('limitpcs','var')

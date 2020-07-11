@@ -28,7 +28,7 @@ function plotpcscoresconf(this,pcx,pcy,varargin)
 %
 % See also 
 %   scatter plotscores plotloadings plotexplainedvariance
-%   utilities.gscatter plotcumexplainedvariance ChiSpectralPCAModel
+%   utilities.gscatter plotcumexplainedvariance ChiPCAModel
 %   ChiSpectralCollection.
 
 

@@ -9,7 +9,7 @@ function pcaresult = pca(this,varargin)
 % Description
 %   pcaresult = pca() performs principal components analysis on the spectra
 %   in this collection. The data is mean centered internally (meanc ==
-%   true). The output is stored in a ChiSpectralPCAModel object.
+%   true). The output is stored in a ChiPCAModel object.
 %
 %   pcaresult = pca(meanc) if meanc is false, the data is not mean
 %   centered prior to analysis.
@@ -18,7 +18,7 @@ function pcaresult = pca(this,varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   princomp pca ChiSpectralPCAModel ChiSpectralCollection.
+%   princomp pca ChiPCAModel ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

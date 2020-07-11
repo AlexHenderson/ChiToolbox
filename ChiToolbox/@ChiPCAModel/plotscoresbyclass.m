@@ -36,7 +36,7 @@ function plotscoresbyclass(this,pcx,pcy,varargin)
 titlestub = 'Scores on principal components ';
 windowtitlestub = titlestub;
 axislabelstub = 'score on PC ';
-errorcode = 'CHI:ChiSpectralPCAModel';
+errorcode = 'CHI:ChiPCAModel';
 errormessagestub = 'Requested principal component is out of range. Max PCs = ';
 
 if isempty(this.classmembership)

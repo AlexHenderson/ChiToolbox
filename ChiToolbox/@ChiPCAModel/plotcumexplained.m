@@ -27,7 +27,7 @@ function plotcumexplained(varargin)
 %
 % See also 
 %   plot plotscores plotloading plotexplainedvariance
-%   ChiSpectralPCAModel ChiSpectralCollection.
+%   ChiPCAModel ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

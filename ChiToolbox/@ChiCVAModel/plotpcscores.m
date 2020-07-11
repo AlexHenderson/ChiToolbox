@@ -29,7 +29,7 @@ function plotpcscores(this,varargin)
 % See also 
 %   scatter plotloadings plotexplainedvariance plotpcloadings
 %   plotpcexplainedvariance plotpccumexplainedvariance utilities.gscatter
-%   ChiSpectralPCAModel ChiSpectralCollection.
+%   ChiPCAModel ChiSpectralCollection.
 
 
 % Contact email: alex.henderson@manchester.ac.uk

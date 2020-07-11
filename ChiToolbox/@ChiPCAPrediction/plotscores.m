@@ -9,7 +9,7 @@ function plotscores(this,pcx,pcy,varargin)
 % Description
 %   plotscores(pcx,pcy) creates a 2-D scatter plot of principal component
 %   scores. Predicted scores from the previously unseen data are overlaid
-%   using a different marker (default = '*'). 
+%   using a different marker (default = '*').
 %   If the predicted data had a classmembership, the predicted markers are
 %   shown in their 'true' colour. If the predicted data had no
 %   classmembership the markers are classified as 'undefined label' and
@@ -33,7 +33,7 @@ function plotscores(this,pcx,pcy,varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   scatter utilities.gscatter ChiSpectralPCAModel ChiSpectralCollection.
+%   scatter utilities.gscatter ChiPCAModel ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -49,7 +49,7 @@ function plotscores(this,pcx,pcy,varargin)
 titlestub = 'Scores on principal components ';
 windowtitlestub = titlestub;
 axislabelstub = 'score on PC ';
-errorcode = 'Chi:ChiSpectralPCAModel';
+errorcode = 'Chi:ChiPCAModel';
 errormessagestub = 'Requested principal component is out of range. Max PCs = ';
 
 % Some defaults

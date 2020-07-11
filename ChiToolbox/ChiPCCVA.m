@@ -1,4 +1,4 @@
-function output = ChiPCCVA(this,pcs)
+function model = ChiPCCVA(this,pcs)
 % function [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = ChiPCCVA(this,pcs)
 % 
 % ChiPCCVA Principal Components - Canonical Variates Analysis
@@ -77,6 +77,6 @@ cvscores = pca.scores * (cveigenvectors * diag(cveigenvalues));
 cvexplained = cvpercent_explained_variation;
 
 %% Create a class to hold the output
-output = ChiSpectralCVAModel(cvscores,cvloadings,cvexplained,numcvs,...
+model = ChiSpectralCVAModel(cvscores,cvloadings,cvexplained,numcvs,...
                                cveigenvectors,cveigenvalues,pcs,pca);
 

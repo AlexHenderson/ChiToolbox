@@ -80,7 +80,6 @@ if ~isempty(this.classmembership)
     end
 end 
 
-
 %% Stop timer
 [predictiontime,predictionsec] = tock(predictiontimer); %#ok<ASGLU>
 
@@ -97,4 +96,5 @@ prediction = ChiPCAPrediction(...
             );
 
 prediction.history.add('PCA prediction of unseen data');
+
 end

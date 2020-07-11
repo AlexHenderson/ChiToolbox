@@ -1,4 +1,4 @@
-classdef ChiMLModel < ChiBase
+classdef ChiMLModel < ChiModel & ChiBase
 
 % ChiMLModel  Class to manage the outcome of machine learning algorithms.
 %

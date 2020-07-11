@@ -1,4 +1,4 @@
-classdef ChiPCAModel < ChiBase
+classdef ChiPCAModel < ChiModel & ChiBase
 
 % ChiPCAModel  Results from a Principal Components Analysis (PCA) experiment.
 %

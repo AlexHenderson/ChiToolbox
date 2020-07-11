@@ -1,4 +1,4 @@
-classdef ChiCVAModel < ChiBase
+classdef ChiCVAModel < ChiModel & ChiBase
     
 % ChiCVAModel
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)

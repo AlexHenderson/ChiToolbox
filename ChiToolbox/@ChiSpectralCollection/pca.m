@@ -1,4 +1,4 @@
-function pcaresult = pca(this,varargin)
+function model = pca(this,varargin)
 
 % pca Principal Components Analysis
 %
@@ -32,6 +32,6 @@ function pcaresult = pca(this,varargin)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-pcaresult = ChiSpectralPCA(this,varargin{:});
+model = ChiSpectralPCA(this,varargin{:});
 
 end

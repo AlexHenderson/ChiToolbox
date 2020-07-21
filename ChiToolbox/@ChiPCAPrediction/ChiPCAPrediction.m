@@ -41,13 +41,13 @@ classdef ChiPCAPrediction < ChiPrediction & ChiBase
 
 
     properties
-        model;      % PCA model from which the prediction was made
+        model;      % ChiPCAModel from which the prediction was made
         projectedscores;    % predicted PCA scores of the test set.
         pcs;        % number of principal components used in the prediction
         elapsed;    % time in seconds that the prediction took
         distances;  % Mahalanobis distance of each test spectrum to each class
-        predictedclass; % a list of label identifiers indicating the outcome of prediction.
-        trueclass; % a list of label identifiers indicating the outcome of prediction.
+        predictedclasslabel; % a cell array of labels indicating the outcome of prediction.
+        trueclasslabel;      % a cell array indicating the true label for each spectrum.
         correctlyclassified;    % if the unseen data was labelled, this is a vector indicating whether it was correctly classified. Otherwise it is an empty variable.
         history = ChiLogger();  % log of data processing steps
     end
@@ -57,9 +57,9 @@ classdef ChiPCAPrediction < ChiPrediction & ChiBase
         percentcorrectlyclassified; % if the unseen data was labelled, this is the percentage of predicted data correctly classified. 
         percentcc; % if the unseen data was labelled, this is the percentage of predicted data correctly classified. 
         pcc; % if the unseen data was labelled, this is the percentage of predicted data correctly classified. 
-        predictedlabel; % predicted class label
-        truelabel;      % true class label
-        elapsedstr;     % time that the prediction took as a string
+        predictedclassid; % predicted class label identifier
+        trueclassid;      % true class label identifier
+        elapsedstr;     % time that the prediction took, as a string
         numpcs;         % number of principal components used in the prediction
     end
     
@@ -71,8 +71,8 @@ classdef ChiPCAPrediction < ChiPrediction & ChiBase
                             pcs, ...
                             elapsed, ...
                             distances, ...
-                            predictedclass, ...
-                            trueclass, ...
+                            predictedclasslabel, ...
+                            trueclasslabel, ...
                             correctlyclassified, ...
                             varargin ...
                         )
@@ -91,8 +91,8 @@ classdef ChiPCAPrediction < ChiPrediction & ChiBase
                 this.pcs = pcs;
                 this.elapsed = elapsed;
                 this.distances = distances;
-                this.predictedclass = predictedclass;
-                this.trueclass = trueclass;
+                this.predictedclasslabel = predictedclasslabel;
+                this.trueclasslabel = trueclasslabel;
                 this.correctlyclassified = correctlyclassified;
             end 
 
@@ -122,14 +122,22 @@ classdef ChiPCAPrediction < ChiPrediction & ChiBase
             pcc = this.percentcc;
         end
        
-        %% truelabel
-        function truelabel = get.truelabel(this)
-            truelabel = this.model.classmembership.uniquelabels(this.trueclass);
+        %% trueclassid
+        function trueclassid = get.trueclassid(this)
+            numtestcases = length(this.predictedclasslabel);
+            trueclassid = zeros(numtestcases,1);
+            for i = 1:numtestcases
+                trueclassid(i) = find(strcmpi(this.model.classmembership.uniquelabels,this.trueclasslabel(i)));
+            end
         end
        
-        %% predictedlabel
-        function predictedlabel = get.predictedlabel(this)
-            predictedlabel = this.model.classmembership.uniquelabels(this.predictedclass);
+        %% predictedclassid
+        function predictedclassid = get.predictedclassid(this)
+            numtestcases = length(this.predictedclasslabel);
+            predictedclassid = zeros(numtestcases,1);
+            for i = 1:numtestcases
+                predictedclassid(i) = find(strcmpi(this.model.classmembership.uniquelabels,this.predictedclasslabel(i)));
+            end
         end
        
         %% elapsedstr

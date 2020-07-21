@@ -89,8 +89,8 @@ end
 
 %% Make space for results
 distances = [];
-predictedclass = [];
-trueclass = [];
+predictedclass = {};
+trueclass = {};
 correctlyclassified = [];
 
 %% Only if we have class membership can we determine predicted classes
@@ -106,12 +106,13 @@ if ~isempty(this.classmembership)
     end
 
     % Determine the predicted class
-    [mindist,predictedclass] = min(distances, [], 2); %#ok<ASGLU>
+    [mindist,predictedclassid] = min(distances, [], 2); %#ok<ASGLU>
+    predictedclass = this.classmembership.uniquelabels(predictedclassid);
     
     % If we already knew the true labels, we can also calculate the prediction accuracy
     if ~isempty(testset.classmembership)
-        trueclass = testset.classmembership.labelids;
-        correctlyclassified = (predictedclass == trueclass);
+        trueclass = testset.classmembership.labels;
+        correctlyclassified = strcmpi(predictedclass,trueclass);
     end
 end 
 

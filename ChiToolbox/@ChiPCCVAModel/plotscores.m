@@ -41,7 +41,7 @@ function plotscores(this,cvx,cvy,varargin)
 titlestub = 'Scores on canonical variates ';
 windowtitlestub = titlestub;
 axislabelstub = 'score on CV ';
-errorcode = 'CHI:ChiCVAModel';
+errorcode = 'CHI:ChiPCCVAModel';
 errormessagestub = 'Requested canonical variate is out of range. Max CVs = ';
 
 % If we have more than 1 canonical variate, check that the required cvs are
@@ -126,9 +126,12 @@ hold off;
 % Manage data cursor information
 plotinfo = struct;
 plotinfo.xpointlabel = ['CV ', num2str(cvx)];
-plotinfo.ypointlabel = ['CV ', num2str(cvy)];
 plotinfo.xdata = this.scores(:,cvx);
-plotinfo.ydata = this.scores(:,cvy);
+
+if (this.numcvs > 1)
+    plotinfo.ydata = this.scores(:,cvy);
+    plotinfo.ypointlabel = ['CV ', num2str(cvy)];
+end
 
 if ~isempty(this.pca.classmembership)
     plotinfo.pointmembershiplabels = this.pca.classmembership.labels;

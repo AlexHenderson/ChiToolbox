@@ -16,7 +16,7 @@ function prediction = predict(varargin)
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiCVAPrediction ChiSpectralCollection.
+%   ChiPCCVAPrediction ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -71,25 +71,39 @@ for c = 1:this.pca.classmembership.numclasses
 end
 
 % Determine the predicted class
-[mindist,predictedclass] = min(distances, [], 2); %#ok<ASGLU>
+[mindist,predictedclassid] = min(distances, [], 2); %#ok<ASGLU>
+predictedclasslabel = this.pca.classmembership.uniquelabels(predictedclassid);
 
 % If we already knew the true labels, we can also calculate the prediction accuracy
 if ~isempty(testset.classmembership)
-    trueclass = testset.classmembership.labelids;
-    correctlyclassified = (predictedclass == trueclass);
+    trueclasslabel = testset.classmembership.labels;
+    correctlyclassified = strcmpi(predictedclasslabel,trueclasslabel);
 end
+
+
+%     % Determine the predicted class
+%     [mindist,predictedclassid] = min(distances, [], 2); %#ok<ASGLU>
+%     predictedclass = this.classmembership.uniquelabels(predictedclassid);
+%     
+%     % If we already knew the true labels, we can also calculate the prediction accuracy
+%     if ~isempty(testset.classmembership)
+%         trueclass = testset.classmembership.labelids;
+%         correctlyclassified = strcmp(predictedclass,trueclass);
+%     end
+
+
 
 %% Stop timer
 [predictiontime,predictionsec] = tock(predictiontimer); %#ok<ASGLU>
 
 %% Generate results
-prediction = ChiCVAPrediction(...
+prediction = ChiPCCVAPrediction(...
                 this.clone(), ...
                 projectedscores, ...
                 predictionsec, ...
                 distances, ...
-                predictedclass, ...
-                trueclass, ...
+                predictedclasslabel, ...
+                trueclasslabel, ...
                 correctlyclassified ...
             );
 

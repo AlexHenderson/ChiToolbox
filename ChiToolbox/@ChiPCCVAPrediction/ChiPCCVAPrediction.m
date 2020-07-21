@@ -1,33 +1,33 @@
-classdef ChiCVAPrediction < ChiBase
+classdef ChiPCCVAPrediction < ChiPrediction & ChiBase
 
-% ChiCVAPrediction  Class to manage the outcome of CVA prediction.
+% ChiPCCVAPrediction  Class to manage the outcome of CVA prediction.
 %
 % Syntax
 %   outcome =
-%   ChiCVAPrediction(model,projectedscores,pcs,elapsed,distances, ...
+%   ChiPCCVAPrediction(model,projectedscores,pcs,elapsed,distances, ...
 %                        predictedclass,trueclass,correctlyclassified)
-%   outcome = ChiCVAPrediction(____,history)
+%   outcome = ChiPCCVAPrediction(____,history)
 % 
 % Description
 %   outcome =
-%   ChiCVAPrediction(model,projectedscores,pcs,elapsed,distances,
+%   ChiPCCVAPrediction(model,projectedscores,pcs,elapsed,distances,
 %   predictedclass,trueclass,correctlyclassified) creates a wrapper for the
 %   outcome of a prediction by a PCA model on a set of 'previously unseen'
 %   data.
 % 
-%   outcome = ChiCVAPrediction(____,history) includes a ChiLogger history
+%   outcome = ChiPCCVAPrediction(____,history) includes a ChiLogger history
 %   object recording the data processing history.
 % 
 % Notes
 %   If there are class membership labels available, a better method of
 %   classification is Canonical Variates Analysis which takes the a priori
-%   information into account. See ChiCVAModel for more information. 
+%   information into account. See ChiPCCVAModel for more information. 
 % 
 % Copyright (c) 2020, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   pca ChiPCAModel cva ChiCVAModel randomforest adaboost.
+%   pca ChiPCAModel cva ChiPCCVAModel randomforest adaboost.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -41,12 +41,12 @@ classdef ChiCVAPrediction < ChiBase
 
 
     properties
-        model;      % CVA model from which the prediction was made
+        model;      % ChiPCCVAModel from which the prediction was made
         projectedscores;    % predicted CVA scores of the test set.
         elapsed;    % time in seconds that the prediction took
         distances;  % Mahalanobis distance of each test spectrum to each class
-        predictedclass; % a list of label identifiers indicating the outcome of prediction.
-        trueclass; % a list of label identifiers indicating the outcome of prediction.
+        predictedclasslabel;    % a cell array of labels indicating the outcome of prediction.
+        trueclasslabel;         % a cell array indicating the true label for each spectrum.
         correctlyclassified;    % if the unseen data was labelled, this is a vector indicating whether it was correctly classified. Otherwise it is an empty variable.
         history = ChiLogger();  % log of data processing steps
     end
@@ -56,20 +56,20 @@ classdef ChiCVAPrediction < ChiBase
         percentcorrectlyclassified; % if the unseen data was labelled, this is the percentage of predicted data correctly classified. 
         percentcc; % if the unseen data was labelled, this is the percentage of predicted data correctly classified. 
         pcc; % if the unseen data was labelled, this is the percentage of predicted data correctly classified. 
-        predictedlabel; % predicted class label
-        truelabel;      % true class label
+        predictedclassid; % predicted class label identifier
+        trueclassid;      % true class label identifier
         elapsedstr;     % time that the prediction took as a string
     end
     
     methods
         %% Constructor
-        function this = ChiCVAPrediction(...
+        function this = ChiPCCVAPrediction(...
                             model, ...
                             projectedscores, ...
                             elapsed, ...
                             distances, ...
-                            predictedclass, ...
-                            trueclass, ...
+                            predictedclasslabel, ...
+                            trueclasslabel, ...
                             correctlyclassified, ...
                             varargin ...
                         )
@@ -87,8 +87,8 @@ classdef ChiCVAPrediction < ChiBase
                 this.projectedscores = projectedscores;
                 this.elapsed = elapsed;
                 this.distances = distances;
-                this.predictedclass = predictedclass;
-                this.trueclass = trueclass;
+                this.predictedclasslabel = predictedclasslabel;
+                this.trueclasslabel = trueclasslabel;
                 this.correctlyclassified = correctlyclassified;
             end 
 
@@ -118,14 +118,22 @@ classdef ChiCVAPrediction < ChiBase
             pcc = this.percentcc;
         end
        
-        %% truelabel
-        function truelabel = get.truelabel(this)
-            truelabel = this.model.pca.classmembership.uniquelabels(this.trueclass);
+        %% trueclassid
+        function trueclassid = get.trueclassid(this)
+            numtestcases = length(this.predictedclasslabel);
+            trueclassid = zeros(numtestcases,1);
+            for i = 1:numtestcases
+                trueclassid(i) = find(strcmpi(this.model.pca.classmembership.uniquelabels,this.trueclasslabel(i)));
+            end
         end
        
-        %% predictedlabel
-        function predictedlabel = get.predictedlabel(this)
-            predictedlabel = this.model.pca.classmembership.uniquelabels(this.predictedclass);
+        %% predictedclassid
+        function predictedclassid = get.predictedclassid(this)
+            numtestcases = length(this.predictedclasslabel);
+            predictedclassid = zeros(numtestcases,1);
+            for i = 1:numtestcases
+                predictedclassid(i) = find(strcmpi(this.model.pca.classmembership.uniquelabels,this.predictedclasslabel(i)));
+            end
         end
        
         %% elapsedstr

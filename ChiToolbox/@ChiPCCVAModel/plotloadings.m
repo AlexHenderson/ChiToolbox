@@ -25,7 +25,7 @@ function plotloadings(cv,varargin)
 % See also 
 %   plot bar plotscores plotexplainedvariance plotcumexplainedvariance
 %   plotpcscores plotpcloading plotpcexplainedvariance
-%   plotpccumexplainedvariance ChiCVAModel ChiSpectralCollection.
+%   plotpccumexplainedvariance ChiPCCVAModel ChiSpectralCollection.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

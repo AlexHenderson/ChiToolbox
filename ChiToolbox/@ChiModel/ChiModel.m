@@ -10,7 +10,7 @@ classdef ChiModel < ChiBase
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   ChiPCAModel ChiCVAModel ChiMLModel ChiBase
+%   ChiPCAModel ChiPCCVAModel ChiMLModel ChiBase
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3

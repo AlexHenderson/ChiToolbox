@@ -57,7 +57,7 @@ else
 titlestub = 'Scores on canonical variates ';
 windowtitlestub = titlestub;
 axislabelstub = 'score on CV ';
-errorcode = 'CHI:ChiCVAModel';
+errorcode = 'CHI:ChiPCCVAModel';
 errormessagestub = 'Requested canonical variate is out of range. Max CVs = ';
 
 if isempty(this.pca.classmembership)

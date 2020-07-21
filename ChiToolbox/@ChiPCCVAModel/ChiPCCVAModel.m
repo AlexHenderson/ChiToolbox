@@ -1,6 +1,6 @@
-classdef ChiCVAModel < ChiModel & ChiBase
+classdef ChiPCCVAModel < ChiModel & ChiBase
     
-% ChiCVAModel
+% ChiPCCVAModel
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
     properties
@@ -17,13 +17,14 @@ classdef ChiCVAModel < ChiModel & ChiBase
     
     properties (Dependent = true)
         numcvs;  % number of canonical variates used in the prediction
+        classmembership;    % an instance of ChiClassMembership
     end
     
     methods
         % Constructor
-        function this = ChiCVAModel(scores,loadings,explained,cvs,...
+        function this = ChiPCCVAModel(scores,loadings,explained,cvs,...
                         eigenvectors,eigenvalues,pcs,PCAModel,varargin)
-            % Create an instance of ChiCVAModel with given parameters
+            % Create an instance of ChiPCCVAModel with given parameters
             
             this.history = ChiLogger();
             argposition = find(cellfun(@(x) isa(x,'ChiLogger') , varargin));
@@ -48,6 +49,11 @@ classdef ChiCVAModel < ChiModel & ChiBase
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function numcvs = get.numcvs(this)
             numcvs = this.cvs;
+        end
+        
+        % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function classmembership = get.classmembership(this)
+            classmembership = this.pca.classmembership;
         end
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

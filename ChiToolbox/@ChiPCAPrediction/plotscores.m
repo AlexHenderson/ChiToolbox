@@ -1,6 +1,6 @@
 function plotscores(this,pcx,pcy,varargin)
 
-% plotscores  Plots principal component scores of your choice. 
+% plotscores  Plots principal component scores overlaid with projected data
 %
 % Syntax
 %   plotscores(pcx,pcy);
@@ -115,10 +115,10 @@ colours = get(gca,'colororder');
 axiscolour = 'k';
 decplaces = 3;
 
-projectedcolours = colours;
-projectedlabels = this.truelabel;
+projectedcolours = colours(unique(this.trueclassid,'stable'),:);
+projectedlabels = this.trueclasslabel;
 
-if isempty(this.truelabel)
+if isempty(this.trueclasslabel)
     projectedcolours = 'k';
     projectedlabels = cell(size(this.projectedscores,1),1);
     projectedlabels(:) = {'undefined label'};    

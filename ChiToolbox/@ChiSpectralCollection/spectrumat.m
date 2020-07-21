@@ -1,6 +1,6 @@
 function spectrum = spectrumat(this,which)
 % Get spectrum at the location in the list
-% Copyright (c) 2014-2018 Alex Henderson (alex.henderson@manchester.ac.uk)
+% Copyright (c) 2014-2020 Alex Henderson (alex.henderson@manchester.ac.uk)
 
     % Handle error where xpos and/or ypos are outside image
     if ((which > this.numspectra) || (which < 1))
@@ -14,4 +14,7 @@ function spectrum = spectrumat(this,which)
     spectrum.history.add(['Spectrum at pos=', num2str(which)]);
     this.history.add(['Spectrum at pos=', num2str(which)]);
 
+    if ~isempty(this.classmembership)
+        spectrum.classmembership = this.classmembership.extractentries(which);
+    end    
 end

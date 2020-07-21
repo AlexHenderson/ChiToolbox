@@ -1,4 +1,4 @@
-classdef ChiPCAPrediction < ChiBase
+classdef ChiPCAPrediction < ChiPrediction & ChiBase
 
 % ChiPCAPrediction  Class to manage the outcome of PCA prediction.
 %

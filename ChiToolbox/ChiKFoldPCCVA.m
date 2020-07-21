@@ -259,7 +259,7 @@ for k = 1:numFolds
     %% If we have a 2-class problem we can calculate additional parameters
     if (numUniqueClasses == 2)
         % Taken from Pattern Recognition Letters 27 (2006) 861–874
-        % http://doi.org/10.1016/j.patrec.2005.10.010
+        % https://doi.org/10.1016/j.patrec.2005.10.010
         
         % cm = TP FP
         %      FN TN

@@ -8,8 +8,8 @@ classdef ChiPrediction < ChiBase
 % 
 % Notes
 %   In the confusion matrix, columns are truth, rows are predictions
-%       cm = TP FP
-%            FN TN
+%       TP FP
+%       FN TN
 % 
 % Copyright (c) 2020, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.

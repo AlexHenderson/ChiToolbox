@@ -59,7 +59,10 @@ if argposition
     if (tempncomp > ncomp)
         % Number of components cannot exceed the number of spectra
         utilities.warningnobacktrace(['Requested number of components greater than number of spectra - 1. Setting ncomp = ', num2str(ncomp), '.']);
-    end        
+    else
+        ncomp = tempncomp;
+    end
+    
 end
 
 % Has depvar been provided as a ChiClassMembership object

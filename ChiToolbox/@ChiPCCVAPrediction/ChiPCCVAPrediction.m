@@ -18,11 +18,6 @@ classdef ChiPCCVAPrediction < ChiPrediction & ChiBase
 %   outcome = ChiPCCVAPrediction(____,history) includes a ChiLogger history
 %   object recording the data processing history.
 % 
-% Notes
-%   If there are class membership labels available, a better method of
-%   classification is Canonical Variates Analysis which takes the a priori
-%   information into account. See ChiPCCVAModel for more information. 
-% 
 % Copyright (c) 2020, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %

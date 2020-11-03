@@ -1,6 +1,6 @@
 classdef ChiPCAModel < ChiModel & ChiBase
 
-% ChiPCAModel  Results from a Principal Components Analysis (PCA) experiment.
+% ChiPCAModel  Results from Principal Components Analysis (PCA).
 %
 % Syntax
 %   model = ChiPCAModel(scores,loadings,explained,variances,xvals,xlabelname,xlabelunit,reversex);
@@ -8,16 +8,17 @@ classdef ChiPCAModel < ChiModel & ChiBase
 % 
 % Description
 %   model = ChiPCAModel(scores,loadings,explained,variances,xvals,
-%   xlabelname,xlabelunit,reversex) creates a wrapper for the outcome of a
-%   principal components analysis experiment.
+%   xlabelname,xlabelunit,reversex) creates a wrapper for the outcome of
+%   principal components analysis.
 % 
 %   model = ChiPCAModel(____,history) includes a ChiLogger history
-%   object recording the data processing history.
+%   object, recording the data processing history.
 % 
 % Notes
 %   If there are class membership labels available, a better method of
-%   classification is Canonical Variates Analysis which takes the a priori
-%   information into account. See ChiPCCVAModel for more information. 
+%   classification is Principal Components Canonical Variates Analysis
+%   which takes the a priori information into account. See ChiPCCVAModel
+%   for more information.
 % 
 % Copyright (c) 2020, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.

@@ -1,7 +1,37 @@
 classdef ChiPCCVAModel < ChiModel & ChiBase
     
-% ChiPCCVAModel
-%   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
+% ChiPCCVAModel  Results from Principal Components Canonical Variates Analysis (PCCVA).
+%
+% Syntax
+%   model = ChiPCCVAModel(scores,loadings,explained,cvs,...
+%                         eigenvectors,eigenvalues,pcs,PCAModel)
+%   model = ChiPCCVAModel(____,history);
+% 
+% Description
+%   model =
+%   ChiPCCVAModel(scores,loadings,explained,cvs,eigenvectors,eigenvalues,pcs,PCAModel)
+%   creates a wrapper for the outcome of principal components canonical
+%   variates analysis.
+% 
+%   model = ChiPCCVAModel(____,history) includes a ChiLogger history
+%   object, recording the data processing history.
+% 
+% Copyright (c) 2014-2020, Alex Henderson.
+% Licenced under the GNU General Public License (GPL) version 3.
+%
+% See also 
+%   pccva pca ChiPCAPrediction ChiPCCVAModel randomforest adaboost.
+
+% Contact email: alex.henderson@manchester.ac.uk
+% Licenced under the GNU General Public License (GPL) version 3
+% http://www.gnu.org/copyleft/gpl.html
+% Other licensing options are available, please contact Alex for details
+% If you use this file in your work, please acknowledge the author(s) in
+% your publications. 
+
+% The latest version of this file is available on Bitbucket
+% https://bitbucket.org/AlexHenderson/chitoolbox
+
 
     properties
         scores;         % principal components scores

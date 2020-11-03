@@ -69,5 +69,4 @@ if ~isempty(input.classmembership)
     model.classmembership = input.classmembership;
 end
 
-
 end % function ChiSpectralPCA

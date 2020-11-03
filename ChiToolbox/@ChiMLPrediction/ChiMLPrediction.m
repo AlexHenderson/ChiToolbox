@@ -1,4 +1,4 @@
-classdef ChiMLPrediction < ChiBase
+classdef ChiMLPrediction < ChiPrediction & ChiBase
 
 % ChiMLPrediction  Class to manage the outcome of machine learning algorithms.
 %

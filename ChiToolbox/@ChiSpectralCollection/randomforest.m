@@ -202,6 +202,7 @@ predictiontime = [];
 predictionsec = [];
 
 importances = this.spectrumat(1);
+oobimportances = this.spectrumat(1);
 switch alg
     case 'treebagger'
         importances.data = modelCompact.DeltaCriterionDecisionSplit;

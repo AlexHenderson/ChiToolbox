@@ -18,6 +18,11 @@ function obj = peakdetect(varargin)
 %   peakdetect(____,'vis') display a window overlaying the data with the
 %   detected centroids
 % 
+%   peakdetect(____,'peaktable', pks) uses the previously generated peak
+%   table pks to define the peak limits for these data. Peak tables are
+%   available as a property of any mass spectrum, collection or image where
+%   peak detection has been performed.
+% 
 %   modified = peakdetect(____) first creates a clone of the object, then
 %   detects peaks in the clone. The original object is not modified.
 %
@@ -47,7 +52,7 @@ function obj = peakdetect(varargin)
 %        total ion spectrum become the new mass positions for each of these
 %        peaks. 
 %     
-% Copyright (c) 2018-2019, Alex Henderson.
+% Copyright (c) 2018-2020, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -148,8 +153,9 @@ else
     begincol = 1;
     endcol = 2;
     midpointcol = 3;
-    centroidcol = 4;
+    centroidcol = 4;            % Channel closest to centroid
     areacol = 5;
+    accuratecentroidcol = 6;    % Actual centroid assuming linear trend inside channel
 
     %% Identify some data to peak detect
     if isa(this, 'ChiSpectrum')

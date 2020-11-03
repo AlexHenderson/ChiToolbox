@@ -166,6 +166,9 @@ else
         original = this.clone();
         original.mean;
     end
+    
+    % Ensure the spectrum we will peak detect is not sparse
+    spectrumtoworkon.full;    
 
     %% Apply peaklist if present
     if ~isempty(peaktable)

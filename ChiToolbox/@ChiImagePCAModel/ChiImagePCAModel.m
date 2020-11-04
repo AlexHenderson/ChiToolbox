@@ -4,34 +4,27 @@ classdef ChiImagePCAModel < ChiBase
 %   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
 
     properties
-        scores;
-        loadings;
-        explained;
-        variances;
-        xvals;
+        scores;     % PCA scores
+        loadings;   % PCA loadings
+        explained;  % percentage explained variance
+        variances;  % variance
+        xvals;      % abscissa (spectral x-axis) as a row vector
         xlabelname; % text for abscissa label on plots
         xlabelunit; % text for abscissa label on plots
-        reversex;
-        mask;
-        masked = false;
-        history = ChiLogger();
+        reversex;   % should abscissa (x-axis) be plotted in decreasing order
+        xpixels;    % number of pixels in the x-direction (width)
+        ypixels;    % number of pixels in the y-direction (height)
+        mask;       % unused
+        masked = false; % unused
+        history = ChiLogger();  % log of data processing steps
     end
     
-    properties (Dependent = true)
-        %% Calculated properties
-    end
-    
-    properties (SetAccess = protected)
-        xpixels;    % Number of pixels in the x-direction (width)
-        ypixels;    % Number of pixels in the y-direction (height)
-    end          
-
     properties (Dependent = true, SetAccess = protected)
     %% Calculated properties
-        width;          % Number of pixels in the x-direction
-        height;         % Number of pixels in the y-direction
-        numpcs;         % Number of principal components
-        xlabel          % Composition of the xlabelname and the xlabelunit
+        width;          % number of pixels in the x-direction
+        height;         % number of pixels in the y-direction
+        numpcs;         % number of principal components
+        xlabel          % composition of the xlabelname and the xlabelunit
     end
     
     methods

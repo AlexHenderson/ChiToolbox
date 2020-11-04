@@ -168,7 +168,7 @@ else
     end
     
     % Ensure the spectrum we will peak detect is not sparse
-    spectrumtoworkon.full;    
+    full(spectrumtoworkon);
 
     %% Apply peaklist if present
     if ~isempty(peaktable)

@@ -3,19 +3,18 @@ function ChiUpdate()
 % Function to update the code to the Master version on Bitbucket. 
 % https://bitbucket.org/AlexHenderson/chitoolbox
 % 
-% We record where we are, work out where the ChiToolbox is located on the
-% local hard drive and move to that location. Then we send a message to the
-% Git program to update the code. Once done, we add the current path, with
-% subfolders (in case any folders have been added or removed) to the search
-% path and navigate back to the initial location.
+% This file should be in chitoolbox/ChiToolbox
+% First we determine whether Git is available. 
+% We get the location of this file and tell Git to update the repository in
+% that location. 
+% Once done, we add the current path, with subfolders (in case any folders
+% have been added or removed) to the search path and navigate back to the
+% initial location.
 % 
 % Requires that the code was cloned from the repository on Bitbucket, not
 % simply downloaded. The Git program is also required. This can be found
 % at: https://git-scm.com/
 
-
-% Store the current location for use later
-whereWeStartedFrom = pwd();
 
 try
     disp('Checking code repository for changes');
@@ -32,24 +31,18 @@ try
     filename = mfilename('fullpath');
     [pathstr,name,ext] = fileparts(filename); %#ok<ASGLU>
 
-    % Move to that location. This is the root of the ChiToolbox
-    cd(pathstr);
+    % Connect to git repository and pull down the most recent version of
+    % the master branch
+    command = ['git -C "', pathstr, '" pull origin master'];
+    [status,cmdout] = system(command); %#ok<ASGLU>
     
-    % Connect to git repository and update codebase
-    status = system('git pull origin master'); %#ok<NASGU>
-
     % Since the file and folder structure may have changed, rebuild the path
     disp('Rebuilding MATLAB path');
-    addpath(genpath(pwd));
+    addpath(genpath(pathstr));
     savepath();
     
-    % Return to the original directory
-    cd(whereWeStartedFrom);
     disp('Done!');
 catch ME
-    % Return to the original directory
-    cd(whereWeStartedFrom);
-
     % Report problem to user
     switch ME.identifier
         case ['CHI:',mfilename,':ResourceError']

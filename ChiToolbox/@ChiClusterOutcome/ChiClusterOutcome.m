@@ -1,4 +1,4 @@
-classdef ChiClusterOutcome < ChiBase
+classdef ChiClusterOutcome < ChiModel
 
 % ChiClusterOutcome  Class to manage the outcome of clustering algorithms.
 %
@@ -60,7 +60,7 @@ classdef ChiClusterOutcome < ChiBase
         %   algorithm is the name of the clustering algorithm employed.
         %   seed is the algorithm for initiating the clustering process.
         %
-        % Copyright (c) 2019-2020, Alex Henderson.
+        % Copyright (c) 2019-2021, Alex Henderson.
         % Licenced under the GNU General Public License (GPL) version 3.
         %
         % See also 

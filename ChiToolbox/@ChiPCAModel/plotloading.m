@@ -11,7 +11,8 @@ function varargout = plotloading(this,pc,varargin)
 %
 % Description
 %   plotloading(pc) creates a 2-D line chart of the principal component
-%   pc in a new figure window.
+%   pc in a new figure window. Percentage explained variance
+%   of this component is shown in parentheses. 
 %
 %   plotloading(pc,'nofig') plots the loading in the currently active
 %   figure window, or creates a new figure if none is available.
@@ -103,20 +104,20 @@ end
 datatoplot = this.loadings(:,pc)';  % convert to row
 
 if barplot
-    retval = bar(gca(), this.xvals, datatoplot, varargin{:}); %#ok<NASGU>
+    retval = bar(gca, this.xvals, datatoplot, varargin{:}); %#ok<NASGU>
 else
     if this.iscentroided
         legacy = true;
     end
     if legacy
             if this.iscentroided
-                retval = stem(gca(), this.xvals,datatoplot,'marker','none',varargin{:}); %#ok<NASGU>
+                retval = stem(gca, this.xvals,datatoplot,'marker','none',varargin{:}); %#ok<NASGU>
             else
-                retval = plot(gca(), this.xvals, datatoplot, varargin{:}); %#ok<NASGU>
+                retval = plot(gca, this.xvals, datatoplot, varargin{:}); %#ok<NASGU>
             end
     else
         % do a segmented plot 
-        retval = utilities.plotsegments(gca(),this.xvals, datatoplot, this.linearity, varargin{:}); %#ok<NASGU>
+        retval = utilities.plotsegments(gca,this.xvals, datatoplot, this.linearity, varargin{:}); %#ok<NASGU>
     end
 end
     

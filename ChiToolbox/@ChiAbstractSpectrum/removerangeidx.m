@@ -79,7 +79,7 @@ else
     else
         this.data(datamask) = [];
     end
-
+    
     for r = 1:numRanges    
         this.history.add(['removerangeidx: from ', num2str(ranges(r,1)), ' to ', num2str(ranges(r,2))]);
     end

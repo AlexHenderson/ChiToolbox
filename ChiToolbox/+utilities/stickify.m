@@ -71,7 +71,7 @@ delta = eps(max(x));
 lower(:,1) = data(:,1) - delta;
 upper(:,1) = data(:,1) + delta;
 
-%% Put the new positions and origional data together
+%% Put the new positions and original data together
 data = vertcat(lower,data,upper);
 data = sortrows(data,1);
 

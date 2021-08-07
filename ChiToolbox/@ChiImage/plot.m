@@ -5,6 +5,7 @@ function varargout = plot(this,varargin)
 % Syntax
 %   plot();
 %   plot('nofig');
+%   plot(____,'legacy');
 %   plot(____,'axes',desiredaxes);
 %   plot(____,Function);
 %   plot(____,'grouped',Function);
@@ -20,6 +21,12 @@ function varargout = plot(this,varargin)
 %   plot('nofig') plots the spectra in the currently active figure window,
 %   or creates a new figure if none is available.
 %
+%   plot(____,'legacy') plots the spectra using the legacy method (not
+%   segmented).
+%
+%   plotspectra(____,'axes',desiredaxes) plots the spectra in the
+%   desiredaxes. Defaults to gca. 
+% 
 %   plot(____,Function) plots the spectra in a range of different ways
 %   depending on the value of Function:
 %     'mean' plots the mean of the spectra
@@ -71,60 +78,66 @@ function varargout = plot(this,varargin)
 % co-locate the feature. 
 
 
-%% Determine what the user asked for
-plottype = 'normal';
-forced = false;
+retval = this.tocollection.plot(varargin{:});
 
-argposition = find(cellfun(@(x) strcmpi(x, 'mean') , varargin));
-if argposition
-    plottype = 'mean';
-end
 
-argposition = find(cellfun(@(x) strcmpi(x, 'sum') , varargin));
-if argposition
-    plottype = 'sum';
-end
+% %% Determine what the user asked for
+% plottype = 'normal';
+% forced = false;
+% 
+% argposition = find(cellfun(@(x) strcmpi(x, 'mean') , varargin));
+% if argposition
+%     plottype = 'mean';
+% end
+% 
+% argposition = find(cellfun(@(x) strcmpi(x, 'sum') , varargin));
+% if argposition
+%     plottype = 'sum';
+% end
+% 
+% argposition = find(cellfun(@(x) strcmpi(x, 'median') , varargin));
+% if argposition
+%     plottype = 'median';
+% end
+% 
+% argposition = find(cellfun(@(x) strcmpi(x, 'std') , varargin));
+% if argposition
+%     plottype = 'std';
+% end
+% 
+% argposition = find(cellfun(@(x) strcmpi(x, 'force') , varargin));
+% if argposition
+%     % Remove the 'force' flag
+%     varargin(argposition) = [];
+%     forced = true;
+% end
+% 
+% if (forced || (this.numpixels < 1001))
+%     % Not too many spectra, or the user has overridden the warning
+%     
+%     retval = this.tocollection.plot(varargin{:});
+%     
+% else
+%     % If we're asking for the mean, sum, median or std plots then the
+%     % number of actual plot lines is likely to be quite small, so just go
+%     % ahead. 
+%     % If the plottype is 'normal' we plot everything, regardless of whether
+%     % the 'grouped' flag is present or whether we have classmembership
+%     % information. Therefore warn the user. 
+%     
+%     if strcmpi(plottype,'normal')
+%         utilities.warningnobacktrace('This plot will generate %d lines. In order to plot more than 1000 lines, please reissue the command using the ''force'' flag.',this.numpixels);
+%     else
+%         if nargout
+%             retval = utilities.plotspectra(this,varargin{:});
+%         else
+%             retval = utilities.plotspectra(this,varargin{:});
+%         end
+%     end
+%     
+% end
 
-argposition = find(cellfun(@(x) strcmpi(x, 'median') , varargin));
-if argposition
-    plottype = 'median';
-end
-
-argposition = find(cellfun(@(x) strcmpi(x, 'std') , varargin));
-if argposition
-    plottype = 'std';
-end
-
-argposition = find(cellfun(@(x) strcmpi(x, 'force') , varargin));
-if argposition
-    % Remove the 'force' flag
-    varargin(argposition) = [];
-    forced = true;
-end
-
-if (forced || (this.numpixels < 1001))
-    % Not too many spectra, or the user has overridden the warning
-    if nargout
-        varargout{:} = utilities.plotspectra(this,varargin{:});
-    else
-        utilities.plotspectra(this,varargin{:});
-    end
-else
-    % If we're asking for the mean, sum, median or std plots then the
-    % number of actual plot lines is likely to be quite small, so just go
-    % ahead. 
-    % If the plottype is 'normal' we plot everything, regardless of whether
-    % the 'grouped' flag is present or whether we have classmembership
-    % information. Therefore warn the user. 
-    
-    if strcmpi(plottype,'normal')
-        utilities.warningnobacktrace('This plot will generate %d lines. In order to plot more than 1000 lines, please reissue the command using the ''force'' flag.',this.numpixels);
-    else
-        if nargout
-            varargout{:} = utilities.plotspectra(this,varargin{:});
-        else
-            utilities.plotspectra(this,varargin{:});
-        end
-    end
-    
+%% Manage return value
+if nargout
+    varargout{1} = gcf();
 end

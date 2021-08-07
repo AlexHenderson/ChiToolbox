@@ -4,7 +4,8 @@ function varargout = plot(varargin)
 %
 % Syntax
 %   plot();
-%   plot('nofig');
+%   plot(____,'nofig');
+%   plot(____,'legacy');
 %   plot(____,'axes',desiredaxes);
 %   plot(____,Function);
 %   plot(____,'grouped',Function);
@@ -15,9 +16,12 @@ function varargout = plot(varargin)
 %   plot() creates a 2-D line plot of the ChiSpectralCollection in a new
 %   figure window.
 %
-%   plot('nofig') plots the spectra in the currently active figure window,
+%   plot(____,'nofig') plots the spectra in the currently active figure window,
 %   or creates a new figure if none is available.
 %
+%   plot(____,'legacy') plots the spectra using the legacy method (not
+%   segmented).
+% 
 %   plotspectra(____,'axes',desiredaxes) plots the spectra in the
 %   desiredaxes. Defaults to gca. 
 % 
@@ -44,7 +48,7 @@ function varargout = plot(varargin)
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot function for more details. 
 %
-% Copyright (c) 2017-2019, Alex Henderson.
+% Copyright (c) 2017-2021, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -60,14 +64,28 @@ function varargout = plot(varargin)
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
+    
+%% Do we want a legacy plot?
+legacy = false;
+argposition = find(cellfun(@(x) strcmpi(x, 'legacy') , varargin));
+if argposition
+    legacy = true;
+    % Remove the parameter from the argument list
+    varargin(argposition) = [];
+end
+
+%% Do the plotting
 % Passing the actual plotting functionality off to a separate function to
 % co-locate the feature. 
-
-
-    if nargout
-        varargout{:} = utilities.plotspectra(varargin{:});
-    else
-        utilities.plotspectra(varargin{:});
-    end
-    
+if legacy
+    retval = utilities.plotspectra(varargin{:});
+else
+    retval = utilities.plotspectrasegmented(varargin{:});
 end
+
+%% Manage return values
+if nargout
+    varargout{:} = retval;
+end
+
+end % function

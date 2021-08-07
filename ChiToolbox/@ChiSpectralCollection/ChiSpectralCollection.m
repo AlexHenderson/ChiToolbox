@@ -61,6 +61,7 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
         filenames = {};   % Cell array of filenames if opened from a list of files
         history = ChiLogger();     % Log of data processing steps
         dynamicproperties; % Storage space for instance specific properties
+        linearity = ChiXAxisLinearity.linear; % Shape of x-axis (discrete, linear, quadratic)
     end
 
     % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

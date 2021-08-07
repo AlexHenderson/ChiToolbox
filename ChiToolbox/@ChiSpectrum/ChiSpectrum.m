@@ -1,6 +1,6 @@
 classdef ChiSpectrum < ChiAbstractSpectrum
 % ChiSpectrum Storage class for a single spectrum
-% Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
+% Copyright (c) 2014-2021 Alex Henderson (alex.henderson@manchester.ac.uk)
     
     
     % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -16,6 +16,7 @@ classdef ChiSpectrum < ChiAbstractSpectrum
         filenames = {};         % Name of file opened, if appropriate
         history = ChiLogger();  % Log of data processing steps
         dynamicproperties; % Storage space for instance specific properties
+        linearity = ChiXAxisLinearity.linear; % Shape of x-axis (discrete, linear, quadratic)
     end
     
     properties (Dependent = true)
@@ -94,6 +95,7 @@ classdef ChiSpectrum < ChiAbstractSpectrum
                         this.reversex = true;
                     end
                 end
+                
             end 
             
             this.spectralcollectionclassname = 'ChiSpectralCollection';

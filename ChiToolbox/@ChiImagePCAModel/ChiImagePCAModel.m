@@ -1,7 +1,7 @@
-classdef ChiImagePCAModel < ChiBase
+classdef ChiImagePCAModel < ChiModel
     
 % ChiImagePCAModel
-%   Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
+%   Copyright (c) 2014-2021 Alex Henderson (alex.henderson@manchester.ac.uk)
 
     properties
         scores;     % PCA scores

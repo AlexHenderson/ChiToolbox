@@ -1,4 +1,4 @@
-function result = adaboost(varargin)
+function model = adaboost(varargin)
 
 % adaboost  Adaptive Boosting classification. 
 %
@@ -158,7 +158,7 @@ correctlyclassified = (prediction == testlabels);
 [elapsed,elaspedinseconds] = tock(modeltimer);
 
 %% Write output
-result = ChiMLModel(...
+model = ChiMLModel(...
                     trainmask, ...
                     testmask, ...
                     algorithm, ...
@@ -174,4 +174,10 @@ result = ChiMLModel(...
                     predictionsec...
                     );
 
+if isprop(this,'iscentroided')
+    model.iscentroided = this.iscentroided;
+end
+
+model.linearity = this.linearity;
+                
 end

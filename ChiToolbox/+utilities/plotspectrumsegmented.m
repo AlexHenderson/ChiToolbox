@@ -1,32 +1,43 @@
-function varargout = plotspectrum(this,varargin)
+function varargout = plotspectrumsegmented(this,varargin)
 
-% plotspectrum  Plots a spectrum. 
+% plotspectrumsegmented  Plots a spectrum in segments. 
 %
 % Syntax
-%   plotspectrum();
-%   plotspectrum('nofig');
-%   plotspectrum(____,'axes',desiredaxes);
-%   plotspectrum(____,'title',titletext);
-%   handle = plotspectrum(____);
+%   plotspectrumsegmented();
+%   plotspectrumsegmented(____,'nofig');
+%   plotspectrumsegmented(____,linearity);
+%   plotspectrumsegmented(____,'axes',desiredaxes);
+%   plotspectrumsegmented(____,'title',titletext);
+%   handle = plotspectrumsegmented(____);
 %
 % Description
-%   plotspectrum() creates a 2-D line plot of the ChiSpectrum object in a
-%   new figure window.
+%   plotspectrumsegmented() creates a 2-D line plot of the ChiSpectrum
+%   object in a new figure window. Lines are plotted in segments.
 %
-%   plotspectrum('nofig') plots the spectra in the currently active
-%   figure window, or creates a new figure if none is available.
+%   plotspectrumsegmented(____,'nofig') plots the segments of the spectrum
+%   in the currently active figure window, or creates a new figure if none
+%   is available.
 %
-%   plotspectrum(____,'axes',desiredaxes) plots the spectrum in the
-%   desiredaxes. Defaults to gca. 
+%   plotspectrumsegmented(____,'linearity', linearity) plots the segments
+%   of the spectrum using the linearity defined. Options are 'linear'
+%   (default) or 'quadratic'.
+%
+%   plotspectrumsegmented(____,'axes',desiredaxes) plots the segments of
+%   the spectrum in the desiredaxes. Defaults to gca.
 % 
-%   plotspectrum(____,'title',titletext) displays titletext as a plot title.
+%   plotspectrumsegmented(____,'title',titletext) displays titletext as a
+%   plot title.
 % 
-%   handle = plotspectrum(____) returns a handle to the figure.
+%   handle = plotspectrumsegmented(____) returns a handle to the figure.
 %
+% Notes
+%   Segments are generated when part of the spectrum is removed. Examples
+%   of functions that generate segments include removerange and keeprange.
+% 
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot function for more details. 
 %
-% Copyright (c) 2017-2019, Alex Henderson.
+% Copyright (c) 2021, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -39,7 +50,6 @@ function varargout = plotspectrum(this,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 2.0, August 2018
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
@@ -47,20 +57,28 @@ function varargout = plotspectrum(this,varargin)
 % https://uk.mathworks.com/matlabcentral/answers/127878-interpreting-varargin-name-value-pairs
 
 
-%% Do we want a legacy plot?
-legacy = false;
-argposition = find(cellfun(@(x) strcmpi(x, 'legacy') , varargin));
-if argposition
-    legacy = true;
-    % Remove the parameter from the argument list
-    varargin(argposition) = [];
-end
-
 %% Do we want to add a title?
 titletext = '';
 argposition = find(cellfun(@(x) strcmpi(x, 'title') , varargin));
 if argposition
     titletext = varargin{argposition+1};
+    % Remove the parameters from the argument list
+    varargin(argposition+1) = [];
+    varargin(argposition) = [];
+end
+
+%% Shape of the x-axis: linear or quadratic
+linearity = 'linear';
+argposition = find(cellfun(@(x) strcmpi(x, 'linearity') , varargin));
+if argposition
+    linearity = lower(varargin{argposition+1});
+    % Check for incorrect input
+    if ~(strcmpi(linearity, 'linear') || strcmpi(linearity, 'quadratic'))
+        err = MException(['CHI:',mfilename,':InputError'], ...
+            'Options for linearity are ''linear'' or ''quadratic''');
+        throw(err);
+    end
+        
     % Remove the parameters from the argument list
     varargin(argposition+1) = [];
     varargin(argposition) = [];
@@ -88,23 +106,10 @@ else
 end
 
 %% Do the plotting
-centroided = false;
-if isprop(this, 'iscentroided')
-    if this.iscentroided
-        centroided = true;
-    end
-end
-
-if centroided
-    retval = stem(ax,this.xvals,this.data,'marker','none',varargin{:}); %#ok<NASGU>
-else
-    retval = plot(ax,this.xvals,this.data,varargin{:}); %#ok<NASGU>
-end
+handles = utilities.plotsegments(ax,this.xvals,this.data,linearity,varargin{:}); %#ok<NASGU>
 
 %% Prettify plot
-if ~centroided
-    utilities.tightxaxis(ax);
-end
+utilities.tightxaxis(ax);
 
 if this.reversex
     set(ax,'XDir','reverse');

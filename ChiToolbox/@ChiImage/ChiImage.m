@@ -1,7 +1,7 @@
 classdef ChiImage < ChiAbstractImage
 % classdef ChiImage < handle & ChiSpectralCharacter & ChiSpatialCharacter
 % ChiImage Storage class for hyperspectral images
-% Copyright (c) 2014 Alex Henderson (alex.henderson@manchester.ac.uk)
+% Copyright (c) 2014-2021 Alex Henderson (alex.henderson@manchester.ac.uk)
     
     % matlab.mixin.Copyable only for >R2011a
     % Want compatibility with R2009a
@@ -21,6 +21,7 @@ classdef ChiImage < ChiAbstractImage
         filenames = {};         % Name of the file, if appropriate
         history = ChiLogger();  % Log of data processing steps
         dynamicproperties; % Storage space for instance specific properties
+        linearity = ChiXAxisLinearity.linear; % Shape of x-axis (discrete, linear, quadratic)
     end
 
     properties (Dependent = true)
@@ -125,6 +126,10 @@ classdef ChiImage < ChiAbstractImage
             spectrumclass = str2func(this.spectrumclassname);
             totalspectrum = spectrumclass(this.xvals,sum(this.data),this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit);
             totalspectrum.filenames = this.filenames;
+            if isprop(this, 'iscentroided')
+                totalspectrum.iscentroided = this.iscentroided;
+            end
+            totalspectrum.linearity = this.linearity;            
         end                
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

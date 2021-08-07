@@ -24,7 +24,7 @@ function model = ChiPCCVA(this,pcs)
 %     cveigenvectors - eigenvectors of the canonical variates
 %     cveigenvalues - eigenvalues of the canonical variates
 %
-%   Copyright (c) 2015, Alex Henderson 
+%   Copyright (c) 2015-2021, Alex Henderson 
 %   Contact email: alex.henderson@manchester.ac.uk
 %   Licenced under the GNU General Public License (GPL) version 3
 %   http://www.gnu.org/copyleft/gpl.html
@@ -32,8 +32,11 @@ function model = ChiPCCVA(this,pcs)
 %   If you use this file in your work, please acknowledge the author(s) in
 %   your publications. 
 %
-%   version 1.3
+%   version 2.0
 
+%   version 2.0 August 2021 Alex Henderson
+%   Added check for class membership, centroided data, linearity and
+%   converted errors to exceptions
 %   version 1.3 September 2016 Alex Henderson
 %   Added cveigenvectors as an additional output
 %   version 1.2 August 2016 Alex Henderson
@@ -43,8 +46,15 @@ function model = ChiPCCVA(this,pcs)
 %   version 1.0 June 2015 Alex Henderson
 %   initial release
 
-%% Perform principal components analysis
 
+%% Check we have class membership, a requirement for CVA
+if isempty(this.classmembership)
+    err = MException(['CHI:',mfilename,':InputError'], ...
+        'No class membership is available, a requirement for discriminant analysis.');
+    throw(err);
+end
+
+%% Perform principal components analysis
 pca = ChiSpectralPCA(this);
 
 %% Determine valid PCs
@@ -65,7 +75,10 @@ pca.scores = pca.scores(:,1:pcs);
 numcvs = this.classmembership.numuniquelabels - 1;
 
 if (pcs < numcvs)
-    error(['Not enough valid principal components (' ,num2str(pcs), ') to discriminate between the groups (', num2str(numcvs+1), ')']);
+    message = ['Not enough valid principal components (' ,num2str(pcs), ') to discriminate between the groups (', num2str(numcvs+1), ').'];
+    err = MException(['CHI:',mfilename,':InputError'], ...
+        message');
+    throw(err);    
 end
 
 %% Perform canonical variates analysis
@@ -79,4 +92,10 @@ cvexplained = cvpercent_explained_variation;
 %% Create a class to hold the output
 model = ChiPCCVAModel(cvscores,cvloadings,cvexplained,numcvs,...
                                cveigenvectors,cveigenvalues,pcs,pca);
+
+if isprop(this,'iscentroided')
+    model.iscentroided = this.iscentroided;
+end
+
+model.linearity = this.linearity;
 

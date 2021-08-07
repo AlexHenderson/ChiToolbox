@@ -1,4 +1,4 @@
-function obj = kmeans(this,k,varargin)
+function model = kmeans(this,k,varargin)
 
 % kmeans  k-means clustering. 
 %
@@ -15,7 +15,7 @@ function obj = kmeans(this,k,varargin)
 % Notes
 %   This function requires the Statistics and Machine Learning Toolbox. 
 % 
-% Copyright (c) 2019, Alex Henderson.
+% Copyright (c) 2019-2021, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -70,10 +70,17 @@ end
     centroids.filenames = this.filenames;
     centroids.history.add('kmeans centroids');
     
-    obj = ChiClusterOutcome(clusters,centroids,'kmeans',seed);
+    model = ChiClusterOutcome(clusters,centroids,'kmeans',seed);
+
+    if isprop(this,'iscentroided')
+        model.iscentroided = this.iscentroided;
+    end
+
+    model.linearity = this.linearity;
+    
     
     if vis
-        obj.show;
+        model.show;
     end
     
 end

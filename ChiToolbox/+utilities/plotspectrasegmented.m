@@ -1,30 +1,31 @@
-function varargout = plotspectra(this,varargin)
+function varargout = plotspectrasegmented(this,varargin)
 
-% plotspectra  Plots one or more spectra. Multiple spectra are overlaid. 
+% plotspectrasegmented  Plots one or more spectra in segments. Multiple spectra are overlaid. 
 %
 % Syntax
-%   plotspectra();
-%   plotspectra(function);
-%   plotspectra(____,'byclass');
-%   plotspectra(____,'nofig');
-%   plotspectra(____,'force');
-%   plotspectra(____,'axes',desiredaxes);
-%   plotspectra(____,'title',titletext);
-%   handle = plotspectra(____);
+%   plotspectrasegmented();
+%   plotspectrasegmented(function);
+%   plotspectrasegmented(____,'byclass');
+%   plotspectrasegmented(____,'nofig');
+%   plotspectrasegmented(____,'force');
+%   plotspectrasegmented(____,'axes',desiredaxes);
+%   plotspectrasegmented(____,'title',titletext);
+%   handle = plotspectrasegmented(____);
 %
 % Description
-%   plotspectra() creates a 2-D line plot of the ChiSpectrum, or
-%   ChiSpectralCollection, object in a new figure window.
+%   plotspectrasegmented() creates a 2-D line plot of the
+%   ChiSpectralCollection, object in a new figure window. Lines are plotted
+%   in segments.
 %
-%   plotspectra(function) plots the spectra in a range of different ways
-%   depending on the value of function:
+%   plotspectrasegmented(function) plots segments of the spectra in a range
+%   of different ways depending on the value of function:
 %     'mean' plots the mean of the spectra
 %     'sum' plots the sum of the spectra
 %     'median' plots the median of the spectra
 %     'std' plots the mean of the spectra, with the standard deviation
 %     of the spectra shown in a shaded region
 % 
-%   plotspectra(____,'byclass') plots the spectra in a range of
+%   plotspectrasegmented(____,'byclass') plots the spectra in a range of
 %   different ways depending on the presence and/or value of function:
 %     'mean' plots the mean of the spectra in each class
 %     'sum' plots the sum of the spectra in each class
@@ -34,27 +35,29 @@ function varargout = plotspectra(this,varargin)
 %   If function is not provided, the spectra are plotted using the same
 %   coloured line for each class. 
 % 
-%   plotspectra(____,'nofig') plots the spectra in the currently active
-%   figure window, or creates a new figure if none is available.
+%   plotspectrasegmented(____,'nofig') plots the spectra in the currently
+%   active figure window, or creates a new figure if none is available.
 %
-%   plotspectra(____,'force') forces the plot function to display a large
-%   number of spectra using any of the other syntax variants. A very large
-%   number of spectra can create a problem when plotting. If the number of
-%   spectra to be plotted is greater than 1000, a warning will be issued
-%   and no plot generated. In such a case, using the 'force' option will
-%   ensure the plot function is attempted, regardless of the consequences.
+%   plotspectrasegmented(____,'force') forces the plot function to display
+%   a large number of spectra using any of the other syntax variants. A
+%   very large number of spectra can create a problem when plotting. If the
+%   number of spectra to be plotted is greater than 1000, a warning will be
+%   issued and no plot generated. In such a case, using the 'force' option
+%   will ensure the plot function is attempted, regardless of the
+%   consequences.
 % 
-%   plotspectra(____,'axes',desiredaxes) plots the spectra in the
+%   plotspectrasegmented(____,'axes',desiredaxes) plots the spectra in the
 %   desiredaxes. Defaults to gca. 
 % 
-%   plotspectra(____,'title',titletext) displays titletext as a plot title.
+%   plotspectrasegmented(____,'title',titletext) displays titletext as a
+%   plot title.
 % 
-%   handle = plotspectra(____) returns a handle to the figure.
+%   handle = plotspectrasegmented(____) returns a handle to the figure.
 %
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot function for more details. 
 %
-% Copyright (c) 2017-2021, Alex Henderson.
+% Copyright (c) 2021, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -92,10 +95,28 @@ if argposition
     varargin(argposition) = [];
 end
 
+%% Shape of the x-axis: linear or quadratic
+linearity = 'linear';
+argposition = find(cellfun(@(x) strcmpi(x, 'linearity') , varargin));
+if argposition
+    linearity = lower(varargin{argposition+1});
+    % Check for incorrect input
+    if ~(strcmpi(linearity, 'linear') || strcmpi(linearity, 'quadratic'))
+        err = MException(['CHI:',mfilename,':InputError'], ...
+            'Options for linearity are ''linear'' or ''quadratic''');
+        throw(err);
+    end
+        
+    % Remove the parameters from the argument list
+    varargin(argposition+1) = [];
+    varargin(argposition) = [];
+end
+
 %% Define defaults for datacursor
 plotinfo.functionplot = false;
 plotinfo.byclass = false;
 plotinfo.appliedfunction = '';
+plotinfo.linearity = linearity;
 
 %% Determine what the user asked for
 argposition = find(cellfun(@(x) strcmpi(x, 'mean') , varargin));
@@ -148,6 +169,14 @@ if argposition
     end
 end
 
+argposition = find(cellfun(@(x) strcmpi(x, 'force') , varargin));
+if argposition
+    % This is just to remove the 'force' term used by images in case it has
+    % been added in error.
+    varargin(argposition) = [];
+end
+
+
 %% Check how many lines we need to plot
 % Plotting a function is only a small number of lines
 if all([...
@@ -196,9 +225,7 @@ else
 end
    
 %% Prettify plot
-if ~this.iscentroided
-    utilities.tightxaxis();
-end
+utilities.tightxaxis();
 
 if this.reversex
     set(gca,'XDir','reverse');
@@ -235,7 +262,7 @@ if nargout
     varargout{1} = gcf();
 end
 
-end % function plotspectra
+end % function plotspectrasegmented
 
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -258,42 +285,23 @@ else
     ax = gca;
 end
 
+linearity = plotinfo.linearity;
 
 if plotinfo.functionplot
     switch plotinfo.appliedfunction
         case 'mean'
-            if this.iscentroided
-                stem(ax,this.xvals,ChiMean(this.data),'marker','none',varargin{:});
-            else
-                plot(ax,this.xvals,ChiMean(this.data),varargin{:});
-            end
-            
+            handles = utilities.plotsegments(ax,this.xvals,ChiMean(this.data),linearity,varargin{:}); %#ok<NASGU>
         case 'sum'
-            if this.iscentroided
-                stem(ax,this.xvals,ChiSum(this.data),'marker','none',varargin{:});
-            else
-                plot(ax,this.xvals,ChiSum(this.data),varargin{:});
-            end
-            
+            handles = utilities.plotsegments(ax,this.xvals,ChiSum(this.data),linearity,varargin{:}); %#ok<NASGU>
         case 'median'
-            if this.iscentroided
-                stem(ax,this.xvals,ChiMedian(this.data),'marker','none',varargin{:});
-            else
-                plot(ax,this.xvals,ChiMedian(this.data),varargin{:});
-            end
-            
+            handles = utilities.plotsegments(ax,this.xvals,ChiMedian(this.data),linearity,varargin{:}); %#ok<NASGU>
         case 'std'
-            if this.iscentroided
-                err = MException('CHI:ChiToolbox:UnknownInput', ...
-                    'Only mean, sum and median are available for centroided data.');
-                throw(err);
-            else
-                % Plot the mean with the standard deviation plotted as a shaded
-                % overlay. 
-                colours = get(gca,'colororder');
-                % shadedErrorBar doesn't accept an axes variable
-                shadedErrorBar(this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)});
-            end
+            % Plot the mean with the standard deviation plotted as a shaded
+            % overlay. 
+            colours = get(gca,'colororder');
+%             shadedErrorBar(this.xvals,mean(this.data),std(this.data),{'Color',colours(1,:)});
+            % shadedErrorBar doesn't accept an axes variable
+            shadedErrorBarSegmented(this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)},'linearity',linearity);
             
         otherwise
             % ToDo: Correct the error code
@@ -305,11 +313,7 @@ if plotinfo.functionplot
     plotinfo.linelabels = cellstr(plotinfo.appliedfunction);
 else
     % Plot all the spectra, without a legend or advanced datacursor
-    if this.iscentroided
-        stem(ax,this.xvals,this.data','marker','x',varargin{:});
-    else
-        plot(ax,this.xvals,this.data,varargin{:});
-    end    
+    handles = utilities.plotsegments(ax,this.xvals,this.data,linearity,varargin{:}); %#ok<NASGU>
 end
     
 end
@@ -332,46 +336,26 @@ else
     ax = gca;
 end
 
+linearity = plotinfo.linearity;
+
 if plotinfo.functionplot
     switch plotinfo.appliedfunction
         case 'mean'
             % Plot the mean of the entire data set
-            if this.iscentroided
-                stem(ax,this.xvals,ChiMean(this.data),'marker','none',varargin{:});
-            else
-                plot(ax,this.xvals,ChiMean(this.data),varargin{:});
-            end
-            
+            handles = utilities.plotsegments(ax,this.xvals,ChiMean(this.data),linearity,varargin{:}); %#ok<NASGU>
         case 'sum'
             % Plot the sum of the entire data set
-            if this.iscentroided
-                stem(ax,this.xvals,ChiSum(this.data),'marker','none',varargin{:});
-            else
-                plot(ax,this.xvals,ChiSum(this.data),varargin{:});
-            end
-            
+            handles = utilities.plotsegments(ax,this.xvals,ChiSum(this.data),linearity,varargin{:}); %#ok<NASGU>
         case 'median'
             % Plot the sum of the entire data set
-            if this.iscentroided
-                stem(ax,this.xvals,ChiMedian(this.data),'marker','none',varargin{:});
-            else
-                plot(ax,this.xvals,ChiMedian(this.data),varargin{:});
-            end
-            
+            handles = utilities.plotsegments(ax,this.xvals,ChiMedian(this.data),linearity,varargin{:}); %#ok<NASGU>
         case 'std'
-            if this.iscentroided
-                err = MException('CHI:ChiToolbox:UnknownInput', ...
-                    'Only mean, sum and median are available for centroided data.');
-                throw(err);
-            else
-                % Plot the mean with the standard deviation plotted as a shaded
-                % overlay. 
-                colours = get(gca,'colororder');
+            % Plot the mean with the standard deviation plotted as a shaded
+            % overlay. 
+            colours = get(gca,'colororder');
 %             shadedErrorBar(this.xvals,mean(this.data),std(this.data),{'Color',colours(1,:)},1);
-                % shadedErrorBar doesn't accept an axes variable
-                shadedErrorBar(this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)});
-            end
-            
+            % shadedErrorBar doesn't accept an axes variable
+            shadedErrorBarSegmented(this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)});
         otherwise
             % ToDo: Correct the error code
             err = MException('CHI:ChiToolbox:UnknownInput', ...
@@ -381,13 +365,8 @@ if plotinfo.functionplot
     legend(plotinfo.appliedfunction,'Location','best');
     plotinfo.linelabels = cellstr(plotinfo.appliedfunction);
 else
-    
     % Plot all the spectra, without a legend
-    if this.iscentroided
-        stem(ax,this.xvals,this.data','marker','x',varargin{:});
-    else
-        plot(ax,this.xvals,this.data,varargin{:});
-    end    
+    handles = utilities.plotsegments(ax,this.xvals,this.data,linearity,varargin{:});
     
     % Each line needs a class label for the datacursor. This is the class each
     % spectrum belongs to. The spectra are plotted in natural order, so this is
@@ -420,60 +399,43 @@ else
     ax = gca;
 end
 
+linearity = plotinfo.linearity;
+
 c = 1;
-colours = get(gca,'colororder');
+colours = get(ax,'colororder');
 numcolours = size(colours,1);
 legendHandles = zeros(this.classmembership.numuniquelabels,1);
 
-hold(ax,'on');
 for i = 1:this.classmembership.numuniquelabels
+    hold(ax,'on');
     spectra = this.data(this.classmembership.labelids == i,:);
 
     if plotinfo.functionplot
         switch plotinfo.appliedfunction
-            case 'mean'                
-                if this.iscentroided
-                    figurehandle = stem(ax,this.xvals,ChiMean(spectra),'marker','x',varargin{:});
-                else
-                    figurehandle = plot(ax,this.xvals,ChiMean(spectra),varargin{:});
-                end
+            case 'mean'
+                handles = utilities.plotsegments(ax,this.xvals,ChiMean(spectra),linearity,'colouridx',i,varargin{:});
+                figurehandle = handles{1,1};
                 legendHandles(i) = figurehandle(1);
-
             case 'sum'
-                if this.iscentroided
-                    figurehandle = stem(ax,this.xvals,ChiSum(spectra),'marker','x',varargin{:});
-                else
-                    figurehandle = plot(ax,this.xvals,ChiSum(spectra),varargin{:});
-                end
+                handles = utilities.plotsegments(ax,this.xvals,ChiSum(spectra),linearity,'colouridx',i,varargin{:});
+                figurehandle = handles{1,1};
                 legendHandles(i) = figurehandle(1);
-
             case 'median'
-                if this.iscentroided
-                    figurehandle = stem(ax,this.xvals,ChiMedian(spectra),'marker','x',varargin{:});
-                else
-                    figurehandle = plot(ax,this.xvals,ChiMedian(spectra),varargin{:});
-                end                
+                handles = utilities.plotsegments(ax,this.xvals,ChiMedian(spectra),linearity,'colouridx',i,varargin{:});
+                figurehandle = handles{1,1};
                 legendHandles(i) = figurehandle(1);
-
-            case 'std'                
-                if this.iscentroided
-                    err = MException('CHI:ChiToolbox:UnknownInput', ...
-                        'Only mean, sum and median are available for centroided data.');
-                    throw(err);
+            case 'std'
+                % Each class is averaged and plotted with a different colour.
+                % The standard deviation is plotted as a shaded overlay.
+                colour = colours(c,:);
+                % shadedErrorBar doesn't accept an axes variable
+                figurehandle = shadedErrorBarSegmented(this.xvals,spectra,{@ChiMean,@ChiStd},'lineprops',{'color',colour});
+                legendHandles(i) = figurehandle.mainLine;
+                if (c == numcolours)
+                    c = 1;  % Reset colours to the beginning
                 else
-                    % Each class is averaged and plotted with a different colour.
-                    % The standard deviation is plotted as a shaded overlay.
-                    colour = colours(c,:);
-                    % shadedErrorBar doesn't accept an axes variable
-                    figurehandle = shadedErrorBar(this.xvals,spectra,{@ChiMean,@ChiStd},'lineprops',{'color',colour});
-                    legendHandles(i) = figurehandle.mainLine;
-                    if (c == numcolours)
-                        c = 1;  % Reset colours to the beginning
-                    else
-                        c = c + 1;
-                    end
+                    c = c + 1;
                 end
-                
             otherwise
                 % ToDo: Correct the error code
                 err = MException('CHI:ChiToolbox:IOError', ...
@@ -484,13 +446,8 @@ for i = 1:this.classmembership.numuniquelabels
     else
         % Spectra belonging to the same class are plotted with the same colour
         colour = colours(c,:);
-        
-        if this.iscentroided
-            figurehandle = stem(ax,this.xvals,spectra','marker','x',varargin{:});
-        else
-            figurehandle = plot(ax,this.xvals,spectra,'Color',colour,varargin{:});
-        end    
-        
+        handles = utilities.plotsegments(ax,this.xvals,spectra,linearity,'Color',colour,varargin{:});
+        figurehandle = handles{1,1};
         legendHandles(i) = figurehandle(1);
         if (c == numcolours)
             c = 1;  % Reset colours to the beginning

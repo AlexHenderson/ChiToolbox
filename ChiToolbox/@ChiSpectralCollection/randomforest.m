@@ -231,6 +231,12 @@ model = ChiMLModel(...
                     predictiontime,...
                     predictionsec...
                     );
+                
+if isprop(this,'iscentroided')
+    model.iscentroided = this.iscentroided;
+end
+
+model.linearity = this.linearity;
 
 %% Assess model performance
 predictiontimer = tic();

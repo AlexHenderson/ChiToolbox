@@ -7,9 +7,9 @@ function model = ChiSpectralPCA(input,varargin)
 %   model = ChiSpectralPCA(obj,meanc);
 %
 % Description
-%   model = ChiSpectralPCA(obj) performs principal components analysis
-%   ChiSpectralCollection obj. The data is mean centered internally (meanc
-%   == true). The output is stored in a ChiPCAModel object.
+%   model = ChiSpectralPCA(obj) performs principal components analysis on
+%   the ChiSpectralCollection obj. The data is mean centered internally
+%   (meanc == true). The output is stored in a ChiPCAModel object.
 %
 %   model = ChiSpectralPCA(obj,meanc) if meanc is false, the data is not
 %   mean centered prior to analysis.
@@ -68,5 +68,12 @@ model = ChiPCAModel(pcscores,pcloadings,pcexplained,pcvariances,input.xvals,inpu
 if ~isempty(input.classmembership)
     model.classmembership = input.classmembership;
 end
+
+if isprop(input,'iscentroided')
+    model.iscentroided = input.iscentroided;
+end
+
+model.linearity = input.linearity;
+
 
 end % function ChiSpectralPCA

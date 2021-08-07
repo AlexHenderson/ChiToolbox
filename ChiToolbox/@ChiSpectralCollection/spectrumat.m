@@ -1,6 +1,6 @@
 function spectrum = spectrumat(this,which)
 % Get spectrum at the location in the list
-% Copyright (c) 2014-2020 Alex Henderson (alex.henderson@manchester.ac.uk)
+% Copyright (c) 2014-2021 Alex Henderson (alex.henderson@manchester.ac.uk)
 
     % Handle error where xpos and/or ypos are outside image
     if ((which > this.numspectra) || (which < 1))
@@ -17,4 +17,11 @@ function spectrum = spectrumat(this,which)
     if ~isempty(this.classmembership)
         spectrum.classmembership = this.classmembership.extractentries(which);
     end    
+    
+    if isprop(this,'iscentroided')
+        spectrum.iscentroided = this.iscentroided;
+    end
+
+    spectrum.linearity = this.linearity;
+    
 end

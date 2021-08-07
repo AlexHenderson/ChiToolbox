@@ -1,10 +1,11 @@
 function varargout = plot(varargin)
-    
+
 % plot  Plots one or more spectra. Multiple spectra are overlaid. 
 %
 % Syntax
 %   plot();
-%   plot('nofig');
+%   plot(____,'nofig');
+%   plot(____,'legacy');
 %   plot(____,'axes',desiredaxes);
 %   plot(____,Function);
 %   plot(____,'grouped',Function);
@@ -15,8 +16,11 @@ function varargout = plot(varargin)
 %   plot() creates a 2-D line plot of the ChiSpectralCollection in a new
 %   figure window.
 %
-%   plot('nofig') plots the spectra in the currently active figure window,
+%   plot(____,'nofig') plots the spectra in the currently active figure window,
 %   or creates a new figure if none is available.
+%
+%   plot(____,'legacy') plots the spectra using the legacy method (not
+%   segmented).
 %
 %   plotspectra(____,'axes',desiredaxes) plots the spectra in the
 %   desiredaxes. Defaults to gca. 
@@ -60,23 +64,34 @@ function varargout = plot(varargin)
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
-% This function first checks whether the data is centroided. If it is, then
-% the data is cloned and stickified to prevent the plot function simply
-% 'joining together' the tops of the peaks. Then it passes the plotting off
-% to the plot function in the superclass.
     
-
-    obj = clone(varargin{1});
-    
-    if obj.iscentroided
-        % Centroided data work best in legacy mode
-        varargin = horzcat(varargin,{'legacy'});
-    end
-    
-    if nargout
-        varargout{:} = plot@ChiSpectralCollection(obj,varargin{2:end});    
-    else
-        plot@ChiSpectralCollection(obj,varargin{2:end});
-    end
-        
+%% Do we want a legacy plot?
+legacy = false;
+argposition = find(cellfun(@(x) strcmpi(x, 'legacy') , varargin));
+if argposition
+    legacy = true;
+    % Remove the parameter from the argument list
+    varargin(argposition) = [];
 end
+
+%% Centroided data work best in legacy mode
+if varargin{1}.iscentroided
+    % Centroided data work best in legacy mode
+    legacy = true;
+end
+
+%% Do the plotting
+% Passing the actual plotting functionality off to a separate function to
+% co-locate the feature. 
+if legacy
+    retval = utilities.plotspectra(varargin{:});
+else
+    retval = utilities.plotspectrasegmented(varargin{:},'linearity','quadratic');
+end
+
+%% Manage return values
+if nargout
+    varargout{:} = retval;
+end
+
+end % function

@@ -38,4 +38,10 @@ function spectrum = spectrumat(this,xpos,ypos)
     spectrum.history.add(['Spectrum at, x=', num2str(xpos), ', y=', num2str(ypos)]);
     this.history.add(['Spectrum at, x=', num2str(xpos), ', y=', num2str(ypos)]);
 
+    if isprop(this,'iscentroided')
+        spectrum.iscentroided = this.iscentroided;
+    end
+
+    spectrum.linearity = this.linearity;
+    
 end

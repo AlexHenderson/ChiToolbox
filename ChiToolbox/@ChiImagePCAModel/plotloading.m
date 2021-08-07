@@ -67,6 +67,21 @@ if ((pc > this.numpcs) || (pc < 1))
 end
 
 %% Parse command line
+% Do we want a legacy plot?
+legacy = false;
+argposition = find(cellfun(@(x) strcmpi(x, 'legacy') , varargin));
+if argposition
+    legacy = true;
+    % Remove the parameter from the argument list
+    varargin(argposition) = [];
+end
+
+% Centroided data work best in legacy mode
+if this.iscentroided
+    % Centroided data work best in legacy mode
+    legacy = true;
+end
+
 argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));
 if argposition
     varargin(argposition) = [];
@@ -99,14 +114,32 @@ if argposition
 end
 
 %% Generate plot
-datatoplot = this.loadings(:,pc);
+datatoplot = this.loadings(:,pc)';  % convert to row
 
 if barplot
-    bar(this.xvals, datatoplot, varargin{:});
+    retval = bar(gca,this.xvals, datatoplot, varargin{:}); %#ok<NASGU>
 else
-    % Draw a line plot
-    plot(this.xvals, datatoplot, varargin{:});
-    utilities.tightxaxis;
+    if this.iscentroided
+        legacy = true;
+    end
+    if legacy
+            if this.iscentroided
+                retval = stem(gca, this.xvals,datatoplot,'marker','none',varargin{:}); %#ok<NASGU>
+            else
+                retval = plot(gca, this.xvals, datatoplot, varargin{:}); %#ok<NASGU>
+            end
+    else
+        % do a segmented plot 
+        retval = utilities.plotsegments(gca,this.xvals, datatoplot, this.linearity, varargin{:}); %#ok<NASGU>
+    end
+    
+    if this.reversex
+        set(gca,'XDir','reverse');
+    end
+
+    if ~this.iscentroided
+        utilities.tightxaxis;
+    end
 
     if usecolouredblocks
         limits = axis;
@@ -129,13 +162,19 @@ else
         colormap(h,cmap);
 
         % Overwrite the original plot to bring it to the front
-        plot(this.xvals, datatoplot, 'Color', 'b', varargin{:});
+        if legacy
+                if this.iscentroided
+                    retval = stem(gca, this.xvals,datatoplot, 'Color', 'b','marker','none',varargin{:}); %#ok<NASGU>
+                else
+                    retval = plot(gca, this.xvals, datatoplot,  'Color', 'b',varargin{:}); %#ok<NASGU>
+                end
+        else
+            % do a segmented plot 
+            retval = utilities.plotsegments(gca,this.xvals, datatoplot,  'Color', 'b', this.linearity, varargin{:}); %#ok<NASGU>
+        end
+                
         hold off;
     end
-end
-
-if this.reversex
-    set(gca,'XDir','reverse');
 end
 
 if ~barplot

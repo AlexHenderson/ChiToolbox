@@ -14,7 +14,7 @@ function model = pca(this,varargin)
 %   pcaresult = pca(meanc) if meanc is false, the data is not mean
 %   centered prior to analysis.
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2021, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -27,7 +27,7 @@ function model = pca(this,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 1.0, July 2017
+% Version 2.0, August 2021
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox
 

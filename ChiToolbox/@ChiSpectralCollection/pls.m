@@ -1,4 +1,4 @@
-function plsresult = pls(this,varargin)
+function model = pls(this,varargin)
 
 % pls  Partial Least Squares Regression
 %
@@ -126,7 +126,7 @@ residuals = y - y_hat;
 algorithm = 'plsregress';
 this.history.add('PLS algorithm: plsregress');
 
-plsresult = ChiPLSModel(xscores,xloadings,...
+model = ChiPLSModel(xscores,xloadings,...
                 yscores,yloadings,...
                 xexplained,yexplained,...
                 regressioncoeffs,weights,...
@@ -138,4 +138,10 @@ plsresult = ChiPLSModel(xscores,xloadings,...
                 algorithm,...
                 this.history);
 
+if isprop(this,'iscentroided')
+    model.iscentroided = this.iscentroided;
+end
+
+model.linearity = this.linearity;
+            
 end % function: pls

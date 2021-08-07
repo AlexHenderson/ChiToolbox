@@ -37,4 +37,10 @@ function obj = tocollection(this)
     obj.history.add(['Data converted from a ',class(this)]);
     this.history.add(['Data converted to a ', this.spectralcollectionclassname]);
     
+    if isprop(this,'iscentroided')
+        obj.iscentroided = this.iscentroided;
+    end
+
+    obj.linearity = this.linearity;
+    
 end % function

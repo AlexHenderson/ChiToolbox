@@ -63,14 +63,14 @@ end
 % Passing the actual plotting functionality off to a separate function to
 % co-locate the feature. 
 
-if isprop(this, 'iscentroided') && this.iscentroided
+if this.iscentroided
     legacy = true;
 end
 
 if legacy
-    retval = utilities.plotspectrum(varargin{:});
+    retval = utilities.plotspectrum(varargin{:},'legacy');
 else
-    retval = utilities.plotspectrumsegmented(varargin{:});
+    retval = utilities.plotspectrumsegmented(varargin{:},'linearity','quadratic');
 end
 
 %% Manage return values

@@ -74,9 +74,11 @@ end
 
     if isprop(this,'iscentroided')
         model.iscentroided = this.iscentroided;
+        model.centroids.iscentroided = this.iscentroided;
     end
 
     model.linearity = this.linearity;
+    model.centroids.linearity = this.linearity;
     
     
     if vis

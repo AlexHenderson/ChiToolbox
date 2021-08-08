@@ -96,7 +96,7 @@ if isprop(this, 'iscentroided')
 end
 
 if centroided
-    retval = stem(ax,this.xvals,this.data,'marker','none',varargin{:}); %#ok<NASGU>
+    retval = stem(ax,this.xvals,this.data,varargin{:},'marker','none'); %#ok<NASGU>
 else
     retval = plot(ax,this.xvals,this.data,varargin{:}); %#ok<NASGU>
 end

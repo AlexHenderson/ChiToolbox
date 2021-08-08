@@ -263,21 +263,21 @@ if plotinfo.functionplot
     switch plotinfo.appliedfunction
         case 'mean'
             if this.iscentroided
-                stem(ax,this.xvals,ChiMean(this.data),'marker','none',varargin{:});
+                stem(ax,this.xvals,ChiMean(this.data),varargin{:},'marker','none');
             else
                 plot(ax,this.xvals,ChiMean(this.data),varargin{:});
             end
             
         case 'sum'
             if this.iscentroided
-                stem(ax,this.xvals,ChiSum(this.data),'marker','none',varargin{:});
+                stem(ax,this.xvals,ChiSum(this.data),varargin{:},'marker','none');
             else
                 plot(ax,this.xvals,ChiSum(this.data),varargin{:});
             end
             
         case 'median'
             if this.iscentroided
-                stem(ax,this.xvals,ChiMedian(this.data),'marker','none',varargin{:});
+                stem(ax,this.xvals,ChiMedian(this.data),varargin{:},'marker','none');
             else
                 plot(ax,this.xvals,ChiMedian(this.data),varargin{:});
             end
@@ -306,7 +306,7 @@ if plotinfo.functionplot
 else
     % Plot all the spectra, without a legend or advanced datacursor
     if this.iscentroided
-        stem(ax,this.xvals,this.data','marker','x',varargin{:});
+        stem(ax,this.xvals,this.data',varargin{:},'marker','x');
     else
         plot(ax,this.xvals,this.data,varargin{:});
     end    
@@ -337,7 +337,7 @@ if plotinfo.functionplot
         case 'mean'
             % Plot the mean of the entire data set
             if this.iscentroided
-                stem(ax,this.xvals,ChiMean(this.data),'marker','none',varargin{:});
+                stem(ax,this.xvals,ChiMean(this.data),varargin{:},'marker','none');
             else
                 plot(ax,this.xvals,ChiMean(this.data),varargin{:});
             end
@@ -345,7 +345,7 @@ if plotinfo.functionplot
         case 'sum'
             % Plot the sum of the entire data set
             if this.iscentroided
-                stem(ax,this.xvals,ChiSum(this.data),'marker','none',varargin{:});
+                stem(ax,this.xvals,ChiSum(this.data),varargin{:},'marker','none');
             else
                 plot(ax,this.xvals,ChiSum(this.data),varargin{:});
             end
@@ -353,7 +353,7 @@ if plotinfo.functionplot
         case 'median'
             % Plot the sum of the entire data set
             if this.iscentroided
-                stem(ax,this.xvals,ChiMedian(this.data),'marker','none',varargin{:});
+                stem(ax,this.xvals,ChiMedian(this.data),varargin{:},'marker','none');
             else
                 plot(ax,this.xvals,ChiMedian(this.data),varargin{:});
             end

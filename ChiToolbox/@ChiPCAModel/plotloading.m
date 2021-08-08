@@ -111,7 +111,7 @@ else
     end
     if legacy
             if this.iscentroided
-                retval = stem(gca, this.xvals,datatoplot,'marker','none',varargin{:}); %#ok<NASGU>
+                retval = stem(gca, this.xvals,datatoplot,varargin{:},'marker','none'); %#ok<NASGU>
             else
                 retval = plot(gca, this.xvals, datatoplot, varargin{:}); %#ok<NASGU>
             end

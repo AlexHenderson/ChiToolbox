@@ -102,7 +102,7 @@ function varargout = plotloading(this,cv,varargin)
             end
             if legacy
                 if this.iscentroided
-                    retval = stem(gca(),this.pca.xvals,datatoplot,'marker','none',varargin{:}); %#ok<NASGU>
+                    retval = stem(gca(),this.pca.xvals,datatoplot,varargin{:},'marker','none'); %#ok<NASGU>
                 else
                     retval = plot(gca(),this.pca.xvals, datatoplot, varargin{:}); %#ok<NASGU>
                 end

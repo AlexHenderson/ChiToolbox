@@ -101,7 +101,7 @@ if argposition
 end
 
 %% Generate plot
-datatoplot = this.weights(:,pc)';  % convert to row
+datatoplot = this.weights(:,comp)';  % convert to row
 
 if barplot
     retval = bar(gca, this.xvals, datatoplot, varargin{:}); %#ok<NASGU>

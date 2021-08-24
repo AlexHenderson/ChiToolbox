@@ -34,3 +34,12 @@ repository-code: "https://bitbucket.org/AlexHenderson/chitoolbox/"
 title: ChiToolbox
 type: software
 url: "https://bitbucket.org/AlexHenderson/chitoolbox/"
+
+preferred-citation:
+  authors:
+    - family-names: Henderson
+      given-names: Alex
+  title: ChiToolbox
+  type: software
+  url: "https://bitbucket.org/AlexHenderson/chitoolbox/"
+  year: 2021

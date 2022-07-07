@@ -5,6 +5,8 @@ function output = pccva(this,varargin)
 % Syntax
 %   cvaresult = pccva();
 %   cvaresult = pccva(pcs);
+%   cvaresult = pccva(____,'sample','undersample');
+%   cvaresult = pccva(____,'sample','none');
 %
 % Description
 %   cvaresult = pccva() performs principal components analysis on the
@@ -14,9 +16,14 @@ function output = pccva(this,varargin)
 %   the data. The output is stored in a ChiPCCVAModel object.
 %
 %   cvaresult = pccva(pcs) performs canonical variates analysis using pcs
-%   principal components.
+%       principal components.
+% 
+%   cvaresult = pccva(____,'sample','undersample') = performs
+%       under-sampling to balance class sizes (default)
+%   cvaresult = pccva(____,'sample','none') = no under-sampling or
+%       over-sampling performed
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2022, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -29,6 +36,7 @@ function output = pccva(this,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
+% Version 1.1, July 2022 Added sampling flags
 % Version 1.0, July 2017
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/chitoolbox

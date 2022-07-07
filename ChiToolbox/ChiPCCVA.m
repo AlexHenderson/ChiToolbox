@@ -1,17 +1,23 @@
-function model = ChiPCCVA(this,pcs)
-% function [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = ChiPCCVA(this,pcs)
+function model = ChiPCCVA(this,varargin)
+% function [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = ChiPCCVA(this,pcs,varargin)
 % 
 % ChiPCCVA Principal Components - Canonical Variates Analysis
 % usage:
 %     [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = ChiPCCVA(data,groupmembership);
-%     [cvloadings,cvscores,cvexplained,cvs,pcloadings,pcscores,pcexplained,pcs,cveigenvectors,cveigenvalues] = ChiPCCVA(data,groupmembership,pcs);
+%     [____] = ChiPCCVA(____,pcs);
+%     [____] = ChiPCCVA(____,'sample', 'undersample');
+%     [____] = ChiPCCVA(____,'sample', 'none');
 %
 % input:
 %     data - rows of spectra
 %     groupmembership - vector of labels, one per row of data
 %     pcs - (optional) number of principal components to use in the CVA
-%       calculation. If not supplied then this is calculated at 95% explained
-%       variance
+%       calculation. If not supplied then this is calculated at 95%
+%       explained variance
+%     'sample', 'undersample' - performs under-sampling to balance class
+%       sizes (default)
+%     'sample', 'none' - no under-sampling or over-sampling performed
+%     
 % output:
 %     cvloadings - canonical variates, directions of most variation in the data
 %     cvscores - weighting of each canonical variate
@@ -24,7 +30,7 @@ function model = ChiPCCVA(this,pcs)
 %     cveigenvectors - eigenvectors of the canonical variates
 %     cveigenvalues - eigenvalues of the canonical variates
 %
-%   Copyright (c) 2015-2021, Alex Henderson 
+%   Copyright (c) 2015-2022, Alex Henderson 
 %   Contact email: alex.henderson@manchester.ac.uk
 %   Licenced under the GNU General Public License (GPL) version 3
 %   http://www.gnu.org/copyleft/gpl.html
@@ -32,8 +38,10 @@ function model = ChiPCCVA(this,pcs)
 %   If you use this file in your work, please acknowledge the author(s) in
 %   your publications. 
 %
-%   version 2.0
+%   version 2.1
 
+%   version 2.1 July 2022 Alex Henderson
+%   Added flag for undersampling
 %   version 2.0 August 2021 Alex Henderson
 %   Added check for class membership, centroided data, linearity and
 %   converted errors to exceptions
@@ -54,12 +62,25 @@ if isempty(this.classmembership)
     throw(err);
 end
 
+%% Do we want to specify sampling a protocol?
+sampling = 'undersample';
+argposition = find(cellfun(@(x) strcmpi(x, 'sample') , varargin));
+if argposition
+    sampling = lower(varargin{argposition+1});
+    % Remove the parameters from the argument list
+    varargin(argposition+1) = [];
+    varargin(argposition) = [];
+end
+
 %% Perform principal components analysis
 pca = ChiSpectralPCA(this);
 
 %% Determine valid PCs
 % Valid PCs determined by the number required to reach 95% explained
 % variance, or using the user defined number. 
+if ~isempty(varargin)
+    pcs = varargin{1};
+end
 if ~exist('pcs','var')
     cumpcexplained = cumsum(pca.explained);
     pcs = find((cumpcexplained > 95), 1, 'first');
@@ -82,7 +103,8 @@ if (pcs < numcvs)
 end
 
 %% Perform canonical variates analysis
-[cveigenvectors,cveigenvalues,cvpercent_explained_variation] = ChiCVA(pca.scores,this.classmembership.labels);
+[cveigenvectors,cveigenvalues,cvpercent_explained_variation] ...
+    = ChiCVA(pca.scores,this.classmembership.labels, 'sample', sampling);
 
 %% Generate output by mapping back to the original data
 cvloadings = pca.loadings * cveigenvectors;

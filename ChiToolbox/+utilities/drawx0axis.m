@@ -9,11 +9,11 @@ function drawx0axis(axis)
 %   drawx0axis(axis) takes the axis limits of a chart and plots x=0 on that
 %   chart
 % 
-% Copyright (c) 2018, Alex Henderson.
+% Copyright (c) 2018-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
-%   drawy0axis, draw00axes, plot, scatter, utilities.gscatter.
+%   drawy0axis, draw00axes, xline, plot, scatter, utilities.gscatter.
 
 % Contact email: alex.henderson@manchester.ac.uk
 % Licenced under the GNU General Public License (GPL) version 3
@@ -26,13 +26,27 @@ function drawx0axis(axis)
 % https://bitbucket.org/AlexHenderson/chitoolbox
 
 
-axiscolour = 'k';
+% Version check to see if xline/yline is available
 
-hold on;
-limits = axis;
-ymin = limits(1,3);
-ymax = limits(1,4);
-h = plot([0,0],[ymin,ymax], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-hold off;    
+if verLessThan('matlab', '9.5') %R2018b
+
+    axiscolour = 'k';
+
+    hold on;
+    limits = axis;
+    ymin = limits(1,3);
+    ymax = limits(1,4);
+    h = plot([0,0],[ymin,ymax], axiscolour);
+    set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+    set(h,'HitTest','off'); % Prevent datatips on this line
+    hold off;    
+
+else
+    
+    x = xline(0);
+    
+    set(get(get(x,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+    
+end
+
+    

@@ -4,21 +4,21 @@ classdef ChiPCCVAPrediction < ChiPrediction & ChiBase
 %
 % Syntax
 %   outcome =
-%   ChiPCCVAPrediction(model,projectedscores,pcs,elapsed,distances, ...
-%                        predictedclass,trueclass,correctlyclassified)
+%   ChiPCCVAPrediction(model,unseendata,projectedscores,pcs,elapsed, ...
+%       distances,predictedclass,trueclass,correctlyclassified)
 %   outcome = ChiPCCVAPrediction(____,history)
 % 
 % Description
 %   outcome =
-%   ChiPCCVAPrediction(model,projectedscores,pcs,elapsed,distances,
-%   predictedclass,trueclass,correctlyclassified) creates a wrapper for the
-%   outcome of a prediction by a PCA model on a set of 'previously unseen'
-%   data.
+%   ChiPCCVAPrediction(model,unseendata,projectedscores,pcs,elapsed,
+%   distances,predictedclass,trueclass,correctlyclassified) creates a
+%   wrapper for the outcome of a prediction by a PCA model on a set of
+%   'previously unseen' data.
 % 
 %   outcome = ChiPCCVAPrediction(____,history) includes a ChiLogger history
 %   object recording the data processing history.
 % 
-% Copyright (c) 2020, Alex Henderson.
+% Copyright (c) 2020-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -37,11 +37,11 @@ classdef ChiPCCVAPrediction < ChiPrediction & ChiBase
 
     properties
         model;      % ChiPCCVAModel from which the prediction was made
+        unseendata;   % data that was predicted (previously unseen data)
         projectedscores;    % predicted CVA scores of the test set.
         elapsed;    % time in seconds that the prediction took
         distances;  % Mahalanobis distance of each test spectrum to each class
-        predictedclasslabel;    % a cell array of labels indicating the outcome of prediction.
-        trueclasslabel;         % a cell array indicating the true label for each spectrum.
+        predictedclasslabels;    % a cell array of labels indicating the outcome of prediction.
         correctlyclassified;    % if the unseen data was labelled, this is a vector indicating whether it was correctly classified. Otherwise it is an empty variable.
         history = ChiLogger();  % log of data processing steps
     end
@@ -52,7 +52,6 @@ classdef ChiPCCVAPrediction < ChiPrediction & ChiBase
         percentcc; % if the unseen data was labelled, this is the percentage of predicted data correctly classified. 
         pcc; % if the unseen data was labelled, this is the percentage of predicted data correctly classified. 
         predictedclassid; % predicted class label identifier
-        trueclassid;      % true class label identifier
         elapsedstr;     % time that the prediction took as a string
     end
     
@@ -60,11 +59,11 @@ classdef ChiPCCVAPrediction < ChiPrediction & ChiBase
         %% Constructor
         function this = ChiPCCVAPrediction(...
                             model, ...
+                            unseendata, ...
                             projectedscores, ...
                             elapsed, ...
                             distances, ...
-                            predictedclasslabel, ...
-                            trueclasslabel, ...
+                            predictedclasslabels, ...
                             correctlyclassified, ...
                             varargin ...
                         )
@@ -78,12 +77,12 @@ classdef ChiPCCVAPrediction < ChiPrediction & ChiBase
             end
             
             if nargin % Support calling with 0 arguments
-                this.model = model.clone();
+                this.model = model;            % cloned by predict function
+                this.unseendata = unseendata;  % cloned by predict function
                 this.projectedscores = projectedscores;
                 this.elapsed = elapsed;
                 this.distances = distances;
-                this.predictedclasslabel = predictedclasslabel;
-                this.trueclasslabel = trueclasslabel;
+                this.predictedclasslabels = predictedclasslabels;
                 this.correctlyclassified = correctlyclassified;
             end 
 
@@ -113,14 +112,14 @@ classdef ChiPCCVAPrediction < ChiPrediction & ChiBase
             pcc = this.percentcc;
         end
        
-        %% trueclassid
-        function trueclassid = get.trueclassid(this)
-            numtestcases = length(this.predictedclasslabel);
-            trueclassid = zeros(numtestcases,1);
-            for i = 1:numtestcases
-                trueclassid(i) = find(strcmpi(this.model.pca.classmembership.uniquelabels,this.trueclasslabel(i)));
-            end
-        end
+%         %% trueclassid
+%         function unseenclassid = get.unseenclassid(this)
+%             numtestcases = this.unseendata.numspectra;
+%             unseenclassid = zeros(numtestcases,1);
+%             for i = 1:numtestcases
+%                 unseenclassid(i) = find(strcmpi(this.model.pca.classmembership.uniquelabels,this.trueclasslabel(i)));
+%             end
+%         end
        
         %% predictedclassid
         function predictedclassid = get.predictedclassid(this)

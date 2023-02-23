@@ -5,6 +5,8 @@ function plotscores(this,cvx,cvy,varargin)
 % Syntax
 %   plotscores(cvx,cvy);
 %   plotscores(cvx,cvy,'nofig');
+%   plotscores(____, 'markersize', value);
+%   plotscores(____, 'pmarker', value);
 %
 % Description
 %   plotscores(cvx,cvy) creates a 2-D scatter plot of canonical variate
@@ -12,8 +14,8 @@ function plotscores(this,cvx,cvy,varargin)
 %   using a different marker (default = '*'). 
 %   If the predicted data had a classmembership, the predicted markers are
 %   shown in their 'true' colour. If the predicted data had no
-%   classmembership the markers are classified as 'undefined label' and
-%   shown in black.
+%   classmembership the markers are classified as 'projected' and
+%   shown in dark grey.
 %   cvx is the canonical variate number to plot on the x-axis, while cvy is
 %   the canonical variate number to plot on the y-axis. A new figure window
 %   is created.
@@ -21,14 +23,21 @@ function plotscores(this,cvx,cvy,varargin)
 %   plotscores(cvx,cvy,'nofig') plots the scores in the currently active
 %   figure window, or creates a new figure if none is available.
 %
+%   plotscores(____, 'markersize', value) plots the markers relating to the
+%   model with size value. If marker is '.' (the default) this will be
+%   scaled up automatically. 
+% 
+%   plotscores(____, 'pmarker', value) plots the markers relating to the
+%   projected data using the symbol in value. Default is '*'.
+% 
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   scatter, or utilities.gscatter, functions for more details. 
 %
 % Notes
 %   If the unseen data has no class variable, the projection will be
-%   plotted using 'undefined label' and plotted in black. 
+%   labelled 'projected' and plotted in dark grey. 
 %
-% Copyright (c) 2020, Alex Henderson.
+% Copyright (c) 2020-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -44,6 +53,8 @@ function plotscores(this,cvx,cvy,varargin)
 % The latest version of this file is available on Bitbucket
 % https://bitbucket.org/AlexHenderson/Chitoolbox
 
+
+%% Defaults
 titlestub = 'Scores on canonical variates ';
 windowtitlestub = titlestub;
 axislabelstub = 'score on CV ';
@@ -51,20 +62,12 @@ axislabelstub = 'score on CV ';
 % Some defaults
 marker = '.';
 pmarker = '*';
-sizedata = 6;
+markersize = 6;
+pmarkersize = 6;
 sizedatadefined = false;
+explainedvariancedecplaces = 3;
 
-% if ((cvx > this.model.numcvs) || (cvx < 1))
-%     err = MException(['CHI:',mfilename,':OutOfRange'], ...
-%         ['Requested canonical variate is out of range. Max CVs = ', num2str(this.model.numcvs), '.']);
-%     throw(err);
-% end
-% if ((cvy > this.model.numcvs) || (cvy < 1))
-%     err = MException(['CHI:',mfilename,':OutOfRange'], ...
-%         ['Requested canonical variate is out of range. Max CVs = ', num2str(this.model.numcvs), '.']);
-%     throw(err);
-% end
-
+%% Everything in range?
 % If we have more than 1 canonical variate, check that the required cvs are
 % in range. 
 if (this.model.numcvs ~= 1)
@@ -81,7 +84,7 @@ if (this.model.numcvs ~= 1)
     end
 end
 
-
+%% Parse command line
 argposition = find(cellfun(@(x) strcmpi(x, 'nofig') , varargin));
 if argposition
     % Remove the parameter from the argument list
@@ -97,9 +100,9 @@ else
 end    
 
 % sizedata
-argposition = find(cellfun(@(x) strcmpi(x, 'sizedata'), varargin));
+argposition = find(cellfun(@(x) strcmpi(x, 'markersize'), varargin));
 if argposition
-    sizedata = varargin{argposition+1};
+    markersize = varargin{argposition+1};
     sizedatadefined = true;
     varargin(argposition+1) = [];
     varargin(argposition) = [];
@@ -122,43 +125,45 @@ if argposition
     varargin(argposition) = [];
 end
 
+%% Define colours, and marker types and sizes
 % If the chosen marker is a dot and the size has not been defined, make the
 % dot a bit bigger. 
 if (strcmp(marker, '.') && ~sizedatadefined)
-    sizedata = 15;
+    markersize = 15;
 end
 
 colours = get(gca,'colororder');
-axiscolour = 'k';
-decplaces = 3;
 
-projectedcolours = colours(unique(this.trueclassid,'stable'),:);
-projectedlabels = this.trueclasslabel;
-
-if isempty(this.trueclasslabel)
-    projectedcolours = 'k';
+if isempty(this.unseendata.classmembership)
+    projectedcolours = [0.3, 0.3, 0.3];
     projectedlabels = cell(size(this.projectedscores,1),1);
-    projectedlabels(:) = {'undefined label'};    
+    projectedlabels(:) = {'projected'};    
+else
+    projectedcolours = colours(unique(this.unseendata.classmembership.labelids,'stable'),:);
+    projectedlabels = this.unseendata.classmembership.labels;
 end
 
+%% Commence plotting
 if (this.model.numcvs > 1)
     % We can use a grouped scatter plot
     if ~isempty(this.model.pca.classmembership)
-        utilities.gscatter(this.model.scores(:,cvx), this.model.scores(:,cvy), this.model.pca.classmembership.labels, 'colours', colours, 'sizedata', sizedata, marker, 'nofig', varargin{:});
+        utilities.gscatter(this.model.scores(:,cvx), this.model.scores(:,cvy), this.model.pca.classmembership.labels, 'colours', colours, 'sizedata', markersize, marker, 'nofig', varargin{:});
         hold on;
-        utilities.gscatter(this.projectedscores(:,cvx), this.projectedscores(:,cvy), projectedlabels, 'colours', projectedcolours, 'sizedata', sizedata, pmarker, 'nofig', varargin{:});
+%         utilities.gscatter(this.projectedscores(:,cvx), this.projectedscores(:,cvy), projectedlabels, 'colours', projectedcolours, pmarker, 'nofig', varargin{:});
+        utilities.gscatter(this.projectedscores(:,cvx), this.projectedscores(:,cvy), projectedlabels, 'colours', projectedcolours, 'sizedata', pmarkersize, pmarker, 'nofig', varargin{:});
         hold off;
     else
-        scatter(this.model.scores(:,cvx), this.model.scores(:,cvy), sizedata .* sizedata, marker, varargin{:});
+        % Not sure we can ever get here, since the classmembership is
+        % required for the CVA
+        scatter(this.model.scores(:,cvx), this.model.scores(:,cvy), markersize .* markersize, marker, varargin{:});
         hold on;
-        scatter(this.projectedscores(:,cvx), this.projectedscores(:,cvy), sizedata .* sizedata, pmarker, varargin{:});
+        scatter(this.projectedscores(:,cvx), this.projectedscores(:,cvy), markersize .* markersize, pmarker, varargin{:});
         hold off;
     end    
 
-    xlabel([axislabelstub, num2str(cvx), ' (', num2str(this.model.explained(cvx),decplaces), '%)']);
-    ylabel([axislabelstub, num2str(cvy), ' (', num2str(this.model.explained(cvy),decplaces), '%)']);
+    xlabel([axislabelstub, num2str(cvx), ' (', num2str(this.model.explained(cvx),explainedvariancedecplaces), '%)']);
+    ylabel([axislabelstub, num2str(cvy), ' (', num2str(this.model.explained(cvy),explainedvariancedecplaces), '%)']);
     title([titlestub, num2str(cvx), ' and ', num2str(cvy)]);
-    
     
     
     % Manage data cursor information
@@ -179,7 +184,7 @@ if (this.model.numcvs > 1)
     cursor = datacursormode(figurehandle);
     set(cursor,'UpdateFcn',{@utilities.datacursor_scores_6sf,this,plotinfo});
     
-    
+    axis tight
 
 else
     % Only a single canonical variate so we can use a box plot
@@ -196,7 +201,7 @@ else
         idx = strcmpi(this.model.classmembership.labels, label);
         x = ones(sum(idx),1) * i;
         y = this.model.scores(idx);
-        scatter(x, y, sizedata .* 2, marker, 'jitter','on', 'jitter', 0.1, varargin{:});
+        scatter(x, y, markersize .* 2, marker, 'jitter','on', 'jitter', 0.1, varargin{:});
     end
     hold off
     
@@ -208,53 +213,13 @@ else
         idx = strcmpi(projectedlabels, label);
         x = ones(sum(idx),1) * i;
         y = this.projectedscores(idx);
-        scatter(x, y, sizedata .* 2, pmarker, 'jitter','on', 'jitter', 0.2, varargin{:});
+        scatter(x, y, markersize .* 2, pmarker, 'jitter','on', 'jitter', 0.2, varargin{:});
     end
     hold off
 end
 
-% Draw lines indicating zero x and y
-hold on;
-limits = axis;
-xmin = limits(1,1);
-xmax = limits(1,2);
-ymin = limits(1,3);
-ymax = limits(1,4);
+%% Draw lines indicating zero x and y
 
-h = plot([0,0], [0,ymax], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-h = plot([0,0], [0,ymin], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-h = plot([0,xmax], [0,0], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-h = plot([0,xmin], [0,0], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
+utilities.draw00axes(axis);
 
-if (this.model.numcvs > 1)
-    axis tight
-end
-hold off;
-
-% %% Manage data cursor information
-% plotinfo = struct;
-% plotinfo.xpointlabel = ['CV ', num2str(cvx)];
-% plotinfo.xdata = this.model.scores(:,cvx);
-% 
-% if (this.model.numcvs > 1)
-%     plotinfo.ydata = this.model.scores(:,cvy);
-%     plotinfo.ypointlabel = ['CV ', num2str(cvy)];
-% end
-% 
-% if ~isempty(this.model.pca.classmembership)
-%     plotinfo.pointmembershiplabels = this.model.pca.classmembership.labels;
-% end
-% 
-% figurehandle = gcf;
-% cursor = datacursormode(figurehandle);
-% set(cursor,'UpdateFcn',{@utilities.datacursor_scores_6sf,this,plotinfo});
-    
 end

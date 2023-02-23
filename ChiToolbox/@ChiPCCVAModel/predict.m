@@ -38,12 +38,12 @@ this = varargin{1};
 %% Identify test data
 argposition = find(cellfun(@(x) isa(x,'ChiSpectralCollection') , varargin));
 if argposition
-    testset = varargin{argposition}.clone;
+    unseendata = varargin{argposition}.clone;
     varargin(argposition) = []; %#ok<NASGU>
 else
     argposition = find(cellfun(@(x) isa(x,'ChiSpectrum') , varargin));
     if argposition
-        testset = varargin{argposition}.clone;
+        unseendata = varargin{argposition}.clone;
         varargin(argposition) = []; %#ok<NASGU>
     else
         err = MException(['CHI:',mfilename,':InputError'], ...
@@ -53,16 +53,16 @@ else
 end
 
 %% Project the test data into the underlying PCA model then into this CVA model
-pcaprediction = this.pca.predict(testset);
+pcaprediction = this.pca.predict(unseendata);
 projectedscores = pcaprediction.projectedscores * this.eigenvectors * diag(this.eigenvalues);
 
 %% Make space for results
-trueclass = [];
+trueclasslabel = [];
 correctlyclassified = [];
 
 %% Only if we have class membership can we determine predicted classes
 % Make space for the results
-distances = zeros(testset.numspectra, this.pca.classmembership.numclasses);
+distances = zeros(unseendata.numspectra, this.pca.classmembership.numclasses);
 
 % Measure the distance of each projected test data point to each class
 for c = 1:this.pca.classmembership.numclasses
@@ -75,23 +75,10 @@ end
 predictedclasslabel = this.pca.classmembership.uniquelabels(predictedclassid);
 
 % If we already knew the true labels, we can also calculate the prediction accuracy
-if ~isempty(testset.classmembership)
-    trueclasslabel = testset.classmembership.labels;
+if ~isempty(unseendata.classmembership)
+    trueclasslabel = unseendata.classmembership.labels;
     correctlyclassified = strcmpi(predictedclasslabel,trueclasslabel);
 end
-
-
-%     % Determine the predicted class
-%     [mindist,predictedclassid] = min(distances, [], 2); %#ok<ASGLU>
-%     predictedclass = this.classmembership.uniquelabels(predictedclassid);
-%     
-%     % If we already knew the true labels, we can also calculate the prediction accuracy
-%     if ~isempty(testset.classmembership)
-%         trueclass = testset.classmembership.labelids;
-%         correctlyclassified = strcmp(predictedclass,trueclass);
-%     end
-
-
 
 %% Stop timer
 [predictiontime,predictionsec] = tock(predictiontimer); %#ok<ASGLU>
@@ -99,11 +86,11 @@ end
 %% Generate results
 prediction = ChiPCCVAPrediction(...
                 this.clone(), ...
+                unseendata.clone(), ...
                 projectedscores, ...
                 predictionsec, ...
                 distances, ...
                 predictedclasslabel, ...
-                trueclasslabel, ...
                 correctlyclassified ...
             );
 

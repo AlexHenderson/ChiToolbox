@@ -146,9 +146,9 @@ classdef ChiImage < ChiAbstractImage
                         totindex = totindex + 1;
                     end
                 end
-                totrows = sum(unmasked,2);
+                totrows = full(sum(unmasked,2));
             else
-                totrows = sum(this.data,2);
+                totrows = full(sum(this.data,2));
             end
             
             totalimage = ChiPicture(totrows,this.xpixels,this.ypixels);

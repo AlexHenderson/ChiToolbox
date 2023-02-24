@@ -84,7 +84,6 @@ if (this.pca.classmembership.numuniquelabels > numcolours)
     end
 end
 
-axiscolour = 'k';
 decplaces = 3;
 
 if (this.numcvs > 1)
@@ -102,28 +101,10 @@ else
     title('Score on canonical variate 1');    
 end
 
-% Draw lines indicating zero x and y
-hold on;
-limits = axis;
-xmin = limits(1,1);
-xmax = limits(1,2);
-ymax = limits(1,3);
-ymin = limits(1,4);
-h = plot([0,0], [0,ymax], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-h = plot([0,0], [0,ymin], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-h = plot([0,xmax], [0,0], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-h = plot([0,xmin], [0,0], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-hold off;    
+%% Draw lines indicating zero x and y
+utilities.draw00axes(axis);
 
-% Manage data cursor information
+%% Manage data cursor information
 plotinfo = struct;
 plotinfo.xpointlabel = ['CV ', num2str(cvx)];
 plotinfo.xdata = this.scores(:,cvx);

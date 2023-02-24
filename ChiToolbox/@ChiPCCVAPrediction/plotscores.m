@@ -219,7 +219,6 @@ else
 end
 
 %% Draw lines indicating zero x and y
-
 utilities.draw00axes(axis);
 
 end

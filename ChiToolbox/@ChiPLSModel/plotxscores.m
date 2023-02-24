@@ -82,7 +82,6 @@ if argposition
 end
 
 % colours = 'bgrcmky';
-axiscolour = 'k';
 decplaces = 3;
 
 if ~isempty(this.depvar)
@@ -95,28 +94,8 @@ xlabel([axislabelstub, num2str(compx), ' (', num2str(this.xexplained(compx),decp
 ylabel([axislabelstub, num2str(compy), ' (', num2str(this.xexplained(compy),decplaces), '%)']);
 title([titlestub, num2str(compx), ' and ', num2str(compy)]);
 
-% Draw lines indicating zero x and y
-hold on;
-limits = axis;
-xmin = limits(1,1);
-xmax = limits(1,2);
-ymin = limits(1,3);
-ymax = limits(1,4);
-
-h = plot([0,0], [0,ymax], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-h = plot([0,0], [0,ymin], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-h = plot([0,xmax], [0,0], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-h = plot([0,xmin], [0,0], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-axis tight
-hold off;
+%% Draw lines indicating zero x and y
+utilities.draw00axes(axis);
 
 %% Manage data cursor information
 plotinfo = struct;

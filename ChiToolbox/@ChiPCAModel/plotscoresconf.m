@@ -89,7 +89,6 @@ else
 end
 
 % Defaults
-axiscolour = 'k';
 decplaces = 3;
 colours = get(gca,'colororder');
 
@@ -147,27 +146,7 @@ title([titlestub, num2str(pcx), ' and ', num2str(pcy), ' (', num2str(percentconf
 % end    
 
 %% Draw lines indicating zero x and y
-hold on;
-limits = axis;
-xmin = limits(1,1);
-xmax = limits(1,2);
-ymin = limits(1,3);
-ymax = limits(1,4);
-
-h = plot([0,0], [0,ymax], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-h = plot([0,0], [0,ymin], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-h = plot([0,xmax], [0,0], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-h = plot([0,xmin], [0,0], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-axis tight
-hold off;
+utilities.draw00axes(axis);
 
 %% Manage data cursor information
 plotinfo = struct;

@@ -97,7 +97,6 @@ end
 
 % colours = 'bgrcmky';
 colours = get(gca,'colororder');
-axiscolour = 'k';
 decplaces = 3;
 
 if ~isempty(this.classmembership)
@@ -112,36 +111,8 @@ xlabel([axislabelstub, num2str(pcx), ' (', num2str(this.explained(pcx),decplaces
 ylabel([axislabelstub, num2str(pcy), ' (', num2str(this.explained(pcy),decplaces), '%)']);
 title([titlestub, num2str(pcx), ' and ', num2str(pcy)]);
 
-% if ~isempty(this.classmembership)
-%     if ismatlab()
-%       legend('Location','Best');
-%     else
-%       legend();
-%     end      
-% end    
-
-% Draw lines indicating zero x and y
-hold on;
-limits = axis;
-xmin = limits(1,1);
-xmax = limits(1,2);
-ymin = limits(1,3);
-ymax = limits(1,4);
-
-h = plot([0,0], [0,ymax], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-h = plot([0,0], [0,ymin], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-h = plot([0,xmax], [0,0], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-h = plot([0,xmin], [0,0], axiscolour);
-set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
-set(h,'HitTest','off'); % Prevent datatips on this line
-axis tight
-hold off;
+%% Draw lines indicating zero x and y
+utilities.draw00axes(axis);
 
 %% Manage data cursor information
 plotinfo = struct;

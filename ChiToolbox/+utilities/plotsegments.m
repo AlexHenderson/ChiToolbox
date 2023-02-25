@@ -102,14 +102,14 @@ handles = cell(1,numsegments);
 
 if (numsegments == 1)
     % We only have a single segment, so just plot as usual
-    handles{1,1} = plot(ax,x,y,varargin{:});
+    handles{1,1} = utilities.plotformatted(ax,x,y,varargin{:});
 else
     for seg = 1:numsegments
         % Reset the line colours so they match each segment, or user
         % preference
         ax.ColorOrderIndex = RequestedColorOrderIndex;
         hold on
-        handles{1,seg} = plot(ax, x(segments(seg,1):segments(seg,2)), y(:,segments(seg,1):segments(seg,2)), varargin{:});
+        handles{1,seg} = utilities.plotformatted(ax, x(segments(seg,1):segments(seg,2)), y(:,segments(seg,1):segments(seg,2)), varargin{:});
     end
     hold off
 end

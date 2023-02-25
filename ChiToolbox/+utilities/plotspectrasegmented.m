@@ -57,7 +57,7 @@ function varargout = plotspectrasegmented(this,varargin)
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot function for more details. 
 %
-% Copyright (c) 2021, Alex Henderson.
+% Copyright (c) 2021-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -301,7 +301,7 @@ if plotinfo.functionplot
             colours = get(gca,'colororder');
 %             shadedErrorBar(this.xvals,mean(this.data),std(this.data),{'Color',colours(1,:)});
             % shadedErrorBar doesn't accept an axes variable
-            shadedErrorBarSegmented(this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)},'linearity',linearity);
+            utilities.shadederrorbarsegmentedformatted(this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)},'linearity',linearity);
             
         otherwise
             % ToDo: Correct the error code
@@ -355,7 +355,7 @@ if plotinfo.functionplot
             colours = get(gca,'colororder');
 %             shadedErrorBar(this.xvals,mean(this.data),std(this.data),{'Color',colours(1,:)},1);
             % shadedErrorBar doesn't accept an axes variable
-            shadedErrorBarSegmented(this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)});
+            utilities.shadederrorbarsegmentedformatted(this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)});
         otherwise
             % ToDo: Correct the error code
             err = MException('CHI:ChiToolbox:UnknownInput', ...
@@ -429,7 +429,7 @@ for i = 1:this.classmembership.numuniquelabels
                 % The standard deviation is plotted as a shaded overlay.
                 colour = colours(c,:);
                 % shadedErrorBar doesn't accept an axes variable
-                figurehandle = shadedErrorBarSegmented(this.xvals,spectra,{@ChiMean,@ChiStd},'lineprops',{'color',colour});
+                figurehandle = utilities.shadederrorbarsegmentedformatted(this.xvals,spectra,{@ChiMean,@ChiStd},'lineprops',{'color',colour});
                 legendHandles(i) = figurehandle.mainLine;
                 if (c == numcolours)
                     c = 1;  % Reset colours to the beginning

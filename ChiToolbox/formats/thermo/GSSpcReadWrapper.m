@@ -22,7 +22,7 @@ function [xvals,data,height,width,filename,acqdate,x_label,y_label] = GSSpcReadW
 %   'x_label' is the name of the unit on the x axis (wavenumber)
 %   'y_label' is the name of the unit on the y axis (intensity)
 %
-%   Copyright (c) 2017, Alex Henderson 
+%   Copyright (c) 2017-2023, Alex Henderson 
 %   Contact email: alex.henderson@manchester.ac.uk
 %   Licenced under the GNU General Public License (GPL) version 3
 %   http://www.gnu.org/copyleft/gpl.html
@@ -134,7 +134,7 @@ end
 function plotSpectralData(xvals,data,x_label,y_label,filename)
     window_title = filename;
     figure('Name',window_title,'NumberTitle','off');
-    plot(xvals,data);
+    utilities.plotformatted(xvals,data);
     utilities.tightxaxis;
     xlabel(x_label);
     ylabel(y_label);

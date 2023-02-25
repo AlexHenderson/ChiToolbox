@@ -22,7 +22,7 @@ function plotresiduals(this,varargin)
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   bar/stem/scatter functions for more details. 
 %
-% Copyright (c) 2020, Alex Henderson.
+% Copyright (c) 2020-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -92,13 +92,13 @@ ydatatoplot = this.residuals;
 
 switch plottype
     case 'bar'
-        bar(xdatatoplot, ydatatoplot, varargin{:});
+        utilities.barformatted(xdatatoplot, ydatatoplot, varargin{:});
     case 'scatter'
-        scatter(xdatatoplot, ydatatoplot, varargin{:});
+        utilities.scatterformatted(xdatatoplot, ydatatoplot, varargin{:});
     case 'stem'
-        stem(xdatatoplot, ydatatoplot, varargin{:});
+        utilities.stemformatted(xdatatoplot, ydatatoplot, varargin{:});
     otherwise
-        bar(xdatatoplot, ydatatoplot, varargin{:});
+        utilities.barformatted(xdatatoplot, ydatatoplot, varargin{:});
 end
 
 utilities.tightxaxis;

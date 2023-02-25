@@ -149,15 +149,14 @@ if (this.model.numcvs > 1)
     if ~isempty(this.model.pca.classmembership)
         utilities.gscatter(this.model.scores(:,cvx), this.model.scores(:,cvy), this.model.pca.classmembership.labels, 'colours', colours, 'sizedata', markersize, marker, 'nofig', varargin{:});
         hold on;
-%         utilities.gscatter(this.projectedscores(:,cvx), this.projectedscores(:,cvy), projectedlabels, 'colours', projectedcolours, pmarker, 'nofig', varargin{:});
         utilities.gscatter(this.projectedscores(:,cvx), this.projectedscores(:,cvy), projectedlabels, 'colours', projectedcolours, 'sizedata', pmarkersize, pmarker, 'nofig', varargin{:});
         hold off;
     else
         % Not sure we can ever get here, since the classmembership is
         % required for the CVA
-        scatter(this.model.scores(:,cvx), this.model.scores(:,cvy), markersize .* markersize, marker, varargin{:});
+        utilties.scatterformatted(this.model.scores(:,cvx), this.model.scores(:,cvy), markersize .* markersize, marker, varargin{:});
         hold on;
-        scatter(this.projectedscores(:,cvx), this.projectedscores(:,cvy), markersize .* markersize, pmarker, varargin{:});
+        utilties.scatterformatted(this.projectedscores(:,cvx), this.projectedscores(:,cvy), markersize .* markersize, pmarker, varargin{:});
         hold off;
     end    
 
@@ -188,7 +187,7 @@ if (this.model.numcvs > 1)
 
 else
     % Only a single canonical variate so we can use a box plot
-    boxplot(this.model.scores,this.model.classmembership.labels, 'jitter', 0.2, 'notch','on', 'orientation','vertical',varargin{:});
+    utilities.boxplotformatted(this.model.scores,this.model.classmembership.labels,varargin{:});
     xlabel(this.model.classmembership.title);
     ylabel('score on cv 1');
     title('Score on canonical variate 1');
@@ -201,7 +200,7 @@ else
         idx = strcmpi(this.model.classmembership.labels, label);
         x = ones(sum(idx),1) * i;
         y = this.model.scores(idx);
-        scatter(x, y, markersize .* 2, marker, 'jitter','on', 'jitter', 0.1, varargin{:});
+        utilties.scatterformatted(x, y, markersize .* 2, marker, 'jitter','on', 'jitter', 0.1, varargin{:});
     end
     hold off
     
@@ -213,7 +212,7 @@ else
         idx = strcmpi(projectedlabels, label);
         x = ones(sum(idx),1) * i;
         y = this.projectedscores(idx);
-        scatter(x, y, markersize .* 2, pmarker, 'jitter','on', 'jitter', 0.2, varargin{:});
+        utilties.scatterformatted(x, y, markersize .* 2, pmarker, 'jitter','on', 'jitter', 0.2, varargin{:});
     end
     hold off
 end

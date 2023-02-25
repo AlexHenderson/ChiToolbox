@@ -15,7 +15,7 @@ function plotscoresbyclass(this,pcx,pcy,varargin)
 %   Other parameters can be applied to customise the plot. See the
 %   utilities.gscatter function for more details. 
 %
-% Copyright (c) 2018, Alex Henderson.
+% Copyright (c) 2018-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -137,7 +137,10 @@ if (this.numpcs > 1)
 
 else
     % Only a single principal component so we can use a box plot
-    boxplot(this.scores, this.classmembership.labels, 'jitter',0.2, 'notch','on', 'orientation','vertical', varargin{:});
+    % Not sure this is meaningful. I don't think we can ever reach here,
+    % since #PCs will always be greater than 1. Probably a copy/paste from
+    % PCCVA. 
+    utilities.boxplotformatted(this.scores, this.classmembership.labels, varargin{:});
     xlabel(this.classmembership.title);
     ylabel('score on pc 1');
     title('Score on principal component 1');    

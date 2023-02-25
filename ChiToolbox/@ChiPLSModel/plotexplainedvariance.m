@@ -22,7 +22,7 @@ function plotexplainedvariance(this,limit,varargin)
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot function for more details. 
 %
-% Copyright (c) 2020, Alex Henderson.
+% Copyright (c) 2020-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -66,7 +66,7 @@ if ~exist('limit','var')
     limit = min(20,length(this.xexplained));
 end
 
-plot(1:limit,this.xexplained(1:limit),'o-',1:limit,this.yexplained(1:limit),'o-',varargin{:});
+utilities.plotformatted(1:limit,this.xexplained(1:limit),'o-',1:limit,this.yexplained(1:limit),'o-',varargin{:});
 
 legend({'data block';'dependent variable'},'Location','best')
 xlabel('partial least squares component number');

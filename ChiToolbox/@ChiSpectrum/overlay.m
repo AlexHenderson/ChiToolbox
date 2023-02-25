@@ -18,7 +18,7 @@ function overlay(varargin)
 %   overlay(____,'offset',offset) produces a plot where the spectra are
 %   plotted with the value of offset being added to other.
 % 
-% Copyright (c) 2019, Alex Henderson.
+% Copyright (c) 2019-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -82,17 +82,17 @@ figure;
 yyaxis left
 if (isprop(this,'iscentroided') && this.iscentroided)
     [stickx,sticky] = utilities.stickify(this.xvals,this.data);
-    plot(stickx,sticky);
+    utilities.plotformatted(stickx,sticky);
 else    
-    plot(this.xvals,this.data);
+    utilities.plotformatted(this.xvals,this.data);
 end
 
 yyaxis right
 if (isprop(that,'iscentroided') && that.iscentroided)
     [stickx,sticky] = utilities.stickify(that.xvals,that.data);
-    plot(stickx,(sticky + offset));
+    utilities.plotformatted(stickx,(sticky + offset));
 else    
-    plot(that.xvals,(that.data + offset));
+    utilities.plotformatted(that.xvals,(that.data + offset));
 end
 
 %% Make x-axis tight

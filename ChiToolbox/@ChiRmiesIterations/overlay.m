@@ -29,7 +29,7 @@ function overlay(this,varargin)
 %   correction, stopping before the first Mie correction step. Therefore
 %   iteration 0 is slightly modified with respect to the original data.
 %
-% Copyright (c) 2019, Alex Henderson.
+% Copyright (c) 2019-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -154,7 +154,7 @@ end
         figure;
     end
     ax = gca;
-    plot(ax,this.iterations{1}.xvals,library,varargin{:});
+    utilities.plotformatted(ax,this.iterations{1}.xvals,library,varargin{:});
     if this.iterations{1}.reversex
         set(ax,'XDir','reverse');
     end

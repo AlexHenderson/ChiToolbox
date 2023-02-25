@@ -41,7 +41,7 @@ function [fig,ax,sct,leg] = gscatter(x,y,group,varargin)
 %   [____] = gscatter(____, 'nolegend') does not display a legend on the
 %   plot. The default is to show a legend in the 'best' location.
 %   
-% Copyright (c) 2019, Alex Henderson.
+% Copyright (c) 2019-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -220,9 +220,9 @@ for i = 1:length(uniquegroups)
     end
     
     if ischar(colours)
-        sct{i} = scatter(ax,x(idx),y(idx), sizedata, colours(i), 'Marker',marker); %#ok<AGROW>
+        sct{i} = utilities.scatterformatted(ax,x(idx),y(idx), sizedata, colours(i), 'Marker',marker); %#ok<AGROW>
     else
-        sct{i} = scatter(ax,x(idx),y(idx), sizedata, colours(i,:), 'Marker',marker); %#ok<AGROW>
+        sct{i} = utilities.scatterformatted(ax,x(idx),y(idx), sizedata, colours(i,:), 'Marker',marker); %#ok<AGROW>
     end
     
     % Add subsequent plots to this figure

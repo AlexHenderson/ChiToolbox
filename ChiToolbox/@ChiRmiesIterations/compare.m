@@ -42,7 +42,7 @@ function varargout = compare(this,varargin)
 %   first Mie correction step. Therefore iteration 0 is slightly modified
 %   with respect to the original data.
 %
-% Copyright (c) 2019, Alex Henderson.
+% Copyright (c) 2019-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -160,7 +160,7 @@ end
     % Display figure unless 'nofig' supplied by user
     if showfigure
         figure;
-        plot(output(:,1),output(:,2),'o-');
+        utilities.plotformatted(output(:,1),output(:,2),'o-');
         xticks(output(:,1));
         xlabel('RMieS iteration number');
         ylabel('cosine of vector angle');

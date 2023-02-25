@@ -54,7 +54,7 @@ function varargout = plotspectra(this,varargin)
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot function for more details. 
 %
-% Copyright (c) 2017-2021, Alex Henderson.
+% Copyright (c) 2017-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -263,23 +263,23 @@ if plotinfo.functionplot
     switch plotinfo.appliedfunction
         case 'mean'
             if this.iscentroided
-                stem(ax,this.xvals,ChiMean(this.data),varargin{:},'marker','none');
+                utilities.stemformatted(ax,this.xvals,ChiMean(this.data),varargin{:},'marker','none');
             else
-                plot(ax,this.xvals,ChiMean(this.data),varargin{:});
+                utilities.plotformatted(ax,this.xvals,ChiMean(this.data),varargin{:});
             end
             
         case 'sum'
             if this.iscentroided
-                stem(ax,this.xvals,ChiSum(this.data),varargin{:},'marker','none');
+                utilities.stemformatted(ax,this.xvals,ChiSum(this.data),varargin{:},'marker','none');
             else
-                plot(ax,this.xvals,ChiSum(this.data),varargin{:});
+                utilities.plotformatted(ax,this.xvals,ChiSum(this.data),varargin{:});
             end
             
         case 'median'
             if this.iscentroided
-                stem(ax,this.xvals,ChiMedian(this.data),varargin{:},'marker','none');
+                utilities.stemformatted(ax,this.xvals,ChiMedian(this.data),varargin{:},'marker','none');
             else
-                plot(ax,this.xvals,ChiMedian(this.data),varargin{:});
+                utilities.plotformatted(ax,this.xvals,ChiMedian(this.data),varargin{:});
             end
             
         case 'std'
@@ -292,7 +292,7 @@ if plotinfo.functionplot
                 % overlay. 
                 colours = get(gca,'colororder');
                 % shadedErrorBar doesn't accept an axes variable
-                shadedErrorBar(this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)});
+                utilties.shadederrorbarformatted(this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)});
             end
             
         otherwise
@@ -306,9 +306,9 @@ if plotinfo.functionplot
 else
     % Plot all the spectra, without a legend or advanced datacursor
     if this.iscentroided
-        stem(ax,this.xvals,this.data',varargin{:},'marker','x');
+        utilities.stemformatted(ax,this.xvals,this.data',varargin{:},'marker','x');
     else
-        plot(ax,this.xvals,this.data,varargin{:});
+        utilities.plotformatted(ax,this.xvals,this.data,varargin{:});
     end    
 end
     
@@ -337,25 +337,25 @@ if plotinfo.functionplot
         case 'mean'
             % Plot the mean of the entire data set
             if this.iscentroided
-                stem(ax,this.xvals,ChiMean(this.data),varargin{:},'marker','none');
+                utilities.stemformatted(ax,this.xvals,ChiMean(this.data),varargin{:},'marker','none');
             else
-                plot(ax,this.xvals,ChiMean(this.data),varargin{:});
+                utilities.plotformatted(ax,this.xvals,ChiMean(this.data),varargin{:});
             end
             
         case 'sum'
             % Plot the sum of the entire data set
             if this.iscentroided
-                stem(ax,this.xvals,ChiSum(this.data),varargin{:},'marker','none');
+                utilities.stemformatted(ax,this.xvals,ChiSum(this.data),varargin{:},'marker','none');
             else
-                plot(ax,this.xvals,ChiSum(this.data),varargin{:});
+                utilities.plotformatted(ax,this.xvals,ChiSum(this.data),varargin{:});
             end
             
         case 'median'
             % Plot the sum of the entire data set
             if this.iscentroided
-                stem(ax,this.xvals,ChiMedian(this.data),varargin{:},'marker','none');
+                utilities.stemformatted(ax,this.xvals,ChiMedian(this.data),varargin{:},'marker','none');
             else
-                plot(ax,this.xvals,ChiMedian(this.data),varargin{:});
+                utilities.plotformatted(ax,this.xvals,ChiMedian(this.data),varargin{:});
             end
             
         case 'std'
@@ -369,7 +369,7 @@ if plotinfo.functionplot
                 colours = get(gca,'colororder');
 %             shadedErrorBar(this.xvals,mean(this.data),std(this.data),{'Color',colours(1,:)},1);
                 % shadedErrorBar doesn't accept an axes variable
-                shadedErrorBar(this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)});
+                utilties.shadederrorbarformatted(this.xvals,this.data,{@ChiMean,@ChiStd},'lineprops',{'color',colours(1,:)});
             end
             
         otherwise
@@ -384,9 +384,9 @@ else
     
     % Plot all the spectra, without a legend
     if this.iscentroided
-        stem(ax,this.xvals,this.data','marker','x',varargin{:});
+        utilities.stemformatted(ax,this.xvals,this.data','marker','x',varargin{:});
     else
-        plot(ax,this.xvals,this.data,varargin{:});
+        utilities.plotformatted(ax,this.xvals,this.data,varargin{:});
     end    
     
     % Each line needs a class label for the datacursor. This is the class each
@@ -433,25 +433,25 @@ for i = 1:this.classmembership.numuniquelabels
         switch plotinfo.appliedfunction
             case 'mean'                
                 if this.iscentroided
-                    figurehandle = stem(ax,this.xvals,ChiMean(spectra),'marker','x',varargin{:});
+                    figurehandle = utilities.stemformatted(ax,this.xvals,ChiMean(spectra),'marker','x',varargin{:});
                 else
-                    figurehandle = plot(ax,this.xvals,ChiMean(spectra),varargin{:});
+                    figurehandle = utilities.plotformatted(ax,this.xvals,ChiMean(spectra),varargin{:});
                 end
                 legendHandles(i) = figurehandle(1);
 
             case 'sum'
                 if this.iscentroided
-                    figurehandle = stem(ax,this.xvals,ChiSum(spectra),'marker','x',varargin{:});
+                    figurehandle = utilities.stemformatted(ax,this.xvals,ChiSum(spectra),'marker','x',varargin{:});
                 else
-                    figurehandle = plot(ax,this.xvals,ChiSum(spectra),varargin{:});
+                    figurehandle = utilities.plotformatted(ax,this.xvals,ChiSum(spectra),varargin{:});
                 end
                 legendHandles(i) = figurehandle(1);
 
             case 'median'
                 if this.iscentroided
-                    figurehandle = stem(ax,this.xvals,ChiMedian(spectra),'marker','x',varargin{:});
+                    figurehandle = utilities.stemformatted(ax,this.xvals,ChiMedian(spectra),'marker','x',varargin{:});
                 else
-                    figurehandle = plot(ax,this.xvals,ChiMedian(spectra),varargin{:});
+                    figurehandle = utilities.plotformatted(ax,this.xvals,ChiMedian(spectra),varargin{:});
                 end                
                 legendHandles(i) = figurehandle(1);
 
@@ -465,7 +465,7 @@ for i = 1:this.classmembership.numuniquelabels
                     % The standard deviation is plotted as a shaded overlay.
                     colour = colours(c,:);
                     % shadedErrorBar doesn't accept an axes variable
-                    figurehandle = shadedErrorBar(this.xvals,spectra,{@ChiMean,@ChiStd},'lineprops',{'color',colour});
+                    figurehandle = utilties.shadederrorbarformatted(this.xvals,spectra,{@ChiMean,@ChiStd},'lineprops',{'color',colour});
                     legendHandles(i) = figurehandle.mainLine;
                     if (c == numcolours)
                         c = 1;  % Reset colours to the beginning
@@ -486,9 +486,9 @@ for i = 1:this.classmembership.numuniquelabels
         colour = colours(c,:);
         
         if this.iscentroided
-            figurehandle = stem(ax,this.xvals,spectra','marker','x',varargin{:});
+            figurehandle = utilities.stemformatted(ax,this.xvals,spectra','marker','x',varargin{:});
         else
-            figurehandle = plot(ax,this.xvals,spectra,'Color',colour,varargin{:});
+            figurehandle = utilities.plotformatted(ax,this.xvals,spectra,'Color',colour,varargin{:});
         end    
         
         legendHandles(i) = figurehandle(1);

@@ -25,7 +25,7 @@ function plotxscores(this,compx,compy,varargin)
 %   in colours relating to their class using the utilities.gscatter
 %   function.
 %
-% Copyright (c) 2020, Alex Henderson.
+% Copyright (c) 2020-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -85,7 +85,7 @@ end
 decplaces = 3;
 
 if ~isempty(this.depvar)
-    scatter(this.xscores(:,compx), this.xscores(:,compy), sizedata, this.depvar.labels, varargin{:});
+    utilities.scatterformatted(this.xscores(:,compx), this.xscores(:,compy), sizedata, this.depvar.labels, varargin{:});
     c = colorbar;
     c.Label.String = this.depvar.title;
 end    

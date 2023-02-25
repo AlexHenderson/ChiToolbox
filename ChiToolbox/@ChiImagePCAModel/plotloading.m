@@ -27,7 +27,7 @@ function plotloading(this,pc,varargin)
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot/bar functions for more details. 
 %
-% Copyright (c) 2017-2019, Alex Henderson.
+% Copyright (c) 2017-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -117,16 +117,16 @@ end
 datatoplot = this.loadings(:,pc)';  % convert to row
 
 if barplot
-    retval = bar(gca,this.xvals, datatoplot, varargin{:}); %#ok<NASGU>
+    retval = utilities.barformatted(gca,this.xvals, datatoplot, varargin{:}); %#ok<NASGU>
 else
     if this.iscentroided
         legacy = true;
     end
     if legacy
             if this.iscentroided
-                retval = stem(gca, this.xvals,datatoplot,varargin{:},'marker','none'); %#ok<NASGU>
+                retval = utilities.stemformatted(gca, this.xvals,datatoplot,varargin{:},'marker','none'); %#ok<NASGU>
             else
-                retval = plot(gca, this.xvals, datatoplot, varargin{:}); %#ok<NASGU>
+                retval = utilities.plotformatted(gca, this.xvals, datatoplot, varargin{:}); %#ok<NASGU>
             end
     else
         % do a segmented plot 
@@ -164,9 +164,9 @@ else
         % Overwrite the original plot to bring it to the front
         if legacy
                 if this.iscentroided
-                    retval = stem(gca, this.xvals,datatoplot, 'Color', 'b',varargin{:},'marker','none'); %#ok<NASGU>
+                    retval = utilities.stemformatted(gca, this.xvals,datatoplot, 'Color', 'b',varargin{:},'marker','none'); %#ok<NASGU>
                 else
-                    retval = plot(gca, this.xvals, datatoplot,  'Color', 'b',varargin{:}); %#ok<NASGU>
+                    retval = utilities.plotformatted(gca, this.xvals, datatoplot,  'Color', 'b',varargin{:}); %#ok<NASGU>
                 end
         else
             % do a segmented plot 

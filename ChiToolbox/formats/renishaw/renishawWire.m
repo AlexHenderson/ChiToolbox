@@ -29,7 +29,7 @@ function [ramanshift,data,height,width,filename,acqdate,x_label,y_label] = renis
 %   within the file may vary. Always check the output to make sure it is
 %   sensible. If you have a file that doesn't work, please contact Alex. 
 %
-%   Copyright (c) 2014 - 2017, Alex Henderson 
+%   Copyright (c) 2014-2023, Alex Henderson 
 %   Contact email: alex.henderson@manchester.ac.uk
 %   Licenced under the GNU General Public License (GPL) version 3
 %   http://www.gnu.org/copyleft/gpl.html
@@ -310,7 +310,7 @@ end
 function plotSpectralData(ramanshift,data,x_label,y_label,filename)
     window_title = filename;
     figure('Name',window_title,'NumberTitle','off');
-    plot(ramanshift,data);
+    utilities.plotformatted(ramanshift,data);
     utilities.tightxaxis;
     xlabel(x_label);
     ylabel(y_label);

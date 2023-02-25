@@ -21,7 +21,7 @@ function plotexplainedvariance(this,limitpcs,varargin)
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot function for more details. 
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -62,10 +62,10 @@ if exist('limitpcs','var')
 end
 
 if exist('limitpcs','var')
-    plot(this.explained(1:limitpcs),'o-',varargin{:});
+    utilities.plotformatted(this.explained(1:limitpcs),'o-',varargin{:});
 else
     maxpcs = min(20,length(this.explained));
-    plot(this.explained(1:maxpcs),'o-',varargin{:});
+    utilities.plotformatted(this.explained(1:maxpcs),'o-',varargin{:});
 end
 
 xlabel('principal component number');

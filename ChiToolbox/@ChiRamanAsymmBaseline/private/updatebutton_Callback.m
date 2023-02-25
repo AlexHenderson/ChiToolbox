@@ -51,7 +51,7 @@ function updatebutton_Callback(this,source,eventdata)  %#ok<INUSD>
 
     this.datatomodel.plot('nofig', 'axes', this.axes_before);
     hold(this.axes_before, 'on');
-    plot(this.axes_before, this.datatomodel.xvals, calculatedbaseline);
+    utilities.plotformatted(this.axes_before, this.datatomodel.xvals, calculatedbaseline);
     hold(this.axes_before, 'off');
 
     corrected.plot('nofig', 'axes', this.axes_after);

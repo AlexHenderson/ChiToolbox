@@ -26,7 +26,7 @@ function varargout = plotspectrum(this,varargin)
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot function for more details. 
 %
-% Copyright (c) 2017-2019, Alex Henderson.
+% Copyright (c) 2017-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -96,9 +96,9 @@ if isprop(this, 'iscentroided')
 end
 
 if centroided
-    retval = stem(ax,this.xvals,this.data,varargin{:},'marker','none'); %#ok<NASGU>
+    retval = utilities.stemformatted(ax,this.xvals,this.data,varargin{:},'marker','none'); %#ok<NASGU>
 else
-    retval = plot(ax,this.xvals,this.data,varargin{:}); %#ok<NASGU>
+    retval = utilities.plotformatted(ax,this.xvals,this.data,varargin{:}); %#ok<NASGU>
 end
 
 %% Prettify plot

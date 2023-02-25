@@ -29,7 +29,7 @@ function plotscores(this,pcx,pcy,varargin)
 %   in colours relating to their class using the utilities.gscatter
 %   function.
 %
-% Copyright (c) 2017-2019, Alex Henderson.
+% Copyright (c) 2017-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -129,9 +129,9 @@ if ~isempty(this.model.classmembership)
     utilities.gscatter(this.projectedscores(:,pcx), this.projectedscores(:,pcy), projectedlabels, 'colours', projectedcolours, 'sizedata', sizedata, pmarker, 'nofig', varargin{:});
     hold off;
 else
-    scatter(this.model.scores(:,pcx), this.model.scores(:,pcy), sizedata .* sizedata, marker, varargin{:});
+    utilities.scatterformatted(this.model.scores(:,pcx), this.model.scores(:,pcy), sizedata .* sizedata, marker, varargin{:});
     hold on;
-    scatter(this.projectedscores(:,pcx), this.projectedscores(:,pcy), sizedata .* sizedata, pmarker, varargin{:});
+    utilities.scatterformatted(this.projectedscores(:,pcx), this.projectedscores(:,pcy), sizedata .* sizedata, pmarker, varargin{:});
     hold off;
 end    
 

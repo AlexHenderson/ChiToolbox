@@ -18,7 +18,7 @@ function plotscores(this,cvx,cvy,varargin)
 %   Other parameters can be applied to customise the plot. See the
 %   utilities.gscatter function for more details.
 %
-% Copyright (c) 2017-2019, Alex Henderson.
+% Copyright (c) 2017-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -95,7 +95,7 @@ if (this.numcvs > 1)
     title([titlestub, num2str(cvx), ' and ', num2str(cvy), ' (',num2str(this.pcs), ' pcs)']);
 else
     % Only a single canonical variate so we can use a box plot
-    boxplot(this.scores,this.pca.classmembership.labels, 'jitter', 0.2, 'notch','on', 'orientation','vertical',varargin{:});
+    utilities.boxplotformatted(this.scores, this.pca.classmembership.labels, varargin{:});
     xlabel(this.pca.classmembership.title);
     ylabel('score on cv 1');
     title('Score on canonical variate 1');    

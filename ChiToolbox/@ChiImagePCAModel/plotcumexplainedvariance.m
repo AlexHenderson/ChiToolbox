@@ -22,7 +22,7 @@ function plotcumexplainedvariance(this,limitpcs,varargin)
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot function for more details. 
 %
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -65,10 +65,10 @@ end
 cumexplained = cumsum(this.explained);
 
 if exist('limitpcs','var')
-    plot(cumexplained(1:limitpcs),'o-',varargin{:});
+    utilities.plotformatted(cumexplained(1:limitpcs),'o-',varargin{:});
 else
     maxpcs = min(20,length(cumexplained));
-    plot(cumexplained(1:maxpcs),'o-',varargin{:});
+    utilities.plotformatted(cumexplained(1:maxpcs),'o-',varargin{:});
 end
 
 % Draw line indicating 95% cumulative explained variance
@@ -77,7 +77,7 @@ hold on;
 limits = axis;
 xmin = limits(1,1);
 xmax = limits(1,2);
-plot([xmin,xmax], [95,95], axiscolour);
+utilities.plotformatted([xmin,xmax], [95,95], axiscolour);
 hold off;
 
 

@@ -23,7 +23,7 @@ function plotscores(this,pcx,pcy,varargin)
 %   in colours relating to their class using the utilities.gscatter
 %   function.
 %
-% Copyright (c) 2017-2019, Alex Henderson.
+% Copyright (c) 2017-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -102,7 +102,7 @@ decplaces = 3;
 if ~isempty(this.classmembership)
     utilities.gscatter(this.scores(:,pcx), this.scores(:,pcy), this.classmembership.labels, 'colours', colours, 'sizedata', sizedata, marker, 'nofig', varargin{:});
 else
-    scatter(this.scores(:,pcx), this.scores(:,pcy), sizedata .* sizedata, marker, varargin{:});
+    utilities.scatterformatted(this.scores(:,pcx), this.scores(:,pcy), sizedata .* sizedata, marker, varargin{:});
 %     scatter(this.scores(:,pcx), this.scores(:,pcy),sizedata,marker);
 
 end    

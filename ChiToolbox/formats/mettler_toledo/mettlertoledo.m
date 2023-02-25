@@ -25,7 +25,7 @@ function [xvals,data,filename,header,x_label,y_label] = mettlertoledo(filename,p
 %   results. If this is the case, please raise an issue on the BitBucket
 %   site: https://bitbucket.org/AlexHenderson/chitoolbox/issues
 % 
-%   Copyright (c) 2018, Alex Henderson 
+%   Copyright (c) 2018-2023, Alex Henderson 
 %   Contact email: alex.henderson@manchester.ac.uk
 
 %   Licenced under the GNU General Public License (GPL) version 3
@@ -241,7 +241,7 @@ end
 function plotSpectralData(ramanshift,data,x_label,y_label,filename)
     window_title = filename;
     figure('Name',window_title,'NumberTitle','off');
-    plot(ramanshift,data);
+    utilities.plotformatted(ramanshift,data);
     utilities.tightxaxis;
     xlabel(x_label);
     ylabel(y_label);

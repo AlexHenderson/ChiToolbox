@@ -22,7 +22,7 @@ function varargout = display(varargin) %#ok<DISPLAY>
 %   Other parameters can be applied to customise the plot. See the MATLAB
 %   plot function for more details. 
 %
-% Copyright (c) 2017-2019, Alex Henderson.
+% Copyright (c) 2017-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -72,7 +72,7 @@ end
     end
     
     % Generate the plot
-    plot(varargin{:});
+    this.plot(varargin{2:end});
 
     % Add a title if requested
     if ~isempty(titletext)

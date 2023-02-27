@@ -4,24 +4,26 @@ function obj = peakdetect(varargin)
 %
 % Syntax
 %   peakdetect();
-%   peakdetect(Name,Value);
 %   peakdetect(____,'vis');
+%   peakdetect(____,'numpeaks', pks);
+%   peakdetect(____,'peaktable', pktable);
 %   modified = peakdetect(____);
 %
 % Description
 %   peakdetect() detects peaks in the data and reduces the data to
 %   centroids using default values (see below). 
 % 
-%   peakdetect(Name,Value) uses Name/Value pairs to replace the default
-%   values with those provided. 
-%
 %   peakdetect(____,'vis') display a window overlaying the data with the
-%   detected centroids
+%   detected centroids. Default is not to display the plot. 
 % 
-%   peakdetect(____,'peaktable', pks) uses the previously generated peak
-%   table pks to define the peak limits for these data. Peak tables are
-%   available as a property of any mass spectrum, collection or image where
-%   peak detection has been performed.
+%   peakdetect(____,'numpeaks', pks) returns a subset of the peak table
+%   containing the pks most intense peaks detected. If pks == -1, all
+%   detected peaks are returned. Default is 500. 
+% 
+%   peakdetect(____,'peaktable', pktable) uses the previously generated
+%   peak table pktable to define the peak limits for these data. Peak
+%   tables are available as a property of any mass spectrum, collection or
+%   image where peak detection has been performed.
 % 
 %   modified = peakdetect(____) first creates a clone of the object, then
 %   detects peaks in the clone. The original object is not modified.
@@ -30,7 +32,7 @@ function obj = peakdetect(varargin)
 %     gsigma = 5, the standard deviation of the Gaussian kernel function;
 %     gwindow = 30, the width the Gaussian kernel function;
 %     d2window = 21, the width of the second derivative window;
-%     numberlimit = 500, limits detected peaks to the Nth most intense;
+%     numpeaks = 500, limits detected peaks to the Nth most intense;
 %
 % Notes
 %   The peak detection process is as follows:
@@ -52,7 +54,7 @@ function obj = peakdetect(varargin)
 %        total ion spectrum become the new mass positions for each of these
 %        peaks. 
 %     
-% Copyright (c) 2018-2020, Alex Henderson.
+% Copyright (c) 2018-2023, Alex Henderson.
 % Licenced under the GNU General Public License (GPL) version 3.
 %
 % See also 
@@ -124,6 +126,15 @@ else
     end
     
     argposition = find(cellfun(@(x) strcmpi(x, 'numberlimit') , varargin));
+    % Deprecated
+    if argposition
+        % Remove the parameters from the argument list
+        numberlimit = varargin{argposition+1};
+        varargin(argposition + 1) = [];
+        varargin(argposition) = [];
+    end
+
+    argposition = find(cellfun(@(x) strcmpi(x, 'numpeaks') , varargin));
     if argposition
         % Remove the parameters from the argument list
         numberlimit = varargin{argposition+1};
@@ -258,6 +269,11 @@ else
         end
 
         %% Select the top N peaks
+        if (numberlimit < 0)
+            % Return all peaks
+            numberlimit = numpeaks;
+        end
+        
         if (numberlimit < numpeaks)
             peaktable = sortrows(peaktable,areacol,'descend');
             peaktable = peaktable(1:numberlimit,:);

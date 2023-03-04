@@ -142,6 +142,14 @@ else
         varargin(argposition) = [];
     end
 
+    argposition = find(cellfun(@(x) strcmpi(x, 'numpks') , varargin));
+    if argposition
+        % Remove the parameters from the argument list
+        numberlimit = varargin{argposition+1};
+        varargin(argposition + 1) = [];
+        varargin(argposition) = [];
+    end
+
     argposition = find(cellfun(@(x) strcmpi(x, 'vis') , varargin));
     if argposition
         % Remove the parameters from the argument list

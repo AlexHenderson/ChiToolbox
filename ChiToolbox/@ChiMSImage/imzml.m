@@ -107,6 +107,6 @@ if strcmpi(this.imzmlproperties.instrument, 'Ionoptika J105')
 
 else
     err = MException(['CHI:',mfilename, 'InputError'], ...
-        'imzML output is only avilable for Ionoptika J105 files at the moment.');
+        'imzML output is only available for Ionoptika J105 files at the moment.');
     throw(err);
 end    

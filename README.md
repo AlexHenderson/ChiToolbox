@@ -1,3 +1,7 @@
+## We have recently migrated from Bitbucket to GitHub. If something doesn't work as it should, please let us know by raising an issue at [https://github.com/AlexHenderson/ChiToolbox/issues](https://github.com/AlexHenderson/ChiToolbox/issues "https://github.com/AlexHenderson/ChiToolbox/issues"), or email Alex. Thanks ##
+
+
+
 # ChiToolbox #
 
 ## Centre for Hyperspectral Imaging at the University of Manchester ##

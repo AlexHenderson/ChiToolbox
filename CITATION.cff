@@ -3,7 +3,7 @@ authors:
   - family-names: Henderson
     given-names: Alex
     orcid: "https://orcid.org/0000-0002-5791-8555"
-	website: "https://alexhenderson.info/"
+    website: "https://alexhenderson.info/"
 cff-version: 1.2.0
 contact:
   - affiliation: "The University of Manchester"

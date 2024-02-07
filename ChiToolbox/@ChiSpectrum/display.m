@@ -36,8 +36,8 @@ function varargout = display(varargin) %#ok<DISPLAY>
 % your publications. 
 
 % Version 1.0, July 2017
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 % Passing the actual plotting functionality off to a separate function to
 % co-locate the feature. 

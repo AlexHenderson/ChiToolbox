@@ -30,8 +30,8 @@ function massdata = tof2mass(varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 %   version 1.0 June 2013
 %   version 2.0 August 2018

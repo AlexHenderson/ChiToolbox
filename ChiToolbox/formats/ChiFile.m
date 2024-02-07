@@ -40,8 +40,8 @@ function [varargout] = ChiFile(filenames)
 % your publications. 
 
 % Version 2.0, September 2018
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
     
 % All FileReaders should inherit from ChiAbstractFileFormat. 
 % First we collect a list of all classes that inherit from

@@ -43,8 +43,8 @@ function output = ChiMatch(collection,spectrum,comparison)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 
 if ~(isa(collection,'ChiImage') || isa(collection,'ChiSpectralCollection') || isa(collection,'ChiSpectrum'))

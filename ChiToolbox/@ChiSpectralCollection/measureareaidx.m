@@ -26,8 +26,8 @@ function area = measureareaidx(this,fromidx,toidx)
 % your publications. 
 
 % Version 1.0, July 2017
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 
     % Swap if 'fromidx' is higher than 'toidx'

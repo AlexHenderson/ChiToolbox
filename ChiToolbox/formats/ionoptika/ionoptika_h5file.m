@@ -65,8 +65,8 @@ function [mass,data,height,width,layers,filename,xlabel,xunit,ylabel,yunit,imzml
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 
 %% Do we want to limit the mass range? low mass limit

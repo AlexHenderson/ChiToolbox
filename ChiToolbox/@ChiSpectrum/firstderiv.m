@@ -49,8 +49,8 @@ function obj = firstderiv(this,varargin)
 % your publications. 
 
 % Version 2.0, March 2018
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 %   (c) Alex Henderson Dec 2007
 %   Modified in 2018 to use Andrew Horchler's sgolayfilt function and

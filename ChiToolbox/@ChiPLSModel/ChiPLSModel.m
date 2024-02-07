@@ -42,8 +42,8 @@ classdef ChiPLSModel < ChiModel
 % Version 2.0, August 2021
 %  Inherit from ChiModel rather than ChiBase
 % Version 1.0, May 2020
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 
     properties

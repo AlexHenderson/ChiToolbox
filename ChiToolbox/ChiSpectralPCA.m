@@ -39,8 +39,8 @@ function model = ChiSpectralPCA(input,varargin)
 %   version 1.0 June 2015 Alex Henderson
 %   initial release
 
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 
 if ~isa(input,'ChiSpectralCollection')

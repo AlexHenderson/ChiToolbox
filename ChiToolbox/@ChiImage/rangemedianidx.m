@@ -24,8 +24,8 @@ function themedian = rangemedianidx(this,fromidx,toidx)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 
     if ~exist('toidx','var')

@@ -67,8 +67,8 @@ function varargout = plotspectra(this,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 % varargin management borrowed from here:
 % https://uk.mathworks.com/matlabcentral/answers/127878-interpreting-varargin-name-value-pairs

@@ -28,8 +28,8 @@ function [stickx, sticky] = stickify(x,y,varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 
 %% Force x and y to be in columns so we can use sortrows later

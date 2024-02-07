@@ -44,8 +44,8 @@ function varargout = segmentplot(varargin)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 % Passing the actual plotting functionality off to a separate function to
 % co-locate the feature. 

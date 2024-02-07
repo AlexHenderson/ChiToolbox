@@ -40,8 +40,8 @@ function varargout = plotspectrum(this,varargin)
 % your publications. 
 
 % Version 2.0, August 2018
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 % varargin management borrowed from here:
 % https://uk.mathworks.com/matlabcentral/answers/127878-interpreting-varargin-name-value-pairs

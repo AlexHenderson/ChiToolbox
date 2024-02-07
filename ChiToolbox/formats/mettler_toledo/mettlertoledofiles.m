@@ -26,8 +26,8 @@ function [xvals,spectra,filenames,header,x_label,y_label] = mettlertoledofiles(f
 %                     *******Caution******* 
 %   This code is a hack of the Mettler Toledo / Applied Systems format.
 %   There were very few example files and so the function may give spurious
-%   results. If this is the case, please raise an issue on the BitBucket
-%   site: https://bitbucket.org/AlexHenderson/chitoolbox/issues
+%   results. If this is the case, please raise an issue at: 
+%   https://github.com/AlexHenderson/ChiToolbox/issues
 % 
 %   Copyright (c) 2018, Alex Henderson 
 %   Contact email: alex.henderson@manchester.ac.uk
@@ -39,8 +39,8 @@ function [xvals,spectra,filenames,header,x_label,y_label] = mettlertoledofiles(f
 %   your publications. 
 %
 %   version 1.0 April 2018, Alex Henderson
-%   The latest version of this file is available on Bitbucket
-%   https://bitbucket.org/AlexHenderson/chitoolbox
+%   The latest version of this file is available at:
+%   https://github.com/AlexHenderson/ChiToolbox
 
 
 if (exist('filenames', 'var') == 0)

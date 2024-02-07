@@ -32,7 +32,7 @@ function [xvals,data,height,width,filename,acqdate,x_label,y_label] = thermoSpc(
 %   your publications. 
 %
 %   version 4.0 June 2017, Alex Henderson
-%   The latest version of this file is available on Bitbucket
+%   The latest version of this file is available at:
 %   https://bitbucket.org/AlexHenderson/renishaw-file-formats
 
 %   version 4.0 June 2017, Alex Henderson

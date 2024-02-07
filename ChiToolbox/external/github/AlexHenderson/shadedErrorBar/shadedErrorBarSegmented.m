@@ -347,7 +347,7 @@ function varargout = segmenter(xvals, varargin)
 
 % The latest version of this file is available on GitHub
 % https://github.com/AlexHenderson/shadedErrorBar
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% https://github.com/AlexHenderson/ChiToolbox
 
 
 % Get form of x-axis: linear, or quadratic

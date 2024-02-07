@@ -25,8 +25,8 @@ classdef ChiFileReader
 % your publications. 
 
 % Version 3.0, February 2019
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
     
 % All FileReaders should inherit from ChiAbstractFileFormat. 
 % First we collect a list of all classes that inherit from

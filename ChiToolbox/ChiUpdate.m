@@ -1,7 +1,7 @@
 function ChiUpdate()
 
-% Function to update the code to the Master version on Bitbucket. 
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% Function to update the code to the Master version on GitHub. 
+% https://github.com/AlexHenderson/ChiToolbox
 % 
 % This file should be in chitoolbox/ChiToolbox
 % First we determine whether Git is available. 
@@ -11,9 +11,9 @@ function ChiUpdate()
 % have been added or removed) to the search path and navigate back to the
 % initial location.
 % 
-% Requires that the code was cloned from the repository on Bitbucket, not
-% simply downloaded. The Git program is also required. This can be found
-% at: https://git-scm.com/
+% Requires that the code was cloned from the repository on GitHub or 
+% Bitbucket, not simply downloaded. The Git program is also required. 
+% This can be found at: https://git-scm.com/
 
 
 try

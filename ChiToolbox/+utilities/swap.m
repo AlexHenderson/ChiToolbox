@@ -25,8 +25,8 @@ function [a,b] = swap(a,b)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 %   For a trick with integers see here:
 %   http://blogs.mathworks.com/loren/2006/10/25/cute-tricks-in-matlab-adapted-from-other-languages/#3

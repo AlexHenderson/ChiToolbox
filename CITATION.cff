@@ -12,7 +12,7 @@ contact:
     given-names: Alex
 identifiers:
   - type: url
-    value: "https://bitbucket.org/AlexHenderson/chitoolbox/"
+    value: "https://github.com/AlexHenderson/ChiToolbox/"
     description: "ChiToolbox repository"
 keywords:
   - "hyperspectral analysis"
@@ -30,10 +30,10 @@ license:
  - GPL-3.0-or-later
 license-url: "https://www.gnu.org/licenses/gpl-3.0.en.html"
 message: If you use this software, please cite it using these metadata.
-repository-code: "https://bitbucket.org/AlexHenderson/chitoolbox/"
+repository-code: "https://github.com/AlexHenderson/ChiToolbox/"
 title: ChiToolbox
 type: software
-url: "https://bitbucket.org/AlexHenderson/chitoolbox/"
+url: "https://github.com/AlexHenderson/ChiToolbox/"
 
 preferred-citation:
   authors:
@@ -41,5 +41,5 @@ preferred-citation:
       given-names: Alex
   title: ChiToolbox
   type: software
-  url: "https://bitbucket.org/AlexHenderson/chitoolbox/"
-  year: 2021
+  url: "https://github.com/AlexHenderson/ChiToolbox/"
+  year: 2024

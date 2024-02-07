@@ -37,8 +37,8 @@ function plotresiduals(this,varargin)
 % your publications. 
 
 % Version 1.0, May 2020
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 
 %% Error checking

@@ -27,8 +27,8 @@ function output_txt = datacursor(obj,event_obj,chiobj,plotinfo) %#ok<INUSL>
 % your publications. 
 
 % Version 1.0, August 2017
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 
 %% Position of cursor in x/y space (not pixels)

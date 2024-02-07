@@ -9,11 +9,13 @@ Author: Alex Henderson <alex.henderson@manchester.ac.uk> [(website)](http://alex
 
 Start date 17 March 2014 (although coding has been in progress for many years). Still work in progress...
 
-If you find a problem with the Toolbox, please document the 'issue' on the Bitbucket site [https://bitbucket.org/AlexHenderson/chitoolbox/issues](https://bitbucket.org/AlexHenderson/chitoolbox/issues "https://bitbucket.org/AlexHenderson/chitoolbox/issues"), or email Alex. Similarly, requests for new features can be sent in the same way. 
+If you find a problem with the Toolbox, please document the 'issue' on GitHub [https://github.com/AlexHenderson/ChiToolbox/issues](https://github.com/AlexHenderson/ChiToolbox/issues "https://github.com/AlexHenderson/ChiToolbox/issues"), or email Alex. 
+Similarly, requests for new features can be sent in the same way. 
 
 Follow [@ChiToolbox](https://twitter.com/ChiToolbox) on Twitter for notifications of code changes, new users, requests for feedback, suggestions for additional functionality etc. 
 
 ## Help pages
+*Note the wiki has yet to be ported from Bitbucket to GitHub*
 
 - [Home](https://bitbucket.org/AlexHenderson/chitoolbox/wiki/Home)
 - [Installation](https://bitbucket.org/AlexHenderson/chitoolbox/wiki/Installation)
@@ -23,7 +25,7 @@ Follow [@ChiToolbox](https://twitter.com/ChiToolbox) on Twitter for notification
 - [Credits](https://bitbucket.org/AlexHenderson/chitoolbox/wiki/Credits)
 
 ## Licence
-The ChiToolbox is copyright (c) 2014-2020 Alex Henderson   
+The ChiToolbox is copyright (c) 2014-2024 Alex Henderson   
 It is released under the GNU GPL 3.0 licence, a copy of which is included in the file collection, but which may also be found at [https://www.gnu.org/licenses/gpl-3.0.en.html](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 The licences of the included files, detailed in the [Credits section](Credits.md), are equally or more liberal in nature.  

@@ -39,8 +39,8 @@ function cm_data = cividis(m)
 % The author claims no copyright to this file.
 
 % Version 1.0, March 2018
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 
 cm = [ ...

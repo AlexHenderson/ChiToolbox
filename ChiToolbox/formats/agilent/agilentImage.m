@@ -32,7 +32,7 @@ function [wavenumbers, data, height, width, filename, acqdate] = agilentImage(fi
 %   your publications. 
 %
 %   version 6.0, June 2017
-%   The latest version of this file is available on Bitbucket
+%   The latest version of this file is available at:
 %   https://bitbucket.org/AlexHenderson/agilent-file-formats
 %
 %   version 6.0, June 2017 Alex Henderson. Changed order or width and

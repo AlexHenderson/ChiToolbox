@@ -20,8 +20,8 @@ function add(this,content)
 % your publications. 
 
 % Version 2.0, 2019
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 
 if exist('content','var')

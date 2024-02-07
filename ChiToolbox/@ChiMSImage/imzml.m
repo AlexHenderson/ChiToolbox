@@ -45,8 +45,8 @@ function imzml(varargin)
 % your publications. 
 
 % Version 2.0, September 2018
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 % Info...
 % https://ms-imaging.org/wp/wp-content/uploads/2009/08/specifications_imzML1.1.0_RC1.pdf

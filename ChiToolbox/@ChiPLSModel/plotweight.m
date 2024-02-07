@@ -42,8 +42,8 @@ function varargout = plotweight(this,comp,varargin)
 % your publications. 
 
 % Version 2.0, August 2021
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 
 %% Error checking

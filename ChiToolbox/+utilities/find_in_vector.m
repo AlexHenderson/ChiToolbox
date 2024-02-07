@@ -43,8 +43,8 @@ function [idx,closest] = find_in_vector(vector,value)
 % your publications. 
 
 % Version 1.0, April 2018
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 
 if (numel(value) > 1)

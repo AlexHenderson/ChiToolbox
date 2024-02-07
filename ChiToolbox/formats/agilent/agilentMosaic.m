@@ -36,7 +36,7 @@ function [wavenumbers, data, height, width, filename, acqdate] = agilentMosaic(f
 %   your publications. 
 %
 %       version 8.0, September 2019
-%   The latest version of this file is available on Bitbucket
+%   The latest version of this file is available at:
 %   https://bitbucket.org/AlexHenderson/agilent-file-formats
 
 %       version 8.0, September 2019 Alex Henderson. Changed input to

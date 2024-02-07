@@ -31,8 +31,8 @@ function plotloadings(this,pc,varargin)
 % your publications. 
 
 % Version 1.0, July 2017
-% The latest version of this file is available on Bitbucket
-% https://bitbucket.org/AlexHenderson/Chitoolbox
+% The latest version of this file is available at:
+% https://github.com/AlexHenderson/ChiToolbox
 
 % Simply a wrapper around the plotloading function
 

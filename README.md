@@ -19,14 +19,13 @@ Similarly, requests for new features can be sent in the same way.
 Follow [@ChiToolbox](https://twitter.com/ChiToolbox) on Twitter for notifications of code changes, new users, requests for feedback, suggestions for additional functionality etc. 
 
 ## Help pages
-*Note the wiki has yet to be ported from Bitbucket to GitHub*
 
-- [Home](https://bitbucket.org/AlexHenderson/chitoolbox/wiki/Home)
-- [Installation](https://bitbucket.org/AlexHenderson/chitoolbox/wiki/Installation)
-- [File formats](https://bitbucket.org/AlexHenderson/chitoolbox/wiki/File-formats)
-- [Example usage](https://bitbucket.org/AlexHenderson/chitoolbox/wiki/Examples)
-- [Hints and tips](https://bitbucket.org/AlexHenderson/chitoolbox/wiki/Hints-and-tips)
-- [Credits](https://bitbucket.org/AlexHenderson/chitoolbox/wiki/Credits)
+- [Home](https://github.com/AlexHenderson/ChiToolbox/wiki/Home)
+- [Installation](https://github.com/AlexHenderson/ChiToolbox/wiki/Installation)
+- [File formats](https://github.com/AlexHenderson/ChiToolbox/wiki/File-formats)
+- [Example usage](https://github.com/AlexHenderson/ChiToolbox/wiki/Examples)
+- [Hints and tips](https://github.com/AlexHenderson/ChiToolbox/wiki/Hints-and-tips)
+- [Credits](https://github.com/AlexHenderson/ChiToolbox/wiki/Credits)
 
 ## Licence
 The ChiToolbox is copyright (c) 2014-2024 Alex Henderson   

@@ -124,7 +124,7 @@ classdef ChiImage < ChiAbstractImage
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         function totalspectrum = get.totalspectrum(this)
             spectrumclass = str2func(this.spectrumclassname);
-            totalspectrum = spectrumclass(this.xvals,sum(this.data),this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit);
+            totalspectrum = spectrumclass(this.xvals,full(sum(this.data)),this.reversex,this.xlabelname,this.xlabelunit,this.ylabelname,this.ylabelunit);
             totalspectrum.filenames = this.filenames;
             if isprop(this, 'iscentroided')
                 totalspectrum.iscentroided = this.iscentroided;

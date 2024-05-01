@@ -112,6 +112,10 @@ classdef ChiSpectralCollection < ChiAbstractSpectralCollection
                 case 2
                     this.xvals = varargin{1};
                     this.data = varargin{2};
+                case 3
+                    this.xvals = varargin{1};
+                    this.data = varargin{2};
+                    this.reversex = varargin{3};
                 case 7
                     this.xvals = varargin{1};
                     this.data = varargin{2};

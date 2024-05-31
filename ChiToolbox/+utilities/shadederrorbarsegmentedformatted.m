@@ -36,7 +36,11 @@ function varargout = shadederrorbarsegmentedformatted(varargin)
 
 
 h = shadedErrorBarSegmented(varargin{:});
-ax = h.Parent;
+try 
+    ax = h.Parent;
+catch
+    ax = gca();
+end
 ax.TickDir = 'out';
 ax.Box = 'off';
 

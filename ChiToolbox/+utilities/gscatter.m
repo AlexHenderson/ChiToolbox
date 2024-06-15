@@ -194,8 +194,8 @@ end
 % sizedata in points. Therefore, square the sizedata.
 sizedata = sizedata * sizedata;
 
-% Capture any existing legend content. This allows for legend informtin to
-% be retained when 'hold on' is used. 
+% Capture any existing legend content. This allows for legend information
+% to be retained when 'hold on' is used.
 legendbeforeplot = legend;
 priorlegendcontent = legendbeforeplot.String;
 

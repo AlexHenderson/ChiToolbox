@@ -1,32 +1,32 @@
-function [str,vals,txt] = durationString(seconds)
+function [str,vals,txt] = durationString(secs)
 
 % durationString  A formatted version of a time duration. 
 %
 % Syntax
-%   str = durationString(seconds);
-%   [str,vals] = durationString(seconds);
-%   [str,vals,txt] = durationString(seconds);
+%   str = durationString(secs);
+%   [str,vals] = durationString(secs);
+%   [str,vals,txt] = durationString(secs);
 %
 % Description
-%   str = durationString(seconds) returns a character string with the
+%   str = durationString(secs) returns a character string with the
 %   duration in seconds, broken down into weeks, days, hours, minutes
 %   and seconds. Longer periods are omitted if the duration does not
 %   require them.
 %
-%   [str,vals] = durationString(seconds) returns vals, a structure
+%   [str,vals] = durationString(secs) returns vals, a structure
 %   containing the duration periods.
 %
-%   [str,vals,txt] = durationString(seconds) returns txt, a structure
+%   [str,vals,txt] = durationString(secs) returns txt, a structure
 %   containing the duration titles. 
 %
 % Notes
-%   This can be used in conjunction with the built-in toc function to format
-%   the output. See tock.m for a wrapper function. 
+%   This can be used in conjunction with the built-in toc function to
+%   format the output. See tock.m for a wrapper function.
 %
 % Examples
 %   str = durationString(5000000)
 %   str =
-%   8 weeks, 1 day, 20 hours, 53 minutes, 20 seconds
+%   57 days, 20 hours, 53 minutes, 20 seconds
 %
 %   str = durationString(5000)
 %   str =
@@ -36,7 +36,7 @@ function [str,vals,txt] = durationString(seconds)
 %   str =
 %   1 minute, 2 seconds
 % 
-% Copyright (c) 2017, Alex Henderson.
+% Copyright (c) 2017-2024, Alex Henderson.
 % Licenced under the GNU Lesser General Public License (LGPL) version 3.
 %
 % See also 
@@ -49,68 +49,54 @@ function [str,vals,txt] = durationString(seconds)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
+% Version 2.0, June 2024
+% Converted to duration calculation
+% Dropped weeks
 % Version 1.0, November 2017
 
 
 %% Calculate the durations
-weeks = floor(seconds / (60*60*24*7));
-leaving = rem(seconds, (60*60*24*7));
-
-days = floor(leaving / (60*60*24));
-leaving = rem(leaving, (60*60*24));
-
-hours = floor(leaving / (60*60));
-leaving = rem(leaving, (60*60));
-
-mins = floor(leaving / (60));
-secs = rem(leaving, (60));
+numdays = floor(days(duration(0,0,secs)));
+numhours = floor(hours(duration(0,0,secs) - days(numdays)));
+nummins = floor(minutes(duration(0,0,secs) - days(numdays) - hours(numhours)));
+numsecs = (seconds(duration(0,0,secs) - days(numdays) - hours(numhours) - minutes(nummins)));
 
 %% Tidy up the text
-weekStr = 'weeks';
 dayStr = 'days';
 hourStr = 'hours';
 minStr = 'minutes';
 secStr = 'seconds';
 
-if (weeks == 1)
-    weekStr = 'week';
-end
-
-if (days == 1)
+if (numdays == 1)
     dayStr = 'day';
 end
 
-if (hours == 1)
+if (numhours == 1)
     hourStr = 'hour';
 end
 
-if (mins == 1)
+if (nummins == 1)
     minStr = 'minute';
 end
 
-if (secs == 1)
+if (numsecs == 1)
     secStr = 'second';
 end
 
 %% Generate the output
-if weeks
-    [str,errormessage] = sprintf('%d %s, %d %s, %d %s, %d %s, %g %s',...
-        weeks,weekStr,days,dayStr,hours,hourStr,mins,minStr,secs,secStr);
+if numdays
+    [str,errormessage] = sprintf('%d %s, %d %s, %d %s, %g %s',...
+        numdays,dayStr,numhours,hourStr,nummins,minStr,numsecs,secStr);
 else
-    if days
-        [str,errormessage] = sprintf('%d %s, %d %s, %d %s, %g %s',...
-            days,dayStr,hours,hourStr,mins,minStr,secs,secStr);
+    if numhours
+        [str,errormessage] = sprintf('%d %s, %d %s, %g %s',...
+            numhours,hourStr,nummins,minStr,numsecs,secStr);
     else
-        if hours
-            [str,errormessage] = sprintf('%d %s, %d %s, %g %s',...
-                hours,hourStr,mins,minStr,secs,secStr);
+        if nummins
+            [str,errormessage] = sprintf('%d %s, %g %s',...
+                nummins,minStr,numsecs,secStr);
         else
-            if mins
-                [str,errormessage] = sprintf('%d %s, %g %s',...
-                    mins,minStr,secs,secStr);
-            else
-                [str,errormessage] = sprintf('%g %s',secs,secStr);
-            end
+            [str,errormessage] = sprintf('%g %s',numsecs,secStr);
         end
     end
 end
@@ -122,13 +108,11 @@ if ~isempty(errormessage)
 end
 
 %% Gather output
-vals.weeks = weeks;
-vals.days = days;
-vals.hours = hours;
-vals.mins = mins;
-vals.secs = secs;
+vals.days = numdays;
+vals.hours = numhours;
+vals.mins = nummins;
+vals.secs = numsecs;
 
-txt.weeks = weekStr;
 txt.days = dayStr;
 txt.hours = hourStr;
 txt.mins = minStr;

@@ -19,7 +19,7 @@ function add(this,content)
 % If you use this file in your work, please acknowledge the author(s) in
 % your publications. 
 
-% Version 2.0, 2019
+% Version 3.0, 2024
 % The latest version of this file is available at:
 % https://github.com/AlexHenderson/ChiToolbox
 
@@ -35,12 +35,16 @@ if exist('content','var')
             if ischar(content)
                 this.log = vertcat(this.log,{content});
             else
-                if isvector(content)
-                    this.log = vertcat(this.log, num2str(content));
+                if isstring(content)
+                    this.log = vertcat(this.log,{char(content)});
                 else
-                    err = MException(['CHI:',mfilename,':TypeError'], ...
-                        'Unable to append this history log item.');
-                    throw(err);
+                    if isvector(content)
+                        this.log = vertcat(this.log, num2str(content));
+                    else
+                        err = MException(['CHI:',mfilename,':TypeError'], ...
+                            'Unable to append this history log item.');
+                        throw(err);
+                    end
                 end
             end
         end

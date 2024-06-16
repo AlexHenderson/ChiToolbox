@@ -20,38 +20,63 @@ end
 % We don't know how many we need, so just start with one
 segments = zeros(1,2); % start -> end
 
-% Determine the steps between the x-axis data points
-% Default is linear
-% For a linear axis the separation between the data points is roughly
-% constant, so diff returns (almost exactly) the same value if there are no
-% break points. If the x-axis is quadratic (for example in ToF-SIMS data,
-% where the x-axis is linear in time, but quadratic in mass) we will have a
-% slowly varying separation between the points. However, in a second order
-% diff, these are (roughly) the same size. 
-% I say 'roughly' because we're comparing floating point numbers, so the
-% separations may not be EXACTLY the same, but VERY CLOSE. This is the
-% reason for using the mode to determine the most frequently occurring
-% data point separation, rather than specifying a particular value. 
-switch lower(xshape)
-    case 'linear'
-        difference = diff(xvals,1);
-    case 'quadratic'
-        difference = diff(xvals,2);
-    otherwise
-        error('');
-end        
+% % Determine the steps between the x-axis data points
+% % Default is linear
+% % For a linear axis the separation between the data points is roughly
+% % constant, so diff returns (almost exactly) the same value if there are no
+% % break points. If the x-axis is quadratic (for example in ToF-SIMS data,
+% % where the x-axis is linear in time, but quadratic in mass) we will have a
+% % slowly varying separation between the points. However, in a second order
+% % diff, these are (roughly) the same size. 
+% % I say 'roughly' because we're comparing floating point numbers, so the
+% % separations may not be EXACTLY the same, but VERY CLOSE. This is the
+% % reason for using the mode to determine the most frequently occurring
+% % data point separation, rather than specifying a particular value. 
+% switch lower(xshape)
+%     case 'linear'
+%         difference = diff(xvals,1);
+%     case 'quadratic'
+%         difference = diff(xvals,2);
+%     otherwise
+%         error('');
+% end        
+% 
+% % Find any separations that appear to be too large. 
+% % Here 'too large' means over 1.8 times the most frequently occuring
+% % separation
+% mostcommondifference = mode(difference);
+% disjoints = find(difference > (1.8 * mostcommondifference));
+% 
+% % If we have quadratic data we use the second derivative. Therefore the
+% % index values of the disjoints are displaced by 1. 
+% if strcmpi(xshape, 'quadratic')
+%     disjoints = disjoints + 1;
+% end
 
-% Find any separations that appear to be too large. 
-% Here 'too large' means over 1.5 times the most frequently occuring
-% separation
-mostcommondifference = mode(difference);
-disjoints = find(difference > (1.5 * mostcommondifference));
+% ================================
+% new version
 
-% If we have quadratic data we use the second derivative. Therefore the
-% index values of teh disjoints are displaced by 1. 
-if strcmpi(xshape, 'quadratic')
-    disjoints = disjoints + 1;
+d1 = zeros(1,length(xvals)-1);  % difference between adjacent points
+d2 = zeros(1,length(xvals)-1);  % difference between skip 1 points
+missing = zeros(1,length(xvals)-1); % indicator of missing point
+
+for i = 1:length(xvals)-1
+    d1(i) = xvals(i+1)- xvals(i);   % (n+1 - n) == 1 xval step
 end
+for i = 1:length(xvals)-2
+    d2(i) = xvals(i+2)- xvals(i);   % (n+2 - n) == 2 xval step
+end
+
+separation = d2-d1;                 % = actual xval step 
+
+for i = 1:length(xvals)-1
+    % if actual step is more than a reasonable step, something must be missing
+    missing(i) = separation(i) > (1.5 * d1(i));
+end
+
+disjoints = find(missing);
+disjoints = disjoints + 1;  % We're using an offset of 1 due to measuring differences, so offset the positions by 1
+% ================================
 
 % 'Begin at the beginning' (Lewis Carroll, Alice in Wonderland)
 % Since any data cropped from the start of the spectra will not be present,

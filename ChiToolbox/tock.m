@@ -9,14 +9,14 @@ function varargout = tock(varargin)
 %   [elapsed,seconds] = tock(____,'append',appendtext);
 %
 % Description
-%   [elapsed,seconds] = tock() is essentially the same as the built-in toc function,
-%   reporting the time elapsed since the most recent call to tic. The
-%   output elapsed is formatted into weeks, days, hours, minutes and
-%   seconds. seconds is the number of seconds since the previous tic
-%   command, equivalent of the toc output.
+%   [elapsed,seconds] = tock() is essentially the same as the built-in
+%   toc() function, reporting the time elapsed since the most recent call
+%   to tic(). The output elapsed is formatted into weeks, days, hours,
+%   minutes and seconds. seconds is the number of seconds since the
+%   previous tic() command, equivalent of the toc() output.
 %
 %   [elapsed,seconds] = tock(tstart) reports the time elapsed since the
-%   specific tic command that generated tstart.
+%   specific tic() command that generated tstart.
 %
 %   [elapsed,seconds] = tock(____,'prepend',prependtext) prepends the
 %   prependtext to the output string.

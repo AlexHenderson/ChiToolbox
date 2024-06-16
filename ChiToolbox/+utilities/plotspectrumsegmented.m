@@ -71,13 +71,14 @@ end
 linearity = 'linear';
 argposition = find(cellfun(@(x) strcmpi(x, 'linearity') , varargin));
 if argposition
-    linearity = lower(varargin{argposition+1});
+    lincheck = lower(varargin{argposition+1});
     % Check for incorrect input
-    if ~(strcmpi(linearity, 'linear') || strcmpi(linearity, 'quadratic'))
+    if ~(strcmpi(lincheck, 'linear') || strcmpi(lincheck, 'quadratic'))
         err = MException(['CHI:',mfilename,':InputError'], ...
             'Options for linearity are ''linear'' or ''quadratic''');
         throw(err);
     end
+    linearity = lincheck;
         
     % Remove the parameters from the argument list
     varargin(argposition+1) = [];

@@ -39,7 +39,9 @@ function obj = abs2trans(this)
         % http://www.sensafe.com/conversion-formulas/
         utilities.warningnobacktrace('Assuming data is in absorbance units.');
         this.data = (10.^(-this.data)) * 100; 
-        this.ylabel = 'transmittance (%)'; 
+        this.ylabelname = 'transmittance (%)'; % Text for ordinate label on plots
+        this.ylabelunit = ''; % Text for the ordinate label unit on plots
+
         this.history.add('Converted to percentage transmittance');
     end
     

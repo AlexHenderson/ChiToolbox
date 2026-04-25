@@ -143,7 +143,8 @@ classdef ChiPerkinElmerFile < ChiAbstractFileFormat
             % Open the file(s)
             if spectralfiles
 
-                [wavenumbers,spectra,filenames] = perkinelmerspectra(filenames);
+                [wavenumbers,spectra,filenames,miscs] = perkinelmerspectra(filenames);
+
                 if size(spectra,1) == 1
                     obj = ChiIRSpectrum(wavenumbers,spectra);
                 else
@@ -157,16 +158,53 @@ classdef ChiPerkinElmerFile < ChiAbstractFileFormat
                     warning('Only the first image file will be imported');
                 end
 
-                [imagedata,wavenumbers,width,height,totalimage,filename] = perkinelmerimage(filenames{1}); %#ok<ASGLU>
+                [imagedata,wavenumbers,width,height,totalimage,filename,miscs] = perkinelmerimage(filenames{1}); %#ok<ASGLU>
                 obj = ChiIRImage(wavenumbers,imagedata,width,height);
             end
             
             obj.filenames = filenames;
-            
+
             for i = 1:length(filenames)
                 obj.history.add(['PerkinElmer file: ', filenames{i}]);
             end
-            
+
+            % ToDo: Check each spectrum to make sure they're all in
+            % absorbance or percentage transmittance mode. Since this
+            % leads to complications downstream, simply default to the
+            % mode of the first spectrum or image. 
+            loc = find(strcmpi(miscs{1,1}, 'yLabel'));
+            if loc
+                % We have a label, so it is not 'unknown'
+                ylabel = miscs{1}{loc,2};
+                if strcmpi(ylabel, '%T')
+                    obj.yaxismode = ChiIRMode.percentage_transmittance;
+                    obj.ylabelname = 'percentage transmittance';
+                    obj.ylabelunit = '';
+                else
+                    % without an example file, assume absorbance
+                    obj.yaxismode = ChiIRMode.absorbance;
+                    obj.ylabelname = 'absorbance';
+                    obj.ylabelunit = '';
+                end
+            end
+
+            % Now check the x-axis label
+            loc = find(strcmpi(miscs{1,1}, 'xLabel'));
+            if loc
+                % We have a label, so it is not 'unknown'
+                misc_xlabel = miscs{1}{loc,2};
+                if strcmpi(misc_xlabel, 'cm-1')
+                    obj.xlabelname = 'wavenumber';
+                    obj.xlabelunit = 'cm^{-1}';
+                    obj.reversex = true;
+                else
+                    % assume absorbance, without an example file
+                    obj.xlabelname = 'wavelength';
+                    obj.xlabelunit = misc_xlabel;
+                    obj.reversex = false;
+                end
+            end
+
         end     % function open
         
         % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

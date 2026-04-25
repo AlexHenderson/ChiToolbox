@@ -187,7 +187,7 @@ classdef ChiPerkinElmerFile < ChiAbstractFileFormat
                 ylabel = miscs{1}{loc,2};
                 if strcmpi(ylabel, '%T')
                     obj.yaxismode = ChiIRMode.percentage_transmittance;
-                    obj.ylabelname = 'percentage transmittance';
+                    obj.ylabelname = '% transmittance';
                     obj.ylabelunit = '';
                 else
                     % without an example file, assume absorbance

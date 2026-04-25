@@ -1,11 +1,11 @@
-function [wavenumbers,spectra,filenames] = perkinelmerspectra(filenames)
+function [wavenumbers,spectra,filenames,miscs] = perkinelmerspectra(filenames)
 % PERKINELMERSPECTRA Reads the perkinelmer spectrum file format
 % Version 1.0
 %
 % usage: 
-% [wavenumbers,spectra,filenames] = perkinelmerspectra(filenames);
+% [wavenumbers,spectra,filenames,miscs] = perkinelmerspectra(filenames);
 % or
-% [wavenumbers,spectra,filenames] = perkinelmerspectra();
+% [wavenumbers,spectra,filenames,miscs] = perkinelmerspectra();
 %  (The second version prompts for one or more file names.)
 %
 % Takes zero, one or more file names. 
@@ -13,6 +13,8 @@ function [wavenumbers,spectra,filenames] = perkinelmerspectra(filenames)
 %           'spectra' a matrix of spectral intensities in rows
 %           'filenames' a matrix of filenames used in the order the spectra
 %           appear
+%           'miscs' a cell array of miscellaneous information from low 
+%           level file parser. 
 % 
 % Notes
 % Where the spectra are misaligned, the data is interpolated (linearly).
@@ -54,8 +56,10 @@ for i=1:numberoffiles
     if (i==1)
         % First time through we initialise the data array
         spectra = zeros(numberoffiles,length(spectrum_i));
+        miscs = cell(numberoffiles,1);
         spectra(1,:) = spectrum_i;
         wavenumbers = wavenumbers_i;
+        miscs{1} = misc_i;
     end
     
     needtointerpolate=0;
@@ -94,6 +98,7 @@ for i=1:numberoffiles
     end
     
     spectra(i,:) = spectrum_i;
+    miscs{i,1} = misc_i;
 end
 
 % Sometimes the interpolation turns up a NaN in either the first or last

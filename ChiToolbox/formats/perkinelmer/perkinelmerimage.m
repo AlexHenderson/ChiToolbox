@@ -1,12 +1,12 @@
-function [imagedata, wavenumbers, width, height, totalimage, filename] = perkinelmerimage(filename)
+function [imagedata, wavenumbers, width, height, totalimage, filename, miscs] = perkinelmerimage(filename)
 
 %
 % Reads the PerkinElmer image file format
 % Version 1.0 (April 2026)
 %
-% syntax: [imagedata, wavenumbers, totalimage, filename] = perkinelmerimage(filename);
+% syntax: [imagedata, wavenumbers, totalimage, filename, miscs] = perkinelmerimage(filename);
 % or
-% syntax: [imagedata, wavenumbers, totalimage, filename] = perkinelmerimage();
+% syntax: [imagedata, wavenumbers, totalimage, filename, miscs] = perkinelmerimage();
 %
 % The second version prompts for a filename. 
 %
@@ -19,6 +19,8 @@ function [imagedata, wavenumbers, width, height, totalimage, filename] = perkine
 %       A 2D matrix containing the sum of the intensity at each pixel.
 %   filename
 %       The location of the file opened.
+%   miscs
+%       Cell array of miscellaneous information from low level file parser.
 %
 %
 % Version 1.0 (April 2026)
@@ -33,6 +35,7 @@ end
 
 
 [imagedata, width, height, wavenumbers, misc] = fsmload(filename);
+miscs = {misc};
 totalimage = sum(imagedata, 3);
 
 end

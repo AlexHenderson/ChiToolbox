@@ -151,6 +151,10 @@ classdef ChiPerkinElmerFile < ChiAbstractFileFormat
                     obj = ChiIRSpectralCollection(wavenumbers,spectra);
                 end
 
+                % misc key for labels are not consistant: spectra vs image
+                xlabeltag = 'xLabel';
+                ylabeltag = 'yLabel';
+
             else
                 % We have one or more images
                 if length(filenames) > 1
@@ -160,6 +164,11 @@ classdef ChiPerkinElmerFile < ChiAbstractFileFormat
 
                 [imagedata,wavenumbers,width,height,totalimage,filename,miscs] = perkinelmerimage(filenames{1}); %#ok<ASGLU>
                 obj = ChiIRImage(wavenumbers,imagedata,width,height);
+
+                % misc key for labels are not consistant: spectra vs image
+                xlabeltag = 'zLabel';
+                ylabeltag = 'wLabel';
+
             end
             
             obj.filenames = filenames;
@@ -172,7 +181,7 @@ classdef ChiPerkinElmerFile < ChiAbstractFileFormat
             % absorbance or percentage transmittance mode. Since this
             % leads to complications downstream, simply default to the
             % mode of the first spectrum or image. 
-            loc = find(strcmpi(miscs{1,1}, 'yLabel'));
+            loc = find(strcmpi(miscs{1,1}, ylabeltag));
             if loc
                 % We have a label, so it is not 'unknown'
                 ylabel = miscs{1}{loc,2};
@@ -189,7 +198,7 @@ classdef ChiPerkinElmerFile < ChiAbstractFileFormat
             end
 
             % Now check the x-axis label
-            loc = find(strcmpi(miscs{1,1}, 'xLabel'));
+            loc = find(strcmpi(miscs{1,1}, xlabeltag));
             if loc
                 % We have a label, so it is not 'unknown'
                 misc_xlabel = miscs{1}{loc,2};

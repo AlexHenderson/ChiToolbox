@@ -34,5 +34,5 @@ It is released under the GNU GPL 3.0 licence, a copy of which is included in the
 
 The licences of the included files, detailed in the [Credits section](Credits.md), are equally or more liberal in nature.  
 
-Other licensing options are available. Contact Alex for further information. 
+**Other licensing options are available. Contact Alex for further information.**
  
